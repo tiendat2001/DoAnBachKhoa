@@ -1,0 +1,51 @@
+.navbar{
+  height: 60px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+}
+.account{
+  color: rgb(0, 0, 0);
+  font-size:20px;
+}
+.navContainer{
+  width: 100%;
+  max-width: 1024px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.logo{
+  width:100px;
+  margin-top:10px;
+}
+
+.navButton{
+  margin-left: 20px;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  background-color: rgb(1, 148, 243);
+}
+
+.logout{
+  display: flex;
+  align-items: center;
+}
+/*   
+  .navContainer{
+    @apply w-full max-w-screen-lg text-white flex items-center justify-between
+  }
+  
+  .logo{
+    @apply font-medium text-lg;
+  }
+  
+  .navButton{
+    @apply ml-[20px] border-none cursor-pointer border-blue-900 py-[5px] px-[10px] text-lg;
+  } */
