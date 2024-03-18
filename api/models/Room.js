@@ -26,7 +26,7 @@ const RoomSchema = new mongoose.Schema({
         type: String,
         required:true
     },
-    roomNumbers:[{ number:Number, unavailableDates:{type:[Date]} }],
+    roomNumbers:[{ number:Number, unavailableDates:{type:[Date]} }], // them status, neu unavai ko rong thi ko dc de status hủy, them id tu gen
 },
 { timestamps : true }
 );
