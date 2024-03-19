@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 const HotelSchema = new mongoose.Schema({
+  // Phải thêm vào ID ownder
   name: {
     type: String,
     required: true,

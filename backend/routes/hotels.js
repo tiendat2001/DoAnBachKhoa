@@ -1,18 +1,16 @@
 import express from "express"
 import Hotel from "../models/Hotel.js" // phai co .js
+import {createHotel, deleteHotel,getHotelById,  getHotels, updateHotel } from "../controllers/hotel.js";
+
 const router = express.Router()
-
 //CREATE
-router.post("/",async(req,res)=>{
-    const newHotel = new Hotel(req.body) // thong tin lay tu body cua req
-    
-    try {
-        const savedHotel = await newHotel.save()
-        res.status(200).json(savedHotel)
-    } catch (err) {
-        res.status(500).json(error)
-    }
-
-})
-
+router.post("/",createHotel);
+//UPDATE
+router.put("/:id",updateHotel);
+//DELETE
+router.delete("/:id",deleteHotel);
+//GET
+router.get("/find/:id", getHotelById);
+//GETALL
+router.get("/", getHotels);
 export default router
