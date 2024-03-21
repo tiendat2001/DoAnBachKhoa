@@ -5,6 +5,8 @@ import usersRoute from "./routes/users.js"
 import hotelsRoute from "./routes/hotels.js" 
 import roomsRoute from "./routes/rooms.js" 
 import mongoose from "mongoose"
+import cookieParser from "cookie-parser"
+
 const app = express()
 
 
@@ -24,7 +26,7 @@ mongoose.connection.on("disconnected", () => {
 
 // middleware
 
-
+app.use(cookieParser()) // dung cookie
 // de gui json dc
 app.use(express.json())
 // su dung nhung duong dan nay se tiep tuc xu ly trong file routes
