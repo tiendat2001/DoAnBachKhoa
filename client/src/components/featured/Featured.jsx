@@ -8,7 +8,7 @@ import React from "react";
 import { SearchContext } from "../../context/SearchContext";
 const Featured = () => {
   const { data, loading, error } = useFetch(
-    "/hotels/countByCity?cities=Hà Nội,Ninh Bình,Đà Nẵng"
+    "/hotels/countByCity?cities=Hà Nội,Ninh Bình,Đà Nẵng"
   );
   const [destination, setDestination] = useState("");
 
@@ -22,9 +22,6 @@ const Featured = () => {
   ]);
   
 
-
-
-  
   const [options, setOptions] = useState({
     adult: 1,
     children: 0,

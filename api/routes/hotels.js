@@ -15,7 +15,7 @@ router.get("/find/:id", getHotel);
 //GETALL
 router.get("/", getHotels);
 
-router.get("/countByCity", countByCity);
+router.get("/countByCity", countByCity); // để ý api này sẽ bị nhầm với api get by id nếu ở trên ko ghi thêm chữ find
 router.get("/countByType", countByType);
 router.get("/room/:id", getHotelRooms);
 

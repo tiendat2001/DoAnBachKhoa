@@ -53,3 +53,16 @@ export const getHotelById = async (req,res,next)=>{
     }
 }
 
+export const countByCity = async (req,res,next)=>{
+    // truy cap vao param trong api, dung req.query, trừ khi api đc định nghĩa tham số sẵn, kiểu :id, thì dùng req.params
+    const cities = req.query.cities.split(",")
+    try {
+        const list = await Promise.all(cities.map(city => {
+            return Hotel.countDocuments({city:city})
+        }))
+        res.status(200).json(list);
+    } catch (err) {
+        next(err)
+    }
+}
+
