@@ -1,7 +1,7 @@
 import useFetch from "../../hooks/useFetch";
 import React from "react";
 import "./propertyList.css";
-
+// lọc theo loại khách sạn - resort, villa...
 const PropertyList = () => {
   const { data, loading, error } = useFetch("/hotels/countByType");
   // console.log(data);

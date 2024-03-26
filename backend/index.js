@@ -6,6 +6,7 @@ import hotelsRoute from "./routes/hotels.js"
 import roomsRoute from "./routes/rooms.js" 
 import mongoose from "mongoose"
 import cookieParser from "cookie-parser"
+import cors from "cors"
 
 const app = express()
 
@@ -25,7 +26,7 @@ mongoose.connection.on("disconnected", () => {
 })
 
 // middleware
-
+app.use(cors())
 app.use(cookieParser()) // dung cookie
 // de gui json dc
 app.use(express.json())

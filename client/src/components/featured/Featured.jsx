@@ -8,7 +8,7 @@ import React from "react";
 import { SearchContext } from "../../context/SearchContext";
 const Featured = () => {
   const { data, loading, error } = useFetch(
-    "/hotels/countByCity?cities=Hà Nội,Ninh Bình,Đà Nẵng"
+    "/hotels/countByCity?cities=Hà Nội,Ninh Bình,Đà Nẵng"
   );
   const [destination, setDestination] = useState("");
 
@@ -41,7 +41,8 @@ const Featured = () => {
       {loading ? (
         "Loading please wait"
       ) : (
-        <>
+        // dấu <> thay cho react fragment - = với việc tạo 1 div lồng ra ngoài
+        <> 
           <div
             className="featuredItem"
             onClick={() => handleSearch("Ninh Bình")}

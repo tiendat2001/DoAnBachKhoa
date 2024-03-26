@@ -132,6 +132,7 @@ const List = () => {
               "loading"
             ) : (
               <>
+              {/* data là các hotel thỏa mãn đkien tìm */}
                 {data.map((item) => (
                   <SearchItem item={item} key={item._id} />
                 ))}
