@@ -18,9 +18,10 @@ import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
 import Reserve from "../../components/reserve/Reserve";
 
+// PAGE THONG TIN TUNG HOTEL
 const Hotel = () => {
   const location = useLocation();
-  const id = location.pathname.split("/")[2];
+  const id = location.pathname.split("/")[2]; // lay hotel id
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -30,8 +31,10 @@ const Hotel = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const { dates, options } = useContext(SearchContext);
+  // CONTEXT
+  // const { dates, options } = useContext(SearchContext);
   // console.log(dates)
+
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   function dayDifference(date1, date2) {
     const timeDiff = Math.abs(date2.getTime() - date1.getTime());
@@ -39,7 +42,7 @@ const Hotel = () => {
     return diffDays;
   }
 
-  const days = dayDifference(dates[0].endDate, dates[0].startDate);
+  // const days = dayDifference(dates[0].endDate, dates[0].startDate);
   
   const handleOpen = (i) => {
     setSlideNumber(i);
@@ -108,10 +111,10 @@ const Hotel = () => {
             <span className="hotelDistance">
               Excellent location – {data.distance}m from center
             </span>
-            <span className="hotelPriceHighlight">
+            {/* <span className="hotelPriceHighlight">
               Book a stay over ${data.cheapestPrice} at this property and get a
               free airport taxi
-            </span>
+            </span> */}
             <div className="hotelImages">
               {data.photos?.map((photo, i) => (
                 <div className="hotelImgWrapper" key={i}>
@@ -130,19 +133,17 @@ const Hotel = () => {
                 <p className="hotelDesc">{data.desc}</p>
               </div>
               <div className="hotelDetailsPrice">
-              {days !== 0 && <h1>Perfect for a {days}-night stay!</h1>}
+              {/* {days !== 0 && <h1>Perfect for a {days}-night stay!</h1>} */}
                 <span>
                   Located in the {data.address}, this property has an
                   excellent location!
                 </span>
-                {days == 0 &&<h2>
+               
+                <h2>
                   <b>Price only from ${ data.cheapestPrice} per night</b> 
                   
-                </h2>}
-                {/* {days == 0 &&<h2>
-                  <b>Price only from ${days * data.cheapestPrice * options.room}</b> ({days}{" "}
-                  nights)
-                </h2>} */}
+                </h2>
+               
                 <button onClick={handleClick}>Reserve or Book Now!</button>
               </div>
             </div>

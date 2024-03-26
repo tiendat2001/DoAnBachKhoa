@@ -29,8 +29,6 @@ const List = () => {
     setDestination(e.target.value);
   };
   const handleClick = () => {
-    
-
     reFetch();
     dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
   };
@@ -82,11 +80,11 @@ const List = () => {
                   </span>
                   <input
                     type="number"
-                    onChange={(e) => setMin(e.target.value-1)}
+                    onChange={(e) => setMin(e.target.value)}
                     className="lsOptionInput"
                   />
                 </div>
-                {/* <div className="lsOptionItem">
+                <div className="lsOptionItem">
                   <span className="lsOptionText">
                     Max price <small>per night</small>
                   </span>
@@ -95,8 +93,8 @@ const List = () => {
                     onChange={(e) => setMax(e.target.value)}
                     className="lsOptionInput"
                   />
-                </div> */}
-                {/* <div className="lsOptionItem">
+                </div> 
+                 <div className="lsOptionItem">
                   <span className="lsOptionText">Adult</span>
                   <input
                     type="number"
@@ -104,8 +102,8 @@ const List = () => {
                     className="lsOptionInput"
                     placeholder={options.adult}
                   />
-                </div> */}
-                {/* <div className="lsOptionItem">
+                </div> 
+                <div className="lsOptionItem">
                   <span className="lsOptionText">Children</span>
                   <input
                     type="number"
@@ -113,8 +111,8 @@ const List = () => {
                     className="lsOptionInput"
                     placeholder={options.children}
                   />
-                </div> */}
-                {/* <div className="lsOptionItem">
+                </div> 
+                 <div className="lsOptionItem">
                   <span className="lsOptionText">Room</span>
                   <input
                     type="number"
@@ -122,7 +120,7 @@ const List = () => {
                     className="lsOptionInput"
                     placeholder={options.room}
                   />
-                </div> */}
+                </div> 
               </div>
             </div>
             <button onClick={handleClick}>Search</button>

@@ -19,7 +19,7 @@ const useFetch = (url) => {
     };
     fetchData();
   }, [url]);
-
+// url de tu dong reFecth moi khi api thay doi
   const reFetch = async () => {
     setLoading(true);
     try {

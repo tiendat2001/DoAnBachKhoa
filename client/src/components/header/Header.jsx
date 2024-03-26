@@ -15,19 +15,19 @@ import { useState, useContext } from "react";
 // hien calendar
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { format } from "date-fns";
+import { format,addDays  } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from '../../context/AuthContext';
 
 const Header = ({ type }) => {
-  const [destination, setDestination] = useState("");
+  const [destination, setDestination] = useState("Hà Nội");
   const [openDate, setOpenDate] = useState(false);
   const [dates, setDates] = useState([
     {
       startDate: new Date(),
-      endDate: new Date(),
+      endDate: addDays(new Date(), 1),
       key: "selection",
     },
   ]);
@@ -101,18 +101,22 @@ const Header = ({ type }) => {
             </p>
             {/* {!user && <button className="headerBtn">Sign in / Register</button>} */}
             <div className="headerSearch">
+              {/* thanh search city */}
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faBed} className="headerIcon" />
                 <input
                   type="text"
-                  placeholder="Where are you going?"
+                  placeholder="Hà Nội"
                   className="headerSearchInput"
                   // doi trang thai state destination moi khi thay doi
                   onChange={(e) => setDestination(e.target.value)}
                 />
               </div>
+
+              {/* thanh search ngày */}
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />
+                {/* chỗ hiển thị lên UI */}
                 <span
                   onClick={() => setOpenDate(!openDate)}
                   className="headerSearchText"
@@ -120,6 +124,7 @@ const Header = ({ type }) => {
                   dates[0].endDate,
                   "MM/dd/yyyy"
                 )}`}</span>
+
                 {openDate && (
                   <DateRange
                     editableDateInputs={true}
@@ -127,10 +132,12 @@ const Header = ({ type }) => {
                     moveRangeOnFirstSelection={false}
                     ranges={dates}
                     className="date"
-                    minDate={new Date()}
+                    minDate={new Date()} // ngày tối thiểu đc chọn
                   />
                 )}
               </div>
+
+
               <div className="headerSearchItem">
                 {/* <FontAwesomeIcon icon={faPerson} className="headerIcon" /> */}
                 {/* <span

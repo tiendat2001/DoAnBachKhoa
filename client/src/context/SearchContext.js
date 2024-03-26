@@ -14,8 +14,8 @@ export const SearchContext = createContext(INITIAL_STATE);
 
 const SearchReducer = (state, action) => {
   switch (action.type) {
-    case "NEW_SEARCH":
-      return action.payload;
+    case "NEW_SEARCH": // MÕI KHI thay đổi thông tin thanh search
+      return action.payload; // GỒM CITY, DATE RANGE, OPTION
     case "RESET_SEARCH":
       return INITIAL_STATE;
     default:
@@ -32,7 +32,7 @@ export const SearchContextProvider = ({ children }) => {
         city: state.city,
         dates: state.dates,
         options: state.options,
-        dispatch,
+        dispatch,  // dispatch khi muốn dùng SearchReducer
       }}
     >
       {children}
