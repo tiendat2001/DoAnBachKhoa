@@ -8,12 +8,18 @@ const Navbar = () => {
     return (
         <div className="navbar">
           <div className="navContainer">
-        
+              {/* LOGO */}
               <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>
                <img className="logo" src="https://www.hilton.com/modules/assets/svgs/logos/WW.svg" alt="" />
             </Link>
 
-            {user ? (<div className="logout">
+           
+            {user ? (
+            <div className="logout">
+             <Link to="/login">
+              <button className="navButton" >Manage your homestay</button>
+              </Link>
+              
             <h1 className="account">Hello,{user.username}</h1> 
             <Link to="/login">
 

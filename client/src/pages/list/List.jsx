@@ -3,7 +3,7 @@ import React from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
 import { useLocation } from "react-router-dom";
-import { useState,useContext } from "react";
+import { useState,useContext ,useEffect} from "react";
 import { format } from "date-fns";
 import { DateRange } from "react-date-range";
 import SearchItem from "../../components/searchItem/SearchItem";
@@ -24,8 +24,7 @@ const List = () => {
   );
   const { dispatch } = useContext(SearchContext);
 
-  const handleInputChange = (e) => {
-    // Khi giá trị trong input thay đổi, cập nhật giá trị của destination
+  const handleDestinationChange = (e) => {
     setDestination(e.target.value);
   };
   const handleClick = () => {
@@ -33,28 +32,35 @@ const List = () => {
     dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
   };
 
-
-  const handleChange=(item) => {
-    // console.log("change date")
-    // Cập nhật state dates
-    setDates([item.selection]);
-    // console.log("change date")
-    // console.log([item.selection])
-    // Lệnh dispatch
+  useEffect(() => {
+    console.log("Updated changes:", dates);
     dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
-    // console.log("thanh cong dispatch")
+    console.log();
+  }, [destination, dates, options]);
+
+
+  const handleDayChange=(item) => {
+    setDates([item.selection])
+  };
+
+  const handleOptionChange = (e, optionName) => {
+    const value = e.target.value;
+    setOptions(prevOptions => ({
+      ...prevOptions,
+      [optionName]: value
+    }));
   };
   return (
     <div>
       <Navbar />
-      <Header type="li2st" />
+      <Header type="list" />
       <div className="listContainer">
         <div className="listWrapper">
           <div className="listSearch">
             <h1 className="lsTitle">Search</h1>
             <div className="lsItem">
               <label>Destination</label>
-              <input placeholder={destination} value={destination} onChange={handleInputChange} type="text" />
+              <input placeholder={destination} value={destination} onChange={handleDestinationChange} type="text" />
             </div>
             <div className="lsItem">
               <label>Check-in Date</label>
@@ -64,7 +70,7 @@ const List = () => {
               )} to ${format(dates[0].endDate, "MM/dd/yyyy")}`}</span>
               {openDate && (
                 <DateRange
-                onChange={(item) => handleChange(item)}                  
+                onChange={(item) => handleDayChange(item)}                  
                 minDate={new Date()}
                   ranges={dates}
                 />
@@ -101,6 +107,7 @@ const List = () => {
                     min={1}
                     className="lsOptionInput"
                     placeholder={options.adult}
+                    onChange={(e) => handleOptionChange(e, 'adult')}
                   />
                 </div> 
                 <div className="lsOptionItem">
@@ -110,6 +117,8 @@ const List = () => {
                     min={0}
                     className="lsOptionInput"
                     placeholder={options.children}
+                    onChange={(e) => handleOptionChange(e, 'children')}
+
                   />
                 </div> 
                  <div className="lsOptionItem">
@@ -119,6 +128,8 @@ const List = () => {
                     min={1}
                     className="lsOptionInput"
                     placeholder={options.room}
+                    onChange={(e) => handleOptionChange(e, 'room')}
+
                   />
                 </div> 
               </div>

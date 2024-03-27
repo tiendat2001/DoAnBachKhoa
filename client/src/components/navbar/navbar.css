@@ -1,11 +1,11 @@
 .navbar{
   height: 60px;
-  background-color: #ffffff;
+  background-color: #003580;
   display: flex;
   justify-content: center;
 }
 .account{
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   font-size:20px;
 }
 .navContainer{
@@ -24,7 +24,7 @@
 }
 
 .navButton{
-  margin-left: 20px;
+ 
   border: none;
   padding: 5px 10px;
   cursor: pointer;
@@ -34,8 +34,10 @@
 }
 
 .logout{
+  gap:20px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 /*   
   .navContainer{
