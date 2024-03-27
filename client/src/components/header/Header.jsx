@@ -107,7 +107,7 @@ const Header = ({ type }) => {
                 <input
                   type="text"
                   placeholder="Hà Nội"
-                  className="headerSearchInput"
+                  className="headerSearchInput "
                   // doi trang thai state destination moi khi thay doi
                   onChange={(e) => setDestination(e.target.value)}
                 />
@@ -139,11 +139,11 @@ const Header = ({ type }) => {
 
 
               <div className="headerSearchItem">
-                {/* <FontAwesomeIcon icon={faPerson} className="headerIcon" /> */}
-                {/* <span
+                <FontAwesomeIcon icon={faPerson} className="headerIcon" /> 
+                <span
                   onClick={() => setOpenOptions(!openOptions)}
                   className="headerSearchText"
-                >{`${options.adult} adult · ${options.children} children · ${options.room} room`}</span> */}
+                >{`${options.adult} adult · ${options.children} children · ${options.room} room`}</span> 
                 {openOptions && (
                   <div className="options">
                     <div className="optionItem">

@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { createError } from "../utils/error.js";
 
+// khi login sẽ có 1 token trong cookie, lấy token đó để check
 export const verifyToken = (req, res, next) => {
   const token = req.cookies.access_token;
   if (!token) {
