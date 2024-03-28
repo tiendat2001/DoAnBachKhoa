@@ -1,5 +1,5 @@
 import Hotel from "../models/Hotel.js"
-// import Room from "../models/RoomType.js"
+import Room from "../models/RoomType.js"
 
 // viet xu ly khi goi api
 export const createHotel = async (req,res,next)=>{
@@ -95,6 +95,21 @@ export const countByType = async (req, res, next) => {
         { type: "villas", count: villaCount },
         { type: "cabins", count: cabinCount },
       ]);
+    } catch (err) {
+      next(err);
+    }
+};
+
+export const getHotelRoomsType = async (req, res, next) => {
+    try {
+      const hotel = await Hotel.findById(req.params.id);
+      const list = await Promise.all(
+        //   room ở đây là roomId
+        hotel.rooms.map((room) => {
+          return Room.findById(room);
+        })
+      );
+      res.status(200).json(list)
     } catch (err) {
       next(err);
     }

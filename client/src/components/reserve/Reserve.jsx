@@ -101,10 +101,7 @@ const Reserve = ({ setOpen, hotelId }) => {
       console.log("User đặt"+user._id)
       console.log("So Phòng đặt"+selectedRoomsNumber)
       console.log("Ngày phòng đặt"+dates[0].endDate)
-  
       console.log("Giá hóa đơn"+selectedRoomsPrice*selectedRooms.length*dayDistance)
-  
-   
   
       alert("Successful reserve")
       navigate("/");
