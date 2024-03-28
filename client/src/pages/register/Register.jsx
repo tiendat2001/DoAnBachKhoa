@@ -8,6 +8,9 @@ const Register = () => {
   const [credentials, setCredentials] = useState({
     username: undefined,
     password: undefined,
+    email:undefined,
+    passwordRepeat: undefined // Thêm trường passwordRepeat vào state, trường này khi đẩy vào API ko dùng
+
   });
 
   const {user, loading, error, dispatch } = useContext(AuthContext);
@@ -19,15 +22,17 @@ const Register = () => {
   };
 
   // submit
-  const handleClick = async (e) => {
+  const handleClickRegister = async (e) => {
     e.preventDefault();
-    dispatch({ type: "LOGIN_START" });
+    if (credentials.password !== credentials.passwordRepeat) {
+      alert("Mật khẩu không khớp");
+      return;
+    }
     try {
-      const res = await axios.post("/auth/login", credentials);
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
-      console.log(user)
 
-      navigate("/")
+      const res = await axios.post("/auth/register", credentials);
+      alert("Đăng ký thành công")
+      navigate("/login")
     } catch (err) {
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }
@@ -54,19 +59,21 @@ const Register = () => {
 
           <input
           type="password"
+          placeholder="Nhập lại mật khẩu"
+          id="passwordRepeat"
+          onChange={handleChange}
+          className="lInput"
+        />  
+
+          <input
+          type="email"
           placeholder="Email"
-          id="password"
+          id="email"
           onChange={handleChange}
           className="lInput"
         />
 
-        <input
-          type="password"
-          placeholder="Phone"
-          id="password"
-          onChange={handleChange}
-          className="lInput"
-        />
+        
        
           {/* <label>
             <input 
@@ -78,10 +85,10 @@ const Register = () => {
          
       
         
-        <button  className="lButton btn_registerr">
-          Save
+        <button disabled={loading} onClick={handleClickRegister}   className="lButton btn_registerr">
+          Đăng ký
         </button>
-        {error && <span>{error.message}</span>}
+        {error && <span>Tên đăng nhập hoặc email <br></br> đã có người sử dụng</span>}
       </div>
     </div>
   );
