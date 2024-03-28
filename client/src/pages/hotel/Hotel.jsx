@@ -6,6 +6,14 @@ import Footer from "../../components/footer/Footer";
 import MailList from "../../components/MailList/MailList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faBed,
+  faCalendarDays,
+  faCar,
+  faPerson,
+  faPlane,
+  faTaxi,
+} from "@fortawesome/free-solid-svg-icons";
+import {
   faCircleArrowLeft,
   faCircleArrowRight,
   faCircleXmark,
@@ -17,7 +25,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
 import Reserve from "../../components/reserve/Reserve";
-
+import { format,  } from "date-fns";
 // PAGE THONG TIN TUNG HOTEL
 const Hotel = () => {
   const location = useLocation();
@@ -32,9 +40,9 @@ const Hotel = () => {
   const navigate = useNavigate();
 
   // CONTEXT
-  const searchContext = useContext(SearchContext);
-  const { destination ,dates, options } = useContext(SearchContext);
-  console.log(searchContext)
+  // const searchContext = useContext(SearchContext);
+  // const { destination ,dates, options } = useContext(SearchContext);
+  // console.log(searchContext)
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   function dayDifference(date1, date2) {
@@ -43,7 +51,7 @@ const Hotel = () => {
     return diffDays;
   }
 
-  const days = dayDifference(dates[0].endDate, dates[0].startDate);
+  // const days = dayDifference(dates[0].endDate, dates[0].startDate);
   
   const handleOpen = (i) => {
     setSlideNumber(i);
@@ -73,6 +81,37 @@ const Hotel = () => {
     <div>
       <Navbar />
       <Header type="list" />
+
+    {/* phần hiển thị thông tin chọn từ trc */}
+    {/* <div className="headerSearchHotel">
+              <div className="headerSearchItemHotel">
+                <FontAwesomeIcon icon={faBed} className="headerIconHotel" />
+                <input
+                  type="text"
+                  placeholder={destination}
+                  className="headerSearchInputHotel "
+                />
+              </div>
+              <div className="headerSearchItemHotel">
+                <FontAwesomeIcon icon={faCalendarDays} className="headerIconHotel" />
+
+                <span className="headerSearchTextHotel"
+                >{`${format(dates[0].startDate, "MM/dd/yyyy")} to ${format(
+                  dates[0].endDate,
+                  "MM/dd/yyyy"
+                )}`}</span>
+              </div>
+
+              <div className="headerSearchItemHotel">
+                <FontAwesomeIcon icon={faPerson} className="headerIconHotel" /> 
+                <span
+                  className="headerSearchTextHotel"
+                >{`${options.adult} adult · ${options.children} children · ${options.room} room`}</span> 
+              </div>  
+    </div>  */}
+
+
+
       {loading ? (
         "loading"
       ) : (
@@ -134,7 +173,7 @@ const Hotel = () => {
                 <p className="hotelDesc">{data.desc}</p>
               </div>
               <div className="hotelDetailsPrice">
-              {days !== 0 && <h1>Perfect for a {days}-night stay!</h1>}
+              {/* {days !== 0 && <h1>Perfect for a {days}-night stay!</h1>} */}
                 <span>
                   Located in the {data.address}, this property has an
                   excellent location!

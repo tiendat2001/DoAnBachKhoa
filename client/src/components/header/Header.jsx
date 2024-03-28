@@ -39,11 +39,12 @@ const Header = ({ type }) => {
   });
 
   const navigate = useNavigate();
-
+  // sự kiện chỉnh sửa số người, room
   const handleOption = (name, operation) => {
     setOptions((prev) => {
       return {
         ...prev,
+        // dùng [] để truy cập vì name là biến, chưa xác định rõ (hoặc giá trị chứa dấu cách), chỉ khi xđ rõ mới dùng dấu .
         [name]: operation === "i" ? options[name] + 1 : options[name] - 1,
       };
     });

@@ -33,9 +33,8 @@ const List = () => {
   };
 
   useEffect(() => {
-    console.log("Updated changes:", dates);
+    // console.log("Updated changes:", dates);
     dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
-    console.log();
   }, [destination, dates, options]);
 
 

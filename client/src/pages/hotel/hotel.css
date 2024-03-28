@@ -1,3 +1,48 @@
+
+.headerSearchHotel {
+  height: 30px;
+  background-color: white;
+  border: 3px solid #febb02;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px 0px;
+  border-radius: 5px;
+  /* position: absolute;
+  bottom: -25px; */
+  margin:auto;
+  margin-top:10px;
+  width: 100%;
+  max-width: 1024px;
+}
+
+.headerIconHotel {
+  color: lightgray;
+}
+
+.headerSearchItemHotel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerSearchInputHotel {
+  border: none;
+  outline: none;
+}
+
+.headerSearchInputHotel::placeholder{
+  color: lightgray;
+  cursor: pointer;
+  font-weight: bold;
+}
+.headerSearchTextHotel {
+  color: lightgray;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+
 .hotelContainer {
     display: flex;
     flex-direction: column;
