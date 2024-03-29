@@ -140,7 +140,7 @@ const List = () => {
               "loading"
             ) : (
               <>
-              {/* data là các hotel thỏa mãn đkien tìm */}
+              {/* data là các hotel thỏa mãn đkien tìm, item là props- là từng cái hotel */}
                 {data.map((item) => (
                   <SearchItem item={item} key={item._id} />
                 ))}

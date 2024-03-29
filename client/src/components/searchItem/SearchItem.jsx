@@ -1,8 +1,25 @@
 import { Link } from "react-router-dom";
 import "./searchItem.css";
 import React from "react";
+import { SearchContext } from "../../context/SearchContext";
+import { useState, useContext } from "react";
+
 // nhung HOTEL hien tren thanh search
+
+
 const SearchItem = ({ item }) => {
+  const {dates, options } = useContext(SearchContext);
+
+  
+  const calculatePrice = (cheapestPrice) => {
+    // thay số 2 bằng số người của phòng min price
+    if(Math.floor(options.adult / 2)==0){
+      return cheapestPrice;
+    }else{
+      return  cheapestPrice * Math.floor(options.adult / 2);
+    } 
+   
+  };
   return (
     <div className="searchItem">
       <img src={item.photos[0]} alt="" className="siImg" />
@@ -26,7 +43,7 @@ const SearchItem = ({ item }) => {
           <button>{item.rating}</button>
         </div>} */}
         <div className="siDetailTexts">
-          <span className="siPrice">Price from:${item.cheapestPrice}</span>
+        <span className="siPrice">Price from: ${calculatePrice(item.cheapestPrice)}</span>
           <span className="siTaxOp">Includes taxes and fees</span>
           {/* chuyen sang xem thong tin tung hotel */}
           <Link to={`/hotels/${item._id}`}>
