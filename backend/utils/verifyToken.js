@@ -17,8 +17,19 @@ export const verifyToken = (req, res, next) => {
 };
 export const verifyUser = (req, res, next) => {
     verifyToken(req, res,  () => {
+           // req.user chứa chua truong id va isAdmin
+      if (req.user.id === req.params.id) {
+        next();
+      } else {
+        return next(createError(403, "You are not authorized!"));
+      }
+    });
+  };
+
+export const verifyUserModifyHotel = (req, res, next) => {
+    verifyToken(req, res,  () => {
      
-      if (req.user.id === req.params.id || req.user.isAdmin) {
+      if (req.body.ownerId && req.user.id == req.body.ownerId) {
         next();
       } else {
         return next(createError(403, "You are not authorized!"));

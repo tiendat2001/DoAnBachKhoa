@@ -1,15 +1,15 @@
 import express from "express"
 import Hotel from "../models/Hotel.js" // phai co .js
 import {createHotel, deleteHotel,getHotelById,  getHotels, updateHotel,countByCity,countByType ,getHotelRoomsType} from "../controllers/hotel.js";
-import { verifyAdmin, verifyUser,verifyToken } from "../utils/verifyToken.js";
+import { verifyAdmin, verifyUser,verifyToken,verifyUserModifyHotel } from "../utils/verifyToken.js";
 
 const router = express.Router()
 //CREATE
 router.post("/",createHotel);
 //UPDATE
-router.put("/:id",updateHotel);
+router.put("/:id",verifyUserModifyHotel, updateHotel);
 //DELETE
-router.delete("/:id",deleteHotel);
+router.delete("/:id",verifyUserModifyHotel,deleteHotel);
 //GET
 router.get("/find/:id", getHotelById);
 //GETALL
