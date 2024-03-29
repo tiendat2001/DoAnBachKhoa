@@ -10,13 +10,20 @@ import { useState, useContext } from "react";
 const SearchItem = ({ item }) => {
   const {dates, options } = useContext(SearchContext);
 
-  
+  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+  function dayDifference(date1, date2) {
+    const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
+    return diffDays;
+  }
+
+  const days = dayDifference(dates[0].endDate, dates[0].startDate);
   const calculatePrice = (cheapestPrice) => {
     // thay số 2 bằng số người của phòng min price
     if(Math.floor(options.adult / 2)==0){
-      return cheapestPrice;
+      return cheapestPrice*days;
     }else{
-      return  cheapestPrice * Math.floor(options.adult / 2);
+      return  cheapestPrice * Math.floor(options.adult / 2)*days;
     } 
    
   };
