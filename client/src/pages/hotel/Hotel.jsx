@@ -52,7 +52,7 @@ const Hotel = () => {
   }
 
   // const days = dayDifference(dates[0].endDate, dates[0].startDate);
-  
+  console.log(data.cheapestPrice)
   const handleOpen = (i) => {
     setSlideNumber(i);
     setOpen(true);
@@ -180,7 +180,7 @@ const Hotel = () => {
                 </span>
                
                 <h2>
-                  <b>Price only from ${ data.cheapestPrice} per night</b> 
+                <b>Price only from ${ data.cheapestPrice?.price ?? 'N/A'} per night</b>
                   
                 </h2>
                

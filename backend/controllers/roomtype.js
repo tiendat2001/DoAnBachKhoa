@@ -8,9 +8,7 @@ export const createRoom = async (req, res, next) => {
     const newRoom = new Room(req.body);
   
     try {
-      const hotel = await Hotel.findById(
-        hotelId
-      );
+      const hotel = await Hotel.findById(hotelId);
       newRoom.hotelId = hotelId
       newRoom.hotelName = hotel.name
       const savedRoom = await newRoom.save();
@@ -18,6 +16,16 @@ export const createRoom = async (req, res, next) => {
         await Hotel.findByIdAndUpdate(hotelId, { // tim hotel theo id, day room id của phòng mới tạo vào thuộc tính rooms trong hotel
           $push: { rooms: savedRoom._id },
         });
+
+        const cheapestRoom = await Room.findOne({ hotelId }).sort({ price: 1 }).limit(1);
+
+    // Update the hotel's cheapestPrice field with the cheapest room's price and maxPeople
+      await Hotel.findByIdAndUpdate(hotelId, {
+        cheapestPrice: {
+        price: cheapestRoom.price,
+        people: cheapestRoom.maxPeople
+      }
+    });
       } catch (err) {
         next(err);
       }

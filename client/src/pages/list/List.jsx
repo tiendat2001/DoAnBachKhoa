@@ -11,16 +11,16 @@ import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../context/SearchContext";
 const List = () => {
   const location = useLocation();
-  const [destination, setDestination] = useState(location.state.destination);
-  const [dates, setDates] = useState(location.state.dates);
+  const searchContext =useContext(SearchContext);
+  const [destination, setDestination] = useState(searchContext.destination);
+  const [dates, setDates] = useState(searchContext.dates);
   const [openDate, setOpenDate] = useState(false);
-  const [options, setOptions] = useState(location.state.options);
-  const [min, setMin] = useState(undefined);
-  const [max, setMax] = useState(undefined);
+  const [options, setOptions] = useState(searchContext.options);
+  const [min, setMin] = useState(100);
+  const [max, setMax] = useState(10000);
 
-  // min vs max se duoc set lai khi nguoi dung thay doi
   const { data, loading, error, reFetch } = useFetch(
-    `/hotels?city=${destination}&min=${min || 0 }&max=${max || 999}`
+    `/hotels?city=${destination}`
   );
   const { dispatch } = useContext(SearchContext);
 
@@ -48,6 +48,23 @@ const List = () => {
       ...prevOptions,
       [optionName]: value
     }));
+  };
+
+  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+  function dayDifference(date1, date2) {
+    const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
+    return diffDays;
+  }
+  const days = dayDifference(dates[0].endDate, dates[0].startDate);
+  const calculatePrice = (cheapestPrice) => {
+    // thay số 2 bằng số người của phòng min price
+    if(Math.floor(options.adult / cheapestPrice.people)==0){
+      return cheapestPrice.price*days;
+    }else{
+      return  cheapestPrice.price * Math.floor(options.adult / cheapestPrice.people)*days;
+    } 
+   
   };
   return (
     <div>
@@ -85,6 +102,7 @@ const List = () => {
                   </span>
                   <input
                     type="number"
+                    placeholder={min}
                     onChange={(e) => setMin(e.target.value)}
                     className="lsOptionInput"
                   />
@@ -95,6 +113,7 @@ const List = () => {
                   </span>
                   <input
                     type="number"
+                    placeholder={max}
                     onChange={(e) => setMax(e.target.value)}
                     className="lsOptionInput"
                   />
@@ -140,10 +159,13 @@ const List = () => {
               "loading"
             ) : (
               <>
-              {/* data là các hotel thỏa mãn đkien tìm, item là props- là từng cái hotel */}
-                {data.map((item) => (
-                  <SearchItem item={item} key={item._id} />
-                ))}
+              {data.map((item) => {
+              const price = calculatePrice(item.cheapestPrice);
+              if (price >= min && price <= max) {
+                return <SearchItem item={item} key={item._id} />;
+              }
+              return null;
+            })}
               </>
             )}
           </div>

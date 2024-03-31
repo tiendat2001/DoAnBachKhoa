@@ -42,9 +42,15 @@ const HotelSchema = new mongoose.Schema({
     type: [String],
   },
   cheapestPrice: {
-    type: Number,
-    required: true,
-  },
+    price: {
+      type: Number,
+      default: 0 // or any default value you prefer
+    },
+    people: {
+      type: Number,
+      default: 0 // or any default value you prefer
+    }
+  }
  
 });
 

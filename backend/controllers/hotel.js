@@ -36,11 +36,11 @@ export const deleteHotel = async (req,res,next)=>{
     }
 }
 export const getHotels = async (req,res,next)=>{
-    const {min, max, name, city, ...others } = req.query;
+    const { name, city, ...others } = req.query;
     try {
       const query = {
         ...others,
-        cheapestPrice: { $gte: min || 1, $lte: max || 999 },
+        
       };
 
       if (name && name !== '') {

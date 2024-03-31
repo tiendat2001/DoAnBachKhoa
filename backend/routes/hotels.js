@@ -7,7 +7,7 @@ const router = express.Router()
 //CREATE
 router.post("/",createHotel);
 //UPDATE
-router.put("/:id",verifyUserModifyHotel, updateHotel);
+router.put("/:id",verifyUserModifyHotel, updateHotel); // trong body API sẽ có id của chủ sở hữu, so sánh nó token hiện tại
 //DELETE
 router.delete("/:id",verifyUserModifyHotel,deleteHotel);
 //GET

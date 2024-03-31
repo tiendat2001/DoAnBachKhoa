@@ -20,10 +20,10 @@ const SearchItem = ({ item }) => {
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
   const calculatePrice = (cheapestPrice) => {
     // thay số 2 bằng số người của phòng min price
-    if(Math.floor(options.adult / 2)==0){
-      return cheapestPrice*days;
+    if(Math.floor(options.adult / cheapestPrice.people)==0){
+      return cheapestPrice.price*days;
     }else{
-      return  cheapestPrice * Math.floor(options.adult / 2)*days;
+      return  cheapestPrice.price * Math.floor(options.adult / cheapestPrice.people)*days;
     } 
    
   };
@@ -51,7 +51,7 @@ const SearchItem = ({ item }) => {
         </div>} */}
         <div className="siDetailTexts">
         <span className="siPrice">Price from: ${calculatePrice(item.cheapestPrice)}</span>
-          <span className="siTaxOp">Includes taxes and fees</span>
+          <span className="siTaxOp">Cho {options.adult} người, {days} đêm</span>
           {/* chuyen sang xem thong tin tung hotel */}
           <Link to={`/hotels/${item._id}`}>
           <button className="siCheckButton">More info</button>
