@@ -83,7 +83,7 @@ const Reserve = ({ setOpen, hotelId }) => {
             
             const upload =  axios.post(`/orders/${roomId}`, {
               username:user.username,
-              roomNumbers:selectedRoomsNumber,
+              roomNumbers:selectedRoomsNumber, // chi cần trừ date chỗ này thôi
               start:dates[0].startDate,
               end:dates[0].endDate,
               price:selectedRoomsPrice*selectedRooms.length*dayDistance,

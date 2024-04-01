@@ -25,7 +25,7 @@ const Navbar = () => {
            
             {user ? (
             <div className="logout">
-             <Link to="/login">
+             <Link to="/admin">
               <button className="navButton" >Manage your homestay</button>
               </Link>
               
