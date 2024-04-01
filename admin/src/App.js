@@ -23,7 +23,7 @@ function App() {
 
   const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
-
+    // chua dang nhap thi tu dong nhay sang trang login
     if (!user) {
       return <Navigate to="/login" />;
     }

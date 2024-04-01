@@ -43,6 +43,11 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.navItems{
+  display:flex;
+  gap:10px;
+}
 /*   
   .navContainer{
     @apply w-full max-w-screen-lg text-white flex items-center justify-between

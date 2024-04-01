@@ -2,9 +2,17 @@ import React, { useContext } from 'react'
 import "./navbar.css"
 import { Link } from "react-router-dom";
 import { AuthContext } from '../../context/AuthContext';
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const {user} = useContext(AuthContext)
+  const {user , dispatch} = useContext(AuthContext)
+
+  const navigate = useNavigate()
+  const handleLogout = ()=>{
+    navigate("/login");
+    dispatch({ type: "LOGOUT"});
+    
+  }
     return (
         <div className="navbar">
           <div className="navContainer">
@@ -22,10 +30,10 @@ const Navbar = () => {
               </Link>
               
             <h1 className="account">Hello,{user.username}</h1> 
-            <Link to="/login">
+            {/* <Link to="/login"> */}
 
-              <button className="navButton" >Log out</button>
-              </Link>
+              <button className="navButton" onClick={handleLogout} >Log out</button>
+              {/* </Link> */}
             </div>
             
             ) : (

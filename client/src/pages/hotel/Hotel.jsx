@@ -6,14 +6,6 @@ import Footer from "../../components/footer/Footer";
 import MailList from "../../components/MailList/MailList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBed,
-  faCalendarDays,
-  faCar,
-  faPerson,
-  faPlane,
-  faTaxi,
-} from "@fortawesome/free-solid-svg-icons";
-import {
   faCircleArrowLeft,
   faCircleArrowRight,
   faCircleXmark,

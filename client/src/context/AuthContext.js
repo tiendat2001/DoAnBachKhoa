@@ -48,7 +48,8 @@ export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
 
   useEffect(() => {
-      // luu giu user khi refresh, luu state thanh 1 chuoi vao local storage
+      // luu giu user khi refresh, luu state thanh 1 chuoi vao local storage, khi biến user thay đổi thì hàm này gọi, thônng
+      // tin user sẽ lưu trong localstorage
     localStorage.setItem("user", JSON.stringify(state.user));
   }, [state.user]);
 
