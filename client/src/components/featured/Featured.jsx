@@ -2,7 +2,7 @@ import useFetch from "../../hooks/useFetch";
 import { DateRange } from "react-date-range";
 import { useState,useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { format } from "date-fns";
+import { format,addDays } from "date-fns";
 import "./featured.css";
 import React from "react";
 import { SearchContext } from "../../context/SearchContext";
@@ -16,7 +16,7 @@ const Featured = () => {
   const [dates, setDate] = useState([
     {
       startDate: new Date(),
-      endDate: new Date(),
+      endDate: addDays(new Date(), 1),
       key: "selection",
     },
   ]);
@@ -32,8 +32,7 @@ const Featured = () => {
 
   function handleSearch(destination) {
     dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
-
-    navigate("/hotels", { state: { destination, dates, options } });
+    navigate("/hotels", );
     // console.log("dfasfa");
   }
   return (

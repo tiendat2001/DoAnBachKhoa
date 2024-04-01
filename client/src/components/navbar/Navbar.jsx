@@ -10,7 +10,8 @@ const Navbar = () => {
           <div className="navContainer">
               {/* LOGO */}
               <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>
-               <img className="logo" src="https://www.hilton.com/modules/assets/svgs/logos/WW.svg" alt="" />
+                <h1 className="logo_name">HotelBooking</h1>
+               {/* <img className="logo" src="https://www.hilton.com/modules/assets/svgs/logos/WW.svg" alt="" /> */}
             </Link>
 
            
