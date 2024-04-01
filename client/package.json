@@ -17,7 +17,16 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.18.0",
     "react-scripts": "^3.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@emotion/react": "^11.8.1",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.4.4",
+    "@mui/material": "^5.4.4",
+    "@mui/x-data-grid": "^5.5.1",
+    "cloudinary": "^1.41.1",
+    "react-circular-progressbar": "^2.0.4",
+    "recharts": "^2.1.9",
+    "sass": "^1.49.9"
   },
   "scripts": {
     "start": "react-scripts start",
