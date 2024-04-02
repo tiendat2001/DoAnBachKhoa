@@ -12,7 +12,7 @@ router.put("/:id",verifyUserModifyHotel, updateHotel); // trong body API sẽ co
 router.delete("/:id",verifyUserModifyHotel,deleteHotel);
 //GET
 router.get("/find/:id", getHotelById);
-//GETALL
+//GETALL hoặc get theo condition
 router.get("/", getHotels);
 
 router.get("/countByCity", countByCity); // để ý api này sẽ bị nhầm với api get by id nếu ở trên ko ghi thêm chữ find
