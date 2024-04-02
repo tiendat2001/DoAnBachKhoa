@@ -18,7 +18,6 @@ const List = () => {
   const [options, setOptions] = useState(searchContext.options);
   const [min, setMin] = useState(100);
   const [max, setMax] = useState(10000);
-  console.log(destination)
   const { data, loading, error, reFetch } = useFetch(
     `/hotels?city=${destination}`
   );

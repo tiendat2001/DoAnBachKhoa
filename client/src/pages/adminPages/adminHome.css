@@ -1,0 +1,7 @@
+.listAdmin {
+    display: flex;
+    width: 100%;
+}
+.listAdmin .listContainerAdmin {
+    flex: 6;
+}
