@@ -1,8 +1,8 @@
 import React from 'react'
 import { useContext } from 'react'
-import { AuthContext } from '../../context/AuthContext'
-import Sidebar from '../../components/adminComponents/sidebar/Sidebar'
-import NavbarAdmin from '../../components/adminComponents/navbarAdmin/NavbarAdmin'
+import { AuthContext } from '../../../context/AuthContext'
+import Sidebar from '../../../components/adminComponents/sidebar/Sidebar'
+import NavbarAdmin from '../../../components/adminComponents/navbarAdmin/NavbarAdmin'
 import './adminHome.css'
 const AdminHome = () => {
 

@@ -5,12 +5,13 @@ import List from "./pages/list/List";
 import Hotel from "./pages/hotel/Hotel";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import AdminHome from "./pages/adminPages/AdminHome";
+import AdminHome from "./pages/adminPages/adminHome/AdminHome";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
+import ListHotel from "./pages/adminPages/ListHotel/ListHotel";
 function App() {
 
- 
+
   const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
     // chua dang nhap thi tu dong nhay sang trang login
@@ -23,11 +24,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/hotels" element={<List/>}/>
-        <Route path="/hotels/:id" element={<Hotel/>}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
+        <Route path="/" element={<Home />} />
+        <Route path="/hotels" element={<List />} />
+        <Route path="/hotels/:id" element={<Hotel />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
 
         <Route path="/admin/">
@@ -36,10 +37,21 @@ function App() {
               <AdminHome />
             </ProtectedRoute>
           } />
+
+          <Route path="hotels" element={
+            <ProtectedRoute>
+              <ListHotel />
+            </ProtectedRoute>
+          } />
+
+
+
         </Route>
+
+
       </Routes>
     </BrowserRouter>
-   
+
   );
 }
 
