@@ -15,22 +15,48 @@ export const createHotel = async (req,res,next)=>{
 
 export const updateHotel = async (req,res,next)=>{
     try {
-        const updatedHotel = await Hotel.findByIdAndUpdate(
-            req.params.id, 
-            { $set: req.body }, 
-            { new: true }
-        );
-        res.status(200).json(updatedHotel)
+      const hotelToUpdate = await Hotel.findById(req.params.id);
+
+      // Kiểm tra nếu không tìm thấy Hotel
+      if (!hotelToUpdate) {
+          return res.status(404).json({ message: "Hotel not found" });
+      }
+
+      // Kiểm tra xem ownerId của Hotel cần cập nhật có trùng khớp với ownerId trong req.body không
+      if (hotelToUpdate.ownerId !== req.body.ownerId) {
+          return res.status(403).json({ message: "You are not authorized to update this hotel" });
+      }
+
+      // Nếu ownerId khớp, thì tiến hành cập nhật
+      const updatedHotel = await Hotel.findByIdAndUpdate(
+          req.params.id,
+          { $set: req.body },
+          { new: true }
+      );
+
+      res.status(200).json(updatedHotel);
     } catch (err) {
         next(err)
     }
 }
 export const deleteHotel = async (req,res,next)=>{
+  // chua test
     try {
-        await Hotel.findByIdAndDelete(
-            req.params.id
-        );
-        res.status(200).json("Hotel has been deleted.")
+      const hotelToDelete = await Hotel.findById(req.params.id);
+
+      // Kiểm tra nếu không tìm thấy Hotel
+      if (!hotelToDelete) {
+          return res.status(404).json({ message: "Hotel not found" });
+      }
+
+      // Kiểm tra xem ownerId của Hotel cần xóa có trùng khớp với ownerId trong req.user không
+      if (hotelToDelete.ownerId !== req.user.id && !req.user.isAdmin) {
+          return res.status(403).json({ message: "You are not authorized to delete this hotel" });
+      }
+
+      // Nếu ownerId khớp hoặc người dùng là admin, tiến hành xóa Hotel
+      await Hotel.findByIdAndDelete(req.params.id);
+      res.status(200).json("Hotel has been deleted.");
     } catch (err) {
         next(err)
     }
