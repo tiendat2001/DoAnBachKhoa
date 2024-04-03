@@ -47,7 +47,7 @@ export const login = async (req, res, next) => {
     //  res.cookie("user_id", user._id.toString(), {
     //   });
       
-      res.status(200).json({ ...otherDetails, isAdmin });
+      res.status(200).json({ ...otherDetails, isAdmin }); // cái trả về sẽ dùng ở Login.jsx- phần dispatch(kq trả về đẩy vào payload/ cũng là trong localStorage)
   } catch (err) {
     next(err);
   }

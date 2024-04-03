@@ -18,6 +18,14 @@ const ListHotel = () => {
                 <NavbarAdmin />
 
                 <div className="listHotelAdminContainer">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h1>Your Hotels</h1>
+                        <Link to={``}>
+                            <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>Add new hotel</button>
+
+                        </Link>
+                    </div>
+
                     {loading ? (
                         "loading"
                     ) : (
@@ -28,17 +36,21 @@ const ListHotel = () => {
                                     <div className="siDesc">
                                         <h1 className="siTitle">{item.name}</h1>
                                         <span className="siDistance">Distance: {item.distance}m from center</span>
-                                       
+
                                         <span className="siFeatures">Address: {item.address}</span>
+
                                     </div>
-                                    <div className="siDetails">
-                                        <div className="siDetailTexts">
+                                        <div className="listHotel_btn">
                                             {/* <span className="siTaxOp">Cho {options.adult} người, {days} đêm</span> */}
                                             {/* <Link to={`/hotels/${item._id}`}>
                                             </Link> */}
+                                            <Link to={``}>
+                                                <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>MODIFY</button>
+                                            </Link>
+                                            <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>DELETE</button>
+
                                         </div>
                                     </div>
-                                </div>
                             ))}
                         </>
                     )}
