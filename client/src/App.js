@@ -9,6 +9,7 @@ import AdminHome from "./pages/adminPages/adminHome/AdminHome";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import ListHotel from "./pages/adminPages/ListHotel/ListHotel";
+import NewHotel from "./pages/adminPages/newHotel/NewHotel";
 function App() {
 
 
@@ -41,6 +42,12 @@ function App() {
           <Route path="hotels" element={
             <ProtectedRoute>
               <ListHotel />
+            </ProtectedRoute>
+          } />
+
+          <Route path="hotels/new" element={
+            <ProtectedRoute>
+              <NewHotel />
             </ProtectedRoute>
           } />
 

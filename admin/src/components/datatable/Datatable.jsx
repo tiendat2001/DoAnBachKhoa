@@ -96,7 +96,7 @@ const Datatable = ({ columns }) => {
       {path === "orders" ? (
         <DataGrid
           className="datagrid"
-          rows={list}
+          rows={list} // list là kết quả từ API
           columns={columns.concat(orderActionColumn)}
           pageSize={9}
           rowsPerPageOptions={[9]}
