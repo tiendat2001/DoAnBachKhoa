@@ -30,11 +30,11 @@ export const hotelInputs = [
       placeholder: "500",
     },
  
-    {
-      id: "desc",
-      label: "Description",
-      type: "text",
-      placeholder: "description",
-    },
+    // {
+    //   id: "desc",
+    //   label: "Description",
+    //   type: "text",
+    //   placeholder: "description",
+    // },
  
   ];

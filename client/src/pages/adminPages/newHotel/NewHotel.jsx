@@ -17,20 +17,37 @@ const NewHotel = () => {
 
   const { data, loading, error } = useFetch("/rooms");
 
+  // validate
+  const validateInputs = () => {
+    // Check if all hotelInputs are filled
+    for (let input of hotelInputs) {
+      if (!document.getElementById(input.id).value) {
+        return false;
+      }
+    }
+    // Check if description is filled
+    if (!document.getElementById("desc").value.trim() || (files.length===0)) {
+    return false;
+  }
+    return true;
+  };
+
+  // khi ng dùng nhập thông tin
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
-  const handleSelect = (e) => {
-    const value = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-    setRooms(value);
-  };
+  // const handleSelect = (e) => {
+  //   const value = Array.from(
+  //     e.target.selectedOptions,
+  //     (option) => option.value
+  //   );
+  //   setRooms(value);
+  // };
 
   // console.log(files);
 
+  // khi ng dùng submit
   const handleClick = async (e) => {
     e.preventDefault();
     try {
@@ -43,21 +60,28 @@ const NewHotel = () => {
             "https://api.cloudinary.com/v1_1/tiendat2001/image/upload",
             data
           );
-          console.log(uploadRes.data)
+          // console.log(uploadRes.data)
           const { url } = uploadRes.data;
           return url;
         })
       );
-
-      const newhotel = {
-        ...info,
-        photos: list,
-        ownerId: user._id
-      };
-
-      const Success = await axios.post("/hotels", newhotel);
-      if (Success) alert("Adding hotel successfully");
-      else alert("Lost connection");
+      
+      if (!validateInputs()) {
+        alert("Please fill in all fields before submitting.");
+      }else{
+        const newhotel = {
+          ...info,
+          photos: list,
+          ownerId: user._id
+        };
+  
+      
+        const Success = await axios.post("/hotels", newhotel);
+        if (Success) alert("Adding hotel successfully");
+        else alert("Lost connection");
+      }
+      
+    
     } catch (err) {
       console.log(error);
     }
@@ -120,20 +144,14 @@ const NewHotel = () => {
                   />
                 </div>
               ))}
-
-              {/* <div className="selectRooms">
-                  <label>Rooms</label>
-                  <select id="rooms" multiple onChange={handleSelect}>
-                    {loading
-                      ? "loading"
-                      : data &&
-                        data.map((room) => (
-                          <option key={room._id} value={room._id}>
-                            {room.title}
-                          </option>
-                        ))}
-                  </select>
-                </div> */}
+              {/* test */}
+              <label>Hotel description</label>
+              <textarea
+                id="desc"
+                rows="4" /* Số dòng mặc định hiển thị ban đầu */
+                onChange={handleChange}
+                style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
+              ></textarea>
               <button onClick={handleClick}>Send</button>
             </form>
           </div>

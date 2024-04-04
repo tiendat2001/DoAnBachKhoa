@@ -45,7 +45,7 @@
     padding: 10px;
 }
 .listAdmin .listContainerAdmin .top .right form .formInput, .listAdmin .listContainerAdmin .bottom .right form .formInput {
-    width: 40%;
+    width: 140%;
 }
 .listAdmin .listContainerAdmin .top .right form .formInput label, .listAdmin .listContainerAdmin .bottom .right form .formInput label {
     display: flex;
