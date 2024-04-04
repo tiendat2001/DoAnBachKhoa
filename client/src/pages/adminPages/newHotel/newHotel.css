@@ -23,8 +23,9 @@
 .listAdmin .listContainerAdmin .top .left img, .listAdmin .listContainerAdmin .bottom .left img {
     width: 100px;
     height: 100px;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     object-fit: cover;
+    margin-right:4px;
 }
 .listAdmin .listContainerAdmin .top .right, .listAdmin .listContainerAdmin .bottom .right {
     flex: 2;
