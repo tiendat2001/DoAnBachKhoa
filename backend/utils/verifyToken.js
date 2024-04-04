@@ -28,7 +28,7 @@ export const verifyUser = (req, res, next) => {
 
 export const verifyUserModifyHotel = (req, res, next) => {
     verifyToken(req, res,  () => {
-     
+      // kiểm tra ownerId đẩy lên có giống vs token chứa _id trong cookie kko khi trong API co truong ownerId
       if (req.body.ownerId && req.user.id == req.body.ownerId) {
         next();
       } else {

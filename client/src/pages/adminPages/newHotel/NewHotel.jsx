@@ -2,15 +2,18 @@ import React from 'react'
 import "./newHotel.css"
 import axios from "axios";
 import useFetch from '../../../hooks/useFetch';
-import { useState } from "react";
+import { useState,useContext } from "react";
 import Sidebar from '../../../components/adminComponents/sidebar/Sidebar'
 import NavbarAdmin from '../../../components/adminComponents/navbarAdmin/NavbarAdmin'
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { hotelInputs } from '../../../formSource';
+import { AuthContext } from '../../../context/AuthContext';
 const NewHotel = () => {
     const [files, setFiles] = useState("");
     const [info, setInfo] = useState({});
     const [rooms, setRooms] = useState([]);
+    const { user } = useContext(AuthContext) // {user._id}
+
   
     const { data, loading, error } = useFetch("/rooms");
   
@@ -48,13 +51,13 @@ const NewHotel = () => {
   
         const newhotel = {
           ...info,
-          rooms,
           photos: list,
+          ownerId:user._id
         };
   
-        // const Success = await axios.post("/hotels", newhotel);
-        // if (Success) alert("Adding hotel successfully");
-        // else alert("Lost connection");
+        const Success = await axios.post("/hotels", newhotel);
+        if (Success) alert("Adding hotel successfully");
+        else alert("Lost connection");
       } catch (err) {
         console.log(err);
       }
