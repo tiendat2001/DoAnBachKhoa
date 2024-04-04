@@ -26,7 +26,7 @@ const NewHotel = () => {
       setRooms(value);
     };
   
-    console.log(files);
+    // console.log(files);
   
     const handleClick = async (e) => {
       e.preventDefault();
@@ -37,10 +37,10 @@ const NewHotel = () => {
             data.append("file", file);
             data.append("upload_preset", "upload");
             const uploadRes = await axios.post(
-              "https://api.cloudinary.com/v1_1/dy1xatplm/image/upload",
+              "https://api.cloudinary.com/v1_1/tiendat2001/image/upload",
               data
             );
-  
+            console.log(uploadRes.data)
             const { url } = uploadRes.data;
             return url;
           })
@@ -52,9 +52,9 @@ const NewHotel = () => {
           photos: list,
         };
   
-        const Success = await axios.post("/hotels", newhotel);
-        if (Success) alert("Adding hotel successfully");
-        else alert("Lost connection");
+        // const Success = await axios.post("/hotels", newhotel);
+        // if (Success) alert("Adding hotel successfully");
+        // else alert("Lost connection");
       } catch (err) {
         console.log(err);
       }
