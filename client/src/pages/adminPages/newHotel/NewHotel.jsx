@@ -48,7 +48,7 @@ const NewHotel = () => {
   //   setRooms(value);
   // };
 
-  // console.log(files);
+  console.log(files);
 
   // khi ng dùng submit
   const handleClick = async (e) => {
@@ -104,8 +104,8 @@ const NewHotel = () => {
           <h1>Add New Hotel</h1>
         </div>
         <div className="bottom">
-          {/*left- chỗ up ảnh */}
 
+          {/*left- chỗ hiện ảnh đã chọn */}
           <div className="left">
             {files.length > 0 ? (
               files.map((file, index) => (
@@ -124,7 +124,7 @@ const NewHotel = () => {
           </div>
 
 
-
+          {/* field up ảnh */}
           <div className="right">
             <form>
               <div className="formInput">

@@ -12,7 +12,7 @@ import ListHotel from "./pages/adminPages/ListHotel/ListHotel";
 import NewHotel from "./pages/adminPages/newHotel/NewHotel";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-  
+import ModifyHotel from "./pages/adminPages/ModifyHotel/ModifyHotel";
 function App() {
 
 
@@ -51,6 +51,12 @@ function App() {
           <Route path="hotels/new" element={
             <ProtectedRoute>
               <NewHotel />
+            </ProtectedRoute>
+          } />
+
+          <Route path="hotels/:id" element={
+            <ProtectedRoute>
+              <ModifyHotel />
             </ProtectedRoute>
           } />
 

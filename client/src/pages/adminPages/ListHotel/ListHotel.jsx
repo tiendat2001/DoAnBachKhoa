@@ -40,17 +40,17 @@ const ListHotel = () => {
                                         <span className="siFeatures">Address: {item.address}</span>
 
                                     </div>
-                                        <div className="listHotel_btn">
-                                            {/* <span className="siTaxOp">Cho {options.adult} người, {days} đêm</span> */}
-                                            {/* <Link to={`/hotels/${item._id}`}>
+                                    <div className="listHotel_btn">
+                                        {/* <span className="siTaxOp">Cho {options.adult} người, {days} đêm</span> */}
+                                        {/* <Link to={`/hotels/${item._id}`}>
                                             </Link> */}
-                                            <Link to={``}>
-                                                <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>MODIFY</button>
-                                            </Link>
-                                            <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>DELETE</button>
+                                        <Link to={`/admin/hotels/${item._id}`}>
+                                            <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>MODIFY</button>
+                                        </Link>
+                                        <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>DELETE</button>
 
-                                        </div>
                                     </div>
+                                </div>
                             ))}
                         </>
                     )}
