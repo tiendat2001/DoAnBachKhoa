@@ -16,13 +16,16 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
-
+import { AuthContext } from "../../../context/AuthContext";
 const Sidebar = () => {
   // const { dispatch } = useContext(DarkModeContext);
+  const {user , dispatch} = useContext(AuthContext)
+
   const navigate = useNavigate();
-  const handleClick = (e) => {
+  const handleLogOut = (e) => {
     e.preventDefault();
     try {
+      dispatch({ type: "LOGOUT"});
       navigate("/login");
     } catch (err) {}
   };
@@ -95,7 +98,7 @@ const Sidebar = () => {
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>
-          <li onClick={handleClick}>
+          <li onClick={handleLogOut}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
           </li>
