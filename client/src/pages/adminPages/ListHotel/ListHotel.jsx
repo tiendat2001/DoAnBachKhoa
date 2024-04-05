@@ -21,7 +21,7 @@ const ListHotel = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <h1>Your Hotels</h1>
                         <Link to={`/admin/hotels/new`}>
-                            <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>Add new hotel</button>
+                            <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>ADD NEW HOTEL</button>
 
                         </Link>
                     </div>

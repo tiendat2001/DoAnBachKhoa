@@ -9,13 +9,14 @@ import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUpload
 import { hotelInputs } from '../../../formSource';
 import { AuthContext } from '../../../context/AuthContext';
 import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 const NewHotel = () => {
   const [files, setFiles] = useState("");
   const [info, setInfo] = useState({});
-  const [rooms, setRooms] = useState([]);
+  // const [rooms, setRooms] = useState([]);
   const { user } = useContext(AuthContext) // {user._id}
-
+  const navigate = useNavigate()
 
   const { data, loading, error } = useFetch("/rooms");
 
@@ -28,9 +29,9 @@ const NewHotel = () => {
       }
     }
     // Check if description is filled
-    if (!document.getElementById("desc").value.trim() || (files.length===0)) {
-    return false;
-  }
+    if (!document.getElementById("desc").value.trim() || (files.length === 0)) {
+      return false;
+    }
     return true;
   };
 
@@ -67,23 +68,28 @@ const NewHotel = () => {
           return url;
         })
       );
-      
+
       if (!validateInputs()) {
         toast.error("Please fill in all fields before submitting.");
-      }else{
+      } else {
         const newhotel = {
           ...info,
           photos: list,
           ownerId: user._id
         };
-  
-      
+
+
         const Success = await axios.post("/hotels", newhotel);
-        if (Success) toast.success('Thành công!');
-        else toast.error("Error.Please try again");
+        if (Success) {
+          toast.success('Thành công!');
+          navigate("/admin/hotels");
+
+        } else toast.error("Error.Please try again");
+
+
       }
-      
-    
+
+
     } catch (err) {
       console.log(error);
     }
