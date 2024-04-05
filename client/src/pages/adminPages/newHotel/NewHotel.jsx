@@ -8,6 +8,8 @@ import NavbarAdmin from '../../../components/adminComponents/navbarAdmin/NavbarA
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { hotelInputs } from '../../../formSource';
 import { AuthContext } from '../../../context/AuthContext';
+import { toast } from 'react-toastify';
+
 const NewHotel = () => {
   const [files, setFiles] = useState("");
   const [info, setInfo] = useState({});
@@ -67,7 +69,7 @@ const NewHotel = () => {
       );
       
       if (!validateInputs()) {
-        alert("Please fill in all fields before submitting.");
+        toast.error("Please fill in all fields before submitting.");
       }else{
         const newhotel = {
           ...info,
@@ -77,7 +79,7 @@ const NewHotel = () => {
   
       
         const Success = await axios.post("/hotels", newhotel);
-        if (Success) alert("Adding hotel successfully");
+        if (Success) toast.success('Thành công!');
         else alert("Lost connection");
       }
       

@@ -10,6 +10,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import ListHotel from "./pages/adminPages/ListHotel/ListHotel";
 import NewHotel from "./pages/adminPages/newHotel/NewHotel";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+  
 function App() {
 
 
@@ -57,6 +60,7 @@ function App() {
 
 
       </Routes>
+      <ToastContainer />
     </BrowserRouter>
 
   );
