@@ -46,11 +46,12 @@ const ModifyHotel = () => {
        
             const newModifyHotel = {
               ...info,
-            //   photos: list,
+              ...(list.length > 0 && { photos: list }),
               ownerId: user._id
             };
           
-    
+            
+            // console.log(list.length)
     
             const Success = await axios.put(`/hotels/${idHotel}`, newModifyHotel);
             if (Success) {
@@ -122,7 +123,7 @@ const ModifyHotel = () => {
                                                 id={input.id}
                                                 onChange={handleChange}
                                                 type={input.type}
-                                                value={data[input.id] }
+                                                placeholder={data[input.id] }
                                             />
                                         </div>
                                     ))}
@@ -133,7 +134,7 @@ const ModifyHotel = () => {
                                         rows="4" /* Số dòng mặc định hiển thị ban đầu */
                                         onChange={handleChange}
                                         style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
-                                        value={data.desc }
+                                        placeholder={data.desc }
                                     ></textarea>
                                     <button onClick={handleClick}>Send</button>
                                 </form>
