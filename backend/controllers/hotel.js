@@ -43,7 +43,6 @@ export const deleteHotel = async (req,res,next)=>{
   // chua test
     try {
       const hotelToDelete = await Hotel.findById(req.params.id);
-
       // Kiểm tra nếu không tìm thấy Hotel
       if (!hotelToDelete) {
           return res.status(404).json({ message: "Hotel not found" });
@@ -56,6 +55,7 @@ export const deleteHotel = async (req,res,next)=>{
 
       // Nếu ownerId khớp hoặc người dùng là admin, tiến hành xóa Hotel
       await Hotel.findByIdAndDelete(req.params.id);
+      await Room.deleteMany({ hotelId: req.params.id });
       res.status(200).json("Hotel has been deleted.");
     } catch (err) {
         next(err)

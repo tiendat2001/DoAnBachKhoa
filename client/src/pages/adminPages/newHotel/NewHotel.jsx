@@ -80,7 +80,7 @@ const NewHotel = () => {
       
         const Success = await axios.post("/hotels", newhotel);
         if (Success) toast.success('Thành công!');
-        else alert("Lost connection");
+        else toast.error("Error.Please try again");
       }
       
     
