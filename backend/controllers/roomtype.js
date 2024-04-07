@@ -4,13 +4,12 @@ import Hotel from "../models/Hotel.js";
 import { createError } from "../utils/error.js";
 
 export const createRoom = async (req, res, next) => {
-    const hotelId = req.params.hotelid;
+    const hotelId = req.params.hotelid; // cái _id trong Hotel
     const newRoom = new Room(req.body);
   
     try {
       const hotel = await Hotel.findById(hotelId);
       newRoom.hotelId = hotelId
-      newRoom.hotelName = hotel.name
       const savedRoom = await newRoom.save();
       try {
         await Hotel.findByIdAndUpdate(hotelId, { // tim hotel theo id, day room id của phòng mới tạo vào thuộc tính rooms trong hotel
@@ -37,6 +36,14 @@ export const createRoom = async (req, res, next) => {
   
   export const updateRoom = async (req, res, next) => {
     try {
+
+      const roomToUpdate = await Room.findById(req.params.id)  // req.params.id là _id của type room sẽ chỉnh sửa
+      // tìm id của hotel có room sẽ chỉnh sửa
+      const hotelToUpdate = await Hotel.findById(roomToUpdate.hotelId);
+
+      if (hotelToUpdate.ownerId !== req.body.ownerId) {
+        return res.status(403).json({ message: "You are not authorized to add room to this hotel" });
+    }
       const updatedRoom = await Room.findByIdAndUpdate(
         req.params.id,
         { $set: req.body },
@@ -64,7 +71,15 @@ export const createRoom = async (req, res, next) => {
   };
   export const deleteRoom = async (req, res, next) => {
     try {
-      const deleteRoom = await Room.findById(req.params.id);
+      const roomToDelete = await Room.findById(req.params.id)  // req.params.id là _id của type room sẽ chỉnh sửa
+      // tìm id của hotel có room sẽ chỉnh sửa
+      const hotelToUpdate = await Hotel.findById(roomToDelete.hotelId);
+
+      if (hotelToUpdate.ownerId !== req.body.ownerId) {
+        return res.status(403).json({ message: "You are not authorized to delete room from this hotel" });
+    }
+
+      const deleteRoom = await Room.findById(req.params.id);   // req.params.id là _id của type room sẽ chỉnh sửa
       await Room.findByIdAndDelete(req.params.id);
       try {
         await Hotel.findByIdAndUpdate(deleteRoom.hotelId, {

@@ -1,6 +1,6 @@
 import express from "express"
 import { createRoom, deleteRoom, getRoom, getRooms, updateRoom, updateRoomAvailability } from "../controllers/roomtype.js";
-import { verifyAdmin } from "../utils/verifyToken.js";
+import { verifyAdmin,verifyUserModifyHotel } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
@@ -10,9 +10,9 @@ router.post("/:hotelid",  createRoom);
 router.put("/availability/:id", updateRoomAvailability);
 
 // UPDATE ROOM
-router.put("/:id",  updateRoom);
+router.put("/:id", verifyUserModifyHotel, updateRoom);
 //DELETE
-router.delete("/:id",  deleteRoom);
+router.delete("/:id", verifyUserModifyHotel, deleteRoom);
 //GET ROOM TYPE BY ID
 router.get("/:id", getRoom);
 //GETALL

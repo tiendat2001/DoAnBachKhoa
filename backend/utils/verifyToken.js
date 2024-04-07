@@ -32,7 +32,7 @@ export const verifyUserModifyHotel = (req, res, next) => {
       if (req.body.ownerId && req.user.id == req.body.ownerId) {
         next();
       } else {
-        return next(createError(403, "Your token not match with ownerId body API"));
+        return next(createError(403, "Your token not match with ownerId body API or not onwerId in body API"));
       }
     });
   };
