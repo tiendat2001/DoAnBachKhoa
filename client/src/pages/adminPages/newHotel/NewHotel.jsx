@@ -20,6 +20,10 @@ const NewHotel = () => {
 
   const { data, loading, error } = useFetch("/rooms");
 
+  // xử lý khi submit form
+  const [isSending, setIsSending] = useState(false);
+
+
   // validate
   const validateInputs = () => {
     // Check if all hotelInputs are filled
@@ -53,6 +57,7 @@ const NewHotel = () => {
   // khi ng dùng submit
   const handleClick = async (e) => {
     e.preventDefault();
+    setIsSending(true);
     try {
       const list = await Promise.all(
         Object.values(files).map(async (file) => {
@@ -92,6 +97,8 @@ const NewHotel = () => {
 
     } catch (err) {
       console.log(error);
+    } finally {
+      setIsSending(false); // Kết thúc xử lý, trả lại trạng thái ban đầu cho nút
     }
   };
   return (
@@ -160,8 +167,9 @@ const NewHotel = () => {
                 onChange={handleChange}
                 style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
               ></textarea>
-              <button onClick={handleClick}>Send</button>
-            </form>
+              <button onClick={handleClick} disabled={isSending}>
+                {isSending ? 'Sending...' : 'Post your hotel'}
+              </button>            </form>
           </div>
 
 
