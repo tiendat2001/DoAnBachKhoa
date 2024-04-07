@@ -6,11 +6,58 @@ import useFetch from '../../../hooks/useFetch';
 import { AuthContext } from '../../../context/AuthContext'
 import { Link } from 'react-router-dom';
 import "./listHotel.css"
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
 const ListHotel = () => {
     const { user } = useContext(AuthContext) // {user._id}
     const { data, loading, error, reFetch } = useFetch(
         `/hotels?ownerId=${user._id}`);
     // console.log(data)
+
+    const handleDelete = (hotelId) => {
+        confirmAlert({
+            title: 'Confirm',
+            message: 'Are you sure you want to delete this hotel?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        // Xác nhận xóa khách sạn
+                          deleteHotel(hotelId);
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => {
+                        // Không làm gì cả
+                    }
+                }
+            ]
+        });
+    };
+
+    const deleteHotel = async (hotelId) => {
+      try {
+        // Gửi yêu cầu xóa khách sạn đến máy chủ
+        
+          const Success = await axios.delete(`/hotels/${hotelId}`, { data: { ownerId: user._id } });
+
+        if (Success) {
+          // Nếu xóa thành công, tải lại dữ liệu
+          reFetch();
+          toast.success('Hotel deleted successfully!');
+        } else {
+          toast.error('Failed to delete hotel. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error deleting hotel:', error);
+        toast.error('An error occurred while deleting hotel.');
+      }
+    };
+
     return (
         <div className="listAdmin">
             <Sidebar />
@@ -47,7 +94,7 @@ const ListHotel = () => {
                                         <Link to={`/admin/hotels/${item._id}`}>
                                             <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>MODIFY</button>
                                         </Link>
-                                        <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>DELETE</button>
+                                        <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }} onClick={() => handleDelete(item._id)}>DELETE</button>
 
                                     </div>
                                 </div>

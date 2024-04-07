@@ -33,7 +33,7 @@ const NewHotel = () => {
       }
     }
     // Check if description is filled
-    if (!document.getElementById("desc").value.trim() || (files.length === 0)) {
+    if (!document.getElementById("desc").value.trim()    )  {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
       return false;
     }
     return true;

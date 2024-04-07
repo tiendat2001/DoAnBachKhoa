@@ -21,7 +21,7 @@ export const updateHotel = async (req,res,next)=>{
       if (!hotelToUpdate) {
           return res.status(404).json({ message: "Hotel not found" });
       }
-
+      // console.log(req.body.ownerId)
       // Kiểm tra xem ownerId của Hotel cần cập nhật có trùng khớp với ownerId trong req.body không
       if (hotelToUpdate.ownerId !== req.body.ownerId) {
           return res.status(403).json({ message: "You are not authorized to update this hotel" });
@@ -47,9 +47,9 @@ export const deleteHotel = async (req,res,next)=>{
       if (!hotelToDelete) {
           return res.status(404).json({ message: "Hotel not found" });
       }
-
+      // console.log(req.body.ownerId)
       // Kiểm tra xem ownerId của Hotel cần xóa có trùng khớp với ownerId trong req.user không
-      if (hotelToDelete.ownerId !== req.user.id && !req.user.isAdmin) {
+      if (hotelToDelete.ownerId !== req.body.ownerId) {
           return res.status(403).json({ message: "You are not authorized to delete this hotel" });
       }
 

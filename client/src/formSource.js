@@ -3,31 +3,31 @@ export const hotelInputs = [
       id: "name",
       label: "Name",
       type: "text",
-      placeholder: "My Hotel",
+      placeholder: "",
     },
     {
       id: "type",
       label: "Type",
       type: "text",
-      placeholder: "hotel",
+      placeholder: "",
     },
     {
       id: "city",
       label: "City",
       type: "text",
-      placeholder: "New York",
+      placeholder: "",
     },
     {
       id: "address",
       label: "Address",
       type: "text",
-      placeholder: "elton st, 216",
+      placeholder: "",
     },
     {
       id: "distance",
       label: "Distance from City Center",
       type: "text",
-      placeholder: "500",
+      placeholder: "",
     },
  
     // {
