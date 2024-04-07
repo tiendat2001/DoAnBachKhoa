@@ -4,11 +4,16 @@ import Hotel from "../models/Hotel.js";
 import { createError } from "../utils/error.js";
 
 export const createRoom = async (req, res, next) => {
+  // có ownerId trong body, nhưng ko cho cái đấy vào newRoom
     const hotelId = req.params.hotelid; // cái _id trong Hotel
     const newRoom = new Room(req.body);
   
     try {
       const hotel = await Hotel.findById(hotelId);
+      if (hotel.ownerId !== req.body.ownerId) {
+        return res.status(403).json({ message: "You are not authorized to add room to this hotel" });
+    }
+      // GÁN TRƯỜNG HOTELID cho room mới tạo qua params truyền vào
       newRoom.hotelId = hotelId
       const savedRoom = await newRoom.save();
       try {
@@ -42,7 +47,7 @@ export const createRoom = async (req, res, next) => {
       const hotelToUpdate = await Hotel.findById(roomToUpdate.hotelId);
 
       if (hotelToUpdate.ownerId !== req.body.ownerId) {
-        return res.status(403).json({ message: "You are not authorized to add room to this hotel" });
+        return res.status(403).json({ message: "You are not authorized to update room to this hotel" });
     }
       const updatedRoom = await Room.findByIdAndUpdate(
         req.params.id,
@@ -94,11 +99,11 @@ export const createRoom = async (req, res, next) => {
     }
   };
 
-  //GET ROOM BY ID
-  export const getRoom = async (req, res, next) => {
+  //GET ROOM BY HOTEL ID
+  export const getRoomsByHotelId = async (req, res, next) => {
     try {
-      const room = await Room.findById(req.params.id);
-      res.status(200).json(room);
+      const rooms = await Room.find({ hotelId: req.params.hotelid });
+      res.status(200).json(rooms);
     } catch (err) {
       next(err);
     }
