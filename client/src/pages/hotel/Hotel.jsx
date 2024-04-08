@@ -18,6 +18,7 @@ import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
 import Reserve from "../../components/reserve/Reserve";
 import { format,  } from "date-fns";
+import ListRoomClient from "../../components/ListRoomClient/ListRoomClient";
 // PAGE THONG TIN TUNG HOTEL
 const Hotel = () => {
   const location = useLocation();
@@ -44,7 +45,7 @@ const Hotel = () => {
   }
 
   // const days = dayDifference(dates[0].endDate, dates[0].startDate);
-  console.log(data.cheapestPrice)
+  // console.log(data.cheapestPrice)
   const handleOpen = (i) => {
     setSlideNumber(i);
     setOpen(true);
@@ -54,12 +55,13 @@ const Hotel = () => {
     let newSlideNumber;
 
     if (direction === "l") {
-      newSlideNumber = slideNumber === 0 ? 5 : slideNumber - 1;
+      newSlideNumber = slideNumber === 0 ? (data.photos.length-1) : slideNumber - 1;
     } else {
-      newSlideNumber = slideNumber === 5 ? 0 : slideNumber + 1;
+      newSlideNumber = slideNumber === (data.photos.length-1) ? 0 : slideNumber + 1;
     }
 
     setSlideNumber(newSlideNumber);
+    console.log(newSlideNumber)
   };
 
   const handleClick = () => {
@@ -176,15 +178,17 @@ const Hotel = () => {
                   
                 </h2>
                
-                <button onClick={handleClick}>Reserve or Book Now!</button>
+                {/* <button onClick={handleClick}>Reserve or Book Now!</button> */}
               </div>
             </div>
           </div>
+          <ListRoomClient/>
+
           <MailList />
           <Footer />
         </div>
       )}
-      {openModal && <Reserve setOpen={setOpenModal} hotelId={id}/>}
+      {/* {openModal && <Reserve setOpen={setOpenModal} hotelId={id}/>} */}
     </div>
   );
 };
