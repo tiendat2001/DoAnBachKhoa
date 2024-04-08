@@ -5,7 +5,7 @@ import { createError } from "../utils/error.js";
 export const verifyToken = (req, res, next) => {
   const token = req.cookies.access_token;
   if (!token) {
-    return next(createError(401, "You are not authenticated!"));
+    return next(createError(401, "You are not authenticated! Not have token"));
   }
 
   jwt.verify(token, process.env.JWT, (err, user) => {
@@ -27,8 +27,11 @@ export const verifyUser = (req, res, next) => {
   };
 
 export const verifyUserModifyHotel = (req, res, next) => {
-    verifyToken(req, res,  () => {
-      // kiểm tra ownerId đẩy lên có giống vs token chứa _id trong cookie kko khi trong API co truong ownerId
+    verifyToken(req, res,  (err) => {
+      if (err) {
+        return next(err); // Trả về lỗi nếu có lỗi từ hàm verifyToken
+      }
+      // kiểm tra ownerId đẩy lên có giống vs token chứa _id trong cookie kko khi trong API co truong ownerId-tiếp từ đoạn next() ở cuối cùng verifyToken
       if (req.body.ownerId && req.user.id == req.body.ownerId) {
         next();
       } else {

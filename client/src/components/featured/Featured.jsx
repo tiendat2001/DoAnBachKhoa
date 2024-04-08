@@ -57,7 +57,7 @@ const Featured = () => {
             </div>
           </div>
 
-          <div className="featuredItem">
+          <div className="featuredItem"  onClick={() => handleSearch("Hà Nội")}>
             <img
               src="https://ik.imagekit.io/tvlk/blog/2023/09/ho-guom-1.jpg?tr=dpr-2,w-675"
               alt=""
@@ -65,13 +65,13 @@ const Featured = () => {
             />
             <div
               className="featuredTitles"
-              onClick={() => handleSearch("Hà Nội")}
+             
             >
               <h1>Ha Noi</h1>
               <h2>{data[0]} hotels</h2>
             </div>
           </div>
-          <div className="featuredItem">
+          <div className="featuredItem"  onClick={() => handleSearch("Đà Nẵng")}>
             <img
               src="https://cf.bstatic.com/xdata/images/city/max500/689422.webp?k=2595c93e7e067b9ba95f90713f80ba6e5fa88a66e6e55600bd27a5128808fdf2&o="
               alt=""
@@ -79,7 +79,7 @@ const Featured = () => {
             />
             <div
               className="featuredTitles"
-              onClick={() => handleSearch("Đà Nẵng")}
+             
             >
               <h1>Da Nang</h1>
               <h2>{data[2]} hotels</h2>
