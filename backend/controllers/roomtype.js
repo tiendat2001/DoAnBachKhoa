@@ -118,3 +118,12 @@ export const createRoom = async (req, res, next) => {
       next(err);
     }
   };
+
+  export const getRoomById = async (req, res, next) => {
+    try {
+      const room = await Room.findById(req.params.roomid);
+      res.status(200).json(room);
+    } catch (err) {
+      next(err);
+    }
+  };
