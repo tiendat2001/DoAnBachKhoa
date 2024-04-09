@@ -1,6 +1,7 @@
 .RoomClientContainer{
     width: 100%;
     max-width: 1024px;
+    margin-top:20px;
 
 }
 .RoomClientContainer .flex_div{
@@ -26,3 +27,11 @@
     font-weight: 300;
 
 }
+
+.rSelectRooms{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    font-size: 8px;
+    color: gray;
+  }
