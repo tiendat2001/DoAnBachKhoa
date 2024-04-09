@@ -14,6 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ModifyHotel from "./pages/adminPages/ModifyHotel/ModifyHotel";
 import ListRoom from "./pages/adminPages/ListRoom/ListRoom";
+import ListBooking from "./pages/listBooking/ListBooking";
 import {getCookie}  from 'react-use-cookie';
 function App() {
 
@@ -37,6 +38,8 @@ function App() {
         <Route path="/hotels/:id" element={<Hotel />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/bookings" element={<ListBooking />} />
+
 
 
         <Route path="/admin/">

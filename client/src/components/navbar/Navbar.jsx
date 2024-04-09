@@ -28,6 +28,10 @@ const Navbar = () => {
              <Link to="/admin">
               <button className="navButton" >Manage your homestay</button>
               </Link>
+
+              <Link to="/bookings">
+              <button className="navButton" >Your bookings</button>
+              </Link>
               
             <h1 className="account">Hello,{user.username}</h1> 
             {/* <Link to="/login"> */}
