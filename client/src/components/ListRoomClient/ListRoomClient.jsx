@@ -6,7 +6,9 @@ import "./listRoomClient.css"
 const ListRoomClient = ({ hotelId }) => {
 
   const { data, loading, error } = useFetch(`/hotels/room/${hotelId}`);
-  console.log(data)
+
+  
+
   return (
     <div className="RoomClientContainer">
       {data.map((item) => (

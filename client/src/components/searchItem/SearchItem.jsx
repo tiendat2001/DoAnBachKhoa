@@ -9,7 +9,7 @@ import { useState, useContext } from "react";
 
 const SearchItem = ({ item }) => {
   const {dates, options } = useContext(SearchContext);
-
+  const [roomInSearchItem, setroomInSearchItem] = useState(1);
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   function dayDifference(date1, date2) {
     const timeDiff = Math.abs(date2.getTime() - date1.getTime());
@@ -19,12 +19,24 @@ const SearchItem = ({ item }) => {
 
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
   const calculatePrice = (cheapestPrice) => {
-    // thay số 2 bằng số người của phòng min price
-    if(Math.floor(options.adult / cheapestPrice.people)==0){
+    if(options.room >Math.floor(options.adult / cheapestPrice.people)){
+      return cheapestPrice.price *options.room*days;
+    } 
+    if(Math.floor(options.adult / cheapestPrice.people)==0){ // 2/3 = 0.6 làm tròn xuống 0
       return cheapestPrice.price*days;
     }else{
-      return  cheapestPrice.price * Math.floor(options.adult / cheapestPrice.people)*days;
+      // setroomInSearchItem(Math.floor(options.adult / cheapestPrice.people))
+        return  cheapestPrice.price * Math.floor(options.adult / cheapestPrice.people)*days;
     } 
+   
+  };
+
+  const calculateRoom = (cheapestPrice) => {
+      if(options.room >Math.floor(options.adult / cheapestPrice.people)) return options.room
+      else{
+        return  Math.floor(options.adult / cheapestPrice.people)
+      }
+     
    
   };
   return (
@@ -51,7 +63,7 @@ const SearchItem = ({ item }) => {
         </div>} */}
         <div className="siDetailTexts">
         <span className="siPrice">Price from: ${calculatePrice(item.cheapestPrice)}</span>
-          <span className="siTaxOp">Cho {options.adult} người, {days} đêm</span>
+          <span className="siTaxOp">Cho {options.adult} người, {calculateRoom(item.cheapestPrice)} phòng, {days} đêm</span>
           {/* chuyen sang xem thong tin tung hotel */}
           <Link to={`/hotels/${item._id}`}>
           <button className="siCheckButton">More info</button>
