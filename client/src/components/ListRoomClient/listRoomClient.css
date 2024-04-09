@@ -1,0 +1,28 @@
+.RoomClientContainer{
+    width: 100%;
+    max-width: 1024px;
+
+}
+.RoomClientContainer .flex_div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap:20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.RoomClientContainer .rMax{
+    font-size:14px;
+
+
+}
+
+.RoomClientContainer .rTitle{
+    font-weight: 500;
+}
+
+.RoomClientContainer .rDesc{
+    font-weight: 300;
+
+}
