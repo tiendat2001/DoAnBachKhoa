@@ -14,13 +14,16 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ModifyHotel from "./pages/adminPages/ModifyHotel/ModifyHotel";
 import ListRoom from "./pages/adminPages/ListRoom/ListRoom";
+import {getCookie}  from 'react-use-cookie';
 function App() {
 
 
   const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
+    const userToken = getCookie ('access_token');
+    // console.log(userToken)
     // chua dang nhap thi tu dong nhay sang trang login
-    if (!user) {
+    if (!user|| !userToken) {
       return <Navigate to="/login" />;
     }
 
