@@ -21,7 +21,7 @@ export const createRoom = async (req, res, next) => {
           $push: { rooms: savedRoom._id },
         });
 
-        const cheapestRoom = await Room.findOne({ hotelId }).sort({ price: 1 }).limit(1);
+      const cheapestRoom = await Room.findOne({ hotelId }).sort({ price: 1 }).limit(1);
 
     // Update the hotel's cheapestPrice field with the cheapest room's price and maxPeople
       await Hotel.findByIdAndUpdate(hotelId, {
@@ -75,15 +75,15 @@ export const createRoom = async (req, res, next) => {
     }
   };
   export const deleteRoom = async (req, res, next) => {
+    // console.log("Dat")
     try {
       const roomToDelete = await Room.findById(req.params.id)  // req.params.id là _id của type room sẽ chỉnh sửa
       // tìm id của hotel có room sẽ chỉnh sửa
       const hotelToUpdate = await Hotel.findById(roomToDelete.hotelId);
-
       if (hotelToUpdate.ownerId !== req.body.ownerId) {
         return res.status(403).json({ message: "You are not authorized to delete room from this hotel" });
     }
-
+      // xóa room và cập nhật lại trong Hotel
       const deleteRoom = await Room.findById(req.params.id);   // req.params.id là _id của type room sẽ chỉnh sửa
       await Room.findByIdAndDelete(req.params.id);
       try {
@@ -93,6 +93,17 @@ export const createRoom = async (req, res, next) => {
       } catch (err) {
         next(err);
       }
+
+      // update price khi xóa phòng (đã test - còn trường hợp nếu ko còn phòng nào)
+      const hotelId = hotelToUpdate._id
+      const cheapestRoom = await Room.findOne({ hotelId }).sort({ price: 1 }).limit(1);   
+      await Hotel.findByIdAndUpdate(hotelId, {
+        cheapestPrice: {
+        price: cheapestRoom.price,
+        people: cheapestRoom.maxPeople
+      }
+    });
+    
       res.status(200).json("Room has been deleted.");
     } catch (err) {
       next(err);
