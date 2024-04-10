@@ -77,26 +77,30 @@ const ListRoomClient = ({ hotelId }) => {
 
   return (
     <div className="RoomClientContainer">
-      <div style={{ display: 'flex',justifyContent:'space-between',alignItems:'center' }}>
-        <h1>Bạn muốn đặt phòng?</h1>
-        <div style={{ width:'50%' }} className="headerSearchHotel">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 
-          <div  className="headerSearchItem">
-            <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />
+        <h1>Bạn muốn đặt phòng?</h1>
+
+        <div style={{ width: '30%' }} className="headerSearchHotel">
+       
+            <FontAwesomeIcon icon={faCalendarDays} className="headerIconHotel" />
+
             <span onClick={() => setOpenDate(!openDate)}>{`${format(
               dates[0].startDate,
               "MM/dd/yyyy"
             )} to ${format(dates[0].endDate, "MM/dd/yyyy")}`}</span>
             {openDate && (
-            <div className="dateRangeContainer">
-            <DateRange
-              onChange={(item) => handleDayChange(item)}
-              minDate={new Date()}
-              ranges={dates}
-            />
-          </div>
+              <DateRange
+                onChange={(item) => handleDayChange(item)}
+                minDate={new Date()}
+                ranges={dates}
+                moveRangeOnFirstSelection={false}
+                editableDateInputs={true}
+                className="date"
+              />
+
             )}
-          </div>
+         
 
 
         </div>
