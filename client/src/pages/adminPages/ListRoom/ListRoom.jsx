@@ -28,35 +28,42 @@ const ListRoom = () => {
             <div className="listContainerAdmin">
                 <NavbarAdmin />
 
-                <div className="formInput">
-                    <label>Choose a hotel</label>
-                    <select
-                        id="hotelId"
-                        value={hotelId}
-                        onChange={handleHotelChange}
-                    >
-                        <option value="" disabled selected>Chọn khách sạn</option>
-                        {hotelLoading
-                            ? "loading"
-                            : hotelData &&
-                            hotelData.map((hotel) => (
-                                <option key={hotel._id} value={hotel._id}>
-                                    {hotel.name}
-                                </option>
-                            ))}
-                    </select>
+                <div className="ListRoomAdminContainer">
+                    <h2>Your Rooms</h2>
+                    <div className="hotelSelectBox">
+                        {/* <label>Choose a hotel</label> */}
+                        <select
+                            id="hotelId"
+                            value={hotelId}
+                            onChange={handleHotelChange}
+                        >
+                            <option value="" disabled selected>Chọn khách sạn</option>
+                            {hotelLoading
+                                ? "loading"
+                                : hotelData &&
+                                hotelData.map((hotel) => (
+                                    <option key={hotel._id} value={hotel._id}>
+                                        {hotel.name}
+                                    </option>
+                                ))}
+                        </select>
 
+                    </div>
+                  
                 </div>
-
-                <DataGrid
+                
+            
+                <DataGrid autoHeight 
                     className="datagrid"
-                    rows={roomData}
-                    columns={roomColumns}
-                    pageSize={9}
-                    rowsPerPageOptions={[9]}
-                    checkboxSelection
-                    getRowId={(row) => row._id}
-                />
+                        rows={roomData}
+                        columns={roomColumns}
+                        pageSize={5}
+                        rowsPerPageOptions={[5]}
+                        checkboxSelection
+                        getRowId={(row) => row._id}
+                    />
+               
+            
 
 
             </div>

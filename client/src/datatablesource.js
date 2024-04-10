@@ -19,16 +19,20 @@ export const roomColumns = [
       field: "price",
       headerName: "Price",
       width: 130,
+      align:'center'
+
     },
     {
       field: "maxPeople",
       headerName: "Max People",
       width: 130,
+      align:'center'
     },
     {
       field: "roomCount",
       headerName: "Room Count",
       width: 150,
+      align:'center',
       renderCell: (params) => {
           const roomNumbers = params.row.roomNumbers || [];
           return roomNumbers.length;
