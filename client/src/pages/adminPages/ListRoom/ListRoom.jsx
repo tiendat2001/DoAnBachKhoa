@@ -5,19 +5,23 @@ import "./listRoom.css"
 import { DataGrid } from "@mui/x-data-grid";
 import { roomColumns } from '../../../datatablesource';
 import useFetch from '../../../hooks/useFetch';
-import { useContext,useState,useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { AuthContext } from '../../../context/AuthContext';
 
 const ListRoom = () => {
     const { user } = useContext(AuthContext) // {user._id}
-    const { data: hotelData, loading: hotelLoading, error: hotelError, reFetch: hotelReFetch } = useFetch(`/hotels?ownerId=${user._id}`);   
-    const [hotelId, setHotelId] = useState(hotelData.length > 0 ? hotelData[3]._id : null);
+    const { data: hotelData, loading: hotelLoading, error: hotelError, reFetch: hotelReFetch } = useFetch(`/hotels?ownerId=${user._id}`);
+    const [hotelId, setHotelId] = useState(hotelData.length > 0 ? hotelData[0]._id : null);
     const { data: roomData, loading: roomLoading, error: roomError, reFetch: roomReFetch } = useFetch(`/rooms/${hotelId}`);
-
+    const handleHotelChange = (e) => {
+        setHotelId(e.target.value);
+    };
     useEffect(() => {
-        // Kiểm tra xem hotelData có dữ liệu không và set hotelId từ dữ liệu đầu tiên (nếu có)
-      roomReFetch()
-    }, [hotelData, hotelId]); 
+        // Gọi roomReFetch khi hotelId thay đổi để load lại dữ liệu phòng mới
+        if (hotelId) {
+            roomReFetch();
+        }
+    }, [hotelId]);
     console.log(roomData)
     return (
         <div className="listAdmin">
@@ -26,22 +30,28 @@ const ListRoom = () => {
                 <NavbarAdmin />
 
                 <div className="formInput">
-                <label>Choose a hotel</label>
-                <select
-                  id="hotelId"
-                  onChange={(e) => setHotelId(e.target.value)}
-                >
-                  {hotelLoading
-                    ? "loading"
-                    : hotelData &&
-                    hotelData.map((hotel) => (
-                        <option key={hotel._id} value={hotel._id}>
-                          {hotel.name}
-                        </option>
-                      ))}
-                </select>
-              </div>
-           </div>
+                    <label>Choose a hotel</label>
+                    <select
+                        id="hotelId"
+                        value={hotelId}
+                        onChange={handleHotelChange}
+                    >
+                        <option value="" disabled selected>Chọn khách sạn</option>
+                        {hotelLoading
+                            ? "loading"
+                            : hotelData &&
+                            hotelData.map((hotel) => (
+                                <option key={hotel._id} value={hotel._id}>
+                                    {hotel.name}
+                                </option>
+                            ))}
+                    </select>
+
+                </div>
+
+
+                
+            </div>
         </div>
 
     )
