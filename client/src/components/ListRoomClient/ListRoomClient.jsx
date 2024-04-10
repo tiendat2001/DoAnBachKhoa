@@ -148,7 +148,7 @@ const ListRoomClient = ({ hotelId }) => {
               ))}
             </div>
 
-            <div style={{ width: '20%' }}>(TÍch số lượng ô bằng với số lượng phòng)</div>
+            <div style={{ width: '20%' }}>(TÍch số lượng ô bằng với số lượng phòng muốn đặt)</div>
 
             {/* <label htmlFor="checkbox"></label> */}
           </div>
