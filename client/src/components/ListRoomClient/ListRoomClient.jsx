@@ -117,6 +117,11 @@ const ListRoomClient = ({ hotelId }) => {
             <div className="rTitle">{item.title}</div>
             <div className="rDesc">Số lượng người: {item.maxPeople}</div>
             <div className="rMax">{item.desc}</div>
+            {/* <div className="rPhotos"> <img
+                  src={item.photos[0]}
+                  alt=""
+                  className="sliderImg"
+                /></div> */}
           </div>
 
           <div>
