@@ -4,12 +4,23 @@ import { AuthContext } from '../../context/AuthContext';
 import useFetch from '../../hooks/useFetch';
 import "./listRoomClient.css"
 import { useContext, useState } from "react";
-
+import { SearchContext } from '../../context/SearchContext';
 const ListRoomClient = ({ hotelId }) => {
 
   const { data, loading, error } = useFetch(`/hotels/room/${hotelId}`);
   const [selectedRooms, setSelectedRooms] = useState([]);
+  const searchContext = useContext(SearchContext);
+  const { dates} = useContext(SearchContext);
 
+  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+  function dayDifference(date1, date2) {
+    const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
+    return diffDays;
+  }
+
+  const days = dayDifference(dates[0].endDate, dates[0].startDate);
+  console.log(days)
   // lấy roomNumber_id theo tích
   const handleSelectCheckBox = (e) => {
     const checked = e.target.checked;

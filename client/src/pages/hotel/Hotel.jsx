@@ -19,6 +19,11 @@ import { AuthContext } from "../../context/AuthContext";
 import Reserve from "../../components/reserve/Reserve";
 import { format,  } from "date-fns";
 import ListRoomClient from "../../components/ListRoomClient/ListRoomClient";
+import {
+  faBed,
+  faCalendarDays,
+  faPerson,
+} from "@fortawesome/free-solid-svg-icons";
 // PAGE THONG TIN TUNG HOTEL
 const Hotel = () => {
   const location = useLocation();
@@ -33,8 +38,8 @@ const Hotel = () => {
   const navigate = useNavigate();
 
   // CONTEXT
-  // const searchContext = useContext(SearchContext);
-  // const { destination ,dates, options } = useContext(SearchContext);
+  const searchContext = useContext(SearchContext);
+  const { destination ,dates, options } = useContext(SearchContext);
   // console.log(searchContext)
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -44,8 +49,8 @@ const Hotel = () => {
     return diffDays;
   }
 
-  // const days = dayDifference(dates[0].endDate, dates[0].startDate);
-  // console.log(data.cheapestPrice)
+  const days = dayDifference(dates[0].endDate, dates[0].startDate);
+  console.log(data.cheapestPrice)
   const handleOpen = (i) => {
     setSlideNumber(i);
     setOpen(true);
@@ -77,7 +82,7 @@ const Hotel = () => {
       <Header type="list" />
 
     {/* phần hiển thị thông tin chọn từ trc */}
-    {/* <div className="headerSearchHotel">
+    <div className="headerSearchHotel">
               <div className="headerSearchItemHotel">
                 <FontAwesomeIcon icon={faBed} className="headerIconHotel" />
                 <input
@@ -102,7 +107,7 @@ const Hotel = () => {
                   className="headerSearchTextHotel"
                 >{`${options.adult} adult · ${options.children} children · ${options.room} room`}</span> 
               </div>  
-    </div>  */}
+    </div> 
 
 
 
