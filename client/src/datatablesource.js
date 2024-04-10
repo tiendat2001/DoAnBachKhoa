@@ -1,20 +1,20 @@
 export const roomColumns = [
-    { field: "_id", headerName: "ID", width: 230 },
+    { field: "_id", headerName: "ID", width: 100 },
     {
       field: "title",
       headerName: "Title",
-      width: 150,
+      width: 230,
     },
     {
       field: "desc",
       headerName: "Description",
-      width: 200,
+      width: 300,
     },
-    {
-      field: "hotelName",
-      headerName: "Hotel",
-      width: 200,
-    },
+    // {
+    //   field: "hotelName",
+    //   headerName: "Hotel",
+    //   width: 200,
+    // },
     {
       field: "price",
       headerName: "Price",
@@ -25,4 +25,14 @@ export const roomColumns = [
       headerName: "Max People",
       width: 130,
     },
+    {
+      field: "roomCount",
+      headerName: "Room Count",
+      width: 150,
+      renderCell: (params) => {
+          const roomNumbers = params.row.roomNumbers || [];
+          return roomNumbers.length;
+      }
+    }
+    
   ];

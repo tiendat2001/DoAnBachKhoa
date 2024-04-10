@@ -7,7 +7,6 @@ import { roomColumns } from '../../../datatablesource';
 import useFetch from '../../../hooks/useFetch';
 import { useContext, useState, useEffect } from 'react'
 import { AuthContext } from '../../../context/AuthContext';
-
 const ListRoom = () => {
     const { user } = useContext(AuthContext) // {user._id}
     const { data: hotelData, loading: hotelLoading, error: hotelError, reFetch: hotelReFetch } = useFetch(`/hotels?ownerId=${user._id}`);
@@ -49,8 +48,17 @@ const ListRoom = () => {
 
                 </div>
 
+                <DataGrid
+                    className="datagrid"
+                    rows={roomData}
+                    columns={roomColumns}
+                    pageSize={9}
+                    rowsPerPageOptions={[9]}
+                    checkboxSelection
+                    getRowId={(row) => row._id}
+                />
 
-                
+
             </div>
         </div>
 
