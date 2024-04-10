@@ -5,12 +5,27 @@ import useFetch from '../../hooks/useFetch';
 import "./listRoomClient.css"
 import { useContext, useState } from "react";
 import { SearchContext } from '../../context/SearchContext';
+import { format } from "date-fns";
+import { DateRange } from "react-date-range";
+import {
+  faBed,
+  faCalendarDays,
+  faPerson,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ListRoomClient = ({ hotelId }) => {
 
   const { data, loading, error } = useFetch(`/hotels/room/${hotelId}`);
   const [selectedRooms, setSelectedRooms] = useState([]);
   const searchContext = useContext(SearchContext);
-  const { dates} = useContext(SearchContext);
+  const [dates, setDates] = useState(searchContext.dates);
+
+  const [openDate, setOpenDate] = useState(false);
+
+
+  const handleDayChange = (item) => {
+    setDates([item.selection])
+  };
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   function dayDifference(date1, date2) {
@@ -20,7 +35,7 @@ const ListRoomClient = ({ hotelId }) => {
   }
 
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
-  console.log(days)
+  // console.log(days)
   // lấy roomNumber_id theo tích
   const handleSelectCheckBox = (e) => {
     const checked = e.target.checked;
@@ -31,12 +46,30 @@ const ListRoomClient = ({ hotelId }) => {
         : selectedRooms.filter((item) => item !== value) // nếu bỏ tích thì bỏ phòng có value đấy ra mảng, giữ lại phòng kp value
     );
   };
-  const isAvailable = (roomNumber) => {
-    // const isFound = roomNumber.unavailableDates.some((date) =>
-    //   alldates.includes(new Date(date).getTime())
-    // );
+  const getDatesInRange = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-    // return !isFound;
+    const date = new Date(start.getTime());
+
+    const dates = [];
+
+    while (date <= end) {
+      dates.push(new Date(date).getTime());
+      date.setDate(date.getDate() + 1);
+    }
+
+    return dates;
+  };
+
+  const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
+
+  const isAvailable = (roomNumber) => {
+    const isFound = roomNumber.unavailableDates.some((date) =>
+      alldates.includes(new Date(date).getTime())
+    );
+
+    return !isFound;
     return false
   };
 
@@ -44,7 +77,35 @@ const ListRoomClient = ({ hotelId }) => {
 
   return (
     <div className="RoomClientContainer">
-      <h1>Bạn muốn đặt phòng?</h1>
+      <div style={{ display: 'flex',justifyContent:'space-between',alignItems:'center' }}>
+        <h1>Bạn muốn đặt phòng?</h1>
+        <div style={{ width:'50%' }} className="headerSearchHotel">
+
+          <div  className="headerSearchItem">
+            <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />
+            <span onClick={() => setOpenDate(!openDate)}>{`${format(
+              dates[0].startDate,
+              "MM/dd/yyyy"
+            )} to ${format(dates[0].endDate, "MM/dd/yyyy")}`}</span>
+            {openDate && (
+            <div className="dateRangeContainer">
+            <DateRange
+              onChange={(item) => handleDayChange(item)}
+              minDate={new Date()}
+              ranges={dates}
+            />
+          </div>
+            )}
+          </div>
+
+
+        </div>
+      </div>
+
+      {/* HIển thị ngày */}
+
+
+      {/* Phần đặt phòng */}
       {data.map((item) => (
         <div className="flex_div" style={{ border: '1px solid #7fc7af', }}>
 

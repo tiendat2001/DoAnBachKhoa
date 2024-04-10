@@ -82,7 +82,7 @@ const Hotel = () => {
       <Header type="list" />
 
     {/* phần hiển thị thông tin chọn từ trc */}
-    <div className="headerSearchHotel">
+    {/* <div className="headerSearchHotel">
               <div className="headerSearchItemHotel">
                 <FontAwesomeIcon icon={faBed} className="headerIconHotel" />
                 <input
@@ -107,7 +107,7 @@ const Hotel = () => {
                   className="headerSearchTextHotel"
                 >{`${options.adult} adult · ${options.children} children · ${options.room} room`}</span> 
               </div>  
-    </div> 
+    </div>  */}
 
 
 
