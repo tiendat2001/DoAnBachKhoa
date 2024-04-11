@@ -77,6 +77,7 @@ const ListRoomClient = ({ hotelId }) => {
 
   return (
     <div className="RoomClientContainer">
+      {/* tieu de va thanh search ngay */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 
         <h1>Bạn muốn đặt phòng?</h1>
@@ -109,7 +110,7 @@ const ListRoomClient = ({ hotelId }) => {
       {/* HIển thị ngày */}
 
 
-      {/* Phần đặt phòng */}
+      {/* Phần đặt phòng gom nhieu flex_div */}
       {data.map((item) => (
         <div className="flex_div" style={{ border: '1px solid #7fc7af', }}>
 
@@ -117,13 +118,21 @@ const ListRoomClient = ({ hotelId }) => {
             <div className="rTitle">{item.title}</div>
             <div className="rDesc">Số lượng người: {item.maxPeople}</div>
             <div className="rMax">{item.desc}</div>
-            {/* <div className="rPhotos"> <img
-                  src={item.photos[0]}
-                  alt=""
-                  className="sliderImg"
-                /></div> */}
+            <div className="rImages">
+              {item.photos?.map((photo, i) => (
+                <div className="rImgWrapper" key={i}>
+                  <img
+                    // onClick={() => handleOpen(i)}
+                    src={photo}
+                    alt=""
+                    className="hotelImg"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-
+          
+          {/*  hiện giá */}
           <div>
             Giá phòng: {item.price}
             <br />
@@ -137,7 +146,7 @@ const ListRoomClient = ({ hotelId }) => {
               <option value="3">3 phòng</option>
             </select>
           </div> */}
-
+          {/*  hiện các ô room */}
           <div className="rSelectRooms" style={{ width: '20%' }}>
             <div style={{ display: 'flex', flexWrap: 'wrap', width: '70%', alignItems: 'center' }}>
               {item.roomNumbers.map((roomNumber) => (
@@ -161,6 +170,8 @@ const ListRoomClient = ({ hotelId }) => {
 
         </div>
       ))}
+
+      <h2>Bạn đã chọn {selectedRooms.length} phòng</h2>
     </div>
   )
 }
