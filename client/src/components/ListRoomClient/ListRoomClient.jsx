@@ -19,9 +19,12 @@ const ListRoomClient = ({ hotelId }) => {
   const [selectedRooms, setSelectedRooms] = useState([]);
   const searchContext = useContext(SearchContext);
   const [dates, setDates] = useState(searchContext.dates);
-
   const [openDate, setOpenDate] = useState(false);
+  const [expandedPhotoIndex, setExpandedPhotoIndex] = useState(null); // State để lưu index của ảnh đang được phóng to
 
+  const toggleExpandedPhoto = (index) => {
+    setExpandedPhotoIndex(index === expandedPhotoIndex ? null : index);
+  };
 
   const handleDayChange = (item) => {
     setDates([item.selection])
@@ -125,8 +128,18 @@ const ListRoomClient = ({ hotelId }) => {
                     // onClick={() => handleOpen(i)}
                     src={photo}
                     alt=""
-                    className="hotelImg"
+                    className="roomImg"
+                    onClick={() => toggleExpandedPhoto(i)}
                   />
+                  {/* Kiểm tra nếu index của ảnh được click trùng với expandedPhotoIndex thì hiển thị ảnh phóng to */}
+                  {expandedPhotoIndex === i && (
+                    <div className="expandedPhotoWrapper">
+                      <img src={photo} alt="" className="expandedPhoto"
+                                          onClick={() => toggleExpandedPhoto(i)}
+                                          />
+                      
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
