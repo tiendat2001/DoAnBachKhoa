@@ -34,7 +34,7 @@ const ListRoomClient = ({ hotelId }) => {
     // setSlideNumber(i);
     setOpenExpandPhoto(true);
   };
-
+  // console.log("at")
   const handleMove = (direction,item) => { // item chính là thông tin từng room
     let newSlideNumber;
 
@@ -52,6 +52,8 @@ const ListRoomClient = ({ hotelId }) => {
 
   const handleDayChange = (item) => {
     setDates([item.selection])
+    // console.log([item.selection])
+    setSelectedRooms([])
   };
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -100,7 +102,7 @@ const ListRoomClient = ({ hotelId }) => {
   const isAvailable = (roomNumber) => {
   const isFound = roomNumber.unavailableDates.some((date) => {
     const dateMinusOneDay = subDays(new Date(date), 1).getTime();
-    console.log(new Date(date));
+    // console.log(new Date(date));
     return alldates.includes(dateMinusOneDay);
   });
 
