@@ -160,8 +160,8 @@ const ListRoomClient = ({ hotelId }) => {
             </select>
           </div> */}
           {/*  hiện các ô room */}
-          <div className="rSelectRooms" style={{ width: '20%' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', width: '70%', alignItems: 'center' }}>
+          <div className="rSelectRooms" style={{ width: '20%', height: '100%'  }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', width: '50%', alignItems: 'center' }}>
               {item.roomNumbers.map((roomNumber) => (
                 isAvailable(roomNumber) ? (
                   <div className="room" key={roomNumber._id}>
@@ -175,7 +175,7 @@ const ListRoomClient = ({ hotelId }) => {
               ))}
             </div>
 
-            <div style={{ width: '20%' }}>(TÍch số lượng ô bằng với số lượng phòng muốn đặt)</div>
+            <div style={{ width: '30%', height: '100%' ,fontSize:'14px' }}>(TÍch số lượng ô bằng với số lượng phòng muốn đặt)</div>
 
             {/* <label htmlFor="checkbox"></label> */}
           </div>

@@ -109,6 +109,7 @@
     height: 90px;
 
   }
+  /*  phần ảnh phóng to */
   .expandedPhotoWrapper {
     position: fixed; /* Đảm bảo ảnh phóng to được hiển thị trên cùng của trang */
     top: 0;
