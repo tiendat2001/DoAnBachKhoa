@@ -5,7 +5,7 @@ import useFetch from '../../hooks/useFetch';
 import "./listRoomClient.css"
 import { useContext, useState } from "react";
 import { SearchContext } from '../../context/SearchContext';
-import { format } from "date-fns";
+import { format,addDays,subDays   } from "date-fns";
 import { DateRange } from "react-date-range";
 import {
   faBed,
@@ -81,7 +81,7 @@ const ListRoomClient = ({ hotelId }) => {
 
     const dates = [];
 
-    while (date <= end) {
+    while (date < end) {
       dates.push(new Date(date).getTime());
       date.setDate(date.getDate() + 1);
     }
@@ -89,24 +89,32 @@ const ListRoomClient = ({ hotelId }) => {
     return dates;
   };
 
+  // lựa chọn của khach
   const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
+  // alldates.forEach(timestamp => {
+  //   const date = new Date(timestamp);
+  //   console.log(date.toLocaleDateString());
+  // });
 
+  // từ front end đẩy xuống csdl bị lệch 1 ngày, ví dụ ở front 13 xuống csdl sẽ là 12, còn từ csdl lên front thì 12 sẽ bị lên thành 13
   const isAvailable = (roomNumber) => {
-    const isFound = roomNumber.unavailableDates.some((date) =>
-      alldates.includes(new Date(date).getTime())
-    );
+  const isFound = roomNumber.unavailableDates.some((date) => {
+    const dateMinusOneDay = subDays(new Date(date), 1).getTime();
+    console.log(new Date(date));
+    return alldates.includes(dateMinusOneDay);
+  });
 
-    return !isFound;
-    return false
-  };
+  return !isFound;
+};
 
   // hàm nút đặt phòng
   const reserveRoom = async () => {
     try {
       await Promise.all(
         selectedRooms.map((roomId) => {
+          const utcDates = alldates.map(date => addDays(date, 1));
           const res = axios.put(`/rooms/availability/${roomId}`, {
-            dates: alldates,
+            dates: utcDates,
           });
           return res.data;
         })
@@ -114,6 +122,7 @@ const ListRoomClient = ({ hotelId }) => {
 
      
     } catch (err) {}
+    alert("thanh cong")
   };
 
   return (
@@ -122,6 +131,7 @@ const ListRoomClient = ({ hotelId }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 
         <h1>Bạn muốn đặt phòng?</h1>
+              {/* HIển thị ngày */}
 
         <div style={{ width: '30%' }} className="headerSearchHotel">
 
@@ -134,7 +144,7 @@ const ListRoomClient = ({ hotelId }) => {
           {openDate && (
             <DateRange
               onChange={(item) => handleDayChange(item)}
-              minDate={new Date()}
+              // minDate={new Date()}
               ranges={dates}
               moveRangeOnFirstSelection={false}
               editableDateInputs={true}
@@ -148,7 +158,6 @@ const ListRoomClient = ({ hotelId }) => {
         </div>
       </div>
 
-      {/* HIển thị ngày */}
 
 
       {/* Phần đặt phòng gom nhieu flex_div */}
