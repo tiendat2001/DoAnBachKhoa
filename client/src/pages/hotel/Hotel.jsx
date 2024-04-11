@@ -66,7 +66,7 @@ const Hotel = () => {
     }
 
     setSlideNumber(newSlideNumber);
-    console.log(newSlideNumber)
+    // console.log(newSlideNumber)
   };
 
   const handleClick = () => {

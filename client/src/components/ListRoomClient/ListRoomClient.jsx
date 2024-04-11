@@ -12,6 +12,12 @@ import {
   faCalendarDays,
   faPerson,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleArrowLeft,
+  faCircleArrowRight,
+  faCircleXmark,
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ListRoomClient = ({ hotelId }) => {
 
@@ -21,7 +27,25 @@ const ListRoomClient = ({ hotelId }) => {
   const [dates, setDates] = useState(searchContext.dates);
   const [openDate, setOpenDate] = useState(false);
   const [expandedPhotoIndex, setExpandedPhotoIndex] = useState(null); // State để lưu index của ảnh đang được phóng to
+  const [open, setOpen] = useState(false);
+  const [slideNumber, setSlideNumber] = useState(0);
 
+  const handleOpen = (i) => {
+    // setSlideNumber(i);
+    setOpen(true);
+  };
+
+  const handleMove = (direction,item) => { // item chính là thông tin từng room
+    let newSlideNumber;
+
+    if (direction === "l") {
+      newSlideNumber = slideNumber === 0 ? (item.photos.length-1) : slideNumber - 1;
+    } else {
+      newSlideNumber = slideNumber === (item.photos.length-1) ? 0 : slideNumber + 1;
+    }
+
+    setSlideNumber(newSlideNumber);
+  };
   const toggleExpandedPhoto = (index) => {
     setExpandedPhotoIndex(index === expandedPhotoIndex ? null : index);
   };
@@ -86,25 +110,25 @@ const ListRoomClient = ({ hotelId }) => {
         <h1>Bạn muốn đặt phòng?</h1>
 
         <div style={{ width: '30%' }} className="headerSearchHotel">
-       
-            <FontAwesomeIcon icon={faCalendarDays} className="headerIconHotel" />
 
-            <span onClick={() => setOpenDate(!openDate)}>{`${format(
-              dates[0].startDate,
-              "MM/dd/yyyy"
-            )} to ${format(dates[0].endDate, "MM/dd/yyyy")}`}</span>
-            {openDate && (
-              <DateRange
-                onChange={(item) => handleDayChange(item)}
-                minDate={new Date()}
-                ranges={dates}
-                moveRangeOnFirstSelection={false}
-                editableDateInputs={true}
-                className="date"
-              />
+          <FontAwesomeIcon icon={faCalendarDays} className="headerIconHotel" />
 
-            )}
-         
+          <span onClick={() => setOpenDate(!openDate)}>{`${format(
+            dates[0].startDate,
+            "MM/dd/yyyy"
+          )} to ${format(dates[0].endDate, "MM/dd/yyyy")}`}</span>
+          {openDate && (
+            <DateRange
+              onChange={(item) => handleDayChange(item)}
+              minDate={new Date()}
+              ranges={dates}
+              moveRangeOnFirstSelection={false}
+              editableDateInputs={true}
+              className="date"
+            />
+
+          )}
+
 
 
         </div>
@@ -129,22 +153,42 @@ const ListRoomClient = ({ hotelId }) => {
                     src={photo}
                     alt=""
                     className="roomImg"
-                    onClick={() => toggleExpandedPhoto(i)}
+                    onClick={() => handleOpen(i)}
                   />
                   {/* Kiểm tra nếu index của ảnh được click trùng với expandedPhotoIndex thì hiển thị ảnh phóng to */}
-                  {expandedPhotoIndex === i && (
+                  {open && (
                     <div className="expandedPhotoWrapper">
-                      <img src={photo} alt="" className="expandedPhoto"
-                                          onClick={() => toggleExpandedPhoto(i)}
-                                          />
-                      
+                      {/* css dùng từ hotel */}
+                      <FontAwesomeIcon
+                        icon={faCircleXmark}
+                        className="close"
+                        onClick={() => setOpen(false)}
+                      />
+                      <FontAwesomeIcon
+                        icon={faCircleArrowLeft}
+                        className="arrow"
+                        onClick={() => handleMove("l",item)}
+                      />
+                      <div className="sliderWrapper">
+                        <img
+                          src={item.photos[slideNumber]}
+                          alt=""
+                          className="sliderImg"
+                        />
+                      </div>
+                      <FontAwesomeIcon
+                        icon={faCircleArrowRight}
+                        className="arrow"
+                        onClick={() => handleMove("r",item)}
+                      />
+
                     </div>
                   )}
                 </div>
               ))}
             </div>
           </div>
-          
+
           {/*  hiện giá */}
           <div>
             Giá phòng: {item.price}
@@ -160,7 +204,7 @@ const ListRoomClient = ({ hotelId }) => {
             </select>
           </div> */}
           {/*  hiện các ô room */}
-          <div className="rSelectRooms" style={{ width: '20%', height: '100%'  }}>
+          <div className="rSelectRooms" style={{ width: '20%', height: '100%' }}>
             <div style={{ display: 'flex', flexWrap: 'wrap', width: '50%', alignItems: 'center' }}>
               {item.roomNumbers.map((roomNumber) => (
                 isAvailable(roomNumber) ? (
@@ -175,7 +219,7 @@ const ListRoomClient = ({ hotelId }) => {
               ))}
             </div>
 
-            <div style={{ width: '30%', height: '100%' ,fontSize:'14px' }}>(TÍch số lượng ô bằng với số lượng phòng muốn đặt)</div>
+            <div style={{ width: '30%', height: '100%', fontSize: '14px' }}>(TÍch số lượng ô bằng với số lượng phòng muốn đặt)</div>
 
             {/* <label htmlFor="checkbox"></label> */}
           </div>
