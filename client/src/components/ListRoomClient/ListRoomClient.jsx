@@ -26,13 +26,13 @@ const ListRoomClient = ({ hotelId }) => {
   const searchContext = useContext(SearchContext);
   const [dates, setDates] = useState(searchContext.dates);
   const [openDate, setOpenDate] = useState(false);
-  const [expandedPhotoIndex, setExpandedPhotoIndex] = useState(null); // State để lưu index của ảnh đang được phóng to
-  const [open, setOpen] = useState(false);
+  // const [expandedPhotoIndex, setExpandedPhotoIndex] = useState(null); // State để lưu index của ảnh đang được phóng to
+  const [openExpandPhoto, setOpenExpandPhoto] = useState(false);
   const [slideNumber, setSlideNumber] = useState(0);
 
   const handleOpen = (i) => {
     // setSlideNumber(i);
-    setOpen(true);
+    setOpenExpandPhoto(true);
   };
 
   const handleMove = (direction,item) => { // item chính là thông tin từng room
@@ -46,9 +46,9 @@ const ListRoomClient = ({ hotelId }) => {
 
     setSlideNumber(newSlideNumber);
   };
-  const toggleExpandedPhoto = (index) => {
-    setExpandedPhotoIndex(index === expandedPhotoIndex ? null : index);
-  };
+  // const toggleExpandedPhoto = (index) => {
+  //   setExpandedPhotoIndex(index === expandedPhotoIndex ? null : index);
+  // };
 
   const handleDayChange = (item) => {
     setDates([item.selection])
@@ -100,7 +100,21 @@ const ListRoomClient = ({ hotelId }) => {
     return false
   };
 
-  // console.log(selectedRooms)
+  // hàm nút đặt phòng
+  const reserveRoom = async () => {
+    try {
+      await Promise.all(
+        selectedRooms.map((roomId) => {
+          const res = axios.put(`/rooms/availability/${roomId}`, {
+            dates: alldates,
+          });
+          return res.data;
+        })
+      );
+
+     
+    } catch (err) {}
+  };
 
   return (
     <div className="RoomClientContainer">
@@ -149,20 +163,19 @@ const ListRoomClient = ({ hotelId }) => {
               {item.photos?.map((photo, i) => (
                 <div className="rImgWrapper" key={i}>
                   <img
-                    // onClick={() => handleOpen(i)}
                     src={photo}
                     alt=""
                     className="roomImg"
                     onClick={() => handleOpen(i)}
                   />
                   {/* Kiểm tra nếu index của ảnh được click trùng với expandedPhotoIndex thì hiển thị ảnh phóng to */}
-                  {open && (
+                  {openExpandPhoto && (
                     <div className="expandedPhotoWrapper">
                       {/* css dùng từ hotel */}
                       <FontAwesomeIcon
                         icon={faCircleXmark}
                         className="close"
-                        onClick={() => setOpen(false)}
+                        onClick={() => setOpenExpandPhoto(false)}
                       />
                       <FontAwesomeIcon
                         icon={faCircleArrowLeft}
@@ -229,6 +242,11 @@ const ListRoomClient = ({ hotelId }) => {
       ))}
 
       <h2>Bạn đã chọn {selectedRooms.length} phòng</h2>
+      <button onClick={reserveRoom} className="rButton">
+          Đi đến trang đặt phòng
+        </button>
+
+     
     </div>
   )
 }
