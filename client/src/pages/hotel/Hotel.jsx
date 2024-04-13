@@ -16,7 +16,7 @@ import useFetch from "../../hooks/useFetch";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
-import Reserve from "../../components/reserve/Reserve";
+import Reserve from "../reserve/Reserve";
 import { format,  } from "date-fns";
 import ListRoomClient from "../../components/ListRoomClient/ListRoomClient";
 import {
@@ -50,7 +50,7 @@ const Hotel = () => {
   }
 
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
-  console.log(data.cheapestPrice)
+  // console.log(data.cheapestPrice)
   const handleOpen = (i) => {
     setSlideNumber(i);
     setOpen(true);

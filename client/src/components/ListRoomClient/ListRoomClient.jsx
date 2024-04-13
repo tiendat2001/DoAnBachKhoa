@@ -18,6 +18,8 @@ import {
   faCircleXmark,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ListRoomClient = ({ hotelId }) => {
 
@@ -30,6 +32,7 @@ const ListRoomClient = ({ hotelId }) => {
   const [openExpandPhoto, setOpenExpandPhoto] = useState(false);
   const [slideNumber, setSlideNumber] = useState(0);
 
+  const navigate = useNavigate()
   const handleOpen = (i) => {
     // setSlideNumber(i);
     setOpenExpandPhoto(true);
@@ -64,7 +67,6 @@ const ListRoomClient = ({ hotelId }) => {
   }
 
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
-  // console.log(days)
   // lấy roomNumber_id theo tích
   const handleSelectCheckBox = (e) => {
     const checked = e.target.checked;
@@ -102,7 +104,7 @@ const ListRoomClient = ({ hotelId }) => {
   const isAvailable = (roomNumber) => {
   const isFound = roomNumber.unavailableDates.some((date) => {
     const dateMinusOneDay = subDays(new Date(date), 1).getTime();
-    // console.log(new Date(date));
+    // console.log(new Date(dateMinusOneDay));
     return alldates.includes(dateMinusOneDay);
   });
 
@@ -111,20 +113,24 @@ const ListRoomClient = ({ hotelId }) => {
 
   // hàm nút đặt phòng
   const reserveRoom = async () => {
-    try {
-      await Promise.all(
-        selectedRooms.map((roomId) => {
-          const utcDates = alldates.map(date => addDays(date, 1));
-          const res = axios.put(`/rooms/availability/${roomId}`, {
-            dates: utcDates,
-          });
-          return res.data;
-        })
-      );
+    // try {
+    //   await Promise.all(
+    //     selectedRooms.map((roomId) => {
+    //       const utcDates = alldates.map(date => addDays(date, 1));
+    //       const res = axios.put(`/rooms/availability/${roomId}`, {
+    //         dates: utcDates,
+    //       });
+    //       return res.data;
+    //     })
+    //   );
 
      
-    } catch (err) {}
-    alert("thanh cong")
+    // } catch (err) {
+
+    // }
+    // alert("thanh cong")
+    navigate("/reserve", { state: { selectedRooms, alldates} });
+
   };
 
   return (
