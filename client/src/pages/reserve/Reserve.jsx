@@ -19,8 +19,8 @@ const Reserve = () => {
   const [alldates, setAlldates] = useState(location.state.alldates);
   console.log(selectedRooms)
   alldates.forEach(timestamp => {
-    const date = new Date(timestamp);
-    console.log(date.toLocaleString()); // Hiển thị cả giờ và phút
+       console.log(new Date(timestamp));
+
   });
 
 

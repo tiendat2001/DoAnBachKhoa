@@ -1,12 +1,14 @@
 import { createContext, useReducer } from "react";
 import React from "react";
 import { format,addDays  } from "date-fns";
+const currentDate = new Date();
+currentDate.setHours(0, 0, 0, 0);
 const INITIAL_STATE = {
   destination: "Hà Nội",
   dates: [
     {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 1),
+      startDate: currentDate,
+      endDate: addDays(currentDate, 1),
       key: "selection",
     },
   ],
