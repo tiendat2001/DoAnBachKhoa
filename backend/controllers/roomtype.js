@@ -138,3 +138,29 @@ export const createRoom = async (req, res, next) => {
       next(err);
     }
   };
+
+  export const cancelRoomReservation = async (req, res, next) => {
+    try {
+        const room = await Room.findOne({ "roomNumbers._id": req.params.id });
+        if (!room) {
+            return res.status(404).json("Room not found");
+        }
+
+        const roomNumber = room.roomNumbers.find(number => number._id.toString() === req.params.id);
+        if (!roomNumber) {
+            return res.status(404).json("Room number not found");
+        }
+
+        const index = roomNumber.unavailableDates.indexOf(req.body.dates);
+        if (index === -1) {
+            return res.status(400).json("This date is not marked as unavailable");
+        }
+
+        roomNumber.unavailableDates.splice(index, 1);
+        await room.save();
+
+        res.status(200).json("Room reservation has been canceled successfully.");
+    } catch (err) {
+        next(err);
+    }
+};
