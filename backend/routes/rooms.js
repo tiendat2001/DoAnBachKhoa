@@ -1,5 +1,5 @@
 import express from "express"
-import { createRoom, deleteRoom, getRoomsByHotelId, getRooms, updateRoom, updateRoomAvailability,getRoomById } from "../controllers/roomtype.js";
+import { createRoom, deleteRoom, getRoomsByHotelId, getRooms, updateRoom, updateRoomAvailability,getRoomById,cancelRoomReservation } from "../controllers/roomtype.js";
 import { verifyAdmin,verifyUserModifyHotel } from "../utils/verifyToken.js";
 
 const router = express.Router();
