@@ -19,8 +19,17 @@ const NewRoom = () => {
     const [isSending, setIsSending] = useState(false);
 
     const handleChange = (e) => {
-        setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+        if (e.target.id === "roomNumbers") {
+            const numberOfRooms = parseInt(e.target.value);
+            const roomQuantity = Array.from({ length: numberOfRooms }, () => ({}));
+            setInfo((prev) => ({ ...prev, [e.target.id]: roomQuantity }));
+        } else {
+            setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+        }
+        console.log(info)
     };
+    console.log(info)
+
     return (
         <div className="listAdmin">
             <Sidebar />
@@ -74,7 +83,7 @@ const NewRoom = () => {
                                     <label>{input.label}</label>
                                     <input
                                         id={input.id}
-                                        // onChange={handleChange}
+                                        onChange={handleChange}
                                         type={input.type}
                                         placeholder={input.placeholder}
                                     />
