@@ -48,19 +48,20 @@
     background-color: rgba(255, 0, 0, 0.05);
     color: crimson;
 }
-.datatable .cellAction {
+ .cellAction {
+     margin:auto;
     display: flex;
     align-items: center;
     gap: 15px;
 }
-.datatable .cellAction .viewButton {
+ .cellAction .viewButton {
     padding: 2px 5px;
     border-radius: 5px;
     color: darkblue;
     border: 1px dotted rgba(0, 0, 139, 0.596);
     cursor: pointer;
 }
-.datatable .cellAction .deleteButton {
+ .cellAction .deleteButton {
     padding: 2px 5px;
     border-radius: 5px;
     color: crimson;

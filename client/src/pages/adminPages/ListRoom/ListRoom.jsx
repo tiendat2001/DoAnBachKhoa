@@ -7,6 +7,8 @@ import { roomColumns } from '../../../datatablesource';
 import useFetch from '../../../hooks/useFetch';
 import { useContext, useState, useEffect } from 'react'
 import { AuthContext } from '../../../context/AuthContext';
+import { Link, useLocation } from "react-router-dom";
+
 const ListRoom = () => {
     const { user } = useContext(AuthContext) // {user._id}
     const { data: hotelData, loading: hotelLoading, error: hotelError, reFetch: hotelReFetch } = useFetch(`/hotels?ownerId=${user._id}`);
@@ -22,6 +24,34 @@ const ListRoom = () => {
         }
     }, [hotelId]);
     console.log(roomData)
+
+    // thêm cột xóa sửa
+    const actionColumn = [
+        {
+            field: "action",
+            headerName: "Action",
+            width: 170,
+            headerAlign: 'center',
+            renderCell: (params) => {
+                return (
+                    <div className="cellAction">
+                        <Link
+                            //   to={`/${path}/find/${params.row._id}`}
+                            style={{ textDecoration: "none" }}
+                        >
+                            <div className="viewButton">View</div>
+                        </Link>
+                        <div
+                            className="deleteButton"
+                        //   onClick={() => handleDelete(params.row._id)}
+                        >
+                            Delete
+                        </div>
+                    </div>
+                );
+            },
+        },
+    ];
     return (
         <div className="listAdmin">
             <Sidebar />
@@ -30,40 +60,46 @@ const ListRoom = () => {
 
                 <div className="ListRoomAdminContainer">
                     <h2>Your Rooms</h2>
-                    <div className="hotelSelectBox">
-                        {/* <label>Choose a hotel</label> */}
-                        <select
-                            id="hotelId"
-                            value={hotelId}
-                            onChange={handleHotelChange}
-                        >
-                            <option value="" disabled selected>Chọn khách sạn</option>
-                            {hotelLoading
-                                ? "loading"
-                                : hotelData &&
-                                hotelData.map((hotel) => (
-                                    <option key={hotel._id} value={hotel._id}>
-                                        {hotel.name}
-                                    </option>
-                                ))}
-                        </select>
+                    <div style={{ display: 'flex' , justifyContent:'space-between' }}>
 
+                        <div className="hotelSelectBox">
+                            {/* <label>Choose a hotel</label> */}
+                            <select
+                                id="hotelId"
+                                value={hotelId}
+                                onChange={handleHotelChange}
+                            >
+                                <option value="" disabled selected>Chọn khách sạn</option>
+                                {hotelLoading
+                                    ? "loading"
+                                    : hotelData &&
+                                    hotelData.map((hotel) => (
+                                        <option key={hotel._id} value={hotel._id}>
+                                            {hotel.name}
+                                        </option>
+                                    ))}
+                            </select>
+
+                        </div>
+
+                        <button>Thêm loại phòng</button>
                     </div>
-                  
+
+
                 </div>
-                
-            
-                <DataGrid autoHeight 
+
+
+                <DataGrid autoHeight
                     className="datagrid"
-                        rows={roomData}
-                        columns={roomColumns}
-                        pageSize={5}
-                        rowsPerPageOptions={[5]}
-                        checkboxSelection
-                        getRowId={(row) => row._id}
-                    />
-               
-            
+                    rows={roomData}
+                    columns={roomColumns.concat(actionColumn)}
+                    pageSize={5}
+                    rowsPerPageOptions={[5]}
+                    checkboxSelection
+                    getRowId={(row) => row._id}
+                />
+
+
 
 
             </div>
