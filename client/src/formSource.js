@@ -38,3 +38,38 @@ export const hotelInputs = [
     // },
  
   ];
+
+  export const roomInputs = [
+    {
+      id: "title",
+      label: "Tên loại phòng",
+      type: "text",
+      placeholder: "",
+    },
+    {
+      id: "maxPeople",
+      label: "Số người",
+      type: "text",
+      placeholder: "",
+    },
+    {
+      id: "price",
+      label: "Giá",
+      type: "text",
+      placeholder: "",
+    },
+    {
+      id: "roomNumbers",
+      label: "Số lượng phòng",
+      type: "number",
+      placeholder: "",
+    },
+    
+    // {
+    //   id: "desc",
+    //   label: "Description",
+    //   type: "text",
+    //   placeholder: "description",
+    // },
+ 
+  ];
