@@ -23,7 +23,7 @@ const ListRoom = () => {
             roomReFetch();
         }
     }, [hotelId]);
-    console.log(roomData)
+    // console.log(roomData)
 
     // thêm cột xóa sửa
     const actionColumn = [
@@ -39,7 +39,7 @@ const ListRoom = () => {
                               to={`/admin/rooms/${params.row._id}`}
                             style={{ textDecoration: "none" }}
                         >
-                            <div className="viewButton">View</div>
+                            <div className="viewButton">Chỉnh sửa</div>
                         </Link>
                         <div
                             className="deleteButton"
@@ -69,7 +69,7 @@ const ListRoom = () => {
                                 value={hotelId}
                                 onChange={handleHotelChange}
                             >
-                                <option value="" disabled selected>Chọn khách sạn</option>
+                                <option disabled selected>Chọn khách sạn</option>
                                 {hotelLoading
                                     ? "loading"
                                     : hotelData &&

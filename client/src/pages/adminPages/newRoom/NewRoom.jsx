@@ -83,7 +83,7 @@ const NewRoom = () => {
               ownerId: user._id
             };
     
-                console.log(newRoom)
+                // console.log(newRoom)
 
             const Success = await axios.post(`/rooms/${hotelId}`, newRoom);
             if (Success) {
@@ -146,7 +146,7 @@ const NewRoom = () => {
                                 value={hotelId}
                                 onChange={handleHotelChange}
                             >
-                                <option value="" disabled selected>Chọn khách sạn</option>
+                                <option disabled selected>Chọn khách sạn</option>
                                 {loading
                                     ? "loading"
                                     : data &&
@@ -195,7 +195,7 @@ const NewRoom = () => {
                             ></textarea>
 
                             <button onClick={handleClick} disabled={isSending}>
-                                {isSending ? 'Sending...' : 'Post your hotel'}
+                                {isSending ? 'Sending...' : 'Thêm loại phòng'}
                             </button>            
                             </form>
                     </div>
