@@ -16,16 +16,18 @@ import ModifyHotel from "./pages/adminPages/ModifyHotel/ModifyHotel";
 import ListRoom from "./pages/adminPages/ListRoom/ListRoom";
 import ListBooking from "./pages/listBooking/ListBooking";
 import Reserve from "./pages/reserve/Reserve";
-import {getCookie}  from 'react-use-cookie';
+import NewRoom from "./pages/adminPages/newRoom/NewRoom";
+import ModifyRoom from "./pages/adminPages/ModifyRoom/ModifyRoom";
+import { getCookie } from 'react-use-cookie';
 function App() {
 
 
   const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
-    const userToken = getCookie ('access_token');
+    const userToken = getCookie('access_token');
     // console.log(userToken)
     // chua dang nhap thi tu dong nhay sang trang login
-    if (!user|| !userToken) {
+    if (!user || !userToken) {
       return <Navigate to="/login" />;
     }
 
@@ -73,6 +75,18 @@ function App() {
           <Route path="rooms" element={
             <ProtectedRoute>
               <ListRoom />
+            </ProtectedRoute>
+          } />
+
+          <Route path="rooms/new" element={
+            <ProtectedRoute>
+              <NewRoom />
+            </ProtectedRoute>
+          } />
+
+          <Route path="rooms/:id" element={
+            <ProtectedRoute>
+              <ModifyRoom />
             </ProtectedRoute>
           } />
 

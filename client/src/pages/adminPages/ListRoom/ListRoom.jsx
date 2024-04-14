@@ -36,7 +36,7 @@ const ListRoom = () => {
                 return (
                     <div className="cellAction">
                         <Link
-                            //   to={`/${path}/find/${params.row._id}`}
+                              to={`/admin/rooms/${params.row._id}`}
                             style={{ textDecoration: "none" }}
                         >
                             <div className="viewButton">View</div>
@@ -60,7 +60,7 @@ const ListRoom = () => {
 
                 <div className="ListRoomAdminContainer">
                     <h2>Your Rooms</h2>
-                    <div style={{ display: 'flex' , justifyContent:'space-between' }}>
+                    <div style={{ display: 'flex' , justifyContent:'space-between', alignItems:'center' }}>
 
                         <div className="hotelSelectBox">
                             {/* <label>Choose a hotel</label> */}
@@ -82,7 +82,10 @@ const ListRoom = () => {
 
                         </div>
 
-                        <button>Thêm loại phòng</button>
+                        <Link to={`/admin/rooms/new`}>
+                            <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>Thêm loại phòng</button>
+
+                        </Link>
                     </div>
 
 
