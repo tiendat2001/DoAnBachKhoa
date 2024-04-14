@@ -17,6 +17,27 @@ const NewRoom = () => {
     // const [rooms, setRooms] = useState([]);
     const { user } = useContext(AuthContext) // {user._id}
     const [isSending, setIsSending] = useState(false);
+    const { data, loading, error } = useFetch(`/hotels?ownerId=${user._id}`);
+    const [hotelId, setHotelId] = useState();
+    const navigate = useNavigate()
+
+    const handleHotelChange = (e) => {
+        setHotelId(e.target.value);
+    };
+
+    const validateInputs = () => {
+        // Check if all hotelInputs are filled
+        for (let input of roomInputs) {
+          if (!document.getElementById(input.id).value) {
+            return false;
+          }
+        }
+        // Check if description is filled
+        if (!document.getElementById("desc").value.trim()    )  {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
+          return false;
+        }
+        return true;
+      };
 
     const handleChange = (e) => {
         if (e.target.id === "roomNumbers") {
@@ -26,9 +47,61 @@ const NewRoom = () => {
         } else {
             setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
         }
-        console.log(info)
+
+        
+
     };
-    console.log(info)
+    // console.log(info)
+
+    // khi người dùng submit
+
+    const handleClick = async (e) => {
+        e.preventDefault();
+        setIsSending(true);
+        try {
+          const list = await Promise.all(
+            Object.values(files).map(async (file) => {
+              const data = new FormData();
+              data.append("file", file);
+              data.append("upload_preset", "upload");
+              const uploadRes = await axios.post(
+                "https://api.cloudinary.com/v1_1/tiendat2001/image/upload",
+                data
+              );
+              // console.log(uploadRes.data)
+              const { url } = uploadRes.data;
+              return url;
+            })
+          );
+    
+          if (!validateInputs()) {
+            toast.error("Please fill in all fields before submitting.");
+          } else {
+            const newRoom = {
+              ...info,
+              photos: list,
+              ownerId: user._id
+            };
+    
+                console.log(newRoom)
+
+            const Success = await axios.post(`/rooms/${hotelId}`, newRoom);
+            if (Success) {
+              toast.success('Thành công!');
+            //   navigate("/admin/hotels");
+    
+            } else toast.error("Error.Please try again");
+    
+    
+          }
+    
+    
+        } catch (err) {
+          console.log(err);
+        } finally {
+          setIsSending(false); // Kết thúc xử lý, trả lại trạng thái ban đầu cho nút
+        }
+      };
 
     return (
         <div className="listAdmin">
@@ -64,9 +137,32 @@ const NewRoom = () => {
                     {/* field up ảnh */}
                     <div className="right">
                         <form>
+
+                            {/* select box khach san */}
+                            <div className="roomSelectBox">
+                            {/* <label>Choose a hotel</label> */}
+                            <select
+                                id="hotelId"
+                                value={hotelId}
+                                onChange={handleHotelChange}
+                            >
+                                <option value="" disabled selected>Chọn khách sạn</option>
+                                {loading
+                                    ? "loading"
+                                    : data &&
+                                    data.map((hotel) => (
+                                        <option key={hotel._id} value={hotel._id}>
+                                            {hotel.name}
+                                        </option>
+                                    ))}
+                            </select>
+
+                        </div>
+
+
                             <div className="formInput">
                                 <label htmlFor="file">
-                                    Image: <DriveFolderUploadOutlinedIcon className="icon" />
+                                    Ảnh: <DriveFolderUploadOutlinedIcon className="icon" />
                                 </label>
                                 <input
                                     type="file"
@@ -94,12 +190,13 @@ const NewRoom = () => {
                             <textarea
                                 id="desc"
                                 rows="4" /* Số dòng mặc định hiển thị ban đầu */
-                                // onChange={handleChange}
+                                onChange={handleChange}
                                 style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
                             ></textarea>
-                            {/* <button onClick={handleClick} disabled={isSending}>
+
+                            <button onClick={handleClick} disabled={isSending}>
                                 {isSending ? 'Sending...' : 'Post your hotel'}
-                            </button>             */}
+                            </button>            
                             </form>
                     </div>
 
