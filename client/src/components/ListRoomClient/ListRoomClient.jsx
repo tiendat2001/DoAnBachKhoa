@@ -129,7 +129,7 @@ const ListRoomClient = ({ hotelId }) => {
 
     // }
     // alert("thanh cong")
-    navigate("/reserve", { state: { selectedRooms, alldates, hotelId} });
+    navigate("/reserve", { state: { selectedRooms, alldates, hotelId, startDate:dates[0].startDate, endDate: dates[0].endDate} });
 
   };
 

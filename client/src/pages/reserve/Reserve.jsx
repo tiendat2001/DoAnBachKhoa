@@ -18,6 +18,9 @@ const Reserve = () => {
   const [selectedRooms, setSelectedRooms] = useState(location.state.selectedRooms);
   const [alldates, setAlldates] = useState(location.state.alldates);
   const [hotelId, setHotelId] = useState(location.state.hotelId);
+  const [startDate, setStartDate] = useState(location.state.startDate);
+  const [endDate, setEndDate] = useState(location.state.endDate);
+  console.log(new Date(startDate))
 
   const { data:roomData, loading, error } = useFetch(`/rooms/${hotelId}`);
   // const [totalPrice, setTotalPrice] = useState(0);
@@ -59,9 +62,11 @@ const Reserve = () => {
     <div>
       <Navbar />
       <Header type="list" />
-      <h1>{totalPrice}</h1>
+      <h1>{totalPrice*alldates.length}</h1>
       <h1>{detailRooms}</h1>
-      <h1></h1>
+      <h1>So dem: {alldates.length} </h1>
+      <h1>Hotel id {hotelId}</h1>
+      <h1>{startDate.toLocaleDateString('vi-VN')}</h1>
     </div>
   );
 };
