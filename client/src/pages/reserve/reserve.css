@@ -12,6 +12,7 @@
     justify-content: space-between;
     border: 2px solid #d5eefd; /* Màu xanh nước biển */
     padding: 20px; /* Padding 20px */
+    margin-bottom: 10px;
 }
 .reserveImg{
     width: 200px;
@@ -19,3 +20,15 @@
     object-fit: cover;
     width:30%;
 }
+
+.ReserveDetailContainer{
+    border: 2px solid #d5eefd; /* Màu xanh nước biển */
+    margin-bottom: 10px;
+    padding: 0 10px;
+}
+
+.ReserveDetailContainer div {
+    padding: 10px 0px;
+    font-size:17px;
+  }
+  

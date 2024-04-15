@@ -22,11 +22,11 @@ const Reserve = () => {
   const [endDate, setEndDate] = useState(location.state.endDate);
   console.log(new Date(startDate))
 
-  const { data:roomData, loading, error } = useFetch(`/rooms/${hotelId}`);
-  const { data:hotelData, loading:hotelLoading, error:hotelError } = useFetch(`/hotels/find/${hotelId}`);
+  const { data: roomData, loading, error } = useFetch(`/rooms/${hotelId}`);
+  const { data: hotelData, loading: hotelLoading, error: hotelError } = useFetch(`/hotels/find/${hotelId}`);
 
   // const [totalPrice, setTotalPrice] = useState(0);
-  var  totalPrice=0;
+  var totalPrice = 0;
   // console.log(selectedRooms)
   // const [detailRooms, setdetailRooms]=useSt
   // alldates.forEach(timestamp => {
@@ -41,7 +41,7 @@ const Reserve = () => {
     // với mỗi _id phòng nhỏ thì tìm typeRoom tương ứng
     const room = roomData.find(room => room.roomNumbers.some(rn => rn._id == roomId));
     if (room) {
-      totalPrice=totalPrice+room.price
+      totalPrice = totalPrice + room.price
       if (roomCounts[room.title]) {
         roomCounts[room.title]++;
       } else {
@@ -70,19 +70,44 @@ const Reserve = () => {
       <h1>Hotel id {hotelId}</h1>
       <h1>{startDate.toLocaleDateString('vi-VN')}</h1> */}
       <div className="ReserveContainer">
-          <h1>Thông tin đặt phòng</h1>
-          <div className="ReserveHotelContainer">
-            <img src={hotelData.photos?.[0]} alt="" className ="reserveImg" />
+        <h1>Thông tin đặt phòng</h1>
+        {/* chứa thông tin khách sạn đang đặt */}
+        <div className="ReserveHotelContainer">
+          <img src={hotelData.photos?.[0]} alt="" className="reserveImg" />
 
-            <div style={{width:'65%'}}>
+          <div style={{ width: '65%' }}>
             <div style={{ fontSize: '30px', fontWeight: 'bold', marginBottom: '10px', lineHeight: '30px' }}>{hotelData.name}</div>
-              <div>Địa chỉ: {hotelData.address}</div>
-
-
-            </div>
+            <div>Địa chỉ: {hotelData.address}</div>
           </div>
+        </div>
+
+        <div style={{
+          width: '100%', backgroundColor: '#d5eefd', height: '30px', alignContent: 'center',
+          fontWeight: 'bold',fontSize:'25px',padding:'10px'
+        }}>  Chi tiết đặt phòng của bạn</div>
+        <div className="ReserveDetailContainer">
+          <div>Ngày nhận phòng: {startDate.toLocaleDateString('vi-VN')}</div>
+          <div>Ngày trả phòng:    {endDate.toLocaleDateString('vi-VN')}</div>
+          <div>Tổng thời gian lưu trú:  {alldates.length} đêm</div>
+          <div style={{fontWeight:'bold'}}>Phòng của bạn:  {detailRooms}</div>
+          <div style={{fontWeight:'bold'}}>Tổng giá:  {totalPrice*alldates.length}</div>
+
+
+        </div>
+
+        <div style={{
+          width: '100%', backgroundColor: '#d5eefd', height: '30px', alignContent: 'center',
+          fontWeight: 'bold',fontSize:'25px',padding:'10px'
+        }}>  Thông tin thanh toán</div>
+        <div className="ReserveDetailContainer">
+          <div>Bla</div>
+          
+
+
+        </div>
+
       </div>
-     
+
     </div>
   );
 };
