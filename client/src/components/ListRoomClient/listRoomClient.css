@@ -96,6 +96,7 @@
     display: flex;
     flex-wrap:wrap;
     justify-content: flex-start;
+    gap:2px;
   }
 
   .rImgWrapper{

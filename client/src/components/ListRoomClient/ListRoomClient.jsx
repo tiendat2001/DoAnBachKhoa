@@ -23,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ListRoomClient = ({ hotelId }) => {
 
-  const { data, loading, error } = useFetch(`/hotels/room/${hotelId}`);
+  const { data, loading, error } = useFetch(`/rooms/${hotelId}`);
   const [selectedRooms, setSelectedRooms] = useState([]);
   const searchContext = useContext(SearchContext);
   const [dates, setDates] = useState(searchContext.dates);
@@ -129,7 +129,7 @@ const ListRoomClient = ({ hotelId }) => {
 
     // }
     // alert("thanh cong")
-    navigate("/reserve", { state: { selectedRooms, alldates} });
+    navigate("/reserve", { state: { selectedRooms, alldates, hotelId} });
 
   };
 
