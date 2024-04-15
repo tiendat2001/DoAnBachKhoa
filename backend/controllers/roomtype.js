@@ -166,7 +166,7 @@ export const cancelRoomReservation = async (req, res, next) => {
     // await room.save();
     console.log(indexesToRemove)
     if (indexesToRemove.length > 0) {
-      // Loại bỏ các phần tử khỏi mảng nếu tìm thấy
+      // Loại bỏ các phần tử khỏi mảng nếu tìm thấy, chỉ giữ lại phần tử ko thuộc indexesToRemove
       const newUnavailableDates = roomNumber.unavailableDates.filter((_, index) => !indexesToRemove.includes(index));
       roomNumber.unavailableDates = newUnavailableDates;
       console.log(roomNumber.unavailableDates)

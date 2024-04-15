@@ -46,7 +46,7 @@ const ModifyHotel = () => {
        
             const newModifyHotel = {
               ...info,
-              ...(list.length > 0 && { photos: list }),
+              ...(list.length > 0 && { photos: list }), // nếu người dùng có thêm ảnh vào thì set lại ảnh mới, ko thì giữ nguyên
               ownerId: user._id
             };
           
