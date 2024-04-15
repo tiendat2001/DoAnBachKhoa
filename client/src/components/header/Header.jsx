@@ -19,21 +19,13 @@ import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from '../../context/AuthContext';
 
 const Header = ({ type }) => {
-  const [destination, setDestination] = useState("Hà Nội");
+  const searchContext =useContext(SearchContext);
+  const [destination, setDestination] = useState(searchContext.destination);
+  const [dates, setDates] = useState(searchContext.dates);
   const [openDate, setOpenDate] = useState(false);
-  const [dates, setDates] = useState([
-    {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 1),
-      key: "selection",
-    },
-  ]);
+  const [options, setOptions] = useState(searchContext.options);
+
   const [openOptions, setOpenOptions] = useState(false);
-  const [options, setOptions] = useState({
-    adult: 1,
-    children: 0,
-    room: 1,
-  });
 
   const navigate = useNavigate();
   // sự kiện chỉnh sửa số người, room
