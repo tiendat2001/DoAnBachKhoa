@@ -58,7 +58,7 @@ const ModifyRoom = () => {
             const Success = await axios.put(`/rooms/${idRoom}`, newModifyRoom);
             if (Success) {
               toast.success('Thành công chỉnh sửa!');
-            //   navigate("/admin/rooms");
+              navigate(`/admin/rooms`);
     
             } else toast.error("Error.Please try again");
     
@@ -79,7 +79,7 @@ const ModifyRoom = () => {
                 {/* css từ newHotel.css */}
                 <div className="top">
                     <h1>Chỉnh sửa loại phòng</h1>
-                    {/* <h1>Điền vào trường cần sửa thông tin</h1> */}
+                    <h3 style={{ fontSize: '14px', color: '#ccc'}}>(Điền vào trường cần sửa thông tin)</h3>
                 </div>
 
                 <div className="bottom">
