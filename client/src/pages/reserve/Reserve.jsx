@@ -23,6 +23,8 @@ const Reserve = () => {
   console.log(new Date(startDate))
 
   const { data:roomData, loading, error } = useFetch(`/rooms/${hotelId}`);
+  const { data:hotelData, loading:hotelLoading, error:hotelError } = useFetch(`/hotels/find/${hotelId}`);
+
   // const [totalPrice, setTotalPrice] = useState(0);
   var  totalPrice=0;
   // console.log(selectedRooms)
@@ -62,11 +64,25 @@ const Reserve = () => {
     <div>
       <Navbar />
       <Header type="list" />
-      <h1>{totalPrice*alldates.length}</h1>
+      {/* <h1>{totalPrice*alldates.length}</h1>
       <h1>{detailRooms}</h1>
       <h1>So dem: {alldates.length} </h1>
       <h1>Hotel id {hotelId}</h1>
-      <h1>{startDate.toLocaleDateString('vi-VN')}</h1>
+      <h1>{startDate.toLocaleDateString('vi-VN')}</h1> */}
+      <div className="ReserveContainer">
+          <h1>Thông tin đặt phòng</h1>
+          <div className="ReserveHotelContainer">
+            <img src={hotelData.photos?.[0]} alt="" className ="reserveImg" />
+
+            <div style={{width:'65%'}}>
+            <div style={{ fontSize: '30px', fontWeight: 'bold', marginBottom: '10px', lineHeight: '30px' }}>{hotelData.name}</div>
+              <div>Địa chỉ: {hotelData.address}</div>
+
+
+            </div>
+          </div>
+      </div>
+     
     </div>
   );
 };

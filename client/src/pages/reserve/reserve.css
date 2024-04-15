@@ -1,0 +1,21 @@
+.ReserveContainer{
+    width: 100%;
+    max-width: 1024px;
+    /* gap: 10px; */
+    /* position: relative; */
+    margin: 10px auto
+
+}
+
+.ReserveHotelContainer{
+    display:flex;
+    justify-content: space-between;
+    border: 2px solid #d5eefd; /* Màu xanh nước biển */
+    padding: 20px; /* Padding 20px */
+}
+.reserveImg{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    width:30%;
+}

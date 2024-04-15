@@ -19,6 +19,7 @@ import {
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ListRoomClient = ({ hotelId }) => {
@@ -129,7 +130,12 @@ const ListRoomClient = ({ hotelId }) => {
 
     // }
     // alert("thanh cong")
-    navigate("/reserve", { state: { selectedRooms, alldates, hotelId, startDate:dates[0].startDate, endDate: dates[0].endDate} });
+    if(selectedRooms.length>0){
+      navigate("/reserve", { state: { selectedRooms, alldates, hotelId, startDate:dates[0].startDate, endDate: dates[0].endDate} });
+
+    }else{
+      toast.error('Bạn chưa chọn phòng muốn đặt');
+    }
 
   };
 
