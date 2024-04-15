@@ -54,6 +54,17 @@ export const updateRoom = async (req, res, next) => {
       { $set: req.body },
       { new: true }
     );
+
+    // chỉnh sửa lại giá thấp nhất của khách sạn ( phòng người dùng đổi giá phòng)
+    const hotelId = hotelToUpdate._id
+    const cheapestRoom = await Room.findOne({ hotelId }).sort({ price: 1 }).limit(1);
+    await Hotel.findByIdAndUpdate(hotelId, {
+      cheapestPrice: {
+        price: cheapestRoom.price,
+        people: cheapestRoom.maxPeople
+      }
+    });
+
     res.status(200).json(updatedRoom);
   } catch (err) {
     next(err);
