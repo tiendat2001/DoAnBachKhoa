@@ -42,34 +42,35 @@ export const roomColumns = [
   ];
 
   // order
-  export const orderColumns = [
-    { field: "username", headerName: "UserName", width: 230 },
-    { field: "hotelid", headerName: "Hotel Name", width: 230 },
-  
-    {
-      field: "roomNumbers",
-      headerName: "Room Number",
-      width: 130,
-    },
+  export const ReservationColumns = [
+    { field: "username", headerName: "Tài khoản", width: 230 },
     {
       field: "start",
-      headerName: "Start Date",
+      headerName: "Check-in",
       width: 115,
     },
     {
       field: "end",
-      headerName: "End Date",
+      headerName: "Check-out",
       width: 115,
     },
+    { field: "hotelName", headerName: "Khách sạn", width: 230 },
+  
     {
-      field: "price",
-      headerName: "Price $",
+      field: "totalPrice",
+      headerName: "Tổng giá",
+      width: 100,
+    },
+    {
+      field: "phoneNumber",
+      headerName: "Số điện thoại",
       width: 100,
     },
     {
       field: "status",
-      headerName: "Paid",
+      headerName: "Trạng thái",
       width: 100,
     },
+
   ];
   
