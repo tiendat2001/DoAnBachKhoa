@@ -44,7 +44,8 @@ export const roomColumns = [
   ];
   const formatDate = (date) => {
     let dateFormat = subDays(new Date(date), 1)
-    return dateFormat.toLocaleDateString('vi-VN');
+    const [month, day, year] = dateFormat.toLocaleDateString().split('/');
+    return `${day}/${month}/${year}`;
   };
   // order
   export const ReservationColumns = [
