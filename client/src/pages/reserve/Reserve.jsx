@@ -11,6 +11,7 @@ import React from "react";
 import { AuthContext } from '../../context/AuthContext';
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
+import { format,addDays,subDays   } from "date-fns";
 
 import { useLocation } from "react-router-dom";
 const Reserve = () => {
@@ -64,14 +65,19 @@ const Reserve = () => {
 
     // tạo order
     try {
+      // cộng 1 ngày để hiển thị trong csdl đúng
+      const allDatesPlus = alldates.map(date => addDays(date, 1));
+      const startDatePlus = addDays(startDate, 1)
+      const endDatePlus = addDays(endDate, 1)
+
       const upload = axios.post(`/reservation`, {
         username: "dat",
         phoneNumber: "32423424",
-        start: startDate,
-        end: endDate,
+        start: startDatePlus,
+        end: endDatePlus,
         roomNumbersId:selectedRooms,
         totalDay: alldates.length,
-        allDatesReserve:alldates,
+        allDatesReserve:allDatesPlus,
         totalPrice:totalPrice,
         hotelId:hotelId
       });
@@ -80,6 +86,7 @@ const Reserve = () => {
       console.log(err)
 
     }
+    alert("thanh cong")
     
   }
 
