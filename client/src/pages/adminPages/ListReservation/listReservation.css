@@ -2,3 +2,7 @@
     width:95%;
     margin:auto
 }
+.wrap-content {
+    white-space: normal !important;
+  }
+  

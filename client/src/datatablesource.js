@@ -57,6 +57,8 @@ export const roomColumns = [
       headerName: "Check-in",
       width: 115,
       valueGetter: (params) => formatDate(params.value),
+      headerAlign: 'center',
+      align:'center'
 
     },
     {
@@ -64,28 +66,49 @@ export const roomColumns = [
       headerName: "Check-out",
       width: 115,
       valueGetter: (params) => formatDate(params.value),
+      headerAlign: 'center',
+      align:'center'
     },
-    { field: "hotelName", headerName: "Khách sạn", width: 180 },
+    { field: "hotelName", headerName: "Khách sạn", width: 180, headerAlign: 'center',  align:'center' },
+
+    {
+      field: "roomsDetail",
+      headerName: "Phòng",
+      width: 250,
+      cellClassName: 'wrap-content', // xuống dòng khi nội dung dài
+      headerAlign: 'center',
+      align:'center'
+    },
     
     {
       field: "guest",
       headerName: "Số người",
       width: 150,
+      cellClassName: 'wrap-content', // xuống dòng khi nội dung dài
+      headerAlign: 'center',
+      align:'center'
     },
+
     {
       field: "totalPrice",
       headerName: "Tổng giá",
       width: 100,
+      headerAlign: 'center',
+      align:'center'
     },
     {
       field: "phoneNumber",
       headerName: "Số điện thoại",
       width: 100,
+      headerAlign: 'center',
+      align:'center'
     },
     {
       field: "status",
       headerName: "Trạng thái",
       width: 100,
+      headerAlign: 'center',
+      align:'center'
     },
 
   ];
