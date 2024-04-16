@@ -3,7 +3,7 @@ import axios from "axios";
 import { AuthContext } from '../../context/AuthContext';
 import useFetch from '../../hooks/useFetch';
 import "./listRoomClient.css"
-import { useContext, useState } from "react";
+import { useContext, useState,useEffect } from "react";
 import { SearchContext } from '../../context/SearchContext';
 import { format,addDays,subDays   } from "date-fns";
 import { DateRange } from "react-date-range";
@@ -28,12 +28,22 @@ const ListRoomClient = ({ hotelId }) => {
   const [selectedRooms, setSelectedRooms] = useState([]);
   const searchContext = useContext(SearchContext);
   const [dates, setDates] = useState(searchContext.dates);
+  const [options, setOptions] = useState(searchContext.options);
+  const [destination, setDestination] = useState(searchContext.destination);
   const [openDate, setOpenDate] = useState(false);
   // const [expandedPhotoIndex, setExpandedPhotoIndex] = useState(null); // State để lưu index của ảnh đang được phóng to
   const [openExpandPhoto, setOpenExpandPhoto] = useState(false);
   const [slideNumber, setSlideNumber] = useState(0);
+  const { dispatch } = useContext(SearchContext);
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    // console.log("Updated changes:", dates);
+    dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
+  }, [destination, dates, options]);
+
+
   const handleOpen = (i) => {
     // setSlideNumber(i);
     setOpenExpandPhoto(true);
