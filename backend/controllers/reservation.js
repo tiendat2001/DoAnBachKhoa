@@ -15,7 +15,7 @@ export const createReservation = async (req,res,next)=>{
 
 export const getReservations = async (req,res,next)=>{
     try {
-        const Reservations = await Reservation.find();
+        const Reservations = await Reservation.find(req.query);
         res.status(200).json(Reservations)
     } catch (err) {
         next(err)
