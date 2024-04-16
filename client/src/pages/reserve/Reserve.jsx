@@ -21,6 +21,8 @@ const Reserve = () => {
   const [hotelId, setHotelId] = useState(location.state.hotelId);
   const [startDate, setStartDate] = useState(location.state.startDate);
   const [endDate, setEndDate] = useState(location.state.endDate);
+  const {user} = useContext(AuthContext)
+
   // console.log(new Date(startDate))
 
   const { data: roomData, loading, error } = useFetch(`/rooms/${hotelId}`);
@@ -62,16 +64,16 @@ const Reserve = () => {
   // đặt phòng
   const reserveRoom = async () => {
     console.log("dat")
+    // cộng 1 ngày để hiển thị trong csdl đúng
+    const allDatesPlus = alldates.map(date => addDays(date, 1));
+    const startDatePlus = addDays(startDate, 1)
+    const endDatePlus = addDays(endDate, 1)
 
     // tạo order
     try {
-      // cộng 1 ngày để hiển thị trong csdl đúng
-      const allDatesPlus = alldates.map(date => addDays(date, 1));
-      const startDatePlus = addDays(startDate, 1)
-      const endDatePlus = addDays(endDate, 1)
-
+      
       const upload = axios.post(`/reservation`, {
-        username: "dat",
+        username: user.username,
         phoneNumber: "32423424",
         start: startDatePlus,
         end: endDatePlus,
@@ -81,10 +83,24 @@ const Reserve = () => {
         totalPrice:totalPrice,
         hotelId:hotelId
       });
-
     } catch (err) {
       console.log(err)
+    }
 
+    // DAY UNAVAILABLEDATE
+     try {
+      await Promise.all(
+        selectedRooms.map((roomId) => {
+          const res = axios.put(`/rooms/availability/${roomId}`, {
+            dates: allDatesPlus,
+          });
+          return res.data;
+        })
+      );
+
+     
+    } catch (err) {
+      console.log(err)
     }
     alert("thanh cong")
     
