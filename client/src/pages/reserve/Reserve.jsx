@@ -11,7 +11,7 @@ import React from "react";
 import { AuthContext } from '../../context/AuthContext';
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
-import { format,addDays,subDays   } from "date-fns";
+import { format, addDays, subDays } from "date-fns";
 import { toast } from 'react-toastify';
 import { useLocation } from "react-router-dom";
 const Reserve = () => {
@@ -21,12 +21,10 @@ const Reserve = () => {
   const [hotelId, setHotelId] = useState(location.state.hotelId);
   const [startDate, setStartDate] = useState(location.state.startDate);
   const [endDate, setEndDate] = useState(location.state.endDate);
-  const searchContext =useContext(SearchContext);
+  const searchContext = useContext(SearchContext);
   const [options, setOptions] = useState(searchContext.options);
-  console.log(options.adult)
-  console.log(options.children)
 
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
 
   // console.log(new Date(startDate))
 
@@ -35,6 +33,8 @@ const Reserve = () => {
 
   // const [totalPrice, setTotalPrice] = useState(0);
   var totalPrice = 0;
+  var maxPeople = 0;
+
   // console.log(selectedRooms)
   // const [detailRooms, setdetailRooms]=useSt
   // alldates.forEach(timestamp => {
@@ -50,6 +50,7 @@ const Reserve = () => {
     const room = roomData.find(room => room.roomNumbers.some(rn => rn._id == roomId));
     if (room) {
       totalPrice = totalPrice + room.price
+      maxPeople = maxPeople + room.maxPeople
       if (roomCounts[room.title]) {
         roomCounts[room.title]++;
       } else {
@@ -64,7 +65,7 @@ const Reserve = () => {
   // In ra kết quả
   // console.log(roomCounts);
   // console.log(detailRooms);
-  // console.log(totalPrice);
+  console.log(maxPeople);
 
   // đặt phòng
   const reserveRoom = async () => {
@@ -76,20 +77,20 @@ const Reserve = () => {
 
     // tạo order
     try {
-      
+
       const upload = axios.post(`/reservation`, {
         username: user.username,
         phoneNumber: "32423424",
         start: startDatePlus,
         end: endDatePlus,
-        roomNumbersId:selectedRooms,
-        roomsDetail:detailRooms,
+        roomNumbersId: selectedRooms,
+        roomsDetail: detailRooms,
         guest: `${options.adult} người lớn, ${options.children} trẻ em`,
-        allDatesReserve:allDatesPlus,
-        totalPrice:totalPrice,
-        hotelId:hotelId,
-        idOwnerHotel:hotelData.ownerId,
-        hotelName:hotelData.name
+        allDatesReserve: allDatesPlus,
+        totalPrice: totalPrice,
+        hotelId: hotelId,
+        idOwnerHotel: hotelData.ownerId,
+        hotelName: hotelData.name
       });
     } catch (err) {
       console.log(err)
@@ -106,12 +107,12 @@ const Reserve = () => {
     //     })
     //   );
 
-     
+
     // } catch (err) {
     //   console.log(err)
     // }
     toast.success('Đặt phòng thành công');
-    
+
   }
 
   return (
@@ -145,7 +146,11 @@ const Reserve = () => {
           <div>Tổng thời gian lưu trú:  {alldates.length} đêm</div>
           <div style={{ fontWeight: 'bold' }}>Phòng của bạn:  {detailRooms} </div>
           <div style={{ fontWeight: 'bold' }}>Số người: {options.adult} người lớn và {options.children} trẻ em</div>
-
+          {(options.adult + options.children*2) - maxPeople >= 2 && (
+            <div style={{ fontWeight: 'bold', color: 'red' }}>
+              (Phòng của bạn có thể không chứa đủ người)
+            </div>
+          )}
           <div style={{ fontWeight: 'bold' }}>Tổng giá:  {totalPrice * alldates.length}</div>
 
 

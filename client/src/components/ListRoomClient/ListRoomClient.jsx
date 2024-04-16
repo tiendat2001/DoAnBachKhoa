@@ -180,6 +180,8 @@ const ListRoomClient = ({ hotelId }) => {
 
 
         </div>
+        <div ><FontAwesomeIcon icon={faPerson} className="headerIconHotel" /> {options.adult} người lớn, {options.children} trẻ em</div>
+
       </div>
 
 

@@ -42,6 +42,9 @@ export const roomColumns = [
     }
     
   ];
+
+
+// ------------------order
   const formatDate = (date) => {
     let dateFormat = subDays(new Date(date), 1)
     const [month, day, year] = dateFormat.toLocaleDateString().split('/');
@@ -49,7 +52,7 @@ export const roomColumns = [
   };
 
 
-  // order
+  
   export const ReservationColumns = [
     { field: "username", headerName: "Tài khoản", width: 80 },
     {
