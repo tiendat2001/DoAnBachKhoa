@@ -12,7 +12,7 @@ import { AuthContext } from '../../context/AuthContext';
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
 import { format,addDays,subDays   } from "date-fns";
-
+import { toast } from 'react-toastify';
 import { useLocation } from "react-router-dom";
 const Reserve = () => {
   const location = useLocation();
@@ -81,28 +81,29 @@ const Reserve = () => {
         totalDay: alldates.length,
         allDatesReserve:allDatesPlus,
         totalPrice:totalPrice,
-        hotelId:hotelId
+        hotelId:hotelId,
+        idOwnerHotel:hotelData.ownerId
       });
     } catch (err) {
       console.log(err)
     }
 
     // DAY UNAVAILABLEDATE
-     try {
-      await Promise.all(
-        selectedRooms.map((roomId) => {
-          const res = axios.put(`/rooms/availability/${roomId}`, {
-            dates: allDatesPlus,
-          });
-          return res.data;
-        })
-      );
+    //  try {
+    //   await Promise.all(
+    //     selectedRooms.map((roomId) => {
+    //       const res = axios.put(`/rooms/availability/${roomId}`, {
+    //         dates: allDatesPlus,
+    //       });
+    //       return res.data;
+    //     })
+    //   );
 
      
-    } catch (err) {
-      console.log(err)
-    }
-    alert("thanh cong")
+    // } catch (err) {
+    //   console.log(err)
+    // }
+    toast.success('Đặt phòng thành công');
     
   }
 

@@ -14,6 +14,9 @@ const ReservationSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    idOwnerHotel:{
+        type:String,
+    },
     roomNumbersId:{
         type: [String],
         required:true,
