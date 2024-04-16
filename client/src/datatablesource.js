@@ -47,9 +47,11 @@ export const roomColumns = [
     const [month, day, year] = dateFormat.toLocaleDateString().split('/');
     return `${day}/${month}/${year}`;
   };
+
+
   // order
   export const ReservationColumns = [
-    { field: "username", headerName: "Tài khoản", width: 230 },
+    { field: "username", headerName: "Tài khoản", width: 80 },
     {
       field: "start",
       headerName: "Check-in",
@@ -63,9 +65,13 @@ export const roomColumns = [
       width: 115,
       valueGetter: (params) => formatDate(params.value),
     },
-    { field: "hotelName", headerName: "Khách sạn", width: 230 },
+    { field: "hotelName", headerName: "Khách sạn", width: 180 },
     
-  
+    {
+      field: "guest",
+      headerName: "Số người",
+      width: 150,
+    },
     {
       field: "totalPrice",
       headerName: "Tổng giá",

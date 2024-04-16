@@ -25,6 +25,9 @@ const ReservationSchema = new mongoose.Schema({
         type: [String],
         required:true,
     },
+    roomsDetail:{
+        type:String,
+    },
     start:{
         type:Date,
         require:true,
@@ -33,9 +36,8 @@ const ReservationSchema = new mongoose.Schema({
         type:Date,
         require:true,
     },
-    totalDay:{
-        type:Number,
-        require:true,
+    guest:{
+        type:String,
     },
     allDatesReserve:{
         type:[Date],

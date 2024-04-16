@@ -21,6 +21,11 @@ const Reserve = () => {
   const [hotelId, setHotelId] = useState(location.state.hotelId);
   const [startDate, setStartDate] = useState(location.state.startDate);
   const [endDate, setEndDate] = useState(location.state.endDate);
+  const searchContext =useContext(SearchContext);
+  const [options, setOptions] = useState(searchContext.options);
+  console.log(options.adult)
+  console.log(options.children)
+
   const {user} = useContext(AuthContext)
 
   // console.log(new Date(startDate))
@@ -78,7 +83,8 @@ const Reserve = () => {
         start: startDatePlus,
         end: endDatePlus,
         roomNumbersId:selectedRooms,
-        totalDay: alldates.length,
+        roomsDetail:detailRooms,
+        guest: `${options.adult} người lớn, ${options.children} trẻ em`,
         allDatesReserve:allDatesPlus,
         totalPrice:totalPrice,
         hotelId:hotelId,
@@ -137,7 +143,9 @@ const Reserve = () => {
           <div>Ngày nhận phòng: {startDate.toLocaleDateString('vi-VN')}</div>
           <div>Ngày trả phòng:    {endDate.toLocaleDateString('vi-VN')}</div>
           <div>Tổng thời gian lưu trú:  {alldates.length} đêm</div>
-          <div style={{ fontWeight: 'bold' }}>Phòng của bạn:  {detailRooms}</div>
+          <div style={{ fontWeight: 'bold' }}>Phòng của bạn:  {detailRooms} </div>
+          <div style={{ fontWeight: 'bold' }}>Số người: {options.adult} người lớn và {options.children} trẻ em</div>
+
           <div style={{ fontWeight: 'bold' }}>Tổng giá:  {totalPrice * alldates.length}</div>
 
 
