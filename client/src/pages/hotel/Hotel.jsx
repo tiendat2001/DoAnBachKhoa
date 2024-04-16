@@ -17,7 +17,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
 import Reserve from "../reserve/Reserve";
-import { format,  } from "date-fns";
+import { format, } from "date-fns";
 import ListRoomClient from "../../components/ListRoomClient/ListRoomClient";
 import {
   faBed,
@@ -39,7 +39,7 @@ const Hotel = () => {
 
   // CONTEXT
   const searchContext = useContext(SearchContext);
-  const { destination ,dates, options } = useContext(SearchContext);
+  const { destination, dates, options } = useContext(SearchContext);
   // console.log(searchContext)
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -60,9 +60,9 @@ const Hotel = () => {
     let newSlideNumber;
 
     if (direction === "l") {
-      newSlideNumber = slideNumber === 0 ? (data.photos.length-1) : slideNumber - 1;
+      newSlideNumber = slideNumber === 0 ? (data.photos.length - 1) : slideNumber - 1;
     } else {
-      newSlideNumber = slideNumber === (data.photos.length-1) ? 0 : slideNumber + 1;
+      newSlideNumber = slideNumber === (data.photos.length - 1) ? 0 : slideNumber + 1;
     }
 
     setSlideNumber(newSlideNumber);
@@ -81,8 +81,8 @@ const Hotel = () => {
       <Navbar />
       <Header type="list" />
 
-    {/* phần hiển thị thông tin chọn từ trc */}
-    {/* <div className="headerSearchHotel">
+      {/* phần hiển thị thông tin chọn từ trc */}
+      {/* <div className="headerSearchHotel">
               <div className="headerSearchItemHotel">
                 <FontAwesomeIcon icon={faBed} className="headerIconHotel" />
                 <input
@@ -156,7 +156,8 @@ const Hotel = () => {
             </span> */}
             <div className="hotelImages">
               {data.photos?.map((photo, i) => (
-                <div className="hotelImgWrapper" key={i}>
+                <div style={{ width: `${data.photos.length >= 9 ? (100 / Math.ceil(data.photos.length / 3)) + '%' : '33%'}` }} className="hotelImgWrapper" key={i}>
+
                   <img
                     onClick={() => handleOpen(i)}
                     src={photo}
@@ -172,22 +173,22 @@ const Hotel = () => {
                 <p className="hotelDesc">{data.desc}</p>
               </div>
               <div className="hotelDetailsPrice">
-              {/* {days !== 0 && <h1>Perfect for a {days}-night stay!</h1>} */}
+                {/* {days !== 0 && <h1>Perfect for a {days}-night stay!</h1>} */}
                 <span>
                   Located in the {data.address}, this property has an
                   excellent location!
                 </span>
-               
+
                 <h2>
-                <b>Price only from ${ data.cheapestPrice?.price ?? 'N/A'} per night</b>
-                  
+                  <b>Price only from ${data.cheapestPrice?.price ?? 'N/A'} per night</b>
+
                 </h2>
-               
+
                 {/* <button onClick={handleClick}>Reserve or Book Now!</button> */}
               </div>
             </div>
           </div>
-          <ListRoomClient hotelId={id}/>
+          <ListRoomClient hotelId={id} />
 
           <MailList />
           <Footer />
