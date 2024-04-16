@@ -82,7 +82,8 @@ const Reserve = () => {
         allDatesReserve:allDatesPlus,
         totalPrice:totalPrice,
         hotelId:hotelId,
-        idOwnerHotel:hotelData.ownerId
+        idOwnerHotel:hotelData.ownerId,
+        hotelName:hotelData.name
       });
     } catch (err) {
       console.log(err)
