@@ -11,3 +11,13 @@ export const createReservation = async (req,res,next)=>{
         next(err)
     }
 }
+
+
+export const getReservations = async (req,res,next)=>{
+    try {
+        const Reservations = await Reservation.find();
+        res.status(200).json(Reservations)
+    } catch (err) {
+        next(err)
+    }
+}
