@@ -20,7 +20,7 @@ const Reserve = () => {
   const [hotelId, setHotelId] = useState(location.state.hotelId);
   const [startDate, setStartDate] = useState(location.state.startDate);
   const [endDate, setEndDate] = useState(location.state.endDate);
-  console.log(new Date(startDate))
+  // console.log(new Date(startDate))
 
   const { data: roomData, loading, error } = useFetch(`/rooms/${hotelId}`);
   const { data: hotelData, loading: hotelLoading, error: hotelError } = useFetch(`/hotels/find/${hotelId}`);
@@ -58,8 +58,29 @@ const Reserve = () => {
   // console.log(detailRooms);
   // console.log(totalPrice);
 
+  // đặt phòng
   const reserveRoom = async () => {
     console.log("dat")
+
+    // tạo order
+    try {
+      const upload = axios.post(`/reservation`, {
+        username: "dat",
+        phoneNumber: "32423424",
+        start: startDate,
+        end: endDate,
+        roomNumbersId:selectedRooms,
+        totalDay: alldates.length,
+        allDatesReserve:alldates,
+        totalPrice:totalPrice,
+        hotelId:hotelId
+      });
+
+    } catch (err) {
+      console.log(err)
+
+    }
+    
   }
 
   return (
@@ -85,25 +106,25 @@ const Reserve = () => {
 
         <div style={{
           width: '100%', backgroundColor: '#d5eefd', height: '30px', alignContent: 'center',
-          fontWeight: 'bold',fontSize:'25px',padding:'10px'
+          fontWeight: 'bold', fontSize: '25px', padding: '10px'
         }}>  Chi tiết đặt phòng của bạn</div>
         <div className="ReserveDetailContainer">
           <div>Ngày nhận phòng: {startDate.toLocaleDateString('vi-VN')}</div>
           <div>Ngày trả phòng:    {endDate.toLocaleDateString('vi-VN')}</div>
           <div>Tổng thời gian lưu trú:  {alldates.length} đêm</div>
-          <div style={{fontWeight:'bold'}}>Phòng của bạn:  {detailRooms}</div>
-          <div style={{fontWeight:'bold'}}>Tổng giá:  {totalPrice*alldates.length}</div>
+          <div style={{ fontWeight: 'bold' }}>Phòng của bạn:  {detailRooms}</div>
+          <div style={{ fontWeight: 'bold' }}>Tổng giá:  {totalPrice * alldates.length}</div>
 
 
         </div>
 
         <div style={{
           width: '100%', backgroundColor: '#d5eefd', height: '30px', alignContent: 'center',
-          fontWeight: 'bold',fontSize:'25px',padding:'10px'
+          fontWeight: 'bold', fontSize: '25px', padding: '10px'
         }}>  Thông tin thanh toán</div>
         <div className="ReserveDetailContainer">
           <div>Bla</div>
-          
+
 
 
         </div>

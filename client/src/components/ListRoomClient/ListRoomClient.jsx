@@ -114,7 +114,7 @@ const ListRoomClient = ({ hotelId }) => {
   // từ front end đẩy xuống csdl bị lệch 1 ngày, ví dụ ở front 13 xuống csdl sẽ là 12, còn từ csdl lên front thì 12 sẽ bị lên thành 13
   const isAvailable = (roomNumber) => {
   const isFound = roomNumber.unavailableDates.some((date) => {
-    const dateMinusOneDay = subDays(new Date(date), 1).getTime();
+    const dateMinusOneDay = subDays(new Date(date), 1).getTime(); // theem getTIme() hay ko cung v
     // console.log(new Date(dateMinusOneDay));
     return alldates.includes(dateMinusOneDay);
   });

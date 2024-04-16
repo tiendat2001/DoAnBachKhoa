@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const Reservation = new mongoose.Schema({
+const ReservationSchema = new mongoose.Schema({
     username:{
         type:String,
         required:true,
