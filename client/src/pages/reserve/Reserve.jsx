@@ -58,7 +58,9 @@ const Reserve = () => {
   // console.log(detailRooms);
   // console.log(totalPrice);
 
-
+  const reserveRoom = async () => {
+    console.log("dat")
+  }
 
   return (
     <div>
@@ -105,6 +107,10 @@ const Reserve = () => {
 
 
         </div>
+
+        <button onClick={reserveRoom} className="rButton">
+          Đặt phòng
+        </button>
 
       </div>
 
