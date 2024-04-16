@@ -1,3 +1,5 @@
+import { format,addDays,subDays   } from "date-fns";
+
 export const roomColumns = [
     { field: "_id", headerName: "ID", width: 100, hide:true },
     {
@@ -40,7 +42,10 @@ export const roomColumns = [
     }
     
   ];
-
+  const formatDate = (date) => {
+    let dateFormat = subDays(new Date(date), 1)
+    return dateFormat.toLocaleDateString('vi-VN');
+  };
   // order
   export const ReservationColumns = [
     { field: "username", headerName: "Tài khoản", width: 230 },
@@ -48,13 +53,17 @@ export const roomColumns = [
       field: "start",
       headerName: "Check-in",
       width: 115,
+      valueGetter: (params) => formatDate(params.value),
+
     },
     {
       field: "end",
       headerName: "Check-out",
       width: 115,
+      valueGetter: (params) => formatDate(params.value),
     },
     { field: "hotelName", headerName: "Khách sạn", width: 230 },
+    
   
     {
       field: "totalPrice",
