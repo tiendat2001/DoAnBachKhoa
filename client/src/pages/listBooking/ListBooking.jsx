@@ -19,6 +19,20 @@ const ListBooking = () => {
     console.log(allDatesReserve)
     console.log(roomNumbersId)
 
+    try {
+        await Promise.all(
+          roomNumbersId.map((roomId) => {
+            const res = axios.put(`/rooms/cancelAvailability/${roomId}`, {
+              dates: allDatesReserve,
+            });
+            return res.data;
+          })
+        );
+  
+  
+      } catch (err) {
+        console.log(err)
+      }
 
   }
   return (

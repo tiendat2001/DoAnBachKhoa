@@ -97,20 +97,20 @@ const Reserve = () => {
     }
 
     // DAY UNAVAILABLEDATE
-    //  try {
-    //   await Promise.all(
-    //     selectedRooms.map((roomId) => {
-    //       const res = axios.put(`/rooms/availability/${roomId}`, {
-    //         dates: allDatesPlus,
-    //       });
-    //       return res.data;
-    //     })
-    //   );
+     try {
+      await Promise.all(
+        selectedRooms.map((roomId) => {
+          const res = axios.put(`/rooms/availability/${roomId}`, {
+            dates: allDatesPlus,
+          });
+          return res.data;
+        })
+      );
 
 
-    // } catch (err) {
-    //   console.log(err)
-    // }
+    } catch (err) {
+      console.log(err)
+    }
     toast.success('Đặt phòng thành công');
 
   }
