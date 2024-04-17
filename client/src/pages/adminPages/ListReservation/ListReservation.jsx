@@ -14,15 +14,15 @@ const ListReservation = () => {
     return (
         <div className="listAdmin">
             <Sidebar />
+            {/* css từ adminHome css */}
             <div className="listContainerAdmin">
                 <NavbarAdmin />
 
                 <div className="ListReservationAdminContainer">
                     <h2>Đặt phòng</h2>
-                </div>
-                
-                <DataGrid autoHeight
-                    className="datagrid"
+
+                    <DataGrid autoHeight
+                    // className="datagrid"
                     rows={reservationData}
                     columns={ReservationColumns}
                     pageSize={5}
@@ -32,6 +32,9 @@ const ListReservation = () => {
                     getRowHeight={(params) => params.length > 100 ? 100 : 70} // Xác định chiều cao hàng dựa trên chiều dài của mô tả
 
                 />
+                </div>
+                
+            
             </div>
         </div>
 

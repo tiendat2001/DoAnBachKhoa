@@ -6,12 +6,17 @@ export const roomColumns = [
     {
       field: "title",
       headerName: "Title",
-      width: 230,
+      width: 280,
+      align:'center',
+      headerAlign:'center'
     },
     {
       field: "desc",
       headerName: "Description",
-      width: 300,
+      width: 330,
+      cellClassName: 'wrap-content', 
+      align:'center',
+      headerAlign:'center'
     },
     // {
     //   field: "hotelName",
@@ -22,20 +27,23 @@ export const roomColumns = [
       field: "price",
       headerName: "Price",
       width: 130,
-      align:'center'
+      align:'center',
+      headerAlign:'center'
 
     },
     {
       field: "maxPeople",
       headerName: "Max People",
       width: 130,
-      align:'center'
+      align:'center',
+      headerAlign:'center'
     },
     {
       field: "roomCount",
       headerName: "Room Count",
       width: 150,
       align:'center',
+      headerAlign:'center',
       renderCell: (params) => {
           const roomNumbers = params.row.roomNumbers || [];
           return roomNumbers.length;
@@ -111,6 +119,15 @@ export const roomColumns = [
       width: 100,
       headerAlign: 'center',
       align:'center'
+    },
+    {
+      field: "createdAt",
+      headerName: "Thời gian đặt",
+      width: 115,
+      valueGetter: (params) => new Date(params.value).toLocaleDateString('vi-VN'),
+      headerAlign: 'center',
+      align:'center'
+
     },
     {
       field: "phoneNumber",
