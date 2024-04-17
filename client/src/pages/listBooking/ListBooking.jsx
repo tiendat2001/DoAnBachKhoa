@@ -11,7 +11,7 @@ import { format,addDays,subDays   } from "date-fns";
 const ListBooking = () => {
   const { user } = useContext(AuthContext)
   const { data, loading, error, reFetch } = useFetch(
-    `/reservation?idOwnerHotel=${user._id}`
+    `/reservation?username=${user.username}`
   );
   console.log(data)
   
