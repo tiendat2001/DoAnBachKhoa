@@ -13,11 +13,11 @@ const ListBooking = () => {
   const { data, loading, error, reFetch } = useFetch(
     `/reservation?username=${user.username}`
   );
-  console.log(data)
+  // console.log(data)
   
   const handleCancel = async (allDatesReserve, roomNumbersId) => {
-    console.log(allDatesReserve)
-    console.log(roomNumbersId)
+    // console.log(allDatesReserve)
+    // console.log(roomNumbersId)
 
     try {
         await Promise.all(
@@ -33,6 +33,7 @@ const ListBooking = () => {
       } catch (err) {
         console.log(err)
       }
+      alert("Hủy phòng thành công")
 
   }
   return (
