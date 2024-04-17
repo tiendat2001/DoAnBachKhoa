@@ -69,7 +69,7 @@ const ListRoom = () => {
                                 value={hotelId}
                                 onChange={handleHotelChange}
                             >
-                                <option disabled selected>Chọn khách sạn</option>
+                                <option value="d" disabled selected>Chọn khách sạn</option>
                                 {hotelLoading
                                     ? "loading"
                                     : hotelData &&
