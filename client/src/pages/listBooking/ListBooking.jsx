@@ -7,6 +7,7 @@ import axios from 'axios';
 import useFetch from '../../hooks/useFetch';
 import { AuthContext } from '../../context/AuthContext';
 import { format,addDays,subDays   } from "date-fns";
+import { confirmAlert } from 'react-confirm-alert';
 
 const ListBooking = () => {
   const { user } = useContext(AuthContext)
@@ -15,27 +16,53 @@ const ListBooking = () => {
   );
   // console.log(data)
   
-  const handleCancel = async (allDatesReserve, roomNumbersId) => {
+  const handleCancelReserve = async (allDatesReserve, roomNumbersId) => {
     // console.log(allDatesReserve)
     // console.log(roomNumbersId)
+    confirmAlert({
+      title: 'Xác nhận hủy',
+      message: 'Bạn có chắc chắn muốn hủy đơn đặt phòng này? Bạn không thể hoàn tác sau khi hủy',
+      buttons: [
+          {
+              label: 'Yes',
+              onClick: () => {
+                  
+                    deleteAvailability(allDatesReserve,roomNumbersId);
+              }
+          },
+          {
+              label: 'No',
+              onClick: () => {
+                  // Không làm gì cả
+              }
+          }
+      ]
+  });
 
+    
+  }
+  
+  // bỏ unavailabledates trong mỗi phòng đặt
+  const deleteAvailability = async (allDatesReserve, roomNumbersId)=>{
     try {
-        await Promise.all(
-          roomNumbersId.map((roomId) => {
-            const res = axios.put(`/rooms/cancelAvailability/${roomId}`, {
-              dates: allDatesReserve,
-            });
-            return res.data;
-          })
-        );
-  
-  
-      } catch (err) {
-        console.log(err)
-      }
-      alert("Hủy phòng thành công")
+      await Promise.all(
+        roomNumbersId.map((roomId) => {
+          const res = axios.put(`/rooms/cancelAvailability/${roomId}`, {
+            dates: allDatesReserve,
+          });
+          return res.data;
+        })
+      );
+
+
+    } catch (err) {
+      console.log(err)
+    }
+    alert("Hủy phòng thành công")
 
   }
+
+
   return (
     <div>
       <Navbar />
@@ -52,11 +79,11 @@ const ListBooking = () => {
                 <div>Khách sạn đặt: {item.hotelName}</div>
                 <div>Phòng đặt: {item.roomsDetail}</div>
                 <div>Ngày nhận phòng: {new Date(subDays(new Date(item.start), 1)).toLocaleDateString('vi-VN')}</div>
-                <div>Ngày nhận phòng: {new Date(subDays(new Date(item.end), 1)).toLocaleDateString('vi-VN')}</div>
+                <div>Ngày trả phòng: {new Date(subDays(new Date(item.end), 1)).toLocaleDateString('vi-VN')}</div>
 
               </div>
 
-              <button onClick={() => handleCancel(item.allDatesReserve, item.roomNumbersId)}>Hủy</button>
+              <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId)}>Hủy đặt phòng</button>
 
             </div>
           ))

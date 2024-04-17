@@ -48,7 +48,7 @@ export const deleteHotel = async (req,res,next)=>{
           return res.status(404).json({ message: "Hotel not found" });
       }
       // console.log(req.body.ownerId)
-      // Kiểm tra xem ownerId của Hotel cần xóa có trùng khớp với ownerId trong req.user không
+      // Kiểm tra xem ownerId của Hotel cần xóa có trùng khớp với ownerId trong req.body.ownerId không (lúc đẩy lên phải đẩy id tk)
       if (hotelToDelete.ownerId !== req.body.ownerId) {
           return res.status(403).json({ message: "You are not authorized to delete this hotel" });
       }

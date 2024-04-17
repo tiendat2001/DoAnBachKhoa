@@ -91,6 +91,7 @@ export const deleteRoom = async (req, res, next) => {
     const roomToDelete = await Room.findById(req.params.id)  // req.params.id là _id của type room sẽ chỉnh sửa
     // tìm id của hotel có room sẽ chỉnh sửa
     const hotelToUpdate = await Hotel.findById(roomToDelete.hotelId);
+    
     if (hotelToUpdate.ownerId !== req.body.ownerId) {
       return res.status(403).json({ message: "You are not authorized to delete room from this hotel" });
     }
