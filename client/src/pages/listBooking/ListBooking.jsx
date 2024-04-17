@@ -16,7 +16,7 @@ const ListBooking = () => {
   );
   // console.log(data)
 
-  const handleCancelReserve = async (allDatesReserve, roomNumbersId) => {
+  const handleCancelReserve = async (allDatesReserve, roomNumbersId,reservationId) => {
     // console.log(allDatesReserve)
     // console.log(roomNumbersId)
     confirmAlert({
@@ -27,7 +27,7 @@ const ListBooking = () => {
           label: 'Yes',
           onClick: () => {
 
-            deleteAvailability(allDatesReserve, roomNumbersId);
+            deleteAvailability(allDatesReserve, roomNumbersId,reservationId);
           }
         },
         {
@@ -43,7 +43,8 @@ const ListBooking = () => {
   }
 
   // bỏ unavailabledates trong mỗi phòng đặt
-  const deleteAvailability = async (allDatesReserve, roomNumbersId) => {
+  const deleteAvailability = async (allDatesReserve, roomNumbersId,reservationId) => {
+    console.log(reservationId)
     try {
       await Promise.all(
         roomNumbersId.map((roomId) => {
@@ -58,7 +59,19 @@ const ListBooking = () => {
     } catch (err) {
       console.log(err)
     }
+
+    // chỉnh lại trạng thái
+    try{
+      await axios.put(`/reservation/${reservationId}`,{
+        status: false
+      })
+    }catch(err){
+      console.log(err)
+    }
+
+
     alert("Hủy phòng thành công")
+    reFetch()
 
   }
 
@@ -85,8 +98,8 @@ const ListBooking = () => {
               </div>
 
               <div style={{width:'25%',display:'flex',justifyContent:'flex-end',flexWrap:'wrap'}}>
-                <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId)}
-                  disabled={new Date() > subHours(new Date(item.start), 34)}>Hủy đặt phòng</button> <br/>
+                <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId,item._id)}
+                  disabled={(new Date() > subHours(new Date(item.start), 34))||!item.status}>Hủy đặt phòng</button> <br/>
                 {/* ngày hiện tại phải lớn hơn (ngày nhận phòng -1) mới đc hủy nên kia là trừ 2, nếu chặt chẽ 14h trưa nhận phòng
                  thì +14h, tức trừ 48-14=34h */}
                 <div style={{textAlign:'right'}}>{new Date() > subHours(new Date(item.start), 34) ? "(Bạn chỉ có thể hủy trước ngày nhận phòng 1 ngày)" : ""}</div>

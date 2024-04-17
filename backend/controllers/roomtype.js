@@ -91,7 +91,7 @@ export const deleteRoom = async (req, res, next) => {
     const roomToDelete = await Room.findById(req.params.id)  // req.params.id là _id của type room sẽ chỉnh sửa
     // tìm id của hotel có room sẽ chỉnh sửa
     const hotelToUpdate = await Hotel.findById(roomToDelete.hotelId);
-    
+
     if (hotelToUpdate.ownerId !== req.body.ownerId) {
       return res.status(403).json({ message: "You are not authorized to delete room from this hotel" });
     }
@@ -163,8 +163,8 @@ export const cancelRoomReservation = async (req, res, next) => {
     if (!roomNumber) {
       return res.status(404).json("Room number not found");
     }
-    console.log("req.body.dates:", req.body.dates);
-    console.log(roomNumber.unavailableDates)
+    // console.log("req.body.dates:", req.body.dates);
+    // console.log(roomNumber.unavailableDates)
 
     // tim cac phan tu can xoa trong mang
     const indexesToRemove = [];
@@ -176,7 +176,7 @@ export const cancelRoomReservation = async (req, res, next) => {
     });
     // roomNumber.unavailableDates.splice(index, 1);
     // await room.save();
-    console.log(indexesToRemove)
+    // console.log(indexesToRemove)
     if (indexesToRemove.length > 0) {
       // Loại bỏ các phần tử khỏi mảng nếu tìm thấy, chỉ giữ lại phần tử ko thuộc indexesToRemove
       const newUnavailableDates = roomNumber.unavailableDates.filter((_, index) => !indexesToRemove.includes(index));
