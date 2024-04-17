@@ -187,7 +187,7 @@ const ListRoomClient = ({ hotelId }) => {
 
 
       {/* Phần đặt phòng gom nhieu flex_div */}
-      {data.map((item) => (
+      {data.map((item,index) => (
         <div className="flex_div" style={{ border: '1px solid #7fc7af', }}>
 
           <div style={{ width: '50%' }} >

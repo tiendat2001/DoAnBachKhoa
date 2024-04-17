@@ -1,1 +1,20 @@
 
+.listBookingContainer{
+    width: 100%;
+    max-width: 1024px;
+    margin:auto
+}
+
+.flex_div_booking{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: solid 2px rgb(203, 238, 252);
+    margin-bottom:10px;
+
+}
+
+.booking_details{
+    width:70%;
+    padding:10px;
+}
