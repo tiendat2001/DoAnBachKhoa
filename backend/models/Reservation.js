@@ -37,7 +37,8 @@ const ReservationSchema = new mongoose.Schema({
         require:true,
     },
     guest:{
-        type:String,
+        adult:Number,
+        children:Number
     },
     allDatesReserve:{
         type:[Date],

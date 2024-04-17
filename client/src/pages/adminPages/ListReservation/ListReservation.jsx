@@ -29,6 +29,8 @@ const ListReservation = () => {
                     rowsPerPageOptions={[5]}
                     checkboxSelection
                     getRowId={(row) => row._id}
+                    getRowHeight={(params) => params.length > 100 ? 100 : 70} // Xác định chiều cao hàng dựa trên chiều dài của mô tả
+
                 />
             </div>
         </div>

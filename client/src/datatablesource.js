@@ -1,4 +1,5 @@
 import { format,addDays,subDays   } from "date-fns";
+import React from 'react';
 
 export const roomColumns = [
     { field: "_id", headerName: "ID", width: 100, hide:true },
@@ -80,7 +81,15 @@ export const roomColumns = [
       width: 250,
       cellClassName: 'wrap-content', // xuống dòng khi nội dung dài
       headerAlign: 'center',
-      align:'center'
+      align:'center',
+      renderCell: (params) => {
+        const roomDetails = params.value;
+        return (
+          <div className="wrap-content">
+            {roomDetails}
+          </div>
+        );
+      }
     },
     
     {
@@ -89,7 +98,11 @@ export const roomColumns = [
       width: 150,
       cellClassName: 'wrap-content', // xuống dòng khi nội dung dài
       headerAlign: 'center',
-      align:'center'
+      align:'center',
+      renderCell: (params) => {
+        const { adult, children } = params.row.guest;
+        return `${adult} người lớn, ${children} trẻ em`;
+      }
     },
 
     {

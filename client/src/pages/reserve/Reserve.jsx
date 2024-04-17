@@ -60,7 +60,7 @@ const Reserve = () => {
   });
 
   // Tạo chuỗi detailRooms từ roomCounts
-  const detailRooms = Object.entries(roomCounts).map(([title, count]) => `${title} x(${count})`).join(', ');
+  const detailRooms = Object.entries(roomCounts).map(([title, count]) => `${title} (x${count})`).join(', ');
 
   // In ra kết quả
   // console.log(roomCounts);
@@ -85,7 +85,7 @@ const Reserve = () => {
         end: endDatePlus,
         roomNumbersId: selectedRooms,
         roomsDetail: detailRooms,
-        guest: `${options.adult} người lớn, ${options.children} trẻ em`,
+        guest: {adult:options.adult,children:options.children},
         allDatesReserve: allDatesPlus,
         totalPrice: totalPrice,
         hotelId: hotelId,
@@ -146,7 +146,7 @@ const Reserve = () => {
           <div>Tổng thời gian lưu trú:  {alldates.length} đêm</div>
           <div style={{ fontWeight: 'bold' }}>Phòng của bạn:  {detailRooms} </div>
           <div style={{ fontWeight: 'bold' }}>Số người: {options.adult} người lớn và {options.children} trẻ em</div>
-          {(options.adult + options.children*2) - maxPeople >= 2 && (
+          {(options.adult + options.children*0.5) - maxPeople >= 2 && (
             <div style={{ fontWeight: 'bold', color: 'red' }}>
               (Phòng của bạn có thể không chứa đủ người)
             </div>
