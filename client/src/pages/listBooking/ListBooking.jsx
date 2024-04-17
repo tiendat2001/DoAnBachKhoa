@@ -14,7 +14,13 @@ const ListBooking = () => {
     `/reservation?idOwnerHotel=${user._id}`
   );
   console.log(data)
+  
+  const handleCancel = async (allDatesReserve, roomNumbersId) => {
+    console.log(allDatesReserve)
+    console.log(roomNumbersId)
 
+
+  }
   return (
     <div>
       <Navbar />
@@ -35,7 +41,8 @@ const ListBooking = () => {
 
               </div>
 
-              <button>Hủy</button>
+              <button onClick={() => handleCancel(item.allDatesReserve, item.roomNumbersId)}>Hủy</button>
+
             </div>
           ))
         )}
