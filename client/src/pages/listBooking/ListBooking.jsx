@@ -6,7 +6,7 @@ import { useState, useContext } from "react";
 import axios from 'axios';
 import useFetch from '../../hooks/useFetch';
 import { AuthContext } from '../../context/AuthContext';
-import { format, addDays, subDays,subHours  } from "date-fns";
+import { format, addDays, subDays, subHours } from "date-fns";
 import { confirmAlert } from 'react-confirm-alert';
 
 const ListBooking = () => {
@@ -16,7 +16,7 @@ const ListBooking = () => {
   );
   // console.log(data)
 
-  const handleCancelReserve = async (allDatesReserve, roomNumbersId,reservationId) => {
+  const handleCancelReserve = async (allDatesReserve, roomNumbersId, reservationId) => {
     // console.log(allDatesReserve)
     // console.log(roomNumbersId)
     confirmAlert({
@@ -27,7 +27,7 @@ const ListBooking = () => {
           label: 'Yes',
           onClick: () => {
 
-            deleteAvailability(allDatesReserve, roomNumbersId,reservationId);
+            deleteAvailability(allDatesReserve, roomNumbersId, reservationId);
           }
         },
         {
@@ -43,7 +43,7 @@ const ListBooking = () => {
   }
 
   // bỏ unavailabledates trong mỗi phòng đặt
-  const deleteAvailability = async (allDatesReserve, roomNumbersId,reservationId) => {
+  const deleteAvailability = async (allDatesReserve, roomNumbersId, reservationId) => {
     console.log(reservationId)
     try {
       await Promise.all(
@@ -61,11 +61,11 @@ const ListBooking = () => {
     }
 
     // chỉnh lại trạng thái
-    try{
-      await axios.put(`/reservation/${reservationId}`,{
+    try {
+      await axios.put(`/reservation/${reservationId}`, {
         status: false
       })
-    }catch(err){
+    } catch (err) {
       console.log(err)
     }
 
@@ -91,18 +91,23 @@ const ListBooking = () => {
                 <div>Mã đặt phòng: {item._id}</div>
                 <div>Khách sạn đặt: {item.hotelName}</div>
                 <div>Phòng đặt: {item.roomsDetail}</div>
-                <div>Ngày nhận phòng: 14h ngày {new Date(subDays(new Date(item.start), 1)).toLocaleDateString('vi-VN')}</div>
-                <div>Ngày trả phòng: 12h ngày {new Date(subDays(new Date(item.end), 1)).toLocaleDateString('vi-VN')}</div>
-                <div>Tình trạng: {item.status ? "Thành công" : "Hủy"}</div>
+                <div style={{ fontWeight: 'bold' }}>Ngày nhận phòng: 14h ngày {new Date(subDays(new Date(item.start), 1)).toLocaleDateString('vi-VN')}</div>
+                <div style={{ fontWeight: 'bold' }}>Ngày trả phòng: 12h ngày {new Date(subDays(new Date(item.end), 1)).toLocaleDateString('vi-VN')}</div>
+                <div style={{ color: item.status ? 'green' : 'red' }}>
+                  Tình trạng: {item.status ? "Thành công" : "Hủy"}
+                </div>
+                <div>Thông tin liên lạc chỗ nghỉ: {item.hotelContact}</div>
+
+
 
               </div>
 
-              <div style={{width:'25%',display:'flex',justifyContent:'flex-end',flexWrap:'wrap'}}>
-                <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId,item._id)}
-                  disabled={(new Date() > subHours(new Date(item.start), 34))||!item.status}>Hủy đặt phòng</button> <br/>
+              <div style={{ width: '25%', display: 'flex', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+                <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id)}
+                  disabled={(new Date() > subHours(new Date(item.start), 34)) || !item.status}>Hủy đặt phòng</button> <br />
                 {/* ngày hiện tại phải lớn hơn (ngày nhận phòng -1) mới đc hủy nên kia là trừ 2, nếu chặt chẽ 14h trưa nhận phòng
                  thì +14h, tức trừ 48-14=34h */}
-                <div style={{textAlign:'right'}}>{new Date() > subHours(new Date(item.start), 34) ? "(Bạn chỉ có thể hủy trước ngày nhận phòng 1 ngày)" : ""}</div>
+                <div style={{ textAlign: 'right' }}>{new Date() > subHours(new Date(item.start), 34) ? "(Bạn chỉ có thể hủy trước ngày nhận phòng 1 ngày)" : ""}</div>
               </div>
 
             </div>

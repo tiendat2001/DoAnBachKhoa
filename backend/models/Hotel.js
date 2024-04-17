@@ -41,6 +41,10 @@ const HotelSchema = new mongoose.Schema({
   rooms: {
     type: [String],
   },
+  hotelContact: {
+    type: String,
+    default:"Không có"
+  },
   cheapestPrice: {
     price: {
       type: Number,

@@ -26,6 +26,7 @@ const NewRoom = () => {
     };
 
     const validateInputs = () => {
+        console.log(hotelId)
         // Check if all hotelInputs are filled
         for (let input of roomInputs) {
           if (!document.getElementById(input.id).value) {
@@ -33,7 +34,7 @@ const NewRoom = () => {
           }
         }
         // Check if description is filled
-        if (!document.getElementById("desc").value.trim()    )  {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
+        if (!document.getElementById("desc").value.trim()  || (files.length === 0) || hotelId == null   )  {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
           return false;
         }
         return true;

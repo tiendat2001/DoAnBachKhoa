@@ -29,7 +29,12 @@ export const hotelInputs = [
       type: "text",
       placeholder: "",
     },
- 
+    {
+      id: "hotelContact",
+      label: "Số điện thoại liên lạc của chỗ nghỉ",
+      type: "text",
+      placeholder: "",
+    },
     // {
     //   id: "desc",
     //   label: "Description",

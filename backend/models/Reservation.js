@@ -16,7 +16,9 @@ const ReservationSchema = new mongoose.Schema({
     },
     hotelName:{
         type:String,
-        
+    },
+    hotelContact:{
+        type:String,
     },
     idOwnerHotel:{
         type:String,
