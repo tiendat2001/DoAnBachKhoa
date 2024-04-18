@@ -90,8 +90,8 @@ const Reserve = () => {
         totalPrice: totalPrice,
         hotelId: hotelId,
         idOwnerHotel: hotelData.ownerId,
-        hotelName: hotelData.name,
-        hotelContact:hotelData?.hotelContact
+        // hotelName: hotelData.name,
+        // hotelContact:hotelData?.hotelContact
       });
     } catch (err) {
       console.log(err)

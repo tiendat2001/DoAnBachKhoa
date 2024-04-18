@@ -14,12 +14,12 @@ const ReservationSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    hotelName:{
-        type:String,
-    },
-    hotelContact:{
-        type:String,
-    },
+    // hotelName:{
+    //     type:String,
+    // },
+    // hotelContact:{
+    //     type:String,
+    // },
     idOwnerHotel:{
         type:String,
     },
