@@ -3,9 +3,9 @@ import axios from "axios";
 import { AuthContext } from '../../context/AuthContext';
 import useFetch from '../../hooks/useFetch';
 import "./listRoomClient.css"
-import { useContext, useState,useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { SearchContext } from '../../context/SearchContext';
-import { format,addDays,subDays   } from "date-fns";
+import { format, addDays, subDays } from "date-fns";
 import { DateRange } from "react-date-range";
 import {
   faBed,
@@ -35,12 +35,16 @@ const ListRoomClient = ({ hotelId }) => {
   const [openExpandPhoto, setOpenExpandPhoto] = useState(false);
   const [slideNumber, setSlideNumber] = useState(0);
   const { dispatch } = useContext(SearchContext);
+  const [selectedRoomIds, setSelectedRoomIds] = useState([]);
 
+
+  // var totalRoomQuantitySelected = 0;
   const navigate = useNavigate()
 
   useEffect(() => {
     // console.log("Updated changes:", dates);
     dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
+    console.log("thay doi")
   }, [destination, dates, options]);
 
 
@@ -49,13 +53,13 @@ const ListRoomClient = ({ hotelId }) => {
     setOpenExpandPhoto(true);
   };
   // console.log("at")
-  const handleMove = (direction,item) => { // item chính là thông tin từng room
+  const handleMove = (direction, item) => { // item chính là thông tin từng room
     let newSlideNumber;
 
     if (direction === "l") {
-      newSlideNumber = slideNumber === 0 ? (item.photos.length-1) : slideNumber - 1;
+      newSlideNumber = slideNumber === 0 ? (item.photos.length - 1) : slideNumber - 1;
     } else {
-      newSlideNumber = slideNumber === (item.photos.length-1) ? 0 : slideNumber + 1;
+      newSlideNumber = slideNumber === (item.photos.length - 1) ? 0 : slideNumber + 1;
     }
 
     setSlideNumber(newSlideNumber);
@@ -113,14 +117,59 @@ const ListRoomClient = ({ hotelId }) => {
 
   // từ front end đẩy xuống csdl bị lệch 1 ngày, ví dụ ở front 13 xuống csdl sẽ là 12, còn từ csdl lên front thì 12 sẽ bị lên thành 13
   const isAvailable = (roomNumber) => {
-  const isFound = roomNumber.unavailableDates.some((date) => {
-    const dateMinusOneDay = subDays(new Date(date), 1).getTime(); // theem getTIme() hay ko cung v
-    // console.log(new Date(dateMinusOneDay));
-    return alldates.includes(dateMinusOneDay);
-  });
+    const isFound = roomNumber.unavailableDates.some((date) => {
+      const dateMinusOneDay = subDays(new Date(date), 1).getTime(); // theem getTIme() hay ko cung v
+      // console.log(new Date(dateMinusOneDay));
+      return alldates.includes(dateMinusOneDay);
+    });
 
-  return !isFound;
-};
+    return !isFound;
+  };
+
+  // thay đổi số lượng
+  const handleSelectChange = (event, roomNumbers) => {
+
+    let roomQuantitySelected = 0;
+    data.forEach((dataItem) => {
+      // Lấy giá trị được chọn từ <select> tương ứng với item hiện tại
+      const selectedValue = parseInt(document.getElementById(`select_${dataItem._id}`).value);
+      roomQuantitySelected = roomQuantitySelected + selectedValue;
+    });
+    console.log("Tổng Số lượng phòng đã chọn:", roomQuantitySelected);
+
+
+    const updatedSelectedRooms = selectedRoomIds;
+
+
+    let updatedSelectedRoomsCopy = [...updatedSelectedRooms];
+    // Duyệt qua mỗi phần tử trong mảng roomNumbers
+    roomNumbers.forEach(room => {
+      // Kiểm tra xem _id của phần tử hiện tại có tồn tại trong mảng updatedSelectedRooms không
+      const index = updatedSelectedRoomsCopy.findIndex(selectedRoom => selectedRoom === room._id);
+      // Nếu có tồn tại, loại bỏ phần tử đó khỏi mảng updatedSelectedRoomsCopy
+      if (index !== -1) {
+        updatedSelectedRoomsCopy.splice(index, 1);
+      }
+    });
+
+
+
+
+
+
+    roomNumbers.forEach((roomNumber) => {
+
+      if (isAvailable(roomNumber) && updatedSelectedRoomsCopy.length < roomQuantitySelected) {
+        updatedSelectedRoomsCopy.push(roomNumber._id);
+      }
+    });
+    // console.log(updatedSelectedRoomsCopy)
+
+    setSelectedRoomIds(updatedSelectedRoomsCopy);
+  };
+  console.log("selectedRoomIds:", selectedRoomIds);
+
+
 
   // hàm nút đặt phòng
   const reserveRoom = async () => {
@@ -135,15 +184,15 @@ const ListRoomClient = ({ hotelId }) => {
     //     })
     //   );
 
-     
+
     // } catch (err) {
 
     // }
     // alert("thanh cong")
-    if(selectedRooms.length>0){
-      navigate("/reserve", { state: { selectedRooms, alldates, hotelId, startDate:dates[0].startDate, endDate: dates[0].endDate} });
+    if (selectedRoomIds.length > 0) {
+      navigate("/reserve", { state: { selectedRoomIds, alldates, hotelId, startDate: dates[0].startDate, endDate: dates[0].endDate } });
 
-    }else{
+    } else {
       toast.error('Bạn chưa chọn phòng muốn đặt');
     }
 
@@ -155,7 +204,7 @@ const ListRoomClient = ({ hotelId }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 
         <h1>Bạn muốn đặt phòng?</h1>
-              {/* HIển thị ngày */}
+        {/* HIển thị ngày */}
 
         <div style={{ width: '30%' }} className="headerSearchHotel">
 
@@ -187,7 +236,7 @@ const ListRoomClient = ({ hotelId }) => {
 
 
       {/* Phần đặt phòng gom nhieu flex_div */}
-      {data.map((item,index) => (
+      {data.map((item, index) => (
         <div className="flex_div" style={{ border: '1px solid #7fc7af', }}>
 
           <div style={{ width: '50%' }} >
@@ -215,7 +264,7 @@ const ListRoomClient = ({ hotelId }) => {
                       <FontAwesomeIcon
                         icon={faCircleArrowLeft}
                         className="arrow"
-                        onClick={() => handleMove("l",item)}
+                        onClick={() => handleMove("l", item)}
                       />
                       <div className="sliderWrapper">
                         <img
@@ -227,7 +276,7 @@ const ListRoomClient = ({ hotelId }) => {
                       <FontAwesomeIcon
                         icon={faCircleArrowRight}
                         className="arrow"
-                        onClick={() => handleMove("r",item)}
+                        onClick={() => handleMove("r", item)}
                       />
 
                     </div>
@@ -244,13 +293,26 @@ const ListRoomClient = ({ hotelId }) => {
             (Mỗi đêm)
           </div>
 
-          {/* <div style={{ marginBottom: '10px' }}>
-            <select>
-              <option value="1">1 phòng</option>
-              <option value="2">2 phòng</option>
-              <option value="3">3 phòng</option>
+          <div style={{ marginBottom: '10px' }}>
+            <select id={`select_${item._id}`} onChange={(event) => handleSelectChange(event, item.roomNumbers)}>
+              <option value={0}>0 phòng</option>
+              {(() => {
+                let roomIndex = 0; // Khởi tạo biến đếm
+                return item.roomNumbers.map((roomNumber, index) => {
+                  if (isAvailable(roomNumber)) {
+                    roomIndex++; // Tăng giá trị biến đếm khi phòng thỏa mãn điều kiện
+                    return (
+                      <option key={roomNumber._id} value={roomIndex}>
+                        {`${roomIndex} phòng`}
+                      </option>
+                    );
+                  }
+                  return null;
+                });
+              })()}
             </select>
-          </div> */}
+
+          </div>
           {/*  hiện các ô room */}
           <div className="rSelectRooms" style={{ width: '20%', height: '100%' }}>
             <div style={{ display: 'flex', flexWrap: 'wrap', width: '50%', alignItems: 'center' }}>
@@ -276,12 +338,12 @@ const ListRoomClient = ({ hotelId }) => {
         </div>
       ))}
 
-      <h2>Bạn đã chọn {selectedRooms.length} phòng</h2>
+      <h2>Bạn đã chọn {selectedRoomIds.length} phòng</h2>
       <button onClick={reserveRoom} className="rButton">
-          Đi đến trang đặt phòng
-        </button>
+        Đi đến trang đặt phòng
+      </button>
 
-     
+
     </div>
   )
 }

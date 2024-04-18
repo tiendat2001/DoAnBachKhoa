@@ -44,22 +44,24 @@ const ListBooking = () => {
 
   // bỏ unavailabledates trong mỗi phòng đặt
   const deleteAvailability = async (allDatesReserve, roomNumbersId, reservationId) => {
-    console.log(reservationId)
+    console.log(roomNumbersId)
     try {
-      await Promise.all(
-        roomNumbersId.map((roomId) => {
-          const res = axios.put(`/rooms/cancelAvailability/${roomId}`, {
+      for (const roomId of roomNumbersId) {
+        try {
+          const res = await axios.put(`/rooms/cancelAvailability/${roomId}`, {
             dates: allDatesReserve,
           });
-          return res.data;
-        })
-      );
-
-
+          console.log(`Room ${roomId} updated successfully.`);
+        } catch (err) {
+          console.error(`Error for room ${roomId}:`, err);
+          // Handle error for this specific room
+        }
+      }
     } catch (err) {
-      console.log(err)
+      console.error('Error:', err);
+      // Handle any error occurred during the loop
     }
-
+    
     // chỉnh lại trạng thái
     try {
       await axios.put(`/reservation/${reservationId}`, {

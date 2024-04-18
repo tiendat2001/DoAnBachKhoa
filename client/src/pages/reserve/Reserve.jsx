@@ -1,3 +1,4 @@
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
@@ -16,7 +17,7 @@ import { toast } from 'react-toastify';
 import { useLocation } from "react-router-dom";
 const Reserve = () => {
   const location = useLocation();
-  const [selectedRooms, setSelectedRooms] = useState(location.state.selectedRooms);
+  const [selectedRooms, setSelectedRooms] = useState(location.state.selectedRoomIds);
   const [alldates, setAlldates] = useState(location.state.alldates);
   const [hotelId, setHotelId] = useState(location.state.hotelId);
   const [startDate, setStartDate] = useState(location.state.startDate);
