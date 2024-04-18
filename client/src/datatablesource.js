@@ -56,8 +56,8 @@ export const roomColumns = [
 // ------------------order
   const formatDate = (date) => {
     let dateFormat = subDays(new Date(date), 1)
-    const [month, day, year] = dateFormat.toLocaleDateString().split('/');
-    return `${day}/${month}/${year}`;
+    // const [month, day, year] = dateFormat.toLocaleDateString().split('/');
+    return dateFormat.toLocaleDateString('vi-VN');
   };
 
 
@@ -68,16 +68,17 @@ export const roomColumns = [
       field: "start",
       headerName: "Check-in",
       width: 115,
-      valueGetter: (params) => formatDate(params.value),
+      valueFormatter: (params) => formatDate(params.value),
       headerAlign: 'center',
-      align:'center'
+      align:'center',
+      comparator: (a, b) => new Date(a).getTime() - new Date(b).getTime()
 
     },
     {
       field: "end",
       headerName: "Check-out",
       width: 115,
-      valueGetter: (params) => formatDate(params.value),
+      valueFormatter: (params) => formatDate(params.value),
       headerAlign: 'center',
       align:'center'
     },
