@@ -292,9 +292,10 @@ const ListRoomClient = ({ hotelId }) => {
             <br />
             (Mỗi đêm)
           </div>
+          {/* chứa chỗ chọn phòng */}
+          <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'flex-end',width: '20%',alignItems:'center',gap:'10px' }}>
 
-          <div style={{ marginBottom: '10px' }}>
-            <select id={`select_${item._id}`} onChange={(event) => handleSelectChange(event, item.roomNumbers)}>
+            <select style={{height:'20px'}} id={`select_${item._id}`} onChange={(event) => handleSelectChange(event, item.roomNumbers)}>
               <option value={0}>0 phòng</option>
               {(() => {
                 let roomIndex = 0; // Khởi tạo biến đếm
@@ -312,9 +313,11 @@ const ListRoomClient = ({ hotelId }) => {
               })()}
             </select>
 
+            <div style={{ width: '30%', height: '100%', fontSize: '14px' }}>(Chọn số lượng phòng muốn đặt)</div>
+
           </div>
           {/*  hiện các ô room */}
-          <div className="rSelectRooms" style={{ width: '20%', height: '100%' }}>
+          {/* <div className="rSelectRooms" style={{ width: '20%', height: '100%' }}>
             <div style={{ display: 'flex', flexWrap: 'wrap', width: '50%', alignItems: 'center' }}>
               {item.roomNumbers.map((roomNumber) => (
                 isAvailable(roomNumber) ? (
@@ -331,8 +334,7 @@ const ListRoomClient = ({ hotelId }) => {
 
             <div style={{ width: '30%', height: '100%', fontSize: '14px' }}>(TÍch số lượng ô bằng với số lượng phòng muốn đặt)</div>
 
-            {/* <label htmlFor="checkbox"></label> */}
-          </div>
+          </div> */}
 
 
         </div>
