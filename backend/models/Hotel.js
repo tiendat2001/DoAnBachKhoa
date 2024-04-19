@@ -55,7 +55,9 @@ const HotelSchema = new mongoose.Schema({
       default: 0 // or any default value you prefer
     }
   }
- 
-});
+
+},
+{ timestamps : true }
+);
 
 export default mongoose.model("Hotel", HotelSchema)

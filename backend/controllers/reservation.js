@@ -74,11 +74,12 @@ export const getAllHotelRevenue = async (req, res, next) => {
         // Tạo một object để lưu trữ tổng doanh thu của từng khách sạn
         const hotelRevenueMap = {};
 
-        // Duyệt qua mỗi đơn đặt phòng và tính tổng doanh thu cho mỗi khách sạn
-        reservations.forEach((reservation) => {
+        await Promise.all(reservations.map(async  (reservation) => {
             const hotelId = reservation.hotelId;
-            const totalPrice = reservation.totalPrice;
+            const hotel = await Hotel.findById(hotelId);
 
+            const totalPrice = reservation.totalPrice;
+            if (hotel) {
             // Nếu khách sạn đã tồn tại trong map, cộng thêm doanh thu
             if (hotelRevenueMap[hotelId]) {
                 hotelRevenueMap[hotelId].totalRevenue += totalPrice;
@@ -86,11 +87,13 @@ export const getAllHotelRevenue = async (req, res, next) => {
                 // Nếu khách sạn chưa tồn tại trong map, tạo một entry mới với doanh thu là doanh thu của đơn đặt phòng
                 hotelRevenueMap[hotelId] = {
                     _id: hotelId,
-                    hotelName: "",
+                    hotelName: hotel.name,
+
                     totalRevenue: totalPrice
                 };
             }
-        });
+        }
+        }));
 
         // Lấy tất cả các khách sạn từ cơ sở dữ liệu
         const hotels = await Hotel.find();
@@ -100,9 +103,9 @@ export const getAllHotelRevenue = async (req, res, next) => {
             const hotelId = hotel._id;
             const hotelName = hotel.name;
 
-            // Nếu khách sạn có trong map, cập nhật tên của khách sạn
+            // Nếu khách sạn có trong map thì đc add bên trên r
             if (hotelRevenueMap[hotelId]) {
-                hotelRevenueMap[hotelId].hotelName = hotelName;
+            
             } else {
                 // Nếu khách sạn không có trong map, thêm một entry mới với doanh thu là 0 và tên của khách sạn
                 hotelRevenueMap[hotelId] = {
