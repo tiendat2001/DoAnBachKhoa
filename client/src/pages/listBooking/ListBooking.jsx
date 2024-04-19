@@ -44,6 +44,7 @@ const ListBooking = () => {
 
   // bỏ unavailabledates trong mỗi phòng đặt
   const deleteAvailability = async (allDatesReserve, roomNumbersId, reservationId) => {
+    let hasError = false;
     console.log(roomNumbersId)
     try {
       for (const roomId of roomNumbersId) {
@@ -54,11 +55,13 @@ const ListBooking = () => {
           console.log(`Room ${roomId} updated successfully.`);
         } catch (err) {
           console.error(`Error for room ${roomId}:`, err);
+          hasError = true;
           // Handle error for this specific room
         }
       }
     } catch (err) {
       console.error('Error:', err);
+      hasError = true;
       // Handle any error occurred during the loop
     }
     
@@ -68,11 +71,14 @@ const ListBooking = () => {
         status: false
       })
     } catch (err) {
+      hasError = true;
       console.log(err)
     }
 
 
-    alert("Hủy phòng thành công")
+    if (!hasError) {
+      alert("Hủy phòng thành công");
+    }
     reFetch()
 
   }

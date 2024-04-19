@@ -181,7 +181,7 @@ export const cancelRoomReservation = async (req, res, next) => {
       // Loại bỏ các phần tử khỏi mảng nếu tìm thấy, chỉ giữ lại phần tử ko thuộc indexesToRemove
       const newUnavailableDates = roomNumber.unavailableDates.filter((_, index) => !indexesToRemove.includes(index));
       roomNumber.unavailableDates = newUnavailableDates;
-      console.log(roomNumber.unavailableDates)
+      // console.log(roomNumber.unavailableDates)
 
       // 
     } else {return res.status(400).json("None of these dates are marked as unavailable");}
