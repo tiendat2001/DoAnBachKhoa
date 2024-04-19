@@ -24,7 +24,7 @@ import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ListRoomClient = ({ hotelId }) => {
 
-  const { data, loading, error } = useFetch(`/rooms/${hotelId}`);
+  const { data, loading,error,reFetch } = useFetch(`/rooms/${hotelId}`);
   const [selectedRooms, setSelectedRooms] = useState([]);
   const searchContext = useContext(SearchContext);
   const [dates, setDates] = useState(searchContext.dates);
@@ -36,6 +36,7 @@ const ListRoomClient = ({ hotelId }) => {
   const [slideNumber, setSlideNumber] = useState(0);
   const { dispatch } = useContext(SearchContext);
   const [selectedRoomIds, setSelectedRoomIds] = useState([]);
+  const [key, setKey] = useState(Math.random());
 
 
   // var totalRoomQuantitySelected = 0;
@@ -70,6 +71,9 @@ const ListRoomClient = ({ hotelId }) => {
 
   const handleDayChange = (item) => {
     setDates([item.selection])
+    setSelectedRoomIds([])
+    setKey(Math.random()); // Bắt reload lại phần chọn phòng
+    reFetch()
     // console.log([item.selection])
     // setSelectedRooms([])
   };
@@ -293,7 +297,7 @@ const ListRoomClient = ({ hotelId }) => {
             (Mỗi đêm)
           </div>
           {/* chứa chỗ chọn phòng */}
-          <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'flex-end',width: '20%',alignItems:'center',gap:'10px' }}>
+          <div key={key} style={{ marginBottom: '10px', display: 'flex', justifyContent: 'flex-end',width: '20%',alignItems:'center',gap:'10px' }}>
 
             <select style={{height:'20px'}} id={`select_${item._id}`} onChange={(event) => handleSelectChange(event, item.roomNumbers)}>
               <option value={0}>0 phòng</option>
