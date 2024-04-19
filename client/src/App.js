@@ -19,6 +19,7 @@ import Reserve from "./pages/reserve/Reserve";
 import NewRoom from "./pages/adminPages/newRoom/NewRoom";
 import ModifyRoom from "./pages/adminPages/ModifyRoom/ModifyRoom";
 import ListReservation from "./pages/adminPages/ListReservation/ListReservation";
+import Administrator from "./pages/administrator/Administrator";
 import { getCookie } from 'react-use-cookie';
 
 function App() {
@@ -47,7 +48,7 @@ function App() {
         <Route path="/reserve" element={<Reserve />} />
 
 
-
+        <Route path="/administrator" element={<Administrator />} />
 
         <Route path="/admin/">
           <Route index element={

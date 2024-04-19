@@ -30,7 +30,7 @@ const Login = () => {
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data }); // user trong AuthContext sẽ là JSON thông tin user (kq API return)
       console.log(res.data.isAdmin)
       if (res.data.isAdmin) { 
-        navigate("/dsf") 
+        navigate("/administrator") 
       } else navigate("/")
     } catch (err) {
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
