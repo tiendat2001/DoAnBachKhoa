@@ -5,12 +5,12 @@ export const hotelInputs = [
       type: "text",
       placeholder: "",
     },
-    {
-      id: "type",
-      label: "Type",
-      type: "text",
-      placeholder: "",
-    },
+    // {
+    //   id: "type",
+    //   label: "Type",
+    //   type: "text",
+    //   placeholder: "",
+    // },
     {
       id: "city",
       label: "City",

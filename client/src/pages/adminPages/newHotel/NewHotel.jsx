@@ -28,12 +28,13 @@ const NewHotel = () => {
   const validateInputs = () => {
     // Check if all hotelInputs are filled
     for (let input of hotelInputs) {
-      if (!document.getElementById(input.id).value) {
+      if (!document.getElementById(input.id).value ||!document.getElementById("type").value) {
+        console.log("dffds")
         return false;
       }
     }
     // Check if description is filled
-    if (!document.getElementById("desc").value.trim()    )  {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
+    if (!document.getElementById("desc").value.trim()) {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
       return false;
     }
     return true;
@@ -52,7 +53,7 @@ const NewHotel = () => {
   //   setRooms(value);
   // };
 
-  console.log(files);
+  console.log(info);
 
   // khi ng dùng submit
   const handleClick = async (e) => {
@@ -145,6 +146,20 @@ const NewHotel = () => {
                   onChange={(e) => setFiles([...e.target.files])}
                   style={{ display: "none" }}
                 />
+              </div>
+
+              <div className="formInput" key='type'>
+                <label>Chọn loại chỗ nghỉ</label>
+                <select
+                  id='type'
+                  onChange={handleChange}
+                  value={info.type}
+                > 
+                  <option value="" >Chọn loại chỗ nghỉ</option> {/* Các option của dropdown */}            
+                  <option value="Khách sạn" >Khách sạn</option> {/* Các option của dropdown */}
+                  <option value="Căn hộ" >Căn hộ</option>
+
+                </select>
               </div>
 
               {/* render các trường */}

@@ -62,7 +62,7 @@ export const deleteHotel = async (req,res,next)=>{
     }
 }
 export const getHotels = async (req,res,next)=>{
-    const { name, city, ...others } = req.query;
+    const { name, city, type, ...others } = req.query;
     try {
       const query = {
         ...others,
@@ -76,6 +76,9 @@ export const getHotels = async (req,res,next)=>{
       if (city && city !== '') {
         query.city = { $regex: city, $options: 'i' };
       }
+      if (type && type !== '') { // Kiểm tra và thêm type vào query nếu không rỗng
+        query.type = type;
+    }
       const hotels = await Hotel.find(query).limit(req.query.limit);
       res.status(200).json(hotels);
     } catch (err) {

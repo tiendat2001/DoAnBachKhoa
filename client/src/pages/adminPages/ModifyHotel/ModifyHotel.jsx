@@ -15,59 +15,60 @@ const ModifyHotel = () => {
     const location = useLocation();
     const idHotel = location.pathname.split("/")[3];
     const { data, loading, error } = useFetch(`/hotels/find/${idHotel}`);
-    console.log(data)
+    // console.log(data)
     const [files, setFiles] = useState("");
     const [info, setInfo] = useState({});
     // const [rooms, setRooms] = useState([]);
     const { user } = useContext(AuthContext) // {user._id}
-
+    const defaultType = data.type;
     const handleChange = (e) => {
         setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
-      };
+    };
+    console.log(info)
 
-      const handleClick = async (e) => {
+    const handleClick = async (e) => {
         e.preventDefault();
         try {
-          const list = await Promise.all(
-            Object.values(files).map(async (file) => {
-              const data = new FormData();
-              data.append("file", file);
-              data.append("upload_preset", "upload");
-              const uploadRes = await axios.post(
-                "https://api.cloudinary.com/v1_1/tiendat2001/image/upload",
-                data
-              );
-              // console.log(uploadRes.data)
-              const { url } = uploadRes.data;
-              return url;
-            })
-          );
-    
-       
+            const list = await Promise.all(
+                Object.values(files).map(async (file) => {
+                    const data = new FormData();
+                    data.append("file", file);
+                    data.append("upload_preset", "upload");
+                    const uploadRes = await axios.post(
+                        "https://api.cloudinary.com/v1_1/tiendat2001/image/upload",
+                        data
+                    );
+                    // console.log(uploadRes.data)
+                    const { url } = uploadRes.data;
+                    return url;
+                })
+            );
+
+
             const newModifyHotel = {
-              ...info,
-              ...(list.length > 0 && { photos: list }), // nếu người dùng có thêm ảnh vào thì set lại ảnh mới, ko thì giữ nguyên
-              ownerId: user._id
+                ...info,
+                ...(list.length > 0 && { photos: list }), // nếu người dùng có thêm ảnh vào thì set lại ảnh mới, ko thì giữ nguyên
+                ownerId: user._id
             };
-          
-            
+
+
             // console.log(list.length)
-    
+
             const Success = await axios.put(`/hotels/${idHotel}`, newModifyHotel);
             if (Success) {
-              toast.success('Thành công chỉnh sửa!');
-            //   navigate("/admin/hotels");
-    
+                toast.success('Thành công chỉnh sửa!');
+                //   navigate("/admin/hotels");
+
             } else toast.error("Error.Please try again");
-    
-    
-         
-    
-    
+
+
+
+
+
         } catch (err) {
-          console.log(error);
+            console.log(error);
         }
-      };
+    };
     return (
         <div className="listAdmin">
             <Sidebar />
@@ -115,6 +116,20 @@ const ModifyHotel = () => {
                                         />
                                     </div>
 
+                                    <div className="formInput" key='type'>
+                                        <label>Chọn loại chỗ nghỉ</label>
+                                        <select
+                                            id='type'
+                                            onChange={handleChange}
+                                            value={info.type}
+                                        >
+                                            <option  value={defaultType} >{defaultType}</option> {/* Option mặc định */}
+                                            <option value="Khách sạn" hidden={defaultType === "Khách sạn"}>Khách sạn</option> {/* Các option của dropdown */}
+                                            <option value="Căn hộ" hidden={defaultType === "Căn hộ"}>Căn hộ</option>
+
+                                        </select>
+                                    </div>
+
                                     {/* render các trường */}
                                     {hotelInputs.map((input) => (
                                         <div className="formInput" key={input.id}>
@@ -123,7 +138,7 @@ const ModifyHotel = () => {
                                                 id={input.id}
                                                 onChange={handleChange}
                                                 type={input.type}
-                                                placeholder={data[input.id] }
+                                                placeholder={data[input.id]}
                                             />
                                         </div>
                                     ))}
@@ -134,7 +149,7 @@ const ModifyHotel = () => {
                                         rows="4" /* Số dòng mặc định hiển thị ban đầu */
                                         onChange={handleChange}
                                         style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
-                                        placeholder={data.desc }
+                                        placeholder={data.desc}
                                     ></textarea>
                                     <button onClick={handleClick}>Send</button>
                                 </form>
