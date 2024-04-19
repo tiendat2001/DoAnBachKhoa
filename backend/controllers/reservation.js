@@ -52,3 +52,13 @@ export const updateReservation = async (req,res,next)=>{
         next(err)
     }
 }
+
+
+export const deleteAllReservations = async (req,res,next)=>{
+    try {
+        await Reservation.deleteMany({});
+        res.status(200).json('All reservations have been deleted.');
+    } catch (err) {
+        next(err)
+    }
+}

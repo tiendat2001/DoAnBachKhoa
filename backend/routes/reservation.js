@@ -1,5 +1,5 @@
 import express from "express"
-import { createReservation ,getReservations,updateReservation} from "../controllers/reservation.js"
+import { createReservation ,getReservations,updateReservation,deleteAllReservations} from "../controllers/reservation.js"
 const router = express.Router();
 
 //CREATE
@@ -11,4 +11,7 @@ router.get("/",getReservations)
 //PUT
 router.put("/:id",updateReservation)
 
+
+//DELETE ALL 
+router.delete("/",deleteAllReservations)
 export default router
