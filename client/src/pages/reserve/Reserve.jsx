@@ -76,9 +76,28 @@ const Reserve = () => {
     const startDatePlus = addDays(startDate, 1)
     const endDatePlus = addDays(endDate, 1)
 
+    try {
+      await Promise.all(
+        selectedRooms.map(async (roomId) => {
+          try {
+            const res = await axios.put(`/rooms/availability/${roomId}`, {
+              dates: allDatesPlus,
+            });
+           
+            return res.data;
+          } catch (error) {
+            console.log(`Error in room ${roomId}:`, error);
+            throw error; // Ném lỗi để kích hoạt catch bên ngoài và dừng quá trình xử lý
+          }
+        })
+      );
+    } catch (err) {
+      console.log(err)
+      alert("Có lỗi xảy ra vui lòng quay lại trang trước và đặt phòng lại")
+      return; // Ngưng thực thi hàm nếu có lỗi
+    }
     // tạo order
     try {
-
       const upload = axios.post(`/reservation`, {
         username: user.username,
         phoneNumber: "32423424",
@@ -96,23 +115,11 @@ const Reserve = () => {
       });
     } catch (err) {
       console.log(err)
+      return;
     }
 
     // DAY UNAVAILABLEDATE
-     try {
-      await Promise.all(
-        selectedRooms.map((roomId) => {
-          const res = axios.put(`/rooms/availability/${roomId}`, {
-            dates: allDatesPlus,
-          });
-          return res.data;
-        })
-      );
-
-
-    } catch (err) {
-      console.log(err)
-    }
+    
     toast.success('Đặt phòng thành công');
 
   }

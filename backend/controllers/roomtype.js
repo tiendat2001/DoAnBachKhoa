@@ -72,11 +72,35 @@ export const updateRoom = async (req, res, next) => {
 };
 export const updateRoomAvailability = async (req, res, next) => {
   try {
+    const room = await Room.findOne({ "roomNumbers._id": req.params.id });
+
+    if (!room) {
+      return res.status(404).json({ error: "Room not found" });
+    }
+
+    const roomNumber = room.roomNumbers.find(number => number._id.toString() === req.params.id);
+
+    if (!roomNumber) {
+      return res.status(404).json({ error: "Room number not found" });
+    }
+
+    const { unavailableDates } = roomNumber;
+    
+    const duplicateDates = req.body.dates.filter(date => {
+      const dateString = new Date(date).toISOString();
+      return unavailableDates.some(unavailableDate => unavailableDate.toISOString() === dateString);
+    });
+    
+    if (duplicateDates.length > 0) {
+      return res.status(400).json({ error: "Some dates are already marked as unavailable" });
+    }
+
+    //Nếu không có ngày nào trùng lặp, thêm các ngày mới vào mảng unavailableDates
     await Room.updateOne(
       { "roomNumbers._id": req.params.id },
       {
         $push: {
-          "roomNumbers.$.unavailableDates": req.body.dates
+          "roomNumbers.$.unavailableDates": { $each: req.body.dates }
         },
       }
     );
@@ -184,7 +208,7 @@ export const cancelRoomReservation = async (req, res, next) => {
       // console.log(roomNumber.unavailableDates)
 
       // 
-    } else {return res.status(400).json("None of these dates are marked as unavailable");}
+    } else { return res.status(400).json("None of these dates are marked as unavailable"); }
     room.markModified('roomNumbers');
     await room.save();
 
