@@ -12,7 +12,7 @@ const Login = () => {
     password: undefined,
   });
 
-  const {user, loading, error, dispatch } = useContext(AuthContext);
+  const { user, loading, error, dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate()
   // khi thay doi field
@@ -25,11 +25,13 @@ const Login = () => {
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
     try {
+      console.log(credentials)
       const res = await axios.post("/auth/login", credentials);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data }); // user trong AuthContext sẽ là JSON thông tin user (kq API return)
-      console.log(user)
-
-      navigate("/")
+      console.log(res.data.isAdmin)
+      if (res.data.isAdmin) { 
+        navigate("/dsf") 
+      } else navigate("/")
     } catch (err) {
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }
@@ -38,7 +40,7 @@ const Login = () => {
   return (
     <div className="login">
       <div className="lContainer">
-      <h1 className="Login">Login</h1>
+        <h1 className="Login">Login</h1>
         <input
           type="text"
           placeholder="username"
@@ -53,22 +55,22 @@ const Login = () => {
           onChange={handleChange}
           className="lInput"
         />
-       
-          {/* <label>
+
+        {/* <label>
             <input 
             type="checkbox" 
             name="remember" 
             /> 
             Remember Me
           </label> */}
-         
+
         <button disabled={loading} onClick={handleClick} className="lButton">
           Login
         </button>
         <Link className="lButton register" to="/register">
-       
+
           Register
-        
+
         </Link>
         {error && <span>{error.message}</span>}
       </div>
