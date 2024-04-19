@@ -1,5 +1,6 @@
 import Reservation from "../models/Reservation.js";
 import Hotel from "../models/Hotel.js"
+import User from "../models/User.js"
 export const createReservation = async (req,res,next)=>{
     const newReservation = new Reservation(req.body)
     
@@ -77,7 +78,7 @@ export const getAllHotelRevenue = async (req, res, next) => {
         await Promise.all(reservations.map(async  (reservation) => {
             const hotelId = reservation.hotelId;
             const hotel = await Hotel.findById(hotelId);
-
+            const user= await User.findById(hotel.ownerId);
             const totalPrice = reservation.totalPrice;
             if (hotel) {
             // Nếu khách sạn đã tồn tại trong map, cộng thêm doanh thu
@@ -88,7 +89,7 @@ export const getAllHotelRevenue = async (req, res, next) => {
                 hotelRevenueMap[hotelId] = {
                     _id: hotelId,
                     hotelName: hotel.name,
-
+                    userOwner:user.username,
                     totalRevenue: totalPrice
                 };
             }
@@ -98,11 +99,11 @@ export const getAllHotelRevenue = async (req, res, next) => {
         // Lấy tất cả các khách sạn từ cơ sở dữ liệu
         const hotels = await Hotel.find();
 
-        // Cập nhật tên của từng khách sạn trong map
+        // Cập nhật tên của từng khách sạn ko doanh thu
         await Promise.all(hotels.map(async (hotel) => {
             const hotelId = hotel._id;
             const hotelName = hotel.name;
-
+            const user= await User.findById(hotel.ownerId);
             // Nếu khách sạn có trong map thì đc add bên trên r
             if (hotelRevenueMap[hotelId]) {
             
@@ -111,6 +112,7 @@ export const getAllHotelRevenue = async (req, res, next) => {
                 hotelRevenueMap[hotelId] = {
                     _id: hotelId,
                     hotelName: hotelName,
+                    userOwner:user.username,
                     totalRevenue: 0
                 };
             }
