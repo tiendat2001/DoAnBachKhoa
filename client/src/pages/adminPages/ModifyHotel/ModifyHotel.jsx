@@ -17,10 +17,16 @@ const ModifyHotel = () => {
     const { data, loading, error } = useFetch(`/hotels/find/${idHotel}`);
     // console.log(data)
     const [files, setFiles] = useState("");
-    const [info, setInfo] = useState({});
+    const [info, setInfo] = useState(data);
     // const [rooms, setRooms] = useState([]);
     const { user } = useContext(AuthContext) // {user._id}
     const defaultType = data.type;
+
+    useEffect(() => {
+        if (data) {
+          setInfo(data);
+        }
+      }, [data]);
     const handleChange = (e) => {
         setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
     };
@@ -138,7 +144,7 @@ const ModifyHotel = () => {
                                                 id={input.id}
                                                 onChange={handleChange}
                                                 type={input.type}
-                                                placeholder={data[input.id]}
+                                                value={info[input.id]}
                                             />
                                         </div>
                                     ))}
@@ -150,6 +156,7 @@ const ModifyHotel = () => {
                                         onChange={handleChange}
                                         style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
                                         placeholder={data.desc}
+                                        value={info.desc}
                                     ></textarea>
                                     <button onClick={handleClick}>Send</button>
                                 </form>
