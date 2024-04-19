@@ -62,3 +62,61 @@ export const deleteAllReservations = async (req,res,next)=>{
         next(err)
     }
 }
+
+
+
+// THỐNG KÊ DOANH THU ALL HOTEL (CHO BÊN ADMINISTRATOR)
+export const getAllHotelRevenue = async (req, res, next) => {
+    try {
+        // Lấy tất cả các đơn đặt phòng
+        const reservations = await Reservation.find({status:true});
+
+        // Tạo một object để lưu trữ tổng doanh thu của từng khách sạn
+        const hotelRevenueMap = {};
+
+        // Duyệt qua mỗi đơn đặt phòng và tính tổng doanh thu cho mỗi khách sạn
+        reservations.forEach((reservation) => {
+            const hotelId = reservation.hotelId;
+            const totalPrice = reservation.totalPrice;
+
+            // Nếu khách sạn đã tồn tại trong map, cộng thêm doanh thu
+            if (hotelRevenueMap[hotelId]) {
+                hotelRevenueMap[hotelId].totalRevenue += totalPrice;
+            } else {
+                // Nếu khách sạn chưa tồn tại trong map, tạo một entry mới với doanh thu là doanh thu của đơn đặt phòng
+                hotelRevenueMap[hotelId] = {
+                    _id: hotelId,
+                    hotelName: "",
+                    totalRevenue: totalPrice
+                };
+            }
+        });
+
+        // Lấy tất cả các khách sạn từ cơ sở dữ liệu
+        const hotels = await Hotel.find();
+
+        // Cập nhật tên của từng khách sạn trong map
+        await Promise.all(hotels.map(async (hotel) => {
+            const hotelId = hotel._id;
+            const hotelName = hotel.name;
+
+            // Nếu khách sạn có trong map, cập nhật tên của khách sạn
+            if (hotelRevenueMap[hotelId]) {
+                hotelRevenueMap[hotelId].hotelName = hotelName;
+            } else {
+                // Nếu khách sạn không có trong map, thêm một entry mới với doanh thu là 0 và tên của khách sạn
+                hotelRevenueMap[hotelId] = {
+                    _id: hotelId,
+                    hotelName: hotelName,
+                    totalRevenue: 0
+                };
+            }
+        }));
+
+        // Chuyển object thành mảng và trả về
+        const hotelRevenue = Object.values(hotelRevenueMap);
+        res.status(200).json(hotelRevenue);
+    } catch (error) {
+        next(error);
+    }
+}
