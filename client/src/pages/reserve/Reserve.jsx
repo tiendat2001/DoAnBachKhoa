@@ -24,25 +24,28 @@ const Reserve = () => {
   const [endDate, setEndDate] = useState(location.state.endDate);
   const searchContext = useContext(SearchContext);
   const [options, setOptions] = useState(searchContext.options);
-
+  const [roomsDetailFromListClient, setRoomsDetailFromListClient] = useState(location.state.seletedRoomIdsReserved)
   const { user } = useContext(AuthContext)
-
-  // console.log(new Date(startDate))
 
   const { data: roomData, loading, error } = useFetch(`/rooms/${hotelId}`);
   const { data: hotelData, loading: hotelLoading, error: hotelError } = useFetch(`/hotels/find/${hotelId}`);
-
-  // const [totalPrice, setTotalPrice] = useState(0);
   var totalPrice = 0;
   var maxPeople = 0;
 
-  // console.log(selectedRooms)
   // const [detailRooms, setdetailRooms]=useSt
   // alldates.forEach(timestamp => {
   //      console.log(new Date(timestamp));
 
   // });
+  const isAvailable = (roomNumber) => {
+    const isFound = roomNumber.unavailableDates.some((date) => {
+      const dateMinusOneDay = subDays(new Date(date), 1).getTime(); // theem getTIme() hay ko cung v
+      // console.log(new Date(dateMinusOneDay));
+      return alldates.includes(dateMinusOneDay);
+    });
 
+    return !isFound;
+  };
   const roomCounts = {};
 
   // Tính số lượng của từng loại phòng
@@ -62,15 +65,39 @@ const Reserve = () => {
 
   // Tạo chuỗi detailRooms từ roomCounts
   const detailRooms = Object.entries(roomCounts).map(([title, count]) => `${title} (x${count})`).join(', ');
-
-  // In ra kết quả
-  // console.log(roomCounts);
-  // console.log(detailRooms);
-  console.log(maxPeople);
-
+  const selectedRoomIdsReserved=[]
   // đặt phòng
   const reserveRoom = async () => {
-    console.log("dat")
+    selectedRoomIdsReserved.length = 0; // reset lại mảng
+    roomsDetailFromListClient.forEach(roomDetail => {
+      const { roomNumbers, quantity } = roomDetail; // Lấy ra roomNumbers và quantity từ mỗi phần tử
+      let selectedQuantity = 0; // Số lượng phòng đã chọn
+
+      // Duyệt qua mỗi phần tử trong mảng roomNumbers
+      roomNumbers.forEach(roomNumber => {
+          // Kiểm tra xem phòng có sẵn không bằng cách sử dụng hàm isAvailable
+          if (isAvailable(roomNumber)) {
+              // Nếu phòng có sẵn và số lượng phòng đã chọn chưa đạt tối đa
+              if (selectedQuantity < quantity) {
+                  selectedRoomIdsReserved.push(roomNumber._id); // Thêm roomNumber vào mảng selectedRoomIdsReserved
+                  selectedQuantity++; // Tăng số lượng phòng đã chọn lên 1
+              } else {
+                  return; // Nếu đã đủ số lượng, thoát khỏi vòng lặp
+              }
+          }
+      });
+  });
+
+
+  const totalQuantity = roomsDetailFromListClient.reduce((acc, roomDetail) => acc + roomDetail.quantity, 0);
+  // console.log(totalQuantity)
+  if(selectedRoomIdsReserved.length !== totalQuantity){
+    alert("Phòng đã hết! Vui lòng quay lại trang đặt phòng")
+    return; // Thoát khỏi hàm nếu số lượng phòng đã chọn không đủ
+  }
+  
+    // return;
+    console.log(selectedRoomIdsReserved)
     // cộng 1 ngày để hiển thị trong csdl đúng
     const allDatesPlus = alldates.map(date => addDays(date, 1));
     const startDatePlus = addDays(startDate, 1)
@@ -78,7 +105,7 @@ const Reserve = () => {
 
     try {
       await Promise.all(
-        selectedRooms.map(async (roomId) => {
+        selectedRoomIdsReserved.map(async (roomId) => {
           try {
             const res = await axios.put(`/rooms/availability/${roomId}`, {
               dates: allDatesPlus,
@@ -103,7 +130,7 @@ const Reserve = () => {
         phoneNumber: "32423424",
         start: startDatePlus,
         end: endDatePlus,
-        roomNumbersId: selectedRooms,
+        roomNumbersId: selectedRoomIdsReserved,
         roomsDetail: detailRooms,
         guest: {adult:options.adult,children:options.children},
         allDatesReserve: allDatesPlus,
@@ -117,22 +144,15 @@ const Reserve = () => {
       console.log(err)
       return;
     }
-
-    // DAY UNAVAILABLEDATE
     
     toast.success('Đặt phòng thành công');
-
   }
 
   return (
     <div>
       <Navbar />
       <Header type="list" />
-      {/* <h1>{totalPrice*alldates.length}</h1>
-      <h1>{detailRooms}</h1>
-      <h1>So dem: {alldates.length} </h1>
-      <h1>Hotel id {hotelId}</h1>
-      <h1>{startDate.toLocaleDateString('vi-VN')}</h1> */}
+    
       <div className="ReserveContainer">
         <h1>Thông tin đặt phòng</h1>
         {/* chứa thông tin khách sạn đang đặt */}

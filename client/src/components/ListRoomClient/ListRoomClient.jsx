@@ -37,7 +37,7 @@ const ListRoomClient = ({ hotelId }) => {
   const { dispatch } = useContext(SearchContext);
   const [selectedRoomIds, setSelectedRoomIds] = useState([]);
   const [key, setKey] = useState(Math.random());
-
+  const selectedRoomDetais = [];
 
   // var totalRoomQuantitySelected = 0;
   const navigate = useNavigate()
@@ -87,15 +87,15 @@ const ListRoomClient = ({ hotelId }) => {
 
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
   // lấy roomNumber_id theo tích
-  const handleSelectCheckBox = (e) => {
-    const checked = e.target.checked;
-    const value = e.target.value;
-    setSelectedRooms(
-      checked
-        ? [...selectedRooms, value]
-        : selectedRooms.filter((item) => item !== value) // nếu bỏ tích thì bỏ phòng có value đấy ra mảng, giữ lại phòng kp value
-    );
-  };
+  // const handleSelectCheckBox = (e) => {
+  //   const checked = e.target.checked;
+  //   const value = e.target.value;
+  //   setSelectedRooms(
+  //     checked
+  //       ? [...selectedRooms, value]
+  //       : selectedRooms.filter((item) => item !== value) // nếu bỏ tích thì bỏ phòng có value đấy ra mảng, giữ lại phòng kp value
+  //   );
+  // };
   const getDatesInRange = (startDate, endDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -132,18 +132,14 @@ const ListRoomClient = ({ hotelId }) => {
 
   // thay đổi số lượng
   const handleSelectChange = (event, roomNumbers) => {
-
     let roomQuantitySelected = 0;
     data.forEach((dataItem) => {
       // Lấy giá trị được chọn từ <select> tương ứng với item hiện tại
       const selectedValue = parseInt(document.getElementById(`select_${dataItem._id}`).value);
       roomQuantitySelected = roomQuantitySelected + selectedValue;
     });
-    console.log("Tổng Số lượng phòng đã chọn:", roomQuantitySelected);
-
-
+    // console.log("Tổng Số lượng phòng đã chọn:", roomQuantitySelected);
     const updatedSelectedRooms = selectedRoomIds;
-
 
     let updatedSelectedRoomsCopy = [...updatedSelectedRooms];
     // Duyệt qua mỗi phần tử trong mảng roomNumbers
@@ -156,13 +152,7 @@ const ListRoomClient = ({ hotelId }) => {
       }
     });
 
-
-
-
-
-
     roomNumbers.forEach((roomNumber) => {
-
       if (isAvailable(roomNumber) && updatedSelectedRoomsCopy.length < roomQuantitySelected) {
         updatedSelectedRoomsCopy.push(roomNumber._id);
       }
@@ -171,36 +161,33 @@ const ListRoomClient = ({ hotelId }) => {
 
     setSelectedRoomIds(updatedSelectedRoomsCopy);
   };
-  console.log("selectedRoomIds:", selectedRoomIds);
-
-
+  // console.log("selectedRoomIds:", selectedRoomIds);
 
   // hàm nút đặt phòng
   const reserveRoom = async () => {
-    // try {
-    //   await Promise.all(
-    //     selectedRooms.map((roomId) => {
-    //       const utcDates = alldates.map(date => addDays(date, 1));
-    //       const res = axios.put(`/rooms/availability/${roomId}`, {
-    //         dates: utcDates,
-    //       });
-    //       return res.data;
-    //     })
-    //   );
+     // Lặp qua từng item trong data
+    data.forEach((item) => {
+    // Kiểm tra nếu số lượng phòng đã chọn khác 0
+    const selectedValue = parseInt(document.getElementById(`select_${item._id}`).value);
+    if (selectedValue !== 0) {
+      // Thêm đối tượng vào mảng selectedRooms
+      selectedRoomDetais.push({ roomNumbers:item.roomNumbers, typeRoom:item.title, quantity: selectedValue });
+    }
 
-
-    // } catch (err) {
-
-    // }
-    // alert("thanh cong")
+});
+  console.log(selectedRoomDetais);
+  
     if (selectedRoomIds.length > 0) {
-      navigate("/reserve", { state: { selectedRoomIds, alldates, hotelId, startDate: dates[0].startDate, endDate: dates[0].endDate } });
+      navigate("/reserve", { state: { selectedRoomIds, alldates, hotelId, startDate: dates[0].startDate, endDate: dates[0].endDate, 
+        seletedRoomIdsReserved:selectedRoomDetais } });
 
     } else {
       toast.error('Bạn chưa chọn phòng muốn đặt');
     }
 
   };
+
+  
 
   return (
     <div className="RoomClientContainer">
@@ -299,7 +286,7 @@ const ListRoomClient = ({ hotelId }) => {
           {/* chứa chỗ chọn phòng */}
           <div key={key} style={{ marginBottom: '10px', display: 'flex', justifyContent: 'flex-end',width: '20%',alignItems:'center',gap:'10px' }}>
 
-            <select style={{height:'20px'}} id={`select_${item._id}`} onChange={(event) => handleSelectChange(event, item.roomNumbers)}>
+            <select style={{height:'20px'}}  id={`select_${item._id}`} onChange={(event) => handleSelectChange(event, item.roomNumbers)}>
               <option value={0}>0 phòng</option>
               {(() => {
                 let roomIndex = 0; // Khởi tạo biến đếm
@@ -348,7 +335,7 @@ const ListRoomClient = ({ hotelId }) => {
       <button onClick={reserveRoom} className="rButton">
         Đi đến trang đặt phòng
       </button>
-
+    
 
     </div>
   )
