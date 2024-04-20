@@ -36,6 +36,18 @@ function App() {
 
     return children;
   };
+
+  const ProtectedAdministratorRoute = ({ children }) => {
+    const { user } = useContext(AuthContext);
+    const userToken = getCookie('access_token');
+    console.log(user)
+    // chua dang nhap thi tu dong nhay sang trang login
+    if (!user||!user.isAdmin) {
+      return <Navigate to="/login" />;
+    }
+
+    return children;
+  };
   return (
     <BrowserRouter>
       <Routes>
@@ -48,7 +60,7 @@ function App() {
         <Route path="/reserve" element={<Reserve />} />
 
 
-        <Route path="/administrator" element={<Administrator />} />
+        <Route path="/administrator" element={ <ProtectedAdministratorRoute><Administrator /></ProtectedAdministratorRoute>} />
 
         <Route path="/admin/">
           <Route index element={
