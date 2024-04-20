@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   loading: false,
   error: null,
 };
-
+// khi mà user = AuthContext() thì mặc định user sẽ có những thứ trên
 export const AuthContext = createContext(INITIAL_STATE);
 
 // quản lý các trạng thái của context- các action như LOGIN_START để cập nhật trạng thái context
@@ -50,7 +50,9 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
       // luu giu user khi refresh, luu state thanh 1 chuoi vao local storage, khi biến user thay đổi thì hàm này gọi, thônng
       // tin user sẽ lưu trong localstorage
-    localStorage.setItem("user", JSON.stringify(state.user));
+    const userWithoutAdmin = { ...state.user };
+    delete userWithoutAdmin.isAdmin;
+    localStorage.setItem("user", JSON.stringify(userWithoutAdmin));
   }, [state.user]);
 
   return (

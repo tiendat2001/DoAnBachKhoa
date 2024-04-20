@@ -41,7 +41,6 @@ function App() {
     const { user } = useContext(AuthContext);
     const userToken = getCookie('access_token');
     console.log(user)
-    // chua dang nhap thi tu dong nhay sang trang login
     if (!user||!user.isAdmin) {
       return <Navigate to="/login" />;
     }
