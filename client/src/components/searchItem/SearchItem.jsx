@@ -19,22 +19,25 @@ const SearchItem = ({ item }) => {
 
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
   const calculatePrice = (cheapestPrice) => {
-    if(options.room >Math.floor(options.adult / cheapestPrice.people)){
+    let totalPeople = parseInt(options.adult, 10) + parseFloat(options.children) * 0.5;
+    if(options.room >Math.floor(totalPeople / cheapestPrice.people)){
       return cheapestPrice.price *options.room*days;
     } 
-    if(Math.floor(options.adult / cheapestPrice.people)==0){ // 2/3 = 0.6 làm tròn xuống 0
+    if(Math.floor(totalPeople / cheapestPrice.people)==0){ // 2/3 = 0.6 làm tròn xuống 0
       return cheapestPrice.price*days;
     }else{
       // setroomInSearchItem(Math.floor(options.adult / cheapestPrice.people))
-        return  cheapestPrice.price * Math.floor(options.adult / cheapestPrice.people)*days;
+        return  cheapestPrice.price * Math.floor(totalPeople / cheapestPrice.people)*days;
     } 
    
   };
 
   const calculateRoom = (cheapestPrice) => {
-      if(options.room >Math.floor(options.adult / cheapestPrice.people)) return options.room
+    let totalPeople = parseInt(options.adult, 10) + parseFloat(options.children) * 0.5;
+
+      if(options.room >Math.floor(totalPeople / cheapestPrice.people)) return options.room
       else{
-        return  Math.floor(options.adult / cheapestPrice.people)
+        return  Math.floor(totalPeople / cheapestPrice.people)
       }
      
    

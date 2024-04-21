@@ -63,12 +63,16 @@ const List = () => {
   }
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
   const calculatePrice = (cheapestPrice) => {
-    // thay số 2 bằng số người của phòng min price
-    if (Math.floor(options.adult / cheapestPrice.people) == 0) {
+    let totalPeople = parseInt(options.adult, 10) + parseFloat(options.children) * 0.5;
+    if(options.room >Math.floor(totalPeople / cheapestPrice.people)){
+      return cheapestPrice.price *options.room*days;
+    } 
+    // console.log(totalPeople)
+    if (Math.floor(totalPeople / cheapestPrice.people) == 0) {
       return cheapestPrice.price * days;
     } else {
       //new Intl.NumberFormat('vi-VN').format(params.value*1000)
-      return cheapestPrice.price * Math.floor(options.adult / cheapestPrice.people) * days;
+      return cheapestPrice.price * Math.floor(totalPeople / cheapestPrice.people) * days;
     }
 
   };
@@ -183,6 +187,7 @@ const List = () => {
               <>
                 {data.map((item) => {
                   const price = calculatePrice(item.cheapestPrice);
+                  console.log(price)
                   if (price >= min && price <= max) {
                     return <SearchItem item={item} key={item._id} />;
                   }
