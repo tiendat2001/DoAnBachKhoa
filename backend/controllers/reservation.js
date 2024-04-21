@@ -87,7 +87,7 @@ export const getAllHotelRevenue = async (req, res, next) => {
             } else {
                 // Nếu khách sạn chưa tồn tại trong map, tạo một entry mới với doanh thu là doanh thu của đơn đặt phòng
                 hotelRevenueMap[hotelId] = {
-                    _id: hotelId,
+                    hotelId: hotelId,
                     hotelName: hotel.name,
                     userOwner:user.email,
                     totalRevenue: totalPrice
@@ -110,7 +110,7 @@ export const getAllHotelRevenue = async (req, res, next) => {
             } else {
                 // Nếu khách sạn không có trong map, thêm một entry mới với doanh thu là 0 và tên của khách sạn
                 hotelRevenueMap[hotelId] = {
-                    _id: hotelId,
+                    hotelId: hotelId,
                     hotelName: hotelName,
                     userOwner:user.email,
                     totalRevenue: 0

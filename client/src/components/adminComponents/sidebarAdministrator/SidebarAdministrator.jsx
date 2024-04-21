@@ -30,14 +30,17 @@ const SidebarAdministrator = () => {
     } catch (err) {}
   };
   return (
+    // css từ sidebar.css
     <div className="sidebar">
       <div className="top">
+
         <Link to="/" style={{ textDecoration: "none" }}>
           <span className="logo">HotelBooking</span>
         </Link>
       </div>
       {/* <hr /> */}
       <div className="center">
+        <div style={{color:'red'}}>Quyền admin</div>
         <ul>
           {/* <p className="title">MAIN</p> */}
           {/* <Link to="/" style={{ textDecoration: "none" }}>

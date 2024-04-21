@@ -61,7 +61,7 @@ export const roomColumns = [
   };
 
 
-  
+  // cột danh sách reservations
   export const ReservationColumns = [
     { field: "username", headerName: "Tài khoản", width: 80 },
     {
@@ -147,3 +147,28 @@ export const roomColumns = [
 
   ];
   
+  export const RenenueAllHotelColumn =
+  // cột ds hotel revenue
+  [
+    {
+      field: "hotelName",
+      headerName: "Tên chỗ nghỉ",
+      width: 350,
+      headerAlign: 'center',
+      align:'center'
+    },
+    {
+      field: "userOwner",
+      headerName: "Email tài khoản chủ",
+      width: 350,
+      headerAlign: 'center',
+      align:'center'
+    },
+    {
+      field: "totalRevenue",
+      headerName: "Tổng doanh thu",
+      width: 150,
+      headerAlign: 'center',
+      align:'center'
+    },
+  ]

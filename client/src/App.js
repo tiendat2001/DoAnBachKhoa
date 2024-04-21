@@ -29,7 +29,7 @@ function App() {
     const { user } = useContext(AuthContext);
     const userToken = getCookie('access_token');
     // console.log(userToken)
-    // chua dang nhap thi tu dong nhay sang trang login
+    // chua dang nhap thi tu dong nhay sang trang login, có user sẵn trong localSto và token trong cookie thì k cần login
     if (!user || !userToken) {
       return <Navigate to="/login" />;
     }
@@ -39,11 +39,11 @@ function App() {
 
   const ProtectedAdministratorRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
-    const userToken = getCookie('access_token');
-    console.log(user)
-    if (!user||!user.isAdmin) {
-      return <Navigate to="/login" />;
-    }
+    // const userToken = getCookie('access_token');
+    // console.log(user)
+    // if (!user||!user.isAdmin) {
+    //   return <Navigate to="/login" />;
+    // }
 
     return children;
   };
