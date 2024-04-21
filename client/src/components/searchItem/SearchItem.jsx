@@ -19,16 +19,20 @@ const SearchItem = ({ item }) => {
 
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
   const calculatePrice = (cheapestPrice) => {
+    let totalPrice=0;
     let totalPeople = parseInt(options.adult, 10) + parseFloat(options.children) * 0.5;
     if(options.room >Math.floor(totalPeople / cheapestPrice.people)){
-      return cheapestPrice.price *options.room*days;
+      totalPrice= cheapestPrice.price *options.room*days;
     } 
-    if(Math.floor(totalPeople / cheapestPrice.people)==0){ // 2/3 = 0.6 làm tròn xuống 0
-      return cheapestPrice.price*days;
-    }else{
-      // setroomInSearchItem(Math.floor(options.adult / cheapestPrice.people))
-        return  cheapestPrice.price * Math.floor(totalPeople / cheapestPrice.people)*days;
-    } 
+    // console.log(totalPeople)
+    if (Math.floor(totalPeople / cheapestPrice.people) == 0) {
+      totalPrice= cheapestPrice.price * days;
+    } else {
+      //new Intl.NumberFormat('vi-VN').format(params.value*1000)
+      totalPrice= cheapestPrice.price * Math.floor(totalPeople / cheapestPrice.people) * days;
+    }
+    // nhân 1000 chỉ là để hiển thị, còn lọc giá ở trang list ko nhân 1000
+    return Intl.NumberFormat('vi-VN').format(totalPrice*1000)
    
   };
 
@@ -65,7 +69,7 @@ const SearchItem = ({ item }) => {
           <button>{item.rating}</button>
         </div>} */}
         <div className="siDetailTexts">
-        <span className="siPrice">Price from: ${calculatePrice(item.cheapestPrice)}</span>
+        <span className="siPrice">Price from: {calculatePrice(item.cheapestPrice)} VND</span>
           <span className="siTaxOp">Cho {options.adult} người, {calculateRoom(item.cheapestPrice)} phòng, {days} đêm</span>
           {/* chuyen sang xem thong tin tung hotel */}
           <Link to={`/hotels/${item._id}`}>
