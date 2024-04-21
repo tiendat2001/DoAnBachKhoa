@@ -1,5 +1,6 @@
 import express from "express"
-import { createReservation ,getReservations,updateReservation,deleteAllReservations,getAllHotelRevenue} from "../controllers/reservation.js"
+import { createReservation ,getReservations,updateReservation,deleteAllReservations,getAllHotelRevenue,getRevenueByHotelId
+} from "../controllers/reservation.js"
 const router = express.Router();
 
 //CREATE
@@ -17,6 +18,9 @@ router.delete("/",deleteAllReservations)
 
 
 // doanh thu
-
+// GET ALL DOANH THU HOTEL
 router.get("/getAllRevenueHotel",getAllHotelRevenue)
+
+// GET DOANH THU TUNG HOTEL
+router.get("/getRevenue/:hotelId",getRevenueByHotelId)
 export default router

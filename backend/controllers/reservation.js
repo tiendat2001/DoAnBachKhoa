@@ -1,6 +1,7 @@
 import Reservation from "../models/Reservation.js";
 import Hotel from "../models/Hotel.js"
 import User from "../models/User.js"
+import Room from "../models/RoomType.js"
 export const createReservation = async (req,res,next)=>{
     const newReservation = new Reservation(req.body)
     
@@ -124,6 +125,60 @@ export const getAllHotelRevenue = async (req, res, next) => {
         // Chuyển object thành mảng và trả về
         const hotelRevenue = Object.values(hotelRevenueMap);
         res.status(200).json(hotelRevenue);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getRevenueByHotelId = async (req, res, next) => {
+    try {
+        // Lấy tất cả các đơn đặt phòng
+        const reservations = await Reservation.find({status:true,hotelId:req.params.hotelId});
+        let totalRevenue = 0;
+        let totalGuests = 0;
+        const totalOrders = reservations.length;
+        // số lượng bán từng loại phòng
+        const soldRooms = {};
+
+        // tìm loại phòng bán nhiều nhất
+        let maxSoldRoomType = '';
+        let maxSoldRoomCount = 0;
+
+        // Lặp qua từng đơn đặt phòng và tính tổng doanh thu và số lượng khách
+        for (const reservation of reservations) {
+            // Lặp qua từng roomNumbersId trong reservation
+            for (const roomNumbersId of reservation.roomNumbersId) {
+                // Tìm loại phòng và lấy ra tên loại phòng
+                const room = await Room.findOne({ "roomNumbers._id": roomNumbersId });
+                const roomType = room ? room.title : 'Unknown';
+
+                // Tăng số lượng phòng được bán cho loại phòng này
+                if (soldRooms[roomType]) {
+                    soldRooms[roomType]++;
+                } else {
+                    soldRooms[roomType] = 1;
+                }
+
+                // Cập nhật loại phòng bán được nhiều nhất
+                if (soldRooms[roomType] > maxSoldRoomCount) {
+                    maxSoldRoomType = roomType;
+                    maxSoldRoomCount = soldRooms[roomType];
+                }
+            }
+
+            // Tính tổng doanh thu và số lượng khách
+            totalRevenue += reservation.totalPrice;
+            totalGuests += reservation.guest.adult + reservation.guest.children;
+        }
+        // Trả về kết quả
+        res.status(200).json({
+            totalRevenue: totalRevenue,
+            totalGuests: totalGuests,
+            totalOrders: totalOrders,
+            soldRooms: soldRooms,
+            maxSoldRoomType: maxSoldRoomType,
+            maxSoldRoomCount: maxSoldRoomCount
+        });
     } catch (error) {
         next(error);
     }

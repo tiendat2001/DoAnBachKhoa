@@ -70,6 +70,8 @@ export const updateRoom = async (req, res, next) => {
     next(err);
   }
 };
+
+// khi đặt phòng
 export const updateRoomAvailability = async (req, res, next) => {
   try {
     const room = await Room.findOne({ "roomNumbers._id": req.params.id });
@@ -85,7 +87,7 @@ export const updateRoomAvailability = async (req, res, next) => {
     }
 
     const { unavailableDates } = roomNumber;
-    
+    // kiểm tra có 2 người đặt cùng 1 phòng nhỏ
     const duplicateDates = req.body.dates.filter(date => {
       const dateString = new Date(date).toISOString();
       return unavailableDates.some(unavailableDate => unavailableDate.toISOString() === dateString);
