@@ -80,6 +80,7 @@ export const getAllHotelRevenue = async (req, res, next) => {
             const hotel = await Hotel.findById(hotelId);
             const user= await User.findById(hotel.ownerId);
             const totalPrice = reservation.totalPrice;
+            
             if (hotel) {
             // Nếu khách sạn đã tồn tại trong map, cộng thêm doanh thu
             if (hotelRevenueMap[hotelId]) {
@@ -90,7 +91,8 @@ export const getAllHotelRevenue = async (req, res, next) => {
                     hotelId: hotelId,
                     hotelName: hotel.name,
                     userOwner:user.email,
-                    totalRevenue: totalPrice
+                    totalRevenue: totalPrice,
+                    createdAt:hotel.createdAt
                 };
             }
         }
@@ -113,6 +115,7 @@ export const getAllHotelRevenue = async (req, res, next) => {
                     hotelId: hotelId,
                     hotelName: hotelName,
                     userOwner:user.email,
+                    createdAt:hotel.createdAt,
                     totalRevenue: 0
                 };
             }

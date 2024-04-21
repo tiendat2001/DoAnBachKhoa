@@ -165,6 +165,20 @@ export const roomColumns = [
       align:'center'
     },
     {
+      field: "createdAt",
+      headerName: "Ngày hoạt động",
+      // renderHeader: () => (
+      //   <div style={{whiteSpace:'normal'}} className="wrap-Headercontent">
+      //     Ngày bắt đầu hoạt động
+      //   </div>
+      // ),
+      width: 115,
+      valueGetter: (params) => new Date(params.value).toLocaleDateString('vi-VN'),
+      headerAlign: 'center',
+      align:'center'
+
+    },
+    {
       field: "totalRevenue",
       headerName: "Tổng doanh thu",
       width: 150,
