@@ -118,6 +118,13 @@ export const roomColumns = [
       field: "totalPrice",
       headerName: "Tổng giá",
       width: 100,
+      valueFormatter: (params) => {
+        if (params.value !== null) {
+            const formattedValue = new Intl.NumberFormat('vi-VN').format(params.value*1000)
+            return `${formattedValue}`;
+        }
+        return null; // Trả về null nếu giá trị là null
+    },
       headerAlign: 'center',
       align:'center'
     },
@@ -181,8 +188,38 @@ export const roomColumns = [
     {
       field: "totalRevenue",
       headerName: "Tổng doanh thu",
-      width: 150,
+      width: 250,
+      valueFormatter: (params) => {
+        const multipliedValue = params.value * 1000;
+        // Định dạng giá trị thành số nguyên
+        const formattedValue = new Intl.NumberFormat('vi-VN').format(multipliedValue);
+        return `${formattedValue} VND`;
+    },
       headerAlign: 'center',
       align:'center'
     },
+
+    {
+      field: "commission",
+      headerName: "Tiền hoa hồng",
+      width: 150,
+      headerAlign: 'center',
+      align: 'center',
+      valueGetter: (params) => {
+          // Lấy giá trị của trường "Tổng doanh thu" từ params.row
+          const totalRevenue = params.row.totalRevenue;
+          if (totalRevenue !== undefined && totalRevenue !== null) {
+              return totalRevenue * 0.1*1000; // 15% của giá trị "totalRevenue"
+          }
+          return null; 
+      },
+      valueFormatter: (params) => {
+          if (params.value !== null) {
+              const formattedValue = new Intl.NumberFormat('vi-VN').format(params.value)
+              return `${formattedValue} VND`;
+          }
+          return null; // Trả về null nếu giá trị là null
+      }
+  }
+  
   ]

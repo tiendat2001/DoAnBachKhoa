@@ -67,6 +67,7 @@ const List = () => {
     if (Math.floor(options.adult / cheapestPrice.people) == 0) {
       return cheapestPrice.price * days;
     } else {
+      //new Intl.NumberFormat('vi-VN').format(params.value*1000)
       return cheapestPrice.price * Math.floor(options.adult / cheapestPrice.people) * days;
     }
 
