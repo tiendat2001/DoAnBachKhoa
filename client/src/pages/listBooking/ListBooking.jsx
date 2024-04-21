@@ -45,7 +45,7 @@ const ListBooking = () => {
   // bỏ unavailabledates trong mỗi phòng đặt
   const deleteAvailability = async (allDatesReserve, roomNumbersId, reservationId) => {
     let hasError = false;
-    console.log(roomNumbersId)
+    // console.log(roomNumbersId)
     try {
       for (const roomId of roomNumbersId) {
         try {

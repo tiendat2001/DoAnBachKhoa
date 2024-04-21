@@ -58,7 +58,7 @@ function App() {
         <Route path="/bookings" element={<ListBooking />} />
         <Route path="/reserve" element={<Reserve />} />
 
-
+        {/* tổng doanh thu all hotel */}
         <Route path="/administrator" element={ <ProtectedAdministratorRoute><Administrator /></ProtectedAdministratorRoute>} />
 
         <Route path="/admin/">

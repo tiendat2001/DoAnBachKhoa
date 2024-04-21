@@ -89,7 +89,7 @@ export const getAllHotelRevenue = async (req, res, next) => {
                 hotelRevenueMap[hotelId] = {
                     _id: hotelId,
                     hotelName: hotel.name,
-                    userOwner:user.username,
+                    userOwner:user.email,
                     totalRevenue: totalPrice
                 };
             }
@@ -112,7 +112,7 @@ export const getAllHotelRevenue = async (req, res, next) => {
                 hotelRevenueMap[hotelId] = {
                     _id: hotelId,
                     hotelName: hotelName,
-                    userOwner:user.username,
+                    userOwner:user.email,
                     totalRevenue: 0
                 };
             }
