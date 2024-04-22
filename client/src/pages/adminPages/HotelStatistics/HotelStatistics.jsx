@@ -15,28 +15,43 @@ const HotelStatistics = () => {
   // console.log(data)
   const { data: hotelDataByMonth, loading: loadinghotelDataByMonth, error: errorhotelDataByMonth, reFetch: reFetchhotelDataByMonth }
     = useFetch(`/reservation/getRevenueByMonths/${hotelId}`);
-  
+
+  // Hàm định dạng tiền tệ
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value * 1000);
+  };
   useEffect(() => {
     // Tạo dữ liệu mẫu cho biểu đồ
-    Highcharts.chart('chart-container', {
+    Highcharts.chart('column_revenueByMonth', {
       chart: {
         type: 'line' // Chuyển đổi sang loại biểu đồ đường
       },
       title: {
-        text: 'Biểu đồ đường mẫu'
+        text: 'Biểu đồ doanh thu 6 tháng gần nhất'
       },
       xAxis: {
-        categories: hotelDataByMonth.map(item => item.month +"/"+ item.year).reverse() // lấy month và đảo ngược mảng categories trực tiếp
+        categories: hotelDataByMonth.map(item => item.month + "/" + item.year).reverse() // lấy month và đảo ngược mảng categories trực tiếp
       },
       yAxis: {
         title: {
-          text: 'Giá trị'
+          text: 'Doanh thu'
+        },
+        labels: {
+          formatter: function () {
+            return formatCurrency(this.value); // Gọi hàm formatCurrency để định dạng tiền tệ
+          }
         }
       },
+      credits: {
+        enabled: false // Tắt chữ bản quyền
+      },
       series: [{
-        name: 'Dữ liệu',
+        name: 'Doanh thu',
         data: hotelDataByMonth.map(item => item.revenue).reverse()
       }]
+
+
+
     });
 
 
@@ -70,10 +85,10 @@ const HotelStatistics = () => {
             </div>
           </div>
 
-          <div style={{ fontSize: '20px' }}>Loại phòng bán chạy nhất: {data.maxSoldRoomType} ({data.maxSoldRoomCount} đã bán)</div>
+          <div style={{ fontSize: '15px' }}>Loại phòng bán chạy nhất: {data.maxSoldRoomType} ({data.maxSoldRoomCount} đã bán)</div>
 
-          {/* <div style={{marginTop:'20px'}}>Biểu đồ doanh thu 6 tháng gần nhất</div> */}
-          <div id="chart-container" style={{ width: '100%', height: '400px' }}></div>
+          {/* Biểu đồ cột doanh thu 6 tháng */}
+          <div id="column_revenueByMonth" style={{ width: '100%', height: '400px', marginTop: '50px' }}></div>
 
         </div>
       </div>
