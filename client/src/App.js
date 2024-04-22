@@ -19,6 +19,7 @@ import Reserve from "./pages/reserve/Reserve";
 import NewRoom from "./pages/adminPages/newRoom/NewRoom";
 import ModifyRoom from "./pages/adminPages/ModifyRoom/ModifyRoom";
 import ListReservation from "./pages/adminPages/ListReservation/ListReservation";
+import HotelStatistics from "./pages/adminPages/HotelStatistics/HotelStatistics";
 import Administrator from "./pages/administrator/Administrator";
 import { getCookie } from 'react-use-cookie';
 
@@ -29,8 +30,7 @@ function App() {
     const { user } = useContext(AuthContext);
     const userToken = getCookie('access_token');
     // console.log(userToken)
-    // chua dang nhap thi tu dong nhay sang trang login, có user sẵn trong localSto và token trong cookie thì k cần login
-    console.log(user)
+    // chua dang nhap (user sẽ mảng rỗng) thi tu dong nhay sang trang login, có user sẵn trong localSto và token trong cookie thì k cần login
     if (!user.username || !userToken) {
       return <Navigate to="/login" />;
     }
@@ -87,11 +87,11 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* <Route path="hotels/revenue" element={
+          <Route path="hotels/revenue/:id" element={
             <ProtectedRoute>
-              <ModifyHotel />
+              <HotelStatistics />
             </ProtectedRoute>
-          } /> */}
+          } />
 
           <Route path="rooms" element={
             <ProtectedRoute>

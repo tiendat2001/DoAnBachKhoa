@@ -156,6 +156,7 @@ const Hotel = () => {
             </span> */}
             <div className="hotelImages">
               {data.photos?.map((photo, i) => (
+                // ảnh dài quá thì cho nhỏ lại tối đa chỉ 3 rows
                 <div style={{ width: `${data.photos.length >= 9 ? (100 / Math.ceil(data.photos.length / 3)) + '%' : '33%'}` }} className="hotelImgWrapper" key={i}>
 
                   <img

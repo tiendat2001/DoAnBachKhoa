@@ -91,7 +91,7 @@ const ListHotel = () => {
                                         {/* <span className="siTaxOp">Cho {options.adult} người, {days} đêm</span> */}
                                         {/* <Link to={`/hotels/${item._id}`}>
                                             </Link> */}
-                                        <Link to={`/admin/hotels/${item._id}`}>
+                                        <Link to={`/admin/hotels/revenue/${item._id}`}>
                                             <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>THỐNG KÊ SỐ LIỆU</button>
                                         </Link>
                                         <Link to={`/admin/hotels/${item._id}`}>
