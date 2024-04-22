@@ -134,7 +134,7 @@ const Reserve = () => {
         roomsDetail: detailRooms,
         guest: {adult:options.adult,children:options.children},
         allDatesReserve: allDatesPlus,
-        totalPrice: totalPrice,
+        totalPrice: totalPrice * alldates.length,
         hotelId: hotelId,
         idOwnerHotel: hotelData.ownerId,
         // hotelName: hotelData.name,
@@ -180,7 +180,9 @@ const Reserve = () => {
               (Phòng của bạn có thể không chứa đủ người)
             </div>
           )}
-          <div style={{ fontWeight: 'bold' }}>Tổng giá:  {totalPrice * alldates.length}</div>
+          <div style={{ fontWeight: 'bold' }}>
+            Tổng giá: {new Intl.NumberFormat('vi-VN').format(totalPrice * alldates.length*1000)} VND
+            </div>
 
 
         </div>

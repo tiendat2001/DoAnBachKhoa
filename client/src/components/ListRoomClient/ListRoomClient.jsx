@@ -278,7 +278,7 @@ const ListRoomClient = ({ hotelId }) => {
 
           {/*  hiện giá */}
           <div>
-            Giá phòng: {item.price}
+            Giá phòng: {new Intl.NumberFormat('vi-VN').format(item.price*1000) } VND
             <br />
             (Mỗi đêm)
           </div>

@@ -69,7 +69,7 @@ const ListRoom = () => {
                                 value={hotelId}
                                 onChange={handleHotelChange}
                             >
-                                <option value="d" disabled selected>Chọn khách sạn</option>
+                                <option value="d" disabled selected>Chọn chỗ nghỉ</option>
                                 {hotelLoading
                                     ? "loading"
                                     : hotelData &&
@@ -100,6 +100,9 @@ const ListRoom = () => {
                     rowsPerPageOptions={[5]}
                     checkboxSelection
                     getRowId={(row) => row._id}
+                    localeText={{
+                        noRowsLabel: <span style={{ color: 'red' }}>Bạn chưa chọn chỗ nghỉ hoặc chỗ nghỉ này chưa có phòng</span>,
+                    }}
                 />
 
 

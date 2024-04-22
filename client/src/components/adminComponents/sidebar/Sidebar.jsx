@@ -32,7 +32,8 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="top">
-        <Link to="/admin/hotels" style={{ textDecoration: "none" }}>
+        {/* /admin/hotels */}
+        <Link to="/" style={{ textDecoration: "none" }}>
           <span className="logo">HotelBooking</span>
         </Link>
       </div>
