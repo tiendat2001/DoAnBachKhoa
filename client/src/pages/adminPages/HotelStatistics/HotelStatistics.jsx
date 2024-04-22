@@ -22,11 +22,27 @@ const HotelStatistics = () => {
                 <NavbarAdmin />
 
                 <div className="hotelStatisticContainer">
-                    <div style={{fontSize:'30px',fontWeight:'bold'}}>Tổng quan</div>
+                    <div style={{fontSize:'30px',fontWeight:'bold',marginBottom:'10px'}}>Tổng quan</div>
 
                     <div className="overviewStatistic"> 
-                        <div></div>
+                        <div className="overviewStatistic_card">
+                            <div style={{fontSize:'15px'}}>Tổng doanh thu (VND)</div>
+                            <div style={{fontWeight:'bold',fontSize:'30px'}}>
+                                {new Intl.NumberFormat('vi-VN').format(data.totalRevenue*1000)}</div>
+                        </div>
+
+                        <div className="overviewStatistic_card">
+                            <div  style={{fontSize:'15px'}}>Tổng số khách</div>
+                            <div style={{fontWeight:'bold',fontSize:'30px'}}>{data.totalGuests}</div>
+                        </div>
+
+                        <div className="overviewStatistic_card">
+                            <div style={{fontSize:'15px'}}>Tổng số đơn đặt</div>
+                            <div style={{fontWeight:'bold',fontSize:'30px'}}>{data.totalOrders}</div>
+                        </div>
                     </div>
+
+                    <div>Loại phòng bán chạy nhất: {data.maxSoldRoomType} ({data.maxSoldRoomCount} đã bán)</div>
                 </div>
             </div>
         </div>
