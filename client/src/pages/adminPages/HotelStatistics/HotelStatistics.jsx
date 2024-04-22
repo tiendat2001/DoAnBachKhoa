@@ -26,7 +26,7 @@ const HotelStatistics = () => {
         text: 'Biểu đồ đường mẫu'
       },
       xAxis: {
-        categories: hotelDataByMonth.map(item => item.month.toString()).reverse() // lấy month và đảo ngược mảng categories trực tiếp
+        categories: hotelDataByMonth.map(item => item.month +"/"+ item.year).reverse() // lấy month và đảo ngược mảng categories trực tiếp
       },
       yAxis: {
         title: {
@@ -65,7 +65,7 @@ const HotelStatistics = () => {
             </div>
 
             <div className="overviewStatistic_card">
-              <div style={{ fontSize: '15px' }}>Tổng số đơn đặt</div>
+              <div style={{ fontSize: '15px' }}>Tổng số đơn đặt thành công</div>
               <div style={{ fontWeight: 'bold', fontSize: '30px' }}>{data.totalOrders}</div>
             </div>
           </div>

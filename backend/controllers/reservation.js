@@ -190,6 +190,7 @@ export const getRevenueByHotelId = async (req, res, next) => {
 export const getRevenueMonthsByHotelId = async (req, res, next) => {
     try {
         const currentDate = addHours(new Date(), 7);
+        // console.log(currentDate.getMonth())
         const revenueByMonth = [];
         // console.log(currentDate)
         for (let i = 1; i < 7; i++) {
@@ -219,7 +220,8 @@ export const getRevenueMonthsByHotelId = async (req, res, next) => {
                 }
             ]);
             const monthRevenue = {
-                month: startDate.getMonth() + 1, // Tháng (tính từ 1)
+                month: startDate.getMonth() + 1,
+                year: startDate.getFullYear(), //Trong JavaScript, tháng được đánh số từ 0 đến 11, với tháng 0 là tháng 1 và tháng 11 là tháng 12
                 revenue: revenue.length > 0 ? revenue[0].totalRevenue : 0 // Doanh thu của tháng
             };
 
