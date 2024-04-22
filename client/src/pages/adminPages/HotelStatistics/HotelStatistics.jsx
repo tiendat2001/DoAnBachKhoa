@@ -42,7 +42,7 @@ const HotelStatistics = () => {
                         </div>
                     </div>
 
-                    <div>Loại phòng bán chạy nhất: {data.maxSoldRoomType} ({data.maxSoldRoomCount} đã bán)</div>
+                    <div style={{fontSize:'20px'}}>Loại phòng bán chạy nhất: {data.maxSoldRoomType} ({data.maxSoldRoomCount} đã bán)</div>
                 </div>
             </div>
         </div>
