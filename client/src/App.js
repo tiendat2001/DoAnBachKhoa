@@ -30,7 +30,8 @@ function App() {
     const userToken = getCookie('access_token');
     // console.log(userToken)
     // chua dang nhap thi tu dong nhay sang trang login, có user sẵn trong localSto và token trong cookie thì k cần login
-    if (!user || !userToken) {
+    console.log(user)
+    if (!user.username || !userToken) {
       return <Navigate to="/login" />;
     }
 
@@ -59,7 +60,7 @@ function App() {
         <Route path="/reserve" element={<Reserve />} />
 
         {/* tổng doanh thu all hotel */}
-        <Route path="/administrator" element={ <ProtectedAdministratorRoute><Administrator /></ProtectedAdministratorRoute>} />
+        <Route path="/administrator" element={<ProtectedAdministratorRoute><Administrator /></ProtectedAdministratorRoute>} />
 
         <Route path="/admin/">
           <Route index element={
@@ -85,6 +86,12 @@ function App() {
               <ModifyHotel />
             </ProtectedRoute>
           } />
+
+          {/* <Route path="hotels/revenue" element={
+            <ProtectedRoute>
+              <ModifyHotel />
+            </ProtectedRoute>
+          } /> */}
 
           <Route path="rooms" element={
             <ProtectedRoute>

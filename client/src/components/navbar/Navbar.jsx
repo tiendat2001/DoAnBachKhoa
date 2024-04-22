@@ -23,9 +23,9 @@ const Navbar = () => {
             </Link>
 
            
-            {user ? (
+            {user.username ? (
             <div className="logout">
-             <Link to="/admin">
+             <Link to="/admin/hotels">
               <button className="navButton" >Manage your homestay</button>
               </Link>
 

@@ -26,7 +26,7 @@ const ListHotel = () => {
                     label: 'Yes',
                     onClick: () => {
                         // Xác nhận xóa khách sạn
-                          deleteHotel(hotelId);
+                        deleteHotel(hotelId);
                     }
                 },
                 {
@@ -40,22 +40,22 @@ const ListHotel = () => {
     };
 
     const deleteHotel = async (hotelId) => {
-      try {
-        // Gửi yêu cầu xóa khách sạn đến máy chủ
-        
-          const Success = await axios.delete(`/hotels/${hotelId}`, { data: { ownerId: user._id } });
+        try {
+            // Gửi yêu cầu xóa khách sạn đến máy chủ
 
-        if (Success) {
-          // Nếu xóa thành công, tải lại dữ liệu
-          reFetch();
-          toast.success('Hotel deleted successfully!');
-        } else {
-          toast.error('Failed to delete hotel. Please try again.');
+            const Success = await axios.delete(`/hotels/${hotelId}`, { data: { ownerId: user._id } });
+
+            if (Success) {
+                // Nếu xóa thành công, tải lại dữ liệu
+                reFetch();
+                toast.success('Hotel deleted successfully!');
+            } else {
+                toast.error('Failed to delete hotel. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error deleting hotel:', error);
+            toast.error('An error occurred while deleting hotel.');
         }
-      } catch (error) {
-        console.error('Error deleting hotel:', error);
-        toast.error('An error occurred while deleting hotel.');
-      }
     };
 
     return (
@@ -68,7 +68,7 @@ const ListHotel = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <h1>Your Hotels</h1>
                         <Link to={`/admin/hotels/new`}>
-                            <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>ADD NEW HOTEL</button>
+                            <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>THÊM CHỖ NGHỈ MỚI</button>
 
                         </Link>
                     </div>
@@ -92,9 +92,12 @@ const ListHotel = () => {
                                         {/* <Link to={`/hotels/${item._id}`}>
                                             </Link> */}
                                         <Link to={`/admin/hotels/${item._id}`}>
-                                            <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>MODIFY</button>
+                                            <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>THỐNG KÊ SỐ LIỆU</button>
                                         </Link>
-                                        <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }} onClick={() => handleDelete(item._id)}>DELETE</button>
+                                        <Link to={`/admin/hotels/${item._id}`}>
+                                            <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>CHỈNH SỬA THÔNG TIN KHÁCH SẠN</button>
+                                        </Link>
+                                        <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }} onClick={() => handleDelete(item._id)}>XÓA CHỖ NGHỈ</button>
 
                                     </div>
                                 </div>
