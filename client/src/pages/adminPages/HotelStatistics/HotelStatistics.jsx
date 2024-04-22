@@ -3,9 +3,10 @@ import './hotelStatistics.css'
 import Sidebar from '../../../components/adminComponents/sidebar/Sidebar'
 import NavbarAdmin from '../../../components/adminComponents/navbarAdmin/NavbarAdmin'
 import { Link, useLocation } from "react-router-dom";
-
+import Highcharts from 'highcharts';
 import axios from 'axios';
 import useFetch from '../../../hooks/useFetch';
+import { useEffect } from 'react';
 const HotelStatistics = () => {
     const location = useLocation();
     const hotelId = location.pathname.split("/")[4]; 
@@ -13,6 +14,32 @@ const HotelStatistics = () => {
         `/reservation/getRevenue/${hotelId}`);
     // console.log(data)
 
+    useEffect(() => {
+        // Tạo dữ liệu mẫu cho biểu đồ
+        const data = [10, 20, 30, 40, 50];
+    
+        // Khởi tạo biểu đồ đường
+        Highcharts.chart('chart-container', {
+          chart: {
+            type: 'line' // Chuyển đổi sang loại biểu đồ đường
+          },
+          title: {
+            text: 'Biểu đồ đường mẫu'
+          },
+          xAxis: {
+            categories: ['A', 'B', 'C', 'D', 'E']
+          },
+          yAxis: {
+            title: {
+              text: 'Giá trị'
+            }
+          },
+          series: [{
+            name: 'Dữ liệu',
+            data: data
+          }]
+        });
+      }, []);
 
     return (
         //   css từ adminHome.css
@@ -43,6 +70,9 @@ const HotelStatistics = () => {
                     </div>
 
                     <div style={{fontSize:'20px'}}>Loại phòng bán chạy nhất: {data.maxSoldRoomType} ({data.maxSoldRoomCount} đã bán)</div>
+
+                    <div id="chart-container" style={{ width: '100%', height: '400px' }}></div>
+
                 </div>
             </div>
         </div>
