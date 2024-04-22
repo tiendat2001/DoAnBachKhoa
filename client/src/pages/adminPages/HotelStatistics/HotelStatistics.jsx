@@ -39,6 +39,9 @@ const HotelStatistics = () => {
             data: data
           }]
         });
+
+
+        
       }, []);
 
     return (
