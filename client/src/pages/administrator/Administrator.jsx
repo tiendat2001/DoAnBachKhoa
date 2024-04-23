@@ -22,8 +22,9 @@ const Administrator = () => {
         {/* <h1>bang</h1> */}
 
         <div className="listAllHotelRevenue">
+          <div>DOANH THU CÁC CHỖ NGHỈ</div>
         <DataGrid autoHeight
-                    className="datagrid"
+                    className="datagridAllHotelRenvenue"  // css từ listRoom.css
                     rows={hotelRevenue}
                     columns={RenenueAllHotelColumn}
                     pageSize={5}

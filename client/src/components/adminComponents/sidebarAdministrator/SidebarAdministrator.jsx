@@ -49,17 +49,17 @@ const SidebarAdministrator = () => {
               <span>Dashboard</span>
             </li>
           </Link> */}
-          <p className="title">LISTS</p>
+          <p className="title">MỤC</p>
           <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
-              <PersonOutlineIcon className="icon" />
-              <span>Users</span>
+              <CreditCardIcon className="icon" />
+              <span>Thanh toán</span>
             </li>
           </Link>
-          <Link to="/admin/hotels" style={{ textDecoration: "none" }}>
+          <Link to="/administrator" style={{ textDecoration: "none" }}>
             <li>
               <StoreIcon className="icon" />
-              <span>Hotels</span>
+              <span>Doanh thu các chỗ nghỉ</span>
             </li>
           </Link>
          

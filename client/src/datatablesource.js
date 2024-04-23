@@ -5,14 +5,14 @@ export const roomColumns = [
     { field: "_id", headerName: "ID", width: 100, hide:true },
     {
       field: "title",
-      headerName: "Title",
+      headerName: "Tên loại phòng",
       width: 280,
       align:'center',
       headerAlign:'center'
     },
     {
       field: "desc",
-      headerName: "Description",
+      headerName: "Mô tả phòng",
       width: 330,
       cellClassName: 'wrap-content', 
       align:'center',
@@ -25,7 +25,7 @@ export const roomColumns = [
     // },
     {
       field: "price",
-      headerName: "Price",
+      headerName: "Giá phòng (VND)",
       width: 130,
       valueFormatter: (params) => {
             const formattedValue = new Intl.NumberFormat('vi-VN').format(params.value*1000)
@@ -37,14 +37,14 @@ export const roomColumns = [
     },
     {
       field: "maxPeople",
-      headerName: "Max People",
+      headerName: "Số người",
       width: 130,
       align:'center',
       headerAlign:'center'
     },
     {
       field: "roomCount",
-      headerName: "Room Count",
+      headerName: "Số lượng phòng",
       width: 150,
       align:'center',
       headerAlign:'center',

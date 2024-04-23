@@ -30,7 +30,10 @@ const HotelStatistics = () => {
         text: 'Biểu đồ doanh thu 6 tháng gần nhất'
       },
       xAxis: {
-        categories: hotelDataByMonth.map(item => item.month + "/" + item.year).reverse() // lấy month và đảo ngược mảng categories trực tiếp
+        categories: hotelDataByMonth.map(item => item.month + "/" + item.year).reverse() ,// lấy month và đảo ngược mảng categories trực tiếp
+        title: {
+          text: 'Danh thu (được tính theo tổng giá trị tất cả đơn đặt phòng. Thời gian được tính theo ngày check in của đơn).'
+        },
       },
       yAxis: {
         title: {
@@ -44,6 +47,9 @@ const HotelStatistics = () => {
       },
       credits: {
         enabled: false // Tắt chữ bản quyền
+      },
+      accessibility: {
+        enabled: false
       },
       series: [{
         name: 'Doanh thu',
@@ -70,6 +76,7 @@ const HotelStatistics = () => {
           <div className="overviewStatistic">
             <div className="overviewStatistic_card">
               <div style={{ fontSize: '15px' }}>Tổng doanh thu (VND)</div>
+              <div style={{ fontSize: '10px' }}>(Gồm cả những đơn sắp tới)</div>
               <div style={{ fontWeight: 'bold', fontSize: '30px' }}>
                 {new Intl.NumberFormat('vi-VN').format(data.totalRevenue * 1000)}</div>
             </div>

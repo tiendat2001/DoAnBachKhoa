@@ -40,6 +40,8 @@ function App() {
 
   const ProtectedAdministratorRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
+    // đang bỏ tạm 
+    
     // const userToken = getCookie('access_token');
     // console.log(user)
     // if (!user||!user.isAdmin) {
