@@ -2,7 +2,7 @@ import { createContext, useReducer } from "react";
 import React from "react";
 import { format,addDays  } from "date-fns";
 const currentDate = new Date();
-currentDate.setHours(0, 0, 0, 0);
+currentDate.setHours(14, 0, 0, 0);
 const INITIAL_STATE = {
   destination: "Hà Nội",
   dates: [

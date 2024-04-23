@@ -19,7 +19,7 @@ const List = () => {
   const [min, setMin] = useState(100);
   const [max, setMax] = useState(10000);
   const [type, setType] = useState("");
-
+  // console.log(dates)
   const { data, loading, error, reFetch } = useFetch(
     `/hotels?city=${destination}&type=${type}`
   );
@@ -44,7 +44,11 @@ const List = () => {
 
 
   const handleDayChange = (item) => {
-    setDates([item.selection])
+    const newSelection = { ...item.selection };
+    const { startDate, endDate } = newSelection;
+    startDate.setHours(14, 0, 0, 0);
+    endDate.setHours(14, 0, 0, 0);
+    setDates([{ ...newSelection, startDate, endDate }]);
   };
 
   const handleOptionChange = (e, optionName) => {
@@ -63,17 +67,17 @@ const List = () => {
   }
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
   const calculatePrice = (cheapestPrice) => {
-    let totalPrice=0;
+    let totalPrice = 0;
     let totalPeople = parseInt(options.adult, 10) + parseFloat(options.children) * 0.5;
-    if(options.room >Math.floor(totalPeople / cheapestPrice.people)){
-      totalPrice= cheapestPrice.price *options.room*days;
-    } 
+    if (options.room > Math.floor(totalPeople / cheapestPrice.people)) {
+      totalPrice = cheapestPrice.price * options.room * days;
+    }
     // console.log(totalPeople)
     if (Math.floor(totalPeople / cheapestPrice.people) == 0) {
-      totalPrice= cheapestPrice.price * days;
+      totalPrice = cheapestPrice.price * days;
     } else {
       //new Intl.NumberFormat('vi-VN').format(params.value*1000)
-      totalPrice= cheapestPrice.price * Math.floor(totalPeople / cheapestPrice.people) * days;
+      totalPrice = cheapestPrice.price * Math.floor(totalPeople / cheapestPrice.people) * days;
     }
     return totalPrice
   };
@@ -107,7 +111,7 @@ const List = () => {
             {/* CHon loai cho nghi */}
             <div className="lsItem">
               <label>Chọn loại chỗ nghỉ</label>
-              <select style={{height:'25px'}}
+              <select style={{ height: '25px' }}
                 id='type'
                 onChange={handleChangeType}
                 value={type}

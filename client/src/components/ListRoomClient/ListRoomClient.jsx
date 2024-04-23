@@ -69,12 +69,14 @@ const ListRoomClient = ({ hotelId }) => {
   // };
 
   const handleDayChange = (item) => {
-    setDates([item.selection])
+    const newSelection = { ...item.selection };
+    const { startDate, endDate } = newSelection;
+    startDate.setHours(14, 0, 0, 0);
+    endDate.setHours(14, 0, 0, 0);
+    setDates([{ ...newSelection, startDate, endDate }]);
     setSelectedRoomIds([])
     setKey(Math.random()); // Bắt reload lại phần chọn phòng
     reFetch()
-    // console.log([item.selection])
-    // setSelectedRooms([])
   };
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -121,7 +123,7 @@ const ListRoomClient = ({ hotelId }) => {
   // từ front end đẩy xuống csdl bị lệch 1 ngày, ví dụ ở front 13 xuống csdl sẽ là 12, còn từ csdl lên front thì 12 sẽ bị lên thành 13
   const isAvailable = (roomNumber) => {
     const isFound = roomNumber.unavailableDates.some((date) => {
-      const dateMinusOneDay = subDays(new Date(date), 1).getTime(); // theem getTIme() hay ko cung v
+      const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
       // console.log(new Date(dateMinusOneDay));
       return alldates.includes(dateMinusOneDay);
     });

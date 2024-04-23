@@ -26,7 +26,7 @@ const Reserve = () => {
   const [options, setOptions] = useState(searchContext.options);
   const [roomsDetailFromListClient, setRoomsDetailFromListClient] = useState(location.state.seletedRoomIdsReserved)
   const { user } = useContext(AuthContext)
-
+  console.log(startDate)
   const { data: roomData, loading, error } = useFetch(`/rooms/${hotelId}`);
   const { data: hotelData, loading: hotelLoading, error: hotelError } = useFetch(`/hotels/find/${hotelId}`);
   var totalPrice = 0;
@@ -39,7 +39,7 @@ const Reserve = () => {
   // });
   const isAvailable = (roomNumber) => {
     const isFound = roomNumber.unavailableDates.some((date) => {
-      const dateMinusOneDay = subDays(new Date(date), 1).getTime(); // theem getTIme() hay ko cung v
+      const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
       // console.log(new Date(dateMinusOneDay));
       return alldates.includes(dateMinusOneDay);
     });
@@ -99,16 +99,16 @@ const Reserve = () => {
     // return;
     console.log(selectedRoomIdsReserved)
     // cộng 1 ngày để hiển thị trong csdl đúng
-    const allDatesPlus = alldates.map(date => addDays(date, 1));
-    const startDatePlus = addDays(startDate, 1)
-    const endDatePlus = addDays(endDate, 1)
+    // const allDatesPlus = alldates.map(date => addDays(date, 1));
+    // const startDatePlus = addDays(startDate, 1)
+    // const endDatePlus = addDays(endDate, 1)
 
     try {
       await Promise.all(
         selectedRoomIdsReserved.map(async (roomId) => {
           try {
             const res = await axios.put(`/rooms/availability/${roomId}`, {
-              dates: allDatesPlus,
+              dates: alldates,
             });
            
             return res.data;
@@ -128,12 +128,12 @@ const Reserve = () => {
       const upload = axios.post(`/reservation`, {
         username: user.username,
         phoneNumber: "32423424",
-        start: startDatePlus,
-        end: endDatePlus,
+        start: startDate,
+        end: endDate,
         roomNumbersId: selectedRoomIdsReserved,
         roomsDetail: detailRooms,
         guest: {adult:options.adult,children:options.children},
-        allDatesReserve: allDatesPlus,
+        allDatesReserve: alldates,
         totalPrice: totalPrice * alldates.length,
         hotelId: hotelId,
         idOwnerHotel: hotelData.ownerId,

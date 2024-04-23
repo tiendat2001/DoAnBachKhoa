@@ -59,7 +59,7 @@ export const roomColumns = [
 
 // ------------------order
   const formatDate = (date) => {
-    let dateFormat = subDays(new Date(date), 1)
+    let dateFormat = new Date(date)
     // const [month, day, year] = dateFormat.toLocaleDateString().split('/');
     return dateFormat.toLocaleDateString('vi-VN');
   };
