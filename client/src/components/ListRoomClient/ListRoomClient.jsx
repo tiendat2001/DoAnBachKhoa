@@ -27,6 +27,8 @@ const ListRoomClient = ({ hotelId }) => {
   const [selectedRooms, setSelectedRooms] = useState([]);
   const searchContext = useContext(SearchContext);
   const [dates, setDates] = useState(searchContext.dates);
+  dates[0].startDate.setHours(14, 0, 0, 0);
+  dates[0].endDate.setHours(14, 0, 0, 0);
   const [options, setOptions] = useState(searchContext.options);
   const [destination, setDestination] = useState(searchContext.destination);
   const [openDate, setOpenDate] = useState(false);
@@ -37,14 +39,14 @@ const ListRoomClient = ({ hotelId }) => {
   const [selectedRoomIds, setSelectedRoomIds] = useState([]);
   const [key, setKey] = useState(Math.random());
   const selectedRoomDetais = [];
-
+  // console.log(dates)
   // var totalRoomQuantitySelected = 0;
   const navigate = useNavigate()
 
   useEffect(() => {
     // console.log("Updated changes:", dates);
     dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
-    console.log("thay doi")
+    // console.log("thay doi")
   }, [destination, dates, options]);
 
 
@@ -176,7 +178,6 @@ const ListRoomClient = ({ hotelId }) => {
     }
 
 });
-  console.log(selectedRoomDetais);
   
     if (selectedRoomIds.length > 0) {
       navigate("/reserve", { state: { selectedRoomIds, alldates, hotelId, startDate: dates[0].startDate, endDate: dates[0].endDate, 

@@ -32,7 +32,7 @@ const Reserve = () => {
   const [reFreshRoomData, setReFreshRoomData] = useState();
   var totalPrice = 0;
   var maxPeople = 0;
-  console.log(startDate)
+  // console.log(startDate)
   
   const isAvailable = (roomNumber) => {
     const isFound = roomNumber.unavailableDates.some((date) => {
@@ -78,7 +78,7 @@ const Reserve = () => {
 
       //Duyệt qua mỗi phần tử trong mảng roomNumbers
       foundRoom.roomNumbers.forEach(roomNumber => {
-          // Kiểm tra xem phòng có sẵn không bằng cách sử dụng hàm isAvailable
+          // Kiểm tra xem phòng có sẵn không 
           if (isAvailable(roomNumber)) {
               // Nếu phòng có sẵn và số lượng phòng đã chọn chưa đạt tối đa
               if (selectedQuantity < quantity) {
