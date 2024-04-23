@@ -15,13 +15,17 @@ const ModifyRoom = () => {
     const location = useLocation();
     const idRoom = location.pathname.split("/")[3];
     const { data, loading, error } = useFetch(`/rooms/find/${idRoom}`);
-    // console.log(data)
     const [files, setFiles] = useState("");
-    const [info, setInfo] = useState({});
+    const [info, setInfo] = useState(data);
     const { user } = useContext(AuthContext) // {user._id}
     const [isSending, setIsSending] = useState(false);
     const navigate = useNavigate()
 
+    useEffect(() => {
+        if (data) {
+          setInfo(data);
+        }
+      }, [data]);
     const handleChange = (e) => {
         setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
       };
@@ -130,6 +134,7 @@ const ModifyRoom = () => {
                                         onChange={handleChange}
                                         type={input.type}
                                         placeholder={data[input.id]}
+                                        value={info[input.id]}
                                     />
                                 </div>
                             ))}
@@ -140,6 +145,7 @@ const ModifyRoom = () => {
                                 rows="4" /* Số dòng mặc định hiển thị ban đầu */
                                 onChange={handleChange}
                                 placeholder={data.desc }
+                                value={info.desc}
                                 style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
                             ></textarea>
                             

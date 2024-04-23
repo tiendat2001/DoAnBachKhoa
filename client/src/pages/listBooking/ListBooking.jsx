@@ -14,7 +14,6 @@ const ListBooking = () => {
   const { data, loading, error, reFetch } = useFetch(
     `/reservation?username=${user.username}`
   );
-  // console.log(data)
 
   const handleCancelReserve = async (allDatesReserve, roomNumbersId, reservationId) => {
     // console.log(allDatesReserve)
@@ -56,7 +55,6 @@ const ListBooking = () => {
         } catch (err) {
           console.error(`Error for room ${roomId}:`, err);
           hasError = true;
-          // Handle error for this specific room
         }
       }
     } catch (err) {
@@ -111,11 +109,11 @@ const ListBooking = () => {
               </div>
 
               <div style={{ width: '25%', display: 'flex', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
-                <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id)}
-                  disabled={(new Date() > subHours(new Date(item.start), 24)) || !item.status}>Hủy đặt phòng</button> <br />
+                {/* <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id)}
+                  disabled={(new Date() > subHours(new Date(item.start), 24)) || !item.status}>Hủy đặt phòng</button> <br /> */}
                   
-                   {/* <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id)}
-                 >Hủy đặt phòng</button> <br /> */}
+                   <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id)}
+                 >Hủy đặt phòng</button> <br />
                 {/* ngày hiện tại phải lớn hơn (ngày nhận phòng -1 là 0h của ngày nhận) mới đc hủy nên kia là trừ 2, nếu chặt chẽ 14h trưa nhận phòng
                  thì +14h, tức trừ 14+24=34h, tức đặt 14h ngày 13 thì hạn chót hủy là đến 14h ngày 12 */}
                 <div style={{ textAlign: 'right' }}>{new Date() > subHours(new Date(item.start), 24) ? "(Bạn chỉ có thể hủy trước ngày nhận phòng 1 ngày hoặc ngày nhận phòng đã qua)" : ""}</div>
