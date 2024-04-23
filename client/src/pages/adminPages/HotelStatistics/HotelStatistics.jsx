@@ -21,7 +21,7 @@ const HotelStatistics = () => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value * 1000);
   };
   useEffect(() => {
-    // Tạo dữ liệu mẫu cho biểu đồ
+    // biểu đồ đường
     Highcharts.chart('column_revenueByMonth', {
       chart: {
         type: 'line' // Chuyển đổi sang loại biểu đồ đường
