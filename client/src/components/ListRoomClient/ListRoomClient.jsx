@@ -172,7 +172,7 @@ const ListRoomClient = ({ hotelId }) => {
     const selectedValue = parseInt(document.getElementById(`select_${item._id}`).value);
     if (selectedValue !== 0) {
       // Thêm đối tượng vào mảng selectedRooms
-      selectedRoomDetais.push({ roomNumbers:item.roomNumbers, typeRoom:item.title, quantity: selectedValue });
+      selectedRoomDetais.push({ roomTypeId:item._id, typeRoom:item.title, quantity: selectedValue });
     }
 
 });

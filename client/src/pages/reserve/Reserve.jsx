@@ -4,6 +4,7 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 import "./reserve.css";
 import useFetch from "../../hooks/useFetch";
+import { useEffect } from "react";
 import { useContext, useState } from "react";
 import { SearchContext } from "../../context/SearchContext";
 import axios from "axios";
@@ -26,17 +27,13 @@ const Reserve = () => {
   const [options, setOptions] = useState(searchContext.options);
   const [roomsDetailFromListClient, setRoomsDetailFromListClient] = useState(location.state.seletedRoomIdsReserved)
   const { user } = useContext(AuthContext)
-  console.log(startDate)
-  const { data: roomData, loading, error } = useFetch(`/rooms/${hotelId}`);
+  const { data: roomData, loading, error, reFetch } = useFetch(`/rooms/${hotelId}`);
   const { data: hotelData, loading: hotelLoading, error: hotelError } = useFetch(`/hotels/find/${hotelId}`);
+  const [reFreshRoomData, setReFreshRoomData] = useState();
   var totalPrice = 0;
   var maxPeople = 0;
-
-  // const [detailRooms, setdetailRooms]=useSt
-  // alldates.forEach(timestamp => {
-  //      console.log(new Date(timestamp));
-
-  // });
+  console.log(startDate)
+  
   const isAvailable = (roomNumber) => {
     const isFound = roomNumber.unavailableDates.some((date) => {
       const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
@@ -68,13 +65,19 @@ const Reserve = () => {
   const selectedRoomIdsReserved=[]
   // đặt phòng
   const reserveRoom = async () => {
+   
     selectedRoomIdsReserved.length = 0; // reset lại mảng
-    roomsDetailFromListClient.forEach(roomDetail => {
-      const { roomNumbers, quantity } = roomDetail; // Lấy ra roomNumbers và quantity từ mỗi phần tử
-      let selectedQuantity = 0; // Số lượng phòng đã chọn
+    await Promise.all(roomsDetailFromListClient.map(async (roomDetail) => {
 
-      // Duyệt qua mỗi phần tử trong mảng roomNumbers
-      roomNumbers.forEach(roomNumber => {
+      //
+      const { roomTypeId, quantity } = roomDetail; // Lấy ra roomNumbers và quantity từ mỗi phần tử
+      let selectedQuantity = 0; // Số lượng phòng đã chọn
+      const response = await fetch(`/rooms/${hotelId}`);
+      const reFreshRoomData = await response.json();
+      const foundRoom = reFreshRoomData.find(room => room._id == roomTypeId);
+
+      //Duyệt qua mỗi phần tử trong mảng roomNumbers
+      foundRoom.roomNumbers.forEach(roomNumber => {
           // Kiểm tra xem phòng có sẵn không bằng cách sử dụng hàm isAvailable
           if (isAvailable(roomNumber)) {
               // Nếu phòng có sẵn và số lượng phòng đã chọn chưa đạt tối đa
@@ -86,8 +89,7 @@ const Reserve = () => {
               }
           }
       });
-  });
-
+  }));
 
   const totalQuantity = roomsDetailFromListClient.reduce((acc, roomDetail) => acc + roomDetail.quantity, 0);
   // console.log(totalQuantity)
@@ -98,10 +100,10 @@ const Reserve = () => {
   
     // return;
     console.log(selectedRoomIdsReserved)
-    // cộng 1 ngày để hiển thị trong csdl đúng
-    // const allDatesPlus = alldates.map(date => addDays(date, 1));
-    // const startDatePlus = addDays(startDate, 1)
-    // const endDatePlus = addDays(endDate, 1)
+  
+    const allDatesPlus = alldates.map(date => addDays(date, 1));
+    const startDatePlus = addDays(startDate, 1)
+    const endDatePlus = addDays(endDate, 1)
 
     try {
       await Promise.all(
