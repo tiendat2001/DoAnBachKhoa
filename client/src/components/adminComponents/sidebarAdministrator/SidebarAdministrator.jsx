@@ -50,7 +50,7 @@ const SidebarAdministrator = () => {
             </li>
           </Link> */}
           <p className="title">MỤC</p>
-          <Link to="/users" style={{ textDecoration: "none" }}>
+          <Link to="/administrator/allHotelPayments" style={{ textDecoration: "none" }}>
             <li>
               <CreditCardIcon className="icon" />
               <span>Thanh toán</span>

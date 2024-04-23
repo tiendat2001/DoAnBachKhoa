@@ -20,7 +20,8 @@ import NewRoom from "./pages/adminPages/newRoom/NewRoom";
 import ModifyRoom from "./pages/adminPages/ModifyRoom/ModifyRoom";
 import ListReservation from "./pages/adminPages/ListReservation/ListReservation";
 import HotelStatistics from "./pages/adminPages/HotelStatistics/HotelStatistics";
-import Administrator from "./pages/administrator/Administrator";
+import Administrator from "./pages/administratorPages/administrator/Administrator";
+import AllHotelPayment from "./pages/administratorPages/AllHotelPayment/AllHotelPayment";
 import { getCookie } from 'react-use-cookie';
 
 function App() {
@@ -41,7 +42,7 @@ function App() {
   const ProtectedAdministratorRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
     // đang bỏ tạm 
-    
+
     // const userToken = getCookie('access_token');
     // console.log(user)
     // if (!user||!user.isAdmin) {
@@ -63,6 +64,7 @@ function App() {
 
         {/* tổng doanh thu all hotel */}
         <Route path="/administrator" element={<ProtectedAdministratorRoute><Administrator /></ProtectedAdministratorRoute>} />
+        <Route path="/administrator/allHotelPayments" element={<ProtectedAdministratorRoute><AllHotelPayment /></ProtectedAdministratorRoute>} />
 
         <Route path="/admin/">
           <Route index element={
