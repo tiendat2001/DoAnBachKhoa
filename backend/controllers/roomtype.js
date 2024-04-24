@@ -185,6 +185,7 @@ export const cancelRoomReservation = async (req, res, next) => {
       return res.status(404).json("Room not found");
     }
 
+    // chỉnh điều kiện chỗ này, lấy ra json phòng nhỏ
     const roomNumber = room.roomNumbers.find(number => number._id.toString() === req.params.id);
     if (!roomNumber) {
       return res.status(404).json("Room number not found");

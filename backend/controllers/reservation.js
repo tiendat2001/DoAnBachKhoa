@@ -134,8 +134,30 @@ export const getAllHotelRevenue = async (req, res, next) => {
 
 export const getRevenueByHotelId = async (req, res, next) => {
     try {
+        const { month } = req.query
+        console.log(month)
+        const currentDate = addHours(new Date(), 7);
+        // tháng 3 thì ngày bắt đầu 2024-03-01T00:00:00.000Z, kết thúc 2024-03-31T23:59:59.999Z
+        const startDateLastMonth = addHours(startOfMonth(subMonths(currentDate, 1)),7);
+        const endDateLastMonth = addHours(endOfMonth(subMonths(currentDate, 1)), 7);
+
+        const startDateCurrentMonth = addHours(startOfMonth(currentDate),7);
+        const endDateCurrentMonth = addHours(endOfMonth(currentDate),7);
+        console.log(startDateCurrentMonth)
+        console.log(startDateLastMonth)
         // Lấy tất cả các đơn đặt phòng
-        const reservations = await Reservation.find({ status: true, hotelId: req.params.hotelId });
+
+        const reservations = await Reservation.find(
+            { status: true, 
+              hotelId: req.params.hotelId,
+            //   start: {
+            //     $gte: startDateCurrentMonth, // Ngày bắt đầu của tháng
+            //     $lte: endDateCurrentMonth // Ngày kết thúc của tháng
+            // }
+            });
+
+
+
         let totalRevenue = 0;
         let totalGuests = 0;
         const totalOrders = reservations.length;
@@ -186,7 +208,7 @@ export const getRevenueByHotelId = async (req, res, next) => {
     }
 }
 
-// doanh thu theo tung thang
+// doanh thu theo tung thang - BIEEU DO DUONG
 export const getRevenueMonthsByHotelId = async (req, res, next) => {
     try {
         const currentDate = addHours(new Date(), 7);

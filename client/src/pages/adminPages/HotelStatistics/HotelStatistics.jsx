@@ -12,7 +12,6 @@ const HotelStatistics = () => {
   const hotelId = location.pathname.split("/")[4];
   const { data, loading, error, reFetch } = useFetch(
     `/reservation/getRevenue/${hotelId}`);
-  // console.log(data)
   const { data: hotelDataByMonth, loading: loadinghotelDataByMonth, error: errorhotelDataByMonth, reFetch: reFetchhotelDataByMonth }
     = useFetch(`/reservation/getRevenueByMonths/${hotelId}`);
 
@@ -22,6 +21,7 @@ const HotelStatistics = () => {
   };
   useEffect(() => {
     // biểu đồ đường
+
     Highcharts.chart('column_revenueByMonth', {
       chart: {
         type: 'line' // Chuyển đổi sang loại biểu đồ đường
@@ -30,7 +30,7 @@ const HotelStatistics = () => {
         text: 'Biểu đồ doanh thu 6 tháng gần nhất'
       },
       xAxis: {
-        categories: hotelDataByMonth.map(item => item.month + "/" + item.year).reverse() ,// lấy month và đảo ngược mảng categories trực tiếp
+        categories: hotelDataByMonth.map(item => item.month + "/" + item.year).reverse(),// lấy month và đảo ngược mảng categories trực tiếp
         title: {
           text: 'Danh thu (được tính theo tổng giá trị tất cả đơn đặt phòng. Thời gian được tính theo ngày check in của đơn).'
         },
@@ -60,8 +60,39 @@ const HotelStatistics = () => {
 
     });
 
+    if (!loading) {
+      const soldRoomsData = data.soldRooms;
+      console.log(soldRoomsData)
+      const pieChartData = [];
+      for (const roomType in soldRoomsData) {  // roomType sẽ lặp Deluxve VIp, ...
+        if (soldRoomsData.hasOwnProperty(roomType)) {
+          pieChartData.push({
+            name: roomType,
+            y: soldRoomsData[roomType]
+          });
+        }
+      }
+      console.log(pieChartData)
 
-  }, [hotelDataByMonth]);
+      
+      Highcharts.chart('chart-container', {
+        chart: {
+          type: 'pie'
+        },
+        title: {
+          text: 'Phân phối tỷ lệ số lượng sách theo thể loại'
+        },
+        credits: {
+          enabled: false
+        },
+        series: [{
+          name: 'Tỉ lệ',
+          data: pieChartData
+      }]
+      });
+
+    }
+  }, [hotelDataByMonth, data]);
 
   return (
     //   css từ adminHome.css
@@ -96,6 +127,8 @@ const HotelStatistics = () => {
 
           {/* Biểu đồ cột doanh thu 6 tháng */}
           <div id="column_revenueByMonth" style={{ width: '100%', height: '400px', marginTop: '50px' }}></div>
+
+          <div id="chart-container" style={{ width: '100%', height: '400px', marginTop: '50px' }}></div>
 
         </div>
       </div>
