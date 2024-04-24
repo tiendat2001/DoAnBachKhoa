@@ -47,7 +47,7 @@ const Sidebar = () => {
               <span>Dashboard</span>
             </li>
           </Link>
-          <p className="title">LISTS</p>
+          <p className="title">MỤC</p>
           <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
@@ -57,19 +57,19 @@ const Sidebar = () => {
           <Link to="/admin/hotels" style={{ textDecoration: "none" }}>
             <li>
               <StoreIcon className="icon" />
-              <span>Hotels</span>
+              <span>Chỗ nghỉ</span>
             </li>
           </Link>
           <Link to="/admin/rooms" style={{ textDecoration: "none" }}>
             <li>
               <CreditCardIcon className="icon" />
-              <span>Rooms</span>
+              <span>Phòng</span>
             </li>
           </Link>
           <Link to="/admin/reservations" style={{ textDecoration: "none" }}>
             <li>
               <LocalShippingIcon className="icon" />
-              <span>Orders</span>
+              <span>Đơn đặt phòng</span>
             </li>
           </Link>
           {/* <p className="title">USEFUL</p>
