@@ -6,16 +6,19 @@ import { Link, useLocation } from "react-router-dom";
 import Highcharts from 'highcharts';
 import axios from 'axios';
 import useFetch from '../../../hooks/useFetch';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 const HotelStatistics = () => {
   const location = useLocation();
   const hotelId = location.pathname.split("/")[4];
+  const [month, setMonth] = useState(0);
   const { data, loading, error, reFetch } = useFetch(
-    `/reservation/getRevenue/${hotelId}`);
+    `/reservation/getRevenue/${hotelId}?month=${month}`);
   const { data: hotelDataByMonth, loading: loadinghotelDataByMonth, error: errorhotelDataByMonth, reFetch: reFetchhotelDataByMonth }
     = useFetch(`/reservation/getRevenueByMonths/${hotelId}`);
 
-  
+    const handleMonthChange = (event) => {
+      setMonth(parseInt(event.target.value));
+    };
   // Hàm định dạng tiền tệ
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value * 1000);
@@ -42,7 +45,7 @@ const HotelStatistics = () => {
       yAxis: {
         title: {
           text: 'Doanh thu',
-          
+
         },
         labels: {
           formatter: function () {
@@ -111,10 +114,19 @@ const HotelStatistics = () => {
         <div className="hotelStatisticContainer">
           <div style={{ fontSize: '30px', fontWeight: 'bold', marginBottom: '10px' }}>Tổng quan</div>
 
+          <select value={month} onChange={handleMonthChange}>
+            <option value={0}>Tất cả </option>
+            <option value={1}>Trong tháng này </option>
+            <option value={-1}>Trong tháng trước</option>
+          </select>
+
+          <div style={{marginBottom:'20px', fontSize: '14px', fontStyle: 'italic'}}>(Đối với lựa chọn tất cả và trong tháng này sẽ bao gồm cả những đơn sắp tới, 
+          được tính theo ngày check-in của đơn)</div>
+
           <div className="overviewStatistic">
             <div className="overviewStatistic_card">
               <div style={{ fontSize: '15px' }}>Tổng doanh thu (VND)</div>
-              <div style={{ fontSize: '10px' }}>(Gồm cả những đơn sắp tới)</div>
+              <div style={{ fontSize: '10px' }}></div>
               <div style={{ fontWeight: 'bold', fontSize: '30px' }}>
                 {new Intl.NumberFormat('vi-VN').format(data.totalRevenue * 1000)}</div>
             </div>
