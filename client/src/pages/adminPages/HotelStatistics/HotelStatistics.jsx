@@ -27,7 +27,10 @@ const HotelStatistics = () => {
         type: 'line' // Chuyển đổi sang loại biểu đồ đường
       },
       title: {
-        text: 'Biểu đồ doanh thu 6 tháng gần nhất'
+        text: 'Biểu đồ doanh thu 6 tháng gần nhất',
+        style: {
+          fontWeight: "bold"
+        }
       },
       xAxis: {
         categories: hotelDataByMonth.map(item => item.month + "/" + item.year).reverse(),// lấy month và đảo ngược mảng categories trực tiếp
@@ -37,7 +40,8 @@ const HotelStatistics = () => {
       },
       yAxis: {
         title: {
-          text: 'Doanh thu'
+          text: 'Doanh thu',
+          
         },
         labels: {
           formatter: function () {
@@ -72,23 +76,25 @@ const HotelStatistics = () => {
           });
         }
       }
-      console.log(pieChartData)
 
-      
-      Highcharts.chart('chart-container', {
+      Highcharts.chart('pieChart-container', {
         chart: {
           type: 'pie'
         },
         title: {
-          text: 'Phân phối tỷ lệ số lượng sách theo thể loại'
+          text: 'Tỷ lệ số lượng loại phòng đã bán',
+          style: {
+            fontWeight: "bold"
+          }
         },
         credits: {
           enabled: false
         },
+
         series: [{
-          name: 'Tỉ lệ',
+          name: 'Số lượng đã bán',
           data: pieChartData
-      }]
+        }]
       });
 
     }
@@ -123,12 +129,14 @@ const HotelStatistics = () => {
             </div>
           </div>
 
-          <div style={{ fontSize: '15px' }}>Loại phòng bán chạy nhất: {data.maxSoldRoomType} ({data.maxSoldRoomCount} đã bán)</div>
+          {/* <div style={{ fontSize: '15px' }}>Loại phòng bán chạy nhất: {data.maxSoldRoomType} ({data.maxSoldRoomCount} đã bán)</div> */}
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div id="column_revenueByMonth" style={{ flex: 1, width: '48%', height: '400px', marginTop: '50px' }}></div>
 
-          {/* Biểu đồ cột doanh thu 6 tháng */}
-          <div id="column_revenueByMonth" style={{ width: '100%', height: '400px', marginTop: '50px' }}></div>
+            <div id="pieChart-container" style={{ flex: 1, width: '48%', height: '400px', marginTop: '50px', marginLeft: '50px' }}></div>
+          </div>
 
-          <div id="chart-container" style={{ width: '100%', height: '400px', marginTop: '50px' }}></div>
+
 
         </div>
       </div>
