@@ -152,6 +152,13 @@ export const roomColumns = [
       field: "status",
       headerName: "Trạng thái",
       width: 100,
+      renderCell: (params) => {
+        const statusText = params.value ? "OK" : "HỦY";
+        const statusColor = params.value ? "green" : "red";
+        return (
+            <span style={{ color: statusColor }}>{statusText}</span>
+        );
+    },
       headerAlign: 'center',
       align:'center'
     },
