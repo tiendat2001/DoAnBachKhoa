@@ -2,7 +2,7 @@ import Reservation from "../models/Reservation.js";
 import Hotel from "../models/Hotel.js"
 import User from "../models/User.js"
 import Room from "../models/RoomType.js"
-import { startOfMonth, endOfMonth, subMonths,addHours,subHours  } from 'date-fns';
+import { startOfMonth, endOfMonth, subMonths, addHours, subHours } from 'date-fns';
 
 export const createReservation = async (req, res, next) => {
     const newReservation = new Reservation(req.body)
@@ -132,31 +132,57 @@ export const getAllHotelRevenue = async (req, res, next) => {
     }
 }
 
+// statistic từng hotel
 export const getRevenueByHotelId = async (req, res, next) => {
     try {
         const { month } = req.query
-        console.log(month)
         const currentDate = addHours(new Date(), 7);
-        // tháng 3 thì ngày bắt đầu 2024-03-01T00:00:00.000Z, kết thúc 2024-03-31T23:59:59.999Z
-        const startDateLastMonth = addHours(startOfMonth(subMonths(currentDate, 1)),7);
-        const endDateLastMonth = addHours(endOfMonth(subMonths(currentDate, 1)), 7);
+        // // tháng 3 thì ngày bắt đầu 2024-03-01T00:00:00.000Z, kết thúc 2024-03-31T23:59:59.999Z
+        // const startDateLastMonth = addHours(startOfMonth(subMonths(currentDate, 1)),7);
+        // const endDateLastMonth = addHours(endOfMonth(subMonths(currentDate, 1)), 7);
+        // const startDateCurrentMonth = addHours(startOfMonth(currentDate),7);
+        // const endDateCurrentMonth = addHours(endOfMonth(currentDate),7);
+       
+        // // Lấy tất cả các đơn đặt phòng
 
-        const startDateCurrentMonth = addHours(startOfMonth(currentDate),7);
-        const endDateCurrentMonth = addHours(endOfMonth(currentDate),7);
-        console.log(startDateCurrentMonth)
-        console.log(startDateLastMonth)
-        // Lấy tất cả các đơn đặt phòng
+        // const reservations = await Reservation.find(
+        //     { status: true, 
+        //       hotelId: req.params.hotelId,
+        //     //   start: {
+        //     //     $gte: startDateCurrentMonth, // Ngày bắt đầu của tháng
+        //     //     $lte: endDateCurrentMonth // Ngày kết thúc của tháng
+        //     // }
+        //     });
 
-        const reservations = await Reservation.find(
-            { status: true, 
-              hotelId: req.params.hotelId,
-            //   start: {
-            //     $gte: startDateCurrentMonth, // Ngày bắt đầu của tháng
-            //     $lte: endDateCurrentMonth // Ngày kết thúc của tháng
-            // }
-            });
+        let startDate, endDate;
 
+        // Kiểm tra giá trị của month
+        if (month === '0') {
+            startDate = null;
+            endDate = null;
+        } else if (month === '-1') {
+            // Nếu month là -1, so sánh với tháng trước đó
+            startDate = addHours(startOfMonth(subMonths(currentDate, 1)), 7);
+            endDate = addHours(endOfMonth(subMonths(currentDate, 1)), 7);
+        } else if (month === '1') {
+            // Nếu month là 1, so sánh với tháng hiện tại
+            startDate = addHours(startOfMonth(currentDate), 7);
+            endDate = addHours(endOfMonth(currentDate), 7);
+        }
+        // Tạo một đối tượng chứa các điều kiện tìm kiếm
+        const searchConditions = {
+            status: true,
+            hotelId: req.params.hotelId
+        };
 
+        if (startDate && endDate) {
+            searchConditions.start = {
+                $gte: startDate,
+                $lte: endDate
+            };
+        }
+        // Tìm kiếm các đơn đặt phòng dựa trên searchConditions
+        const reservations = await Reservation.find(searchConditions);
 
         let totalRevenue = 0;
         let totalGuests = 0;
@@ -217,17 +243,17 @@ export const getRevenueMonthsByHotelId = async (req, res, next) => {
         // console.log(currentDate)
         for (let i = 1; i < 7; i++) {
             // nhìn cho giống GMT
-             // nếu sau ko add khi đẩy xuống thì bỏ mấy cái addHours
-            const startDate = addHours(startOfMonth(subMonths(currentDate, i)),7);
+            // nếu sau ko add khi đẩy xuống thì bỏ mấy cái addHours
+            const startDate = addHours(startOfMonth(subMonths(currentDate, i)), 7);
             const endDate = addHours(endOfMonth(subMonths(currentDate, i)), 7);
-             // start đang mặc định là 17hUTC của ngày nó đặt
-             // tháng 3 ngày bắt đầu 2024-03-01T00:00:00.000Z, kết thúc 2024-03-31T23:59:59.999Z
+            // start đang mặc định là 17hUTC của ngày nó đặt
+            // tháng 3 ngày bắt đầu 2024-03-01T00:00:00.000Z, kết thúc 2024-03-31T23:59:59.999Z
             const revenue = await Reservation.aggregate([
                 {
                     $match: {
                         hotelId: req.params.hotelId,
-                        status:true, // ID của khách sạn
-                       
+                        status: true, // ID của khách sạn
+
                         start: {
                             $gte: startDate, // Ngày bắt đầu của tháng
                             $lte: endDate // Ngày kết thúc của tháng
