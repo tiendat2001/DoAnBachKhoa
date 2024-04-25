@@ -16,10 +16,10 @@ const AllHotelPayment = () => {
       <div className="listContainerAdmin">
         <NavbarAdmin />
 
-        <div className="listAllHotelRevenue">
-          <div style={{fontWeight:'bold'}}>DOANH THU CÁC CHỖ NGHỈ</div>
+        <div className="listAllHotelPayment">
+          <div style={{fontWeight:'bold'}}>KHOẢN CẦN THANH TOÁN CHO CÁC CHỖ NGHỈ TRONG THÁNG TRƯỚC</div>
         <DataGrid autoHeight
-                    className="datagridAllHotelRenvenue"  // css từ listRoom.css
+                    className="datagridListAllHotelPayment"  
                     rows={hotelRevenue}
                     columns={allHotelPaymentColumn}
                     pageSize={5}
