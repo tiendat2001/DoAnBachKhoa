@@ -16,10 +16,33 @@ export const createReservation = async (req, res, next) => {
     }
 }
 
-// lấy đơn đặt theo điều kiện
+// lấy đơn đặt theo điều kiện (theo idOwner, và theo khoảng ngày)
 export const getReservations = async (req, res, next) => {
     try {
-        const Reservations = await Reservation.find(req.query).sort({ updatedAt: -1 });
+        const { startDay, endDay, ...query } = req.query;
+        let startDayRange;
+        let endDayRange;
+    
+        // Kiểm tra nếu startDay và endDay tồn tại trong req.query
+        if (startDay && endDay) {
+            // ra 14h giờ UTC, phải trừ đi 7h vì trong csdl lưu ngày là 7h UTC
+            startDayRange = subHours(new Date(startDay),7);
+            endDayRange =  subHours(new Date(endDay),7);
+        }
+        let Reservations;
+        if (startDayRange && endDayRange) {
+            Reservations = await Reservation.find({
+                ...query,
+                start: {
+                    $gte: startDayRange, 
+                    $lte: endDayRange     
+                }
+            }).sort({ updatedAt: -1 });
+        } else {
+            // Nếu không có startDay và endDay, tìm kiếm reservations theo các điều kiện khác trong query
+            Reservations = await Reservation.find(query).sort({ updatedAt: -1 });
+        }
+
 
         // Map through each reservation and fetch hotel details
         const populatedReservations = await Promise.all(Reservations.map(async (reservation) => {
@@ -142,7 +165,7 @@ export const getRevenueByHotelId = async (req, res, next) => {
         // const endDateLastMonth = addHours(endOfMonth(subMonths(currentDate, 1)), 7);
         // const startDateCurrentMonth = addHours(startOfMonth(currentDate),7);
         // const endDateCurrentMonth = addHours(endOfMonth(currentDate),7);
-       
+
         // // Lấy tất cả các đơn đặt phòng
 
         // const reservations = await Reservation.find(
