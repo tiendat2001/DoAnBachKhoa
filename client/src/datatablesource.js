@@ -234,3 +234,67 @@ export const roomColumns = [
   }
   
   ]
+
+  export const allHotelPaymentColumn=
+  [
+    {
+      field: "hotelName",
+      headerName: "Tên chỗ nghỉ",
+      width: 350,
+      headerAlign: 'center',
+      align:'center'
+    },
+    {
+      field: "userOwner",
+      headerName: "Email tài khoản chủ",
+      width: 250,
+      headerAlign: 'center',
+      align:'center'
+    },
+ 
+    {
+      field: "totalRevenue",
+      headerName: "Tổng doanh thu",
+      width: 250,
+      valueFormatter: (params) => {
+        const multipliedValue = params.value * 1000;
+        // Định dạng giá trị thành số nguyên
+        const formattedValue = new Intl.NumberFormat('vi-VN').format(multipliedValue);
+        return `${formattedValue} VND`;
+    },
+      headerAlign: 'center',
+      align:'center'
+    },
+
+    {
+      field: "needToPaid",
+      headerName: "Cần thanh toán",
+      width: 150,
+      headerAlign: 'center',
+      align: 'center',
+      valueGetter: (params) => {
+          // Lấy giá trị của trường "Tổng doanh thu" từ params.row
+          const totalRevenue = params.row.totalRevenue;
+          if (totalRevenue !== undefined && totalRevenue !== null) {
+              return totalRevenue * 0.9*1000; // 90% của giá trị "totalRevenue"
+          }
+          return null; 
+      },
+      valueFormatter: (params) => {
+          if (params.value !== null) {
+              const formattedValue = new Intl.NumberFormat('vi-VN').format(params.value)
+              return `${formattedValue} VND`;
+          }
+          return null; // Trả về null nếu giá trị là null
+      }
+  },
+
+  {
+    field: "paymentInfo",
+    headerName: "Thông tin thanh toán",
+    width: 250,
+    cellClassName: 'wrap-content', 
+    headerAlign: 'center',
+    align: 'center',
+  }
+  ]
