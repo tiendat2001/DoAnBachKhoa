@@ -25,6 +25,13 @@ const ListHotel = () => {
     console.log(reservationData)
 
     const handleDelete = (hotelId) => {
+        const hasMatchingHotelId = reservationData.some(item => item.hotelId === hotelId);
+
+        // Nếu có phần tử nào có hotelId trùng khớp, thoát ra khỏi hàm
+        if (hasMatchingHotelId) {
+            toast.error("Chỗ nghỉ này đang có đơn đặt phòng sắp tới, không thể xóa!")
+            return;
+        }
         confirmAlert({
             title: 'Confirm',
             message: 'Bạn có chắc chắn muốn xóa chỗ nghỉ này?',

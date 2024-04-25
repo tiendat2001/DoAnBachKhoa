@@ -43,9 +43,9 @@ export const getReservations = async (req, res, next) => {
             // Nếu không có startDay và endDay, tìm kiếm reservations theo các điều kiện khác trong query
             Reservations = await Reservation.find(query).sort({ updatedAt: -1 });
         }
-        console.log(startDayRange)
-        console.log(endDayRange)
-        console.log(Reservations)
+        // console.log(startDayRange)
+        // console.log(endDayRange)
+        // console.log(Reservations)
         // Map through each reservation and fetch hotel details
         const populatedReservations = await Promise.all(Reservations.map(async (reservation) => {
             const hotel = await Hotel.findById(reservation.hotelId);
