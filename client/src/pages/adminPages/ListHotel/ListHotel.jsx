@@ -20,6 +20,7 @@ const ListHotel = () => {
     const { user } = useContext(AuthContext) // {user._id}
     const { data, loading, error, reFetch } = useFetch(
         `/hotels?ownerId=${user._id}`);
+        // lấy ra những đơn đặt phòng trong tương lai
         const { data: reservationData, loading: reservationLoading, error: reservationError,
             reFetch: reservationReFetch } = useFetch(`/reservation?idOwnerHotel=${user._id}&startDay=${currentDate}&endDay=${endLessDate}&status=true`);
     console.log(reservationData)
