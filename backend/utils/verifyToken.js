@@ -17,7 +17,7 @@ export const verifyToken = (req, res, next) => {
 };
 export const verifyUser = (req, res, next) => {
     verifyToken(req, res,  () => {
-           // req.user chứa chua truong id va isAdmin
+           // req.user chứa chua truong id va isAdmin đc giải ra từ token
       if (req.user.id === req.params.id) {
         next();
       } else {
@@ -32,10 +32,11 @@ export const verifyUserModifyHotel = (req, res, next) => {
         return next(err); // Trả về lỗi nếu có lỗi từ hàm verifyToken
       }
       // kiểm tra ownerId đẩy lên có giống vs token chứa _id trong cookie kko khi trong API co truong ownerId-tiếp từ đoạn next() ở cuối cùng verifyToken
+      // id của token chính là req.user.id
       if (req.body.ownerId && req.user.id == req.body.ownerId) {
         next();
       } else {
-        return next(createError(403, "Your token not match with ownerId body API or not onwerId in body API"));
+        return next(createError(403, "Your token not match with ownerId body API or your  body API do not have onwerId "));
       }
     });
   };
