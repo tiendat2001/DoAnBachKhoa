@@ -22,7 +22,7 @@ const Administrator = () => {
         {/* <h1>bang</h1> */}
 
         <div className="listAllHotelRevenue">
-          <div>DOANH THU CÁC CHỖ NGHỈ</div>
+          <div style={{fontWeight:'bold'}}>DOANH THU CÁC CHỖ NGHỈ</div>
         <DataGrid autoHeight
                     className="datagridAllHotelRenvenue"  // css từ listRoom.css
                     rows={hotelRevenue}

@@ -97,8 +97,28 @@ export const deleteAllReservations = async (req, res, next) => {
 // THỐNG KÊ DOANH THU ALL HOTEL (CHO BÊN ADMINISTRATOR)
 export const getAllHotelRevenue = async (req, res, next) => {
     try {
-        // Lấy tất cả các đơn đặt phòng
-        const reservations = await Reservation.find({ status: true });
+        const { month } = req.query
+        const currentDate = addHours(new Date(), 7);
+
+        // khoảng ngày để tính doanh thu tháng trước
+        const startDate = addHours(startOfMonth(subMonths(currentDate, 1)), 7);
+        const endDate = addHours(endOfMonth(subMonths(currentDate, 1)), 7);
+
+        let reservations;
+        // chỉ tính doanh thu tháng trước
+        if(month ==-1){
+            reservations = await Reservation.find({ 
+                status: true,
+                start: {
+                    $gte: startDate, 
+                    $lte: endDate     
+                }
+            });
+        }else{
+            //tính doanh thu tất cả
+             reservations = await Reservation.find({ status: true });
+        }
+       
 
         // Tạo một object để lưu trữ tổng doanh thu của từng khách sạn
         const hotelRevenueMap = {};
