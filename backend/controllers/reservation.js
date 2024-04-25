@@ -140,6 +140,7 @@ export const getAllHotelRevenue = async (req, res, next) => {
                         hotelName: hotel.name,
                         userOwner: user.email,
                         totalRevenue: totalPrice,
+                        paymentInfo: user.paymentInfo,
                         createdAt: hotel.createdAt
                     };
                 }
