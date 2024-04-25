@@ -10,17 +10,24 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { format, addDays, addYears, subYears } from "date-fns";
+
+
+const currentDate = new Date();
+const endLessDate= addYears(currentDate,1) 
 
 const ListHotel = () => {
     const { user } = useContext(AuthContext) // {user._id}
     const { data, loading, error, reFetch } = useFetch(
         `/hotels?ownerId=${user._id}`);
-    // console.log(data)
+        const { data: reservationData, loading: reservationLoading, error: reservationError,
+            reFetch: reservationReFetch } = useFetch(`/reservation?idOwnerHotel=${user._id}&startDay=${currentDate}&endDay=${endLessDate}&status=true`);
+    console.log(reservationData)
 
     const handleDelete = (hotelId) => {
         confirmAlert({
             title: 'Confirm',
-            message: 'Are you sure you want to delete this hotel?',
+            message: 'Bạn có chắc chắn muốn xóa chỗ nghỉ này?',
             buttons: [
                 {
                     label: 'Yes',
@@ -40,6 +47,9 @@ const ListHotel = () => {
     };
 
     const deleteHotel = async (hotelId) => {
+
+
+
         try {
             // Gửi yêu cầu xóa khách sạn đến máy chủ
 

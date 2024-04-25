@@ -22,10 +22,11 @@ export const getReservations = async (req, res, next) => {
         const { startDay, endDay, ...query } = req.query;
         let startDayRange;
         let endDayRange;
-    
+       
+
         // Kiểm tra nếu startDay và endDay tồn tại trong req.query
         if (startDay && endDay) {
-            // ra 14h giờ UTC, phải trừ đi 7h vì trong csdl lưu ngày là 7h UTC
+            // ở client gửi 14h GMT+7 nhưng ở đây console ra 14h giờ UTC, phải trừ đi 7h vì trong csdl lưu ngày là 7h UTC
             startDayRange = subHours(new Date(startDay),7);
             endDayRange =  subHours(new Date(endDay),7);
         }
@@ -42,8 +43,9 @@ export const getReservations = async (req, res, next) => {
             // Nếu không có startDay và endDay, tìm kiếm reservations theo các điều kiện khác trong query
             Reservations = await Reservation.find(query).sort({ updatedAt: -1 });
         }
-
-
+        console.log(startDayRange)
+        console.log(endDayRange)
+        console.log(Reservations)
         // Map through each reservation and fetch hotel details
         const populatedReservations = await Promise.all(Reservations.map(async (reservation) => {
             const hotel = await Hotel.findById(reservation.hotelId);
