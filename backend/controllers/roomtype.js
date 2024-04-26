@@ -195,12 +195,13 @@ export const getRoomById = async (req, res, next) => {
 export const cancelRoomReservation = async (req, res, next) => {
   try {
 
+    // lấy ra typeRoom to
     const room = await Room.findOne({ "roomNumbers._id": req.params.id });
     if (!room) {
       return res.status(404).json("Room not found");
     }
 
-    // chỉnh điều kiện chỗ này, lấy ra json phòng nhỏ
+    // chỉnh điều kiện chỗ này, lấy ra roomNumber là 1 json phòng nhỏ
     const roomNumber = room.roomNumbers.find(number => number._id.toString() === req.params.id);
     if (!roomNumber) {
       return res.status(404).json("Room number not found");
@@ -230,9 +231,10 @@ export const cancelRoomReservation = async (req, res, next) => {
     room.markModified('roomNumbers');
     await room.save();
     // đẩy dateRange
+
     const { startDateRange, endDateRange } = req.body.unavailableRangeDates;
      const roomModified = await Room.findOneAndUpdate(
-      { "roomNumbers._id": req.params.id },
+      { "roomNumbers._id": roomNumber._id },
       {
         $pull: {
           "roomNumbers.$.unavailableRangeDates": {
