@@ -97,15 +97,40 @@ export const getHotelById = async (req,res,next)=>{
 }
 
 export const countByCity = async (req,res,next)=>{
-    // truy cap vao param trong api (?hotel=), dung req.query, trừ khi api đc định nghĩa tham số sẵn, kiểu :id, thì dùng req.params
-    const cities = req.query.cities.split(",")
+    // // truy cap vao param trong api (?hotel=), dung req.query, trừ khi api đc định nghĩa tham số sẵn, kiểu :id, thì dùng req.params
+    // const cities = req.query.cities.split(",")
+    // try {
+    //     const list = await Promise.all(cities.map(city => {
+    //         return Hotel.countDocuments({city:city})
+    //     }))
+    //     res.status(200).json(list);
+    // } catch (err) {
+    //     next(err)
+    // }
+
     try {
-        const list = await Promise.all(cities.map(city => {
-            return Hotel.countDocuments({city:city})
-        }))
-        res.status(200).json(list);
-    } catch (err) {
-        next(err)
+      const cityCounts = await Hotel.aggregate([
+        {
+          $group: {
+            _id: '$city', // Group by city
+            count: { $sum: 1 }, // Count number of hotels in each city
+          },
+        },
+        {
+          $project: {
+            _id: 0, // Exclude _id field from the result
+            city: '$_id', // Rename _id to city
+            quantity: '$count', // Rename count to quantity
+          },
+        },
+        {
+          $sort: { quantity: -1 } // Sort by quantity in descending order
+        }
+      ]);
+  
+      res.status(200).json(cityCounts); // Return the result
+    } catch (error) {
+      next(error); // Pass any errors to the error handling middleware
     }
 }
 

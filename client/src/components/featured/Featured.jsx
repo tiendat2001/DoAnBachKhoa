@@ -8,7 +8,7 @@ import React from "react";
 import { SearchContext } from "../../context/SearchContext";
 const Featured = () => {
   const { data, loading, error } = useFetch(
-    "/hotels/countByCity?cities=Hà Nội,Ninh Bình,Đà Nẵng"
+    "/hotels/countByCity"
   );
   const [destination, setDestination] = useState("");
 
@@ -44,7 +44,7 @@ const Featured = () => {
         <> 
           <div
             className="featuredItem"
-            onClick={() => handleSearch("Ninh Bình")}
+            onClick={() => handleSearch(data[0].city)}
           >
             <img
               src="https://cdn.tgdd.vn/Files/2022/03/28/1422795/kinh-nghiem-du-lich-chua-bai-dinh-ninh-binh-day-du-tu-a-z-202203282349275615.jpg"
@@ -52,12 +52,12 @@ const Featured = () => {
               className="featuredImg"
             />
             <div className="featuredTitles">
-              <h1>Ninh Binh</h1>
-              <h2>{data[1]} hotels</h2>
+            <h1>{data[0]?.city}</h1>
+              <h2>{data[0]?.quantity} chỗ nghỉ</h2>
             </div>
           </div>
 
-          <div className="featuredItem"  onClick={() => handleSearch("Hà Nội")}>
+          <div className="featuredItem"  onClick={() => handleSearch(data[1].city)}>
             <img
               src="https://ik.imagekit.io/tvlk/blog/2023/09/ho-guom-1.jpg?tr=dpr-2,w-675"
               alt=""
@@ -67,11 +67,11 @@ const Featured = () => {
               className="featuredTitles"
              
             >
-              <h1>Ha Noi</h1>
-              <h2>{data[0]} hotels</h2>
+               <h1>{data[1]?.city}</h1>
+              <h2>{data[1]?.quantity} chỗ nghỉ</h2>
             </div>
           </div>
-          <div className="featuredItem"  onClick={() => handleSearch("Đà Nẵng")}>
+          <div className="featuredItem"  onClick={() => handleSearch(data[2].city)}>
             <img
               src="https://cf.bstatic.com/xdata/images/city/max500/689422.webp?k=2595c93e7e067b9ba95f90713f80ba6e5fa88a66e6e55600bd27a5128808fdf2&o="
               alt=""
@@ -81,8 +81,8 @@ const Featured = () => {
               className="featuredTitles"
              
             >
-              <h1>Da Nang</h1>
-              <h2>{data[2]} hotels</h2>
+                <h1>{data[2]?.city}</h1>
+              <h2>{data[2]?.quantity} chỗ nghỉ</h2>
             </div>
           </div>
         </>

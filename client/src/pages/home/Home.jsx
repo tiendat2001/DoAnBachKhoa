@@ -14,7 +14,7 @@ const Home = () => {
       <Header></Header>
       <div className="homeContainer">
         {/* phân loại khách sạn theo địa điểm FEATURED */} 
-        <h1 className="homeTitle">Browse by location</h1>
+        <h1 className="homeTitle">Nơi có nhiều chỗ nghỉ</h1>
         <Featured />
 
         {/* phân loại các khách sạn theo loai như hotel, homestay */}
