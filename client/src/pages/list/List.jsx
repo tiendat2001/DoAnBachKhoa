@@ -69,10 +69,13 @@ const List = () => {
   const calculatePrice = (cheapestPrice) => {
     let totalPrice = 0;
     let totalPeople = parseInt(options.adult, 10) + parseFloat(options.children) * 0.5;
+
+    // nếu số lượng phòng ng dùng chọn đã >= 
     if (options.room > Math.floor(totalPeople / cheapestPrice.people)) {
       totalPrice = cheapestPrice.price * options.room * days;
-    }
+    }else
     // console.log(totalPeople)
+    // nếu số người =1 hoặc quá ít 1/2=0
     if (Math.floor(totalPeople / cheapestPrice.people) == 0) {
       totalPrice = cheapestPrice.price * days;
     } else {

@@ -23,7 +23,7 @@ const SearchItem = ({ item }) => {
     let totalPeople = parseInt(options.adult, 10) + parseFloat(options.children) * 0.5;
     if(options.room >Math.floor(totalPeople / cheapestPrice.people)){
       totalPrice= cheapestPrice.price *options.room*days;
-    } 
+    } else
     // console.log(totalPeople)
     if (Math.floor(totalPeople / cheapestPrice.people) == 0) {
       totalPrice= cheapestPrice.price * days;
