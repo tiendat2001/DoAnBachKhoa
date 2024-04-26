@@ -191,6 +191,7 @@ export const getRoomById = async (req, res, next) => {
   }
 };
 
+// hủy phòng
 export const cancelRoomReservation = async (req, res, next) => {
   try {
 
@@ -228,6 +229,23 @@ export const cancelRoomReservation = async (req, res, next) => {
     } else { return res.status(400).json("None of these dates are marked as unavailable"); }
     room.markModified('roomNumbers');
     await room.save();
+    // đẩy dateRange
+    const { startDateRange, endDateRange } = req.body.unavailableRangeDates;
+     const roomModified = await Room.findOneAndUpdate(
+      { "roomNumbers._id": req.params.id },
+      {
+        $pull: {
+          "roomNumbers.$.unavailableRangeDates": {
+            startDateRange,
+            endDateRange
+          }
+        }
+      },
+      { new: true }
+    );
+
+    await roomModified.save();
+  
 
     res.status(200).json("Room reservation has been canceled successfully.");
   } catch (err) {

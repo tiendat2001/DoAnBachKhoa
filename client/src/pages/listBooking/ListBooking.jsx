@@ -15,7 +15,7 @@ const ListBooking = () => {
     `/reservation?username=${user.username}`
   );
  
-  const handleCancelReserve = async (allDatesReserve, roomNumbersId, reservationId) => {
+  const handleCancelReserve = async (allDatesReserve, roomNumbersId, reservationId,startDate,endDate) => {
     // console.log(allDatesReserve)
     // console.log(roomNumbersId)
     confirmAlert({
@@ -25,8 +25,7 @@ const ListBooking = () => {
         {
           label: 'Yes',
           onClick: () => {
-
-            deleteAvailability(allDatesReserve, roomNumbersId, reservationId);
+            deleteAvailability(allDatesReserve, roomNumbersId, reservationId,startDate,endDate);
           }
         },
         {
@@ -42,7 +41,7 @@ const ListBooking = () => {
   }
 
   // bỏ unavailabledates trong mỗi phòng đặt
-  const deleteAvailability = async (allDatesReserve, roomNumbersId, reservationId) => {
+  const deleteAvailability = async (allDatesReserve, roomNumbersId, reservationId,startDate,endDate) => {
     let hasError = false;
     // console.log(roomNumbersId)
     try {
@@ -50,6 +49,10 @@ const ListBooking = () => {
         try {
           const res = await axios.put(`/rooms/cancelAvailability/${roomId}`, {
             dates: allDatesReserve,
+            unavailableRangeDates:{
+              startDateRange:startDate,
+              endDateRange:endDate
+            }
           });
           console.log(`Room ${roomId} updated successfully.`);
         } catch (err) {
@@ -112,7 +115,7 @@ const ListBooking = () => {
                 {/* <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id)}
                   disabled={(new Date() > subHours(new Date(item.start), 24)) || !item.status}>Hủy đặt phòng</button> <br /> */}
                   
-                   <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id)}
+                   <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id,item.start,item.end)}
                  >Hủy đặt phòng</button> <br />
                 {/* ngày hiện tại phải lớn hơn (ngày nhận phòng -1 là 0h của ngày nhận) mới đc hủy nên kia là trừ 2, nếu chặt chẽ 14h trưa nhận phòng
                  thì +14h, tức trừ 14+24=34h, tức đặt 14h ngày 13 thì hạn chót hủy là đến 14h ngày 12 */}
