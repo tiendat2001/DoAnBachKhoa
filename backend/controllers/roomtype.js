@@ -92,11 +92,11 @@ export const updateRoomAvailability = async (req, res, next) => {
       const dateString = new Date(date).toISOString();
       return unavailableDates.some(unavailableDate => unavailableDate.toISOString() === dateString);
     });
-    
+
     if (duplicateDates.length > 0) {
       return res.status(400).json({ error: "Some dates are already marked as unavailable" });
     }
-    const {  startDateRange, endDateRange } = req.body;
+    const { startDateRange, endDateRange } = req.body;
     //Nếu không có ngày nào trùng lặp, thêm các ngày mới vào mảng unavailableDates
     await Room.updateOne(
       { "roomNumbers._id": req.params.id },
@@ -194,7 +194,7 @@ export const getRoomById = async (req, res, next) => {
 // hủy phòng
 export const cancelRoomReservation = async (req, res, next) => {
   try {
-
+    const { startDateRange, endDateRange } = req.body.unavailableRangeDates;
     // lấy ra typeRoom to
     const room = await Room.findOne({ "roomNumbers._id": req.params.id });
     if (!room) {
@@ -202,7 +202,22 @@ export const cancelRoomReservation = async (req, res, next) => {
     }
 
     // chỉnh điều kiện chỗ này, lấy ra roomNumber là 1 json phòng nhỏ
-    const roomNumber = room.roomNumbers.find(number => number._id.toString() === req.params.id);
+    let roomNumber = null;
+    for (let i = room.roomNumbers.length - 1; i >= 0; i--) {
+      const roomNumberData = room.roomNumbers[i];
+  
+      if (roomNumberData.unavailableRangeDates && roomNumberData.unavailableRangeDates.length > 0) {
+        // console.log(roomNumberData)
+          const matchingDateRange = roomNumberData.unavailableRangeDates.find(dateRange => 
+            dateRange.startDateRange.toISOString() == startDateRange && 
+            dateRange.endDateRange.toISOString() == endDateRange);
+  
+          if (matchingDateRange) {
+              roomNumber = roomNumberData;
+              break; // Thoát khỏi vòng lặp khi tìm thấy phần tử cần
+          }
+      }
+  }
     if (!roomNumber) {
       return res.status(404).json("Room number not found");
     }
@@ -232,8 +247,7 @@ export const cancelRoomReservation = async (req, res, next) => {
     await room.save();
     // đẩy dateRange
 
-    const { startDateRange, endDateRange } = req.body.unavailableRangeDates;
-     const roomModified = await Room.findOneAndUpdate(
+    const roomModified = await Room.findOneAndUpdate(
       { "roomNumbers._id": roomNumber._id },
       {
         $pull: {
@@ -247,7 +261,7 @@ export const cancelRoomReservation = async (req, res, next) => {
     );
 
     await roomModified.save();
-  
+
 
     res.status(200).json("Room reservation has been canceled successfully.");
   } catch (err) {
