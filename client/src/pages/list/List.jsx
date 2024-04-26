@@ -193,7 +193,7 @@ const List = () => {
                 {data.map((item) => {
                   const price = calculatePrice(item.cheapestPrice);
                   // đang lọc giá dạng số 100 là 100.000
-                  console.log(max)
+                  // console.log(max)
                   if (price >= min && price <= max) {
                     return <SearchItem item={item} key={item._id} />;
                   }
