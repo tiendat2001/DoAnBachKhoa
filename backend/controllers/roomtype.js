@@ -135,12 +135,23 @@ export const deleteRoom = async (req, res, next) => {
     // update price khi xóa phòng (đã test - còn trường hợp nếu ko còn phòng nào)
     const hotelId = hotelToUpdate._id
     const cheapestRoom = await Room.findOne({ hotelId }).sort({ price: 1 }).limit(1);
-    await Hotel.findByIdAndUpdate(hotelId, {
-      cheapestPrice: {
-        price: cheapestRoom.price,
-        people: cheapestRoom.maxPeople
-      }
-    });
+    if (cheapestRoom) {
+      // Nếu cheapestRoom được tìm thấy
+      await Hotel.findByIdAndUpdate(hotelId, {
+        cheapestPrice: {
+          price: cheapestRoom.price,
+          people: cheapestRoom.maxPeople
+        }
+      });
+    } else {
+      // Nếu cheapestRoom không được tìm thấy
+      await Hotel.findByIdAndUpdate(hotelId, {
+        cheapestPrice: {
+          price: 0,
+          people: 0
+        }
+      });
+    }
 
     res.status(200).json("Room has been deleted.");
   } catch (err) {

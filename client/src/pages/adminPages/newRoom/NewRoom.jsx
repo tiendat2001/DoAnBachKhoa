@@ -89,7 +89,7 @@ const NewRoom = () => {
             const Success = await axios.post(`/rooms/${hotelId}`, newRoom);
             if (Success) {
               toast.success('Thành công!');
-            //   navigate("/admin/hotels");
+              navigate("/admin/rooms");
     
             } else toast.error("Error.Please try again");
     
@@ -196,7 +196,7 @@ const NewRoom = () => {
                             ></textarea>
 
                             <button onClick={handleClick} disabled={isSending}>
-                                {isSending ? 'Sending...' : 'Thêm loại phòng'}
+                                {isSending ? 'Đang lưu...' : 'Thêm loại phòng'}
                             </button>            
                             </form>
                     </div>

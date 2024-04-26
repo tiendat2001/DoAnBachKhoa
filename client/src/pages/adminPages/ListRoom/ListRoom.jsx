@@ -8,6 +8,10 @@ import useFetch from '../../../hooks/useFetch';
 import { useContext, useState, useEffect } from 'react'
 import { AuthContext } from '../../../context/AuthContext';
 import { Link, useLocation } from "react-router-dom";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const ListRoom = () => {
     const { user } = useContext(AuthContext) // {user._id}
@@ -25,6 +29,49 @@ const ListRoom = () => {
     }, [hotelId]);
     // console.log(roomData)
 
+
+    const handleDelete = (typeRoomId) =>{
+
+        // xacs nhan xoa
+        confirmAlert({
+            title: 'Confirm',
+            message: 'Bạn có chắc chắn muốn xóa loại phòng này?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        // Xác nhận xóa khách sạn
+                        deleteRoom(typeRoomId);
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => {
+                        // Không làm gì cả
+                    }
+                }
+            ]
+        });
+
+    }
+
+    const deleteRoom = async (typeRoomId) =>{
+
+        try {
+            const Success = await axios.delete(`/rooms/${typeRoomId}`, { data: { ownerId: user._id } });
+
+            if (Success) {
+                // Nếu xóa thành công, tải lại dữ liệu
+                roomReFetch();
+                toast.success('Xóa phòng thành công');
+            } else {
+                toast.error('Có lỗi xảy ra. Vui lòng thử lại');
+            }
+        } catch (error) {
+            console.error('Error deleting hotel:', error);
+            toast.error('An error occurred while deleting hotel.');
+        }
+    }
     // thêm cột xóa sửa
     const actionColumn = [
         {
@@ -43,7 +90,7 @@ const ListRoom = () => {
                         </Link>
                         <div
                             className="deleteButton"
-                        //   onClick={() => handleDelete(params.row._id)}
+                          onClick={() => handleDelete(params.row._id)}
                         >
                             Delete
                         </div>
