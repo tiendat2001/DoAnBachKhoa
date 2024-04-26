@@ -96,7 +96,7 @@ export const updateRoomAvailability = async (req, res, next) => {
     if (duplicateDates.length > 0) {
       return res.status(400).json({ error: "Some dates are already marked as unavailable" });
     }
-
+    const {  startDateRange, endDateRange } = req.body;
     //Nếu không có ngày nào trùng lặp, thêm các ngày mới vào mảng unavailableDates
     await Room.updateOne(
       { "roomNumbers._id": req.params.id },
@@ -104,6 +104,9 @@ export const updateRoomAvailability = async (req, res, next) => {
         $push: {
           "roomNumbers.$.unavailableDates": { $each: req.body.dates }
         },
+        $addToSet: {
+          "roomNumbers.$.unavailableRangeDates": { startDateRange, endDateRange }
+        }
       }
     );
     res.status(200).json("Room status has been updated.");

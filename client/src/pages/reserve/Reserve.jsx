@@ -101,9 +101,9 @@ const Reserve = () => {
     // return;
     console.log(selectedRoomIdsReserved)
   
-    const allDatesPlus = alldates.map(date => addDays(date, 1));
-    const startDatePlus = addDays(startDate, 1)
-    const endDatePlus = addDays(endDate, 1)
+    // const allDatesPlus = alldates.map(date => addDays(date, 1));
+    // const startDatePlus = addDays(startDate, 1)
+    // const endDatePlus = addDays(endDate, 1)
 
     try {
       await Promise.all(
@@ -111,6 +111,8 @@ const Reserve = () => {
           try {
             const res = await axios.put(`/rooms/availability/${roomId}`, {
               dates: alldates,
+              startDateRange:startDate,
+              endDateRange:endDate,
             });
            
             return res.data;

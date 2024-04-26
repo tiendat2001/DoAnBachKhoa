@@ -29,8 +29,15 @@ const RoomSchema = new mongoose.Schema({
     roomNumbers:[
         {   
             // number:Number, 
-            unavailableDates:{type:[Date]}
-            // status:{type: Boolean, default:true} 
+            unavailableDates:{type:[Date]},
+            status:{type: Boolean, default:true},
+            unavailableRangeDates:
+            [
+                {
+                    startDateRange: {type:Date},
+                    endDateRange: {type:Date}
+                }
+            ]
         }
                 ], // them status, neu unavai ko rong thi ko dc de status hủy, them id tu gen
 },
