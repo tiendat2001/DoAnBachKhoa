@@ -90,7 +90,7 @@ const ListRoom = () => {
                         </Link>
 
                         <Link
-                              to={`/admin/rooms/${params.row._id}`}
+                              to={`/admin/rooms/smallRoomDetails/${params.row._id}`}
                             style={{ textDecoration: "none" }}
                         >
                             <div className="viewButton wrap-content">Chỉnh số lượng</div>
