@@ -230,42 +230,52 @@ export const cancelRoomReservation = async (req, res, next) => {
     // //     }
     // // }
     const roomNumberCurrent = room.roomNumbers.find(number => number._id.toString() === req.params.id);
+    // kiểm tra xem unAvai phòng đấy bị đẩy đi chưa
+    let matchingDateRange = roomNumberCurrent.unavailableRangeDates.find(dateRange =>
+      dateRange.startDateRange.toISOString() == startDateRange &&
+      dateRange.endDateRange.toISOString() == endDateRange);
+
+      if(matchingDateRange) console.log("Có available để đẩy")
+
+
+
     if (!roomNumberCurrent) {
       return res.status(404).json("Room number not found");
     }
 
-      // tim cac phan tu can xoa trong mang
-      const indexesToRemove = [];
-      req.body.dates.forEach(date => {
-        const index = roomNumberCurrent.unavailableDates.findIndex(roomDate => roomDate.toISOString() === date);
-        if (index !== -1) {
-          indexesToRemove.push(index);
-        }
-      });
+    // tim cac phan tu can xoa trong mang
+    const indexesToRemove = [];
+    req.body.dates.forEach(date => {
+      const index = roomNumberCurrent.unavailableDates.findIndex(roomDate => roomDate.toISOString() === date);
+      if (index !== -1) {
+        indexesToRemove.push(index);
+      }
+    });
 
-      if (indexesToRemove.length > 0) {
-        // Loại bỏ các phần tử khỏi mảng nếu tìm thấy, chỉ giữ lại phần tử ko thuộc indexesToRemove
-        const newUnavailableDates = roomNumberCurrent.unavailableDates.filter((_, index) => !indexesToRemove.includes(index));
-        roomNumberCurrent.unavailableDates = newUnavailableDates;
-      } else { return res.status(400).json("None of these dates are marked as unavailable"); }
-      room.markModified('roomNumbers');
-      await room.save();
+    if (indexesToRemove.length > 0) {
+      // Loại bỏ các phần tử khỏi mảng nếu tìm thấy, chỉ giữ lại phần tử ko thuộc indexesToRemove
+      const newUnavailableDates = roomNumberCurrent.unavailableDates.filter((_, index) => !indexesToRemove.includes(index));
+      roomNumberCurrent.unavailableDates = newUnavailableDates;
+    } else { return res.status(400).json("None of these dates are marked as unavailable"); }
+    room.markModified('roomNumbers');
+    await room.save();
 
-      // đẩy dateRange
-      const roomModifiedDateRange = await Room.findOneAndUpdate(
-        { "roomNumbers._id": roomNumberCurrent._id },
-        {
-          $pull: {
-            "roomNumbers.$.unavailableRangeDates": {
-              startDateRange,
-              endDateRange
-            }
+    // đẩy dateRange
+    let roomModifiedDateRange = null
+     roomModifiedDateRange = await Room.findOneAndUpdate(
+      { "roomNumbers._id": roomNumberCurrent._id },
+      {
+        $pull: {
+          "roomNumbers.$.unavailableRangeDates": {
+            startDateRange,
+            endDateRange
           }
-        },
-        { new: true }
-      );
+        }
+      },
+      { new: true }
+    );
 
-      await roomModifiedDateRange.save();
+    await roomModifiedDateRange.save();
 
     // sau khi đẩy các ptu ở vị trí hiện tại, bắt đầu check
     // let alldates;
@@ -275,6 +285,11 @@ export const cancelRoomReservation = async (req, res, next) => {
     let alldates;
     let roomNumberLoop = null;
     const roomNumberCurrentIndex = room.roomNumbers.findIndex(number => number._id.toString() === req.params.id);
+    // tìm các phần tử ở dưới phần tử roomNumberCurrent
+
+    let roomNumberToReplace=null;
+    let dateRangeToReplace=null;
+    let allDatesToReplace=null;
     for (let i = room.roomNumbers.length - 1; i > roomNumberCurrentIndex; i--) {
       const roomNumberData = room.roomNumbers[i];
 
@@ -282,20 +297,48 @@ export const cancelRoomReservation = async (req, res, next) => {
         // với mỗi phần tử roomData duyệt unavaiDateRange của nó
         const matchingDateRange = roomNumberData.unavailableRangeDates.find(dateRange => {
           const alldatesRoomNumberData = getDatesInRange(dateRange.startDateRange, dateRange.endDateRange);
-          // false tức là roomNumberCurrent.unavailableDates ko chứa cái nào, tức có thể đẩy vào để thay thế
-          return roomNumberCurrent.unavailableDates.some(date => alldatesRoomNumberData.includes(date));
-        })
-        // Nếu không tìm thấy bất kỳ phần tử nào của roomNumberCurrent.unavailableDates nằm trong alldatesRoomNumberData
-        // thì matchingDateRange sẽ là true, ngược lại là false
-        const isConflict = !matchingDateRange;
-        if(isConflict) 
-        {
-        console.log("Dat")
-        console.log(i)
-      }
+          let unavailableDatesTimestamp = roomNumberCurrent.unavailableDates.map(date => new Date(date).getTime());
+      
+          // Nếu không có bất kỳ timestamp nào trong alldatesRoomNumberData tồn tại trong unavailableDatesTimestamp
+          if (!unavailableDatesTimestamp.some(date => alldatesRoomNumberData.includes(date))) {
+              // Lưu dateRange vào biến dateRangeToReplace và dừng vòng lặp
+              dateRangeToReplace = dateRange;
+              return true;
+          }
+        
+      });
+        
+        // có thể đẩy unavai lên trên
+        if (matchingDateRange) {
+          console.log("Dat")
+          roomNumberToReplace = roomNumberData;
+          allDatesToReplace=getDatesInRange(dateRangeToReplace.startDateRange, dateRangeToReplace.endDateRange);
+          break;
+        }
 
       }
     }
+
+     // đẩy unavai đấy lên với roomNumberToReplace,allDatesToReplace
+     
+      if(roomNumberToReplace){
+        const { startDateRangeToReplace, endDateRangeToReplace } = dateRangeToReplace;
+        console.log(startDateRangeToReplace)
+        console.log(endDateRangeToReplace)
+        console.log(roomNumberToReplace)
+        await Room.updateOne(
+          { "roomNumbers._id": roomNumberCurrent._id },
+          {
+            $push: {
+              "roomNumbers.$.unavailableDates": { $each: allDatesToReplace }
+            },
+            $addToSet: {
+              "roomNumbers.$.unavailableRangeDates": { startDateRangeToReplace, endDateRangeToReplace }
+            }
+          }
+        );
+      }
+    
 
 
     res.status(200).json("Room reservation has been canceled successfully.");
