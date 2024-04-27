@@ -1,5 +1,5 @@
 import express from "express"
-import { createRoom, deleteRoom, getRoomsByHotelId, getRooms, updateRoom, updateRoomAvailability,getRoomById,cancelRoomReservation } from "../controllers/roomtype.js";
+import { createRoom, deleteRoom, getRoomsByHotelId, getRooms, updateRoom, updateRoomAvailability,getRoomById,cancelRoomReservation,statusRoomCount } from "../controllers/roomtype.js";
 import { verifyAdmin,verifyUserModifyHotel } from "../utils/verifyToken.js";
 
 const router = express.Router();
@@ -25,5 +25,8 @@ router.get("/find/:roomid", getRoomById);
 
 //GETALL
 router.get("/", getRooms);
+
+router.get("/statusRoomCount/:roomId",statusRoomCount)
+
 
 export default router

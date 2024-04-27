@@ -13,7 +13,8 @@ import { useNavigate } from "react-router-dom";
 const SmallRoomDetails = () => {
     const location = useLocation();
     const idRoom = location.pathname.split("/")[4];
-    const { data:roomTypeData, loading, error } = useFetch(`/rooms/find/${idRoom}`);
+    const { data: roomTypeData, loading, error } = useFetch(`/rooms/find/${idRoom}`);
+    const { data: roomCountStatus, loadingroomCountStatus, errorroomCountStatus } = useFetch(`/rooms/statusRoomCount/${idRoom}`);
     console.log(roomTypeData)
     return (
         <div className="listAdmin">
@@ -22,7 +23,21 @@ const SmallRoomDetails = () => {
                 <NavbarAdmin />
 
                 <div className="detailsRoomTypeContainer">
-                    <h1>d</h1>
+                    <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>
+                    <div>
+                        Số lượng phòng đang rao bán trong 30 ngày tới
+                        <span style={{ fontWeight: 'bold' }}> </span>
+                    </div>
+                    <div className="tableRoomStatus">
+                        <div className="grid-container">
+                            {roomCountStatus.map((status, index) => (
+                                <div className="grid-item" key={index}>
+                                    <div>{`${status.day}/${status.month}/${status.year}`}</div>
+                                    <div>Phòng trống:{status.countAvailable}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
             </div>

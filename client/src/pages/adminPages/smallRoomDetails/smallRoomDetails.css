@@ -1,4 +1,24 @@
 .detailsRoomTypeContainer{
     width: 95%;
-    margin:auto;
+    margin:30px auto;
 }
+.tableRoomStatus {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .grid-container {
+  width: 100%; /* Kích thước chiều rộng bằng với tableRoomStatus */
+  height: 100%; /* Kích thước chiều cao bằng với tableRoomStatus */
+  display: grid;
+  grid-template-columns: repeat(6, 16.5%); /* 6 cột với chiều rộng là 20% */
+  grid-template-rows: repeat(5, 55px); /* 5 hàng với chiều cao là 100px */
+ 
+  }
+  
+  .grid-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+  }
+  

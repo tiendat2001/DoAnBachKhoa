@@ -1,5 +1,7 @@
 import Room from "../models/RoomType.js";
 import Hotel from "../models/Hotel.js";
+import { startOfMonth, endOfMonth, subMonths, addHours, subHours,addDays } from 'date-fns';
+
 // import Order from "../models/Order.js";
 import { createError } from "../utils/error.js";
 
@@ -267,3 +269,44 @@ export const cancelRoomReservation = async (req, res, next) => {
     next(err);
   }
 };
+
+
+// so luong phong trong 30 ngay toi
+export const statusRoomCount = async (req, res, next) => {
+  try{
+    const room = await Room.findById(req.params.roomId);
+
+  const currentDate = addHours(new Date(), 7);
+  currentDate.setHours(14, 0, 0, 0);
+  // console.log(currentDate)
+  const roomAvailability = [];
+
+   // Lặp qua 5 ngày tiếp theo
+    for (let i = 0; i < 30; i++) {
+      const currentDay = addDays(currentDate, i);
+      const day = currentDay.getDate();
+      const month = currentDay.getMonth() + 1;// Tháng bắt đầu từ 0
+      const year = currentDay.getFullYear() 
+
+      // Tìm số lượng phòng trống cho ngày hiện tại
+      const availableRoomsCount = room.roomNumbers.reduce((count, roomNumber) => {
+        const isRoomAvailable = roomNumber.status && !roomNumber.unavailableDates.some(date => {
+          return new Date(date).toISOString().slice(0, 10) === currentDay.toISOString().slice(0, 10);
+      });
+        return isRoomAvailable ? count + 1 : count;
+      }, 0);
+      // số 0 là giá trị biến count khởi tạo
+
+      // Thêm thông tin số lượng phòng trống vào mảng kết quả
+      roomAvailability.push({ day, month, year,countAvailable: availableRoomsCount });
+    }
+
+    res.json(roomAvailability);
+  } catch (error) {
+    console.error("Error occurred while fetching room availability:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+
+
+}
+

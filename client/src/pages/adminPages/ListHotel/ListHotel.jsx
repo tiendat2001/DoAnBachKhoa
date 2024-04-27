@@ -23,7 +23,7 @@ const ListHotel = () => {
         // lấy ra những đơn đặt phòng trong tương lai
         const { data: reservationData, loading: reservationLoading, error: reservationError,
             reFetch: reservationReFetch } = useFetch(`/reservation?idOwnerHotel=${user._id}&startDay=${currentDate}&endDay=${endLessDate}&status=true`);
-    console.log(reservationData)
+    // console.log(reservationData)
 
     const handleDelete = (hotelId) => {
         const hasMatchingHotelId = reservationData.some(item => item.hotelId === hotelId);
