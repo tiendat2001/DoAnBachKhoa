@@ -77,7 +77,7 @@ const ListRoom = () => {
         {
             field: "action",
             headerName: "Action",
-            width: 170,
+            width: 270,
             headerAlign: 'center',
             renderCell: (params) => {
                 return (
@@ -86,13 +86,20 @@ const ListRoom = () => {
                               to={`/admin/rooms/${params.row._id}`}
                             style={{ textDecoration: "none" }}
                         >
-                            <div className="viewButton">Chỉnh sửa</div>
+                            <div className="viewButton wrap-content">Chỉnh thông tin</div>
                         </Link>
-                        <div
-                            className="deleteButton"
+
+                        <Link
+                              to={`/admin/rooms/${params.row._id}`}
+                            style={{ textDecoration: "none" }}
+                        >
+                            <div className="viewButton wrap-content">Chỉnh số lượng</div>
+                        </Link>
+                        <div 
+                            className="deleteButton wrap-content"
                           onClick={() => handleDelete(params.row._id)}
                         >
-                            Delete
+                            Xóa loại phòng
                         </div>
                     </div>
                 );

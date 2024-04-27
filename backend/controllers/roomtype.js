@@ -223,7 +223,6 @@ export const cancelRoomReservation = async (req, res, next) => {
     }
     // console.log("req.body.dates:", req.body.dates);
     // console.log(roomNumber.unavailableDates)
-
     // tim cac phan tu can xoa trong mang
     const indexesToRemove = [];
     req.body.dates.forEach(date => {
