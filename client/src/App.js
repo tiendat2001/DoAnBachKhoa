@@ -24,6 +24,7 @@ import Administrator from "./pages/administratorPages/administrator/Administrato
 import AllHotelPayment from "./pages/administratorPages/AllHotelPayment/AllHotelPayment";
 import { getCookie } from 'react-use-cookie';
 import RoomDetails from "./pages/adminPages/RoomDetails/RoomDetails";
+import ModifyRoomCount from "./pages/adminPages/ModifyRoomCount/ModifyRoomCount";
 function App() {
 
 
@@ -118,6 +119,12 @@ function App() {
           <Route path="rooms/smallRoomDetails/:id" element={
             <ProtectedRoute>
               <RoomDetails />
+            </ProtectedRoute>
+          } />
+
+          <Route path="rooms/smallRoomDetails/modifyRoomCount/:id" element={
+            <ProtectedRoute>
+              <ModifyRoomCount />
             </ProtectedRoute>
           } />
 

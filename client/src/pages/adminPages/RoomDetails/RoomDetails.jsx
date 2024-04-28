@@ -15,7 +15,7 @@ const RoomDetails = () => {
     const idRoom = location.pathname.split("/")[4];
     const { data: roomTypeData, loading, error } = useFetch(`/rooms/find/${idRoom}`);
     const { data: roomCountStatus, loadingroomCountStatus, errorroomCountStatus } = useFetch(`/rooms/statusRoomCount/${idRoom}`);
-    console.log(roomTypeData)
+    // console.log(roomTypeData)
     return (
         <div className="listAdmin">
             <Sidebar />
@@ -23,7 +23,17 @@ const RoomDetails = () => {
                 <NavbarAdmin />
 
                 <div className="detailsRoomTypeContainer">
-                    <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>
+                    <div style={{ display: 'flex',gap:'20px',alignItems:'center' }}>
+                        <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>                
+                        <Link
+                              to={`/admin/rooms/smallRoomDetails/modifyRoomCount/${idRoom}`}
+                            style={{ textDecoration: "none" }}
+                        >
+                            <button>Chỉnh số lượng phòng</button>
+                        </Link>
+
+                    </div>
+
                     <div>
                         Số lượng phòng đang rao bán trong 30 ngày tới
                         <span style={{ fontWeight: 'bold' }}> </span>
