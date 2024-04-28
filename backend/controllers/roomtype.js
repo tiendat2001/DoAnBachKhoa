@@ -306,7 +306,30 @@ export const statusRoomCount = async (req, res, next) => {
     console.error("Error occurred while fetching room availability:", error);
     res.status(500).json({ error: "Internal server error" });
   }
+}
 
+// thêm phòng nhỏ vào loại phòng
+export const addRoomToRoomType = async (req, res, next) => {
+  try {
+    // Lấy ra thông tin phòng từ ID
+    const room = await Room.findById(req.params.roomId);
+    if (!room) {
+      return res.status(404).json({ message: 'Không tìm thấy phòng' });
+    }
+    // Số lượng phần tử cần thêm từ req.body
+    const roomCountToAdd = req.body.roomCountToAdd;
+    // Tạo số lượng phần tử rỗng tương ứng
+    const emptyRooms = Array.from({ length: roomCountToAdd }, () => ({}));
+    // Đẩy các phần tử rỗng vào mảng roomNumbers của room
+    room.roomNumbers.push(...emptyRooms);
+    // Lưu lại thông tin phòng sau khi cập nhật
+    const updatedRoom = await room.save();
+
+    res.status(200).json({ message: 'Đã thêm phòng thành công', room: updatedRoom });
+  } catch (error) {
+    console.error('Lỗi khi thêm phòng:', error);
+    res.status(500).json({ message: 'Đã xảy ra lỗi khi thêm phòng' });
+  }
 
 }
 
