@@ -15,6 +15,10 @@ const ModifyRoomCount = () => {
     const idRoom = location.pathname.split("/")[5];
     const { data: roomTypeData, loading, error } = useFetch(`/rooms/find/${idRoom}`);
 
+    const handleDelete = (roomId) => {
+        console.log("Room ID to delete:", roomId);
+        // Thêm logic xử lý xóa phần tử ở đây
+    };
     return (
         <div className="listAdmin">
             <Sidebar />
@@ -23,6 +27,18 @@ const ModifyRoomCount = () => {
 
                 <div className="ModifyRoomCountContainer">
                     <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>
+                    <div  className="roomNumberContainer">
+                            <div className="roomNumber">STT</div>
+                            <div className="roomNumber">Trạng thái</div>
+                            <div style={{width:'20%'}} className="roomNumber" >Xóa</div>
+                        </div>
+                    {roomTypeData.roomNumbers?.map((roomNumber, index) => (
+                        <div key={index} className="roomNumberContainer">
+                            <div className="roomNumber">{index + 1}</div>
+                            <div className="roomNumber">{roomNumber.status ? 'Mở' : 'Đóng'}</div>
+                            <button style={{width:'20%'}} className="roomNumber" onClick={() => handleDelete(roomNumber._id)}>Xóa</button>
+                        </div>
+                    ))}
 
                 </div>
             </div>
