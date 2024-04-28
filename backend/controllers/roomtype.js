@@ -290,7 +290,8 @@ export const cancelRoomReservation = async (req, res, next) => {
     // console.log(test)
     let alldates;
     let roomNumberLoop = null;
-    const roomNumberCurrentIndex = room.roomNumbers.findIndex(number => number._id.toString() === req.params.id);
+    const roomNumberCurrentIndex = room.roomNumbers.findIndex(number => number._id.toString() == roomNumberCurrent._id);
+    console.log(roomNumberCurrentIndex)
     // tìm các phần tử ở dưới phần tử roomNumberCurrent
 
     let roomNumberToReplace = null;
@@ -351,7 +352,7 @@ export const cancelRoomReservation = async (req, res, next) => {
       
       convertedDates.forEach(dateTest => {
         const indexTest = roomNumberToReplace.unavailableDates.findIndex(roomDateTest => roomDateTest.toISOString() === dateTest.toISOString());
-        console.log(indexTest);
+        // console.log(indexTest);
         if (indexTest !== -1) {
           indexesToRemoveToReplace.push(indexTest);
         }
