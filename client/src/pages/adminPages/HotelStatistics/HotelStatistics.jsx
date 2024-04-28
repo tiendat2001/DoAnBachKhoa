@@ -112,7 +112,7 @@ const HotelStatistics = () => {
         <NavbarAdmin />
 
         <div className="hotelStatisticContainer">
-          <div style={{ fontSize: '30px', fontWeight: 'bold', marginBottom: '10px' }}>Tổng quan</div>
+          <div style={{ fontSize: '30px', fontWeight: 'bold', marginBottom: '10px' }}>Tổng quan chỗ nghỉ</div>
 
           <select value={month} onChange={handleMonthChange}>
             <option value={0}>Tất cả </option>

@@ -4,14 +4,15 @@
 }
 
 .roomNumberContainer{
+    /* margin-top:20px; */
     display: flex;
     justify-content: space-between;
-    width: 30%;
+    width: 70%;
     border: 2px solid #8ed1f8; /* Màu xanh nước biển */
     padding: 5px;
 }
 
 .roomNumber{
     text-align: center;
-    width:30%;
+    width:20%;
 }

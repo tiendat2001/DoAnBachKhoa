@@ -25,7 +25,7 @@ const Login = () => {
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
     try {
-      console.log(credentials)
+      // console.log(credentials)
       const res = await axios.post("/auth/login", credentials);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data }); // user trong AuthContext sẽ là JSON thông tin user (kq API return)
       console.log(res.data.isAdmin)
