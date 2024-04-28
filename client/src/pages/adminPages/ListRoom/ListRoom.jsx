@@ -113,7 +113,7 @@ const ListRoom = () => {
                 <NavbarAdmin />
 
                 <div className="ListRoomAdminContainer">
-                    <h2>Your Rooms</h2>
+                    <h2>Phòng của bạn</h2>
                     <div style={{ display: 'flex' , justifyContent:'space-between', alignItems:'center' }}>
 
                         <div className="hotelSelectBox">

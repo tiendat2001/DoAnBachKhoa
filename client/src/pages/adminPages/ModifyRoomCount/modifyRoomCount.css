@@ -16,3 +16,15 @@
     text-align: center;
     width:20%;
 }
+
+.modifyRoomCount{
+    display: flex;
+    justify-content: flex-start;
+    gap:20px;
+    width: 70%;
+    margin-bottom: 5px;
+}
+
+.modifyRoomCount input{
+    width: 40px;
+}

@@ -23,10 +23,10 @@ const RoomDetails = () => {
                 <NavbarAdmin />
 
                 <div className="detailsRoomTypeContainer">
-                    <div style={{ display: 'flex',gap:'20px',alignItems:'center' }}>
-                        <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>                
+                    <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+                        <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>
                         <Link
-                              to={`/admin/rooms/smallRoomDetails/modifyRoomCount/${idRoom}`}
+                            to={`/admin/rooms/smallRoomDetails/modifyRoomCount/${idRoom}`}
                             style={{ textDecoration: "none" }}
                         >
                             <button>Chỉnh số lượng phòng</button>
@@ -44,6 +44,11 @@ const RoomDetails = () => {
                                 <div className="grid-item" key={index}>
                                     <div>{`${status.day}/${status.month}/${status.year}`}</div>
                                     <div>Phòng trống:{status.countAvailable}</div>
+                                    <div  style={{ color: roomTypeData.roomNumbers && roomTypeData.roomNumbers?.length - status.countAvailable !== 0 ? 'red' : 'inherit', fontWeight: roomTypeData.roomNumbers && roomTypeData.roomNumbers?.length - status.countAvailable !== 0 ? 'bold' : 'normal' }}>
+                                        Đã bán hoặc đóng: {roomTypeData.roomNumbers?.length - status.countAvailable}
+                                        
+                                    </div>
+
                                 </div>
                             ))}
                         </div>
