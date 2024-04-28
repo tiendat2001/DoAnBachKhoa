@@ -41,7 +41,7 @@ const ModifyRoomCount = () => {
             <Sidebar />
             <div className="listContainerAdmin">
                 <NavbarAdmin />
-
+                
                 <div className="ModifyRoomCountContainer">
                     <div style={{ fontSize: '20px', fontWeight: 'bold',marginBottom:'20px' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>
                     <div style={{backgroundColor:'#ccc'}}  className="roomNumberContainer">

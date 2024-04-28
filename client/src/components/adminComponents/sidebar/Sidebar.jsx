@@ -40,13 +40,13 @@ const Sidebar = () => {
       {/* <hr /> */}
       <div className="center">
         <ul>
-          <p className="title">MAIN</p>
+          {/* <p className="title">MAIN</p>
           <Link to="/" style={{ textDecoration: "none" }}>
             <li>
               <DashboardIcon className="icon" />
               <span>Dashboard</span>
             </li>
-          </Link>
+          </Link> */}
           <p className="title">MỤC</p>
           <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
@@ -94,7 +94,7 @@ const Sidebar = () => {
             <SettingsApplicationsIcon className="icon" />
             <span>Settings</span>
           </li> */}
-          <p className="title">USER</p>
+          <p className="title">TÀI KHOẢN</p>
           <li>
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
