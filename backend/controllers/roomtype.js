@@ -325,7 +325,7 @@ export const cancelRoomReservation = async (req, res, next) => {
       }
     }
 
-    // đẩy unavai đấy lên với roomNumberToReplace,allDatesToReplace
+    // đẩy unavai,range đấy lên với roomNumberToReplace,allDatesToReplace vào chỗ currentRoomNumber
     if (roomNumberToReplace) {
       const { startDateRange, endDateRange } = dateRangeToReplace;
       // console.log(startDateRangeToReplace)
