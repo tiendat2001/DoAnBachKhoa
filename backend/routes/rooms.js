@@ -1,5 +1,5 @@
 import express from "express"
-import { createRoom, deleteRoom, getRoomsByHotelId, getRooms, updateRoom, updateRoomAvailability,getRoomById,cancelRoomReservation,statusRoomCount, addRoomToRoomType} from "../controllers/roomtype.js";
+import { createRoom, deleteRoom, getRoomsByHotelId, getRooms, updateRoom, updateRoomAvailability,getRoomById,cancelRoomReservation,statusRoomCount, addRoomToRoomType, deleteRoomInRoomType} from "../controllers/roomtype.js";
 import { verifyAdmin,verifyUserModifyHotel } from "../utils/verifyToken.js";
 
 const router = express.Router();
@@ -15,7 +15,10 @@ router.put("/cancelAvailability/:id", cancelRoomReservation);
 
 // UPDATE ROOM
 router.put("/:id", verifyUserModifyHotel, updateRoom);
+// THÊM PHÒNG NHỎ
 router.put("/addRoomToRoomType/:roomId", addRoomToRoomType);
+// XÓA PHÒNG NHỎ
+router.put("/deleteRoomInRoomType/:roomId", deleteRoomInRoomType);
 
 
 //DELETE

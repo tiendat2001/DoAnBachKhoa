@@ -333,3 +333,39 @@ export const addRoomToRoomType = async (req, res, next) => {
 
 }
 
+// xóa phòng nhỏ cho loại phòng
+export const deleteRoomInRoomType = async (req, res, next) => {
+  try {
+    // Lấy ra thông tin phòng từ ID
+    const room = await Room.findById(req.params.roomId);
+    if (!room) {
+      return res.status(404).json({ message: 'Không tìm thấy phòng' });
+    }
+
+    // Số lượng phần tử cần xóa từ req.body
+    let roomCountToDelete = req.body.roomCountToDelete;
+    // Duyệt qua mảng roomNumbers của room
+    for (let i = 0; i < room.roomNumbers.length; i++) {
+      const roomNumber = room.roomNumbers[i];
+      // Kiểm tra ngày hiện tại có lớn hơn tất cả các phần tử trong mảng unavailableDates không
+      const canDelete = roomNumber.unavailableDates.every(date => new Date() > new Date(date));
+      // Nếu ngày hiện tại lớn hơn tất cả các ngày trong mảng, cho phép xóa
+      if (canDelete) {
+        // Xóa phần tử tại vị trí i khỏi mảng roomNumbers
+        room.roomNumbers.splice(i, 1);
+        i--; // Giảm chỉ số để không bỏ qua phần tử sau khi xóa
+        roomCountToDelete--; // Giảm số lượng phần tử cần xóa
+      }
+      // Nếu số lượng phần tử cần xóa đã đạt được, thoát khỏi vòng lặp
+      if (roomCountToDelete == 0) {
+        break;
+      }
+    }
+    // Lưu lại thông tin phòng sau khi xóa
+    const updatedRoom = await room.save();
+    res.status(200).json({ message: 'Đã xóa phòng thành công', room: updatedRoom });
+  } catch (error) {
+    console.error('Lỗi khi xóa phòng:', error);
+    res.status(500).json({ message: 'Đã xảy ra lỗi khi xóa phòng' });
+  }
+};
