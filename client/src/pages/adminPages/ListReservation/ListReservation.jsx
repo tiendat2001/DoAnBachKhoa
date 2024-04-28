@@ -75,7 +75,7 @@ const ListReservation = () => {
                 <div className="ListReservationAdminContainer">
                     <h2>Đặt phòng</h2>
 
-                    <div style={{display:'flex',justifyContent:'flex-start',gap:"10px",marginBottom:'10px'}}>
+                    <div style={{display:'flex',justifyContent:'flex-start',gap:"10px",marginBottom:'10px', textAlign:'center'}}>
 
                         <div style={{ width: '20%' }} className="headerSearchHotel">
                             <FontAwesomeIcon icon={faCalendarDays} className="headerIconHotel" />
@@ -97,6 +97,7 @@ const ListReservation = () => {
 
                         <button onClick={filterByDates}>Lọc theo ngày</button>
                         <button onClick={cancelFilterByDates}>Hủy lọc</button>
+                        <div style={{fontStyle:'italic'}}>(Lọc theo ngày được tính theo ngày check in của đơn, ví dụ nếu <br/>để khoảng ngày 19 đến 20 sẽ lấy đơn có check in ngày 19 và 20)</div>
                     </div>
 
 

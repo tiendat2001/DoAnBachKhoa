@@ -39,6 +39,7 @@ const ListRoomClient = ({ hotelId }) => {
   const [selectedRoomIds, setSelectedRoomIds] = useState([]);
   const [key, setKey] = useState(Math.random());
   const selectedRoomDetais = [];
+  const { user } = useContext(AuthContext)
   // console.log(dates)
   // var totalRoomQuantitySelected = 0;
   const navigate = useNavigate()
@@ -160,7 +161,6 @@ const ListRoomClient = ({ hotelId }) => {
         updatedSelectedRoomsCopy.push(roomNumber._id);
       }
     });
-    // console.log(updatedSelectedRoomsCopy)
 
     setSelectedRoomIds(updatedSelectedRoomsCopy);
   };
@@ -168,6 +168,12 @@ const ListRoomClient = ({ hotelId }) => {
 
   // hàm nút đặt phòng
   const reserveRoom = async () => {
+    //check xem đăng nhập chưa
+    if(!user.username){
+      navigate("/login")
+      return;
+    }
+
      // Lặp qua từng item trong data
     data.forEach((item) => {
     // Kiểm tra nếu số lượng phòng đã chọn khác 0
