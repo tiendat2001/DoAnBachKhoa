@@ -23,7 +23,7 @@ import HotelStatistics from "./pages/adminPages/HotelStatistics/HotelStatistics"
 import Administrator from "./pages/administratorPages/administrator/Administrator";
 import AllHotelPayment from "./pages/administratorPages/AllHotelPayment/AllHotelPayment";
 import { getCookie } from 'react-use-cookie';
-import SmallRoomDetails from "./pages/adminPages/smallRoomDetails/smallRoomDetails";
+import RoomDetails from "./pages/adminPages/RoomDetails/RoomDetails";
 function App() {
 
 
@@ -117,7 +117,7 @@ function App() {
 
           <Route path="rooms/smallRoomDetails/:id" element={
             <ProtectedRoute>
-              <SmallRoomDetails />
+              <RoomDetails />
             </ProtectedRoute>
           } />
 
