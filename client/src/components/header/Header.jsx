@@ -83,10 +83,10 @@ const Header = ({ type }) => {
         {type !== "list" && (
           <>
             <h1 className="headerTitle">
-              You can go anywhere you want
+              Bạn có thể đi đến bất cứ đâu bạn muốn
             </h1>
             <p className="headerDesc">
-              Choose the hotel with the best price for yourself
+              Chọn khách sạn với giá rẻ nhất dành cho bạn
             </p>
             {/* {!user && <button className="headerBtn">Sign in / Register</button>} */}
             <div className="headerSearch">
@@ -109,7 +109,7 @@ const Header = ({ type }) => {
                 <span
                   onClick={() => setOpenDate(!openDate)}
                   className="headerSearchText"
-                >{`${format(dates[0].startDate, "dd/MM/yyyy")} to ${format(
+                >{`${format(dates[0].startDate, "dd/MM/yyyy")} đến ${format(
                   dates[0].endDate,
                   "dd/MM/yyyy"
                 )}`}</span>
@@ -138,11 +138,11 @@ const Header = ({ type }) => {
                 <span
                   onClick={() => setOpenOptions(!openOptions)}
                   className="headerSearchText"
-                >{`${options.adult} adult · ${options.children} children · ${options.room} room`}</span>
+                >{`${options.adult} người lớn · ${options.children} trẻ em · ${options.room} phòng`}</span>
                 {openOptions && (
                   <div className="options">
                     <div className="optionItem">
-                      <span className="optionText">Adult</span>
+                      <span className="optionText">Người lớn</span>
                       <div className="optionCounter">
                         <button
                           disabled={options.adult <= 1}
@@ -163,7 +163,7 @@ const Header = ({ type }) => {
                       </div>
                     </div>
                     <div className="optionItem">
-                      <span className="optionText">Children</span>
+                      <span className="optionText">Trẻ em</span>
                       <div className="optionCounter">
                         <button
                           disabled={options.children <= 0}
@@ -184,7 +184,7 @@ const Header = ({ type }) => {
                       </div>
                     </div>
                     <div className="optionItem">
-                      <span className="optionText">Room</span>
+                      <span className="optionText">Phòng</span>
                       <div className="optionCounter">
                         <button
                           disabled={options.room <= 1}

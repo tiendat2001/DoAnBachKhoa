@@ -26,7 +26,7 @@ const RoomDetails = () => {
     const [openDate, setOpenDate] = useState(false);
     const searchContext = useContext(SearchContext);
     const [dates, setDates] = useState(searchContext.dates);
-    const [selectedRoomIds, setSelectedRoomIds] = useState([]);
+    const [selectedRoomIdsToDelete, setSelectedRoomIdsToDelete] = useState([]);
     const [key, setKey] = useState(Math.random());
 
     // check đường dẫn lần trc
@@ -59,7 +59,7 @@ const RoomDetails = () => {
         endDate.setHours(14, 0, 0, 0);
         setDates([{ ...newSelection, startDate, endDate }]);
         setKey(Math.random()); // Bắt reload lại phần chọn phòng
-        setSelectedRoomIds([])
+        setSelectedRoomIdsToDelete([])
     };
     // console.log(dates)
 
@@ -99,9 +99,9 @@ const RoomDetails = () => {
           }
         });
 
-        setSelectedRoomIds(updatedSelectedRoomsCopy);
+        setSelectedRoomIdsToDelete(updatedSelectedRoomsCopy);
     };
-    console.log(selectedRoomIds)
+    console.log(selectedRoomIdsToDelete)
     let roomIndex = 0; // Khởi tạo biến đếm
     return (
         <div className="listAdmin">
@@ -188,6 +188,11 @@ const RoomDetails = () => {
                             <div>Số lượng phòng hiện đang rao bán: {roomIndex}</div>
 
 
+                        </div>
+
+                        <div style={{ fontWeight: 'bold', fontSize: '20px',marginTop:'20px'}}>Lịch sử đóng phòng</div>
+                        <div className="listRoomClosed">
+                            
                         </div>
 
                     </div>

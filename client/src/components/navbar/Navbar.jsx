@@ -26,27 +26,27 @@ const Navbar = () => {
             {user.username ? (
             <div className="logout">
              <Link to="/admin/hotels">
-              <button className="navButton" >Manage your homestay</button>
+              <button className="navButton" >Quản lý chỗ nghỉ của bạn</button>
               </Link>
 
               <Link to="/bookings">
-              <button className="navButton" >Your bookings</button>
+              <button className="navButton" >Đơn đặt phòng của bạn</button>
               </Link>
               
-            <h1 className="account">Hello,{user.username}</h1> 
+            <h1 className="account">Xin chào,{user.username}</h1> 
             {/* <Link to="/login"> */}
 
-              <button className="navButton" onClick={handleLogout} >Log out</button>
+              <button className="navButton" onClick={handleLogout} >Đăng xuất</button>
               {/* </Link> */}
             </div>
             
             ) : (
             <div className="navItems">
               {/* <button className="navButton" >List your Hotel</button> */}
-              <button className="navButton" >Register</button>
+              <button className="navButton" >Đăng ký</button>
               <Link to="/login">
 
-              <button className="navButton" >Login</button>
+              <button className="navButton" >Đăng nhập</button>
               </Link>
 
             </div>

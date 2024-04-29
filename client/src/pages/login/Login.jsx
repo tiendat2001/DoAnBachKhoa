@@ -40,7 +40,7 @@ const Login = () => {
   return (
     <div className="login">
       <div className="lContainer">
-        <h1 className="Login">Login</h1>
+        <h1 className="Login">Đăng nhập</h1>
         <input
           type="text"
           placeholder="username"
@@ -65,11 +65,11 @@ const Login = () => {
           </label> */}
 
         <button disabled={loading} onClick={handleClick} className="lButton">
-          Login
+          Đăng nhập
         </button>
         <Link className="lButton register" to="/register">
 
-          Register
+          Đăng ký
 
         </Link>
         {error && <span>{error.message}</span>}
