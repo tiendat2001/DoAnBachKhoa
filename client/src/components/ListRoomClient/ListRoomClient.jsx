@@ -176,17 +176,16 @@ const ListRoomClient = ({ hotelId }) => {
 
      // Lặp qua từng item trong data
     data.forEach((item) => {
-    // Kiểm tra nếu số lượng phòng đã chọn khác 0
     const selectedValue = parseInt(document.getElementById(`select_${item._id}`).value);
+      // Kiểm tra nếu số lượng phòng đã chọn khác 0
     if (selectedValue !== 0) {
-      // Thêm đối tượng vào mảng selectedRooms
+      // Thêm đối tượng vào mảng selectedRoomDetais, mảng này để sử dụng cho bên reserve
       selectedRoomDetais.push({ roomTypeId:item._id, typeRoom:item.title, quantity: selectedValue });
     }
 
 });
   
     if (selectedRoomIds.length > 0 && alldates.length >=1) {
-      console.log(alldates.length)
       navigate("/reserve", { state: { selectedRoomIds, alldates, hotelId, startDate: dates[0].startDate, endDate: dates[0].endDate, 
         seletedRoomIdsReserved:selectedRoomDetais } });
         //seletedRoomIdsReserved là mảng để truyền vào reserve xử lý tìm id sau

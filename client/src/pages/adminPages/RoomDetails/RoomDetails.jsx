@@ -26,21 +26,83 @@ const RoomDetails = () => {
     const [openDate, setOpenDate] = useState(false);
     const searchContext = useContext(SearchContext);
     const [dates, setDates] = useState(searchContext.dates);
+    const [selectedRoomIds, setSelectedRoomIds] = useState([]);
+    const [key, setKey] = useState(Math.random());
+
+    // check đường dẫn lần trc
     const navigate = useNavigate()
     const previousPath = location.state?.previousPath;
     if (previousPath !== '/admin/rooms') {
-      navigate('/admin/rooms');
+        navigate('/admin/rooms');
     }
+
+    const getDatesInRange = (startDate, endDate) => {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const date = new Date(start.getTime());
+        const dates = [];
+        while (date <= end) {
+            dates.push(new Date(date).getTime());
+            date.setDate(date.getDate() + 1);
+        }
+
+        return dates;
+    };
+
+    // tính alldates
+    const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
+    // console.log(alldates)
     const handleDayChange = (item) => {
         const newSelection = { ...item.selection };
         const { startDate, endDate } = newSelection;
         startDate.setHours(14, 0, 0, 0);
         endDate.setHours(14, 0, 0, 0);
-        // dates này để hiển thị lịch trên giao diện
         setDates([{ ...newSelection, startDate, endDate }]);
+        setKey(Math.random()); // Bắt reload lại phần chọn phòng
+        setSelectedRoomIds([])
     };
-    console.log(dates)
-    // console.log(roomTypeData)
+    // console.log(dates)
+
+    // phần đóng phòng
+    const isAvailable = (roomNumber) => {
+        const isFound = roomNumber.unavailableDates.some((date) => {
+            const dateMinusOneDay = new Date(date).getTime();
+            return alldates.includes(dateMinusOneDay);
+        });
+
+        return !isFound;
+    };
+
+    const handleSelectChange = (event, roomNumbers) => {
+        let roomQuantitySelected = event.target.value;
+        // data.forEach((dataItem) => {
+        //   // Lấy giá trị được chọn từ <select> tương ứng với item hiện tại
+        //   const selectedValue = parseInt(document.getElementById(`select_${dataItem._id}`).value);
+        //   roomQuantitySelected = roomQuantitySelected + selectedValue;
+        // });
+        // console.log("Tổng Số lượng phòng đã chọn:", roomQuantitySelected);
+        // const updatedSelectedRooms = selectedRoomIds;
+
+        let updatedSelectedRoomsCopy = [];
+        // Duyệt qua mỗi phần tử trong mảng roomNumbers
+        // roomNumbers.forEach(room => {
+        //   // Kiểm tra xem _id của phần tử hiện tại có tồn tại trong mảng updatedSelectedRooms không
+        //   const index = updatedSelectedRoomsCopy.findIndex(selectedRoom => selectedRoom === room._id);
+        //   // Nếu có tồn tại, loại bỏ phần tử đó khỏi mảng updatedSelectedRoomsCopy
+        //   if (index !== -1) {
+        //     updatedSelectedRoomsCopy.splice(index, 1);
+        //   }
+        // });
+        roomNumbers.forEach((roomNumber) => {
+          if (isAvailable(roomNumber) && updatedSelectedRoomsCopy.length < roomQuantitySelected) {
+            updatedSelectedRoomsCopy.push(roomNumber._id);
+          }
+        });
+
+        setSelectedRoomIds(updatedSelectedRoomsCopy);
+    };
+    console.log(selectedRoomIds)
+    let roomIndex = 0; // Khởi tạo biến đếm
     return (
         <div className="listAdmin">
             <Sidebar />
@@ -76,26 +138,58 @@ const RoomDetails = () => {
 
 
                     <div className="closeRoomContainer">
-                        <div style={{ fontWeight: 'bold', fontSize:'20px' }}>Đóng phòng</div>
-                        <div style={{fontStyle:'italic', marginBottom:'10px'}}>(Bạn có thể đóng 1 số lượng phòng vào 1 số ngày nhất định)</div>
-                        
-                        <div style={{ width: '20%' }} className="headerSearchHotel">
-                            <FontAwesomeIcon icon={faCalendarDays} className="headerIconHotel" />
-                            <span onClick={() => setOpenDate(!openDate)}>{`${format(
-                                dates[0].startDate,
-                                "dd/MM/yyyy"
-                            )} to ${format(dates[0].endDate, "dd/MM/yyyy")}`}</span>
-                            {openDate && (
-                                <DateRange
-                                    onChange={(item) => handleDayChange(item)}
-                                    // minDate={new Date()}
-                                    ranges={dates}
-                                    moveRangeOnFirstSelection={false}
-                                    editableDateInputs={true}
-                                    className="date"
-                                />
-                            )}
+                        <div style={{ fontWeight: 'bold', fontSize: '20px' }}>Đóng phòng</div>
+                        <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Bạn có thể đóng 1 số lượng phòng vào 1 số ngày nhất định)</div>
+
+                        {/* css từ listRoomClient */}
+                        <div className="selectRoomClose">
+
+                            <div style={{ width: '20%' }} className="headerSearchHotel">
+                                <FontAwesomeIcon icon={faCalendarDays} className="headerIconHotel" />
+                                <span onClick={() => setOpenDate(!openDate)}>{`${format(
+                                    dates[0].startDate,
+                                    "dd/MM/yyyy"
+                                )} to ${format(dates[0].endDate, "dd/MM/yyyy")}`}</span>
+                                {openDate && (
+                                    <DateRange
+                                        onChange={(item) => handleDayChange(item)}
+                                        // minDate={new Date()}
+                                        ranges={dates}
+                                        moveRangeOnFirstSelection={false}
+                                        editableDateInputs={true}
+                                        className="date"
+                                    />
+                                )}
+                            </div>
+
+                            {/* hiện ds số lượng phòng */}
+                            <div key={key} style={{ display: 'flex', alignItems:'center',gap:'5px' }}>
+                                <div>Số lượng phòng muốn đóng:  </div>
+
+                                <select style={{ height: '20px' }} onChange={(event) => handleSelectChange(event, roomTypeData.roomNumbers)}>
+                                    <option value={0}>0 phòng</option>
+                                    {(() => {
+                                        // let roomIndex = 0; // Khởi tạo biến đếm
+                                        return roomTypeData.roomNumbers?.map((roomNumber, index) => {
+                                            if (isAvailable(roomNumber)) {
+                                                roomIndex++; // Tăng giá trị biến đếm khi phòng thỏa mãn điều kiện
+                                                return (
+                                                    <option key={roomNumber._id} value={roomIndex}>
+                                                        {`${roomIndex} phòng`}
+                                                    </option>
+                                                );
+                                            }
+                                            return null;
+                                        });
+                                    })()}
+                                </select>
+                            </div>
+
+                            <div>Số lượng phòng hiện đang rao bán: {roomIndex}</div>
+
+
                         </div>
+
                     </div>
 
 
