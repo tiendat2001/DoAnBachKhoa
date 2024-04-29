@@ -34,7 +34,6 @@ const ListReservation = () => {
     const searchContext = useContext(SearchContext);
     const [dates, setDates] = useState(searchContext.dates);
     //date này để lọc trong API query
-
     const [datesToFilter, setDatesToFilter] = useState(INITIAL_STATE);
     const { data: reservationData, loading: reservationLoading, error: reservationError,
         reFetch: reservationReFetch } = useFetch(`/reservation?idOwnerHotel=${user._id}&startDay=${datesToFilter[0].startDate}&endDay=${datesToFilter[0].endDate}`);
@@ -48,10 +47,6 @@ const ListReservation = () => {
         endDate.setHours(14, 0, 0, 0);
         // dates này để hiển thị lịch trên giao diện
         setDates([{ ...newSelection, startDate, endDate }]);
-
-      
-        
-
     };
 
     // khi bấm lọc mới lưu vào biến trong API query
@@ -76,7 +71,7 @@ const ListReservation = () => {
                     <h2>Đặt phòng</h2>
 
                     <div style={{display:'flex',justifyContent:'flex-start',gap:"10px",marginBottom:'10px', textAlign:'center'}}>
-
+                        {/* css từ listRoomCLient */}
                         <div style={{ width: '20%' }} className="headerSearchHotel">
                             <FontAwesomeIcon icon={faCalendarDays} className="headerIconHotel" />
                             <span onClick={() => setOpenDate(!openDate)}>{`${format(

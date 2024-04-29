@@ -5,6 +5,7 @@
 .tableRoomStatus {
     display: flex;
     justify-content: center;
+    margin-bottom: 30px;
   }
   
   .grid-container {
@@ -23,4 +24,50 @@
     text-align: center;
    
   }
+
+  /*  thanh search ngày */
+  /* thanh search ngày */
+
+.headerSearchHotel {
+  height: 40px;
+  background-color: white;
+  border: 3px solid #febb02;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap:5px;
+  border-radius: 5px;
+  z-index: 1;
+  /* padding:10px 0px; */
+  position: relative;
+}
+
+.headerIconHotel {
+  color: lightgray;
+}
+
+.headerSearchItemHotel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerSearchInputHotel {
+  border: none;
+  outline: none;
+}
+
+.headerSearchInputHotel::placeholder{
+  color: lightgray;
+  cursor: pointer;
+  font-weight: bold;
+}
+.headerSearchTextHotel {
+  color: lightgray;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+
+
   
