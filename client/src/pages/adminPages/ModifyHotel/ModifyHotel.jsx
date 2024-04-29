@@ -23,7 +23,6 @@ const ModifyHotel = () => {
     const defaultType = data.type;
     const navigate = useNavigate()
     const previousPath = location.state?.previousPath;
-    console.log(previousPath)
     if (previousPath !== '/admin/hotels') {
       navigate('/admin/hotels');
     }

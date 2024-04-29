@@ -26,7 +26,11 @@ const RoomDetails = () => {
     const [openDate, setOpenDate] = useState(false);
     const searchContext = useContext(SearchContext);
     const [dates, setDates] = useState(searchContext.dates);
-
+    const navigate = useNavigate()
+    const previousPath = location.state?.previousPath;
+    if (previousPath !== '/admin/rooms') {
+      navigate('/admin/rooms');
+    }
     const handleDayChange = (item) => {
         const newSelection = { ...item.selection };
         const { startDate, endDate } = newSelection;
@@ -46,12 +50,7 @@ const RoomDetails = () => {
                 <div className="detailsRoomTypeContainer">
                     <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                         <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>
-                        <Link
-                            to={`/admin/rooms/smallRoomDetails/modifyRoomCount/${idRoom}`}
-                            style={{ textDecoration: "none" }}
-                        >
-                            <button>Chỉnh số lượng phòng</button>
-                        </Link>
+                        <button onClick={() => navigate(`/admin/rooms/smallRoomDetails/modifyRoomCount/${idRoom}`, { state: { previousPath: '/admin/rooms/smallRoomDetails' } })}>Chỉnh số lượng phòng</button>
 
                     </div>
 

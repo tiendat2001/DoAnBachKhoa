@@ -20,7 +20,10 @@ const ModifyRoom = () => {
     const { user } = useContext(AuthContext) // {user._id}
     const [isSending, setIsSending] = useState(false);
     const navigate = useNavigate()
-
+    const previousPath = location.state?.previousPath;
+    if (previousPath !== '/admin/rooms') {
+      navigate('/admin/rooms');
+    }
     useEffect(() => {
         if (data) {
           setInfo(data);

@@ -7,7 +7,7 @@ import { roomColumns } from '../../../datatablesource';
 import useFetch from '../../../hooks/useFetch';
 import { useContext, useState, useEffect } from 'react'
 import { AuthContext } from '../../../context/AuthContext';
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import axios from 'axios';
@@ -18,6 +18,7 @@ const ListRoom = () => {
     const { data: hotelData, loading: hotelLoading, error: hotelError, reFetch: hotelReFetch } = useFetch(`/hotels?ownerId=${user._id}`);
     const [hotelId, setHotelId] = useState(hotelData.length > 0 ? hotelData[0]._id : null);
     const { data: roomData, loading: roomLoading, error: roomError, reFetch: roomReFetch } = useFetch(`/rooms/${hotelId}`);
+    const navigate= useNavigate()
     const handleHotelChange = (e) => {
         setHotelId(e.target.value);
     };
@@ -29,8 +30,11 @@ const ListRoom = () => {
     }, [hotelId]);
     // console.log(roomData)
 
-
-    const handleDelete = (typeRoomId) =>{
+    // chuyển hướng
+    const handleNavigation = (path) => {
+        navigate(path, { state: { previousPath: '/admin/rooms' } });
+      };
+    const handleDelete = (typeRoomId) => {
 
         // xacs nhan xoa
         confirmAlert({
@@ -55,7 +59,7 @@ const ListRoom = () => {
 
     }
 
-    const deleteRoom = async (typeRoomId) =>{
+    const deleteRoom = async (typeRoomId) => {
 
         try {
             const Success = await axios.delete(`/rooms/${typeRoomId}`, { data: { ownerId: user._id } });
@@ -82,22 +86,15 @@ const ListRoom = () => {
             renderCell: (params) => {
                 return (
                     <div className="cellAction">
-                        <Link
-                              to={`/admin/rooms/${params.row._id}`}
-                            style={{ textDecoration: "none" }}
-                        >
-                            <div className="viewButton wrap-content">Chỉnh thông tin</div>
-                        </Link>
-
-                        <Link
-                              to={`/admin/rooms/smallRoomDetails/${params.row._id}`}
-                            style={{ textDecoration: "none" }}
-                        >
-                            <div className="viewButton wrap-content">Chỉnh số lượng</div>
-                        </Link>
-                        <div 
+                        <div className="viewButton wrap-content" onClick={() => handleNavigation(`/admin/rooms/${params.row._id}`)}>
+                            Chỉnh thông tin
+                        </div>
+                        <div className="viewButton wrap-content" onClick={() => handleNavigation(`/admin/rooms/smallRoomDetails/${params.row._id}`)}>
+                            Chỉnh số lượng
+                        </div>
+                        <div
                             className="deleteButton wrap-content"
-                          onClick={() => handleDelete(params.row._id)}
+                            onClick={() => handleDelete(params.row._id)}
                         >
                             Xóa loại phòng
                         </div>
@@ -114,7 +111,7 @@ const ListRoom = () => {
 
                 <div className="ListRoomAdminContainer">
                     <h2>Phòng của bạn</h2>
-                    <div style={{ display: 'flex' , justifyContent:'space-between', alignItems:'center' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 
                         <div className="hotelSelectBox">
                             {/* <label>Choose a hotel</label> */}

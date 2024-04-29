@@ -16,6 +16,11 @@ const ModifyRoomCount = () => {
     const { data: roomTypeData, loading, error,reFetch } = useFetch(`/rooms/find/${idRoom}`);
     const [roomCountToAdd, setRoomCountToAdd] = useState(0);
     const [roomCountToDelete, setRoomCountToDelete] = useState(0);
+    const navigate = useNavigate()
+    const previousPath = location.state?.previousPath;
+    if (previousPath !== '/admin/rooms/smallRoomDetails') {
+      navigate('/admin/rooms');
+    }
     const handleDelete = (roomId) => {
         console.log("Room ID to delete:", roomId);
         // Thêm logic xử lý xóa phần tử ở đây
