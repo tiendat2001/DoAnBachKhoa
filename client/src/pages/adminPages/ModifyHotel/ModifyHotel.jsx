@@ -2,7 +2,7 @@ import React from 'react'
 import "./modifyHotel.css"
 import Sidebar from '../../../components/adminComponents/sidebar/Sidebar'
 import NavbarAdmin from '../../../components/adminComponents/navbarAdmin/NavbarAdmin'
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation , useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
 import useFetch from '../../../hooks/useFetch';
@@ -21,7 +21,12 @@ const ModifyHotel = () => {
     // const [rooms, setRooms] = useState([]);
     const { user } = useContext(AuthContext) // {user._id}
     const defaultType = data.type;
-
+    const navigate = useNavigate()
+    const previousPath = location.state?.previousPath;
+    console.log(previousPath)
+    if (previousPath !== '/admin/hotels') {
+      navigate('/admin/hotels');
+    }
     useEffect(() => {
         if (data) {
           setInfo(data);
