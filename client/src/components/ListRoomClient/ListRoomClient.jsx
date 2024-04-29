@@ -218,7 +218,7 @@ const ListRoomClient = ({ hotelId }) => {
               onChange={(item) => handleDayChange(item)}
               // minDate={new Date()}
               ranges={dates}
-              moveRangeOnFirstSelection={false}
+              moveRangeOnFirstSelection={true}
               editableDateInputs={true}
               className="date"
             />
