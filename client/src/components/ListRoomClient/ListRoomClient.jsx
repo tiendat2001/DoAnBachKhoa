@@ -185,12 +185,13 @@ const ListRoomClient = ({ hotelId }) => {
 
 });
   
-    if (selectedRoomIds.length > 0) {
+    if (selectedRoomIds.length > 0 && alldates.length >=1) {
+      console.log(alldates.length)
       navigate("/reserve", { state: { selectedRoomIds, alldates, hotelId, startDate: dates[0].startDate, endDate: dates[0].endDate, 
         seletedRoomIdsReserved:selectedRoomDetais } });
         //seletedRoomIdsReserved là mảng để truyền vào reserve xử lý tìm id sau
     } else {
-      toast.error('Bạn chưa chọn phòng muốn đặt');
+      toast.error('Bạn chưa chọn phòng muốn đặt hoặc ngày bạn chọn phải tối thiểu 1 đêm');
     }
 
   };
