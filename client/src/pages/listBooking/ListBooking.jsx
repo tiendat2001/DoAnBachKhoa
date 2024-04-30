@@ -8,7 +8,7 @@ import useFetch from '../../hooks/useFetch';
 import { AuthContext } from '../../context/AuthContext';
 import { format, addDays, subDays, subHours } from "date-fns";
 import { confirmAlert } from 'react-confirm-alert';
-
+import { toast } from 'react-toastify';
 const ListBooking = () => {
   const { user } = useContext(AuthContext)
   const { data, loading, error, reFetch } = useFetch(
@@ -78,7 +78,7 @@ const ListBooking = () => {
 
 
     if (!hasError) {
-      alert("Hủy phòng thành công");
+      toast.success("Hủy phòng thành công");
     }
     reFetch()
 

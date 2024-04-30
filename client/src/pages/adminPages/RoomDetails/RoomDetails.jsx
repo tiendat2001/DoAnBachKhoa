@@ -73,34 +73,24 @@ const RoomDetails = () => {
         return !isFound;
     };
 
+    // thay doi so luong phong dong
     const handleSelectChange = (event, roomNumbers) => {
         let roomQuantitySelected = event.target.value;
-        // data.forEach((dataItem) => {
-        //   // Lấy giá trị được chọn từ <select> tương ứng với item hiện tại
-        //   const selectedValue = parseInt(document.getElementById(`select_${dataItem._id}`).value);
-        //   roomQuantitySelected = roomQuantitySelected + selectedValue;
-        // });
-        // console.log("Tổng Số lượng phòng đã chọn:", roomQuantitySelected);
-        // const updatedSelectedRooms = selectedRoomIds;
-
+       
         let updatedSelectedRoomsCopy = [];
-        // Duyệt qua mỗi phần tử trong mảng roomNumbers
-        // roomNumbers.forEach(room => {
-        //   // Kiểm tra xem _id của phần tử hiện tại có tồn tại trong mảng updatedSelectedRooms không
-        //   const index = updatedSelectedRoomsCopy.findIndex(selectedRoom => selectedRoom === room._id);
-        //   // Nếu có tồn tại, loại bỏ phần tử đó khỏi mảng updatedSelectedRoomsCopy
-        //   if (index !== -1) {
-        //     updatedSelectedRoomsCopy.splice(index, 1);
-        //   }
-        // });
+       
         roomNumbers.forEach((roomNumber) => {
-          if (isAvailable(roomNumber) && updatedSelectedRoomsCopy.length < roomQuantitySelected) {
-            updatedSelectedRoomsCopy.push(roomNumber._id);
-          }
+            if (isAvailable(roomNumber) && updatedSelectedRoomsCopy.length < roomQuantitySelected) {
+                updatedSelectedRoomsCopy.push(roomNumber._id);
+            }
         });
 
         setSelectedRoomIdsToDelete(updatedSelectedRoomsCopy);
     };
+
+    const handelCloseRoom = () => {
+        
+    }
     console.log(selectedRoomIdsToDelete)
     let roomIndex = 0; // Khởi tạo biến đếm
     return (
@@ -163,7 +153,7 @@ const RoomDetails = () => {
                             </div>
 
                             {/* hiện ds số lượng phòng */}
-                            <div key={key} style={{ display: 'flex', alignItems:'center',gap:'5px' }}>
+                            <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                                 <div>Số lượng phòng muốn đóng:  </div>
 
                                 <select style={{ height: '20px' }} onChange={(event) => handleSelectChange(event, roomTypeData.roomNumbers)}>
@@ -187,12 +177,14 @@ const RoomDetails = () => {
 
                             <div>Số lượng phòng hiện đang rao bán: {roomIndex}</div>
 
+                            <button onClick={handelCloseRoom}>Xác nhận</button>
 
                         </div>
 
-                        <div style={{ fontWeight: 'bold', fontSize: '20px',marginTop:'20px'}}>Lịch sử đóng phòng</div>
+                        <div style={{ fontWeight: 'bold', fontSize: '20px', marginTop: '20px' }}>Lịch sử đóng phòng</div>
+
                         <div className="listRoomClosed">
-                            
+
                         </div>
 
                     </div>
