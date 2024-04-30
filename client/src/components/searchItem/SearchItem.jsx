@@ -76,7 +76,7 @@ const SearchItem = ({ item }) => {
           <span className="siTaxOp">Cho {options.adult} người, {options.children} trẻ em, {calculateRoom(item.cheapestPrice)} phòng, {days} đêm</span>
           {/* chuyen sang xem thong tin tung hotel */}
           <Link to={`/hotels/${item._id}`}>
-          <button className="siCheckButton">More info</button>
+          <button className="siCheckButton">Xem chỗ trống</button>
           </Link>
         </div>
       </div>

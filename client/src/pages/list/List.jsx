@@ -161,38 +161,15 @@ const List = () => {
                   </div>
                 </div>
 
-                {/* thanh giá */}
-                {/* <div class="lsOptionItem">
-                  <span class="lsOptionText">
-                    Thấp nhất <small></small>
-                  </span>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1000"
-                    value={min}
-                    onChange={(e) => setMin(e.target.value)}
-                    class="lsOptionInputRange"
-                  />
-                  <span class="lsOptionValue">{min}</span>
-                </div>
-
-                <div class="lsOptionItem">
-                  <span class="lsOptionText">
-                    Cao nhất <small></small>
-                  </span>
-                  <input
-                    type="range"
-                    min="0"
-                    max="10000"
-                    value={max}
-                    onChange={(e) => setMax(e.target.value)}
-                    class="lsOptionInputRange"
-                  />
-                  <span class="lsOptionValue">{max}</span>
-                </div> */}
-
+              </div>
+            </div>
+            {/* đang css tạm */}
+            <div style={{marginTop:'-15px'}} className="lsItem">
+              {/*  chinh gia tien */}
+              <label>Lựa chọn </label>
+              <div className="lsOptions">
                 <div className="lsOptionItem">
+
                   <span className="lsOptionText">Người lớn</span>
                   <input
                     type="number"

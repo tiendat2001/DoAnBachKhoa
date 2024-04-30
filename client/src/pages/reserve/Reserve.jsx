@@ -174,8 +174,8 @@ const Reserve = () => {
           fontWeight: 'bold', fontSize: '25px', padding: '10px'
         }}>  Chi tiết đặt phòng của bạn</div>
         <div className="ReserveDetailContainer">
-          <div>Ngày nhận phòng: {startDate.toLocaleDateString('vi-VN')}</div>
-          <div>Ngày trả phòng:    {endDate.toLocaleDateString('vi-VN')}</div>
+          <div>Thời gian nhận phòng: từ 14h ngày {startDate.toLocaleDateString('vi-VN')}</div>
+          <div>Thời gian trả phòng: cho đến 12h ngày {endDate.toLocaleDateString('vi-VN')}</div>
           <div>Tổng thời gian lưu trú:  {alldates.length} đêm</div>
           <div style={{ fontWeight: 'bold' }}>Phòng của bạn:  {detailRooms} </div>
           <div style={{ fontWeight: 'bold' }}>Số người: {options.adult} người lớn và {options.children} trẻ em</div>

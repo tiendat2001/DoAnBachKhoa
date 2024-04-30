@@ -116,15 +116,15 @@ const ListHotel = () => {
                                             style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}
                                             onClick={() => handleStatisticHotel(item._id)}
                                         >
-                                            THỐNG KÊ SỐ LIỆU
+                                            Thống kê số liệu
                                         </button>
                                         <button
                                             style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}
                                             onClick={() => handleEditHotel(item._id)}
                                         >
-                                            CHỈNH SỬA THÔNG TIN KHÁCH SẠN
+                                            Chỉnh sửa thông tin
                                         </button>
-                                        <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }} onClick={() => handleDelete(item._id)}>XÓA CHỖ NGHỈ</button>
+                                        <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }} onClick={() => handleDelete(item._id)}>Xóa chỗ nghỉ</button>
 
                                     </div>
                                 </div>

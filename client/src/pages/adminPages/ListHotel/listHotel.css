@@ -48,12 +48,13 @@
   
   }
   .listHotel_btn button{
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  color: rgb(0, 0, 0);
-  font-weight: bold;
-  background-color: rgb(214, 214, 214)!important;
+    background-color: #0071c2 !important;
+    color: white;
+    font-weight: bold;
+    padding:  5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
   }
   
   
