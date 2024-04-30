@@ -73,15 +73,15 @@ const List = () => {
     // nếu số lượng phòng ng dùng chọn đã >= 
     if (options.room > Math.floor(totalPeople / cheapestPrice.people)) {
       totalPrice = cheapestPrice.price * options.room * days;
-    }else
-    // console.log(totalPeople)
-    // nếu số người =1 hoặc quá ít 1/2=0
-    if (Math.floor(totalPeople / cheapestPrice.people) == 0) {
-      totalPrice = cheapestPrice.price * days;
-    } else {
-      //new Intl.NumberFormat('vi-VN').format(params.value*1000)
-      totalPrice = cheapestPrice.price * Math.floor(totalPeople / cheapestPrice.people) * days;
-    }
+    } else
+      // console.log(totalPeople)
+      // nếu số người =1 hoặc quá ít 1/2=0
+      if (Math.floor(totalPeople / cheapestPrice.people) == 0) {
+        totalPrice = cheapestPrice.price * days;
+      } else {
+        //new Intl.NumberFormat('vi-VN').format(params.value*1000)
+        totalPrice = cheapestPrice.price * Math.floor(totalPeople / cheapestPrice.people) * days;
+      }
     return totalPrice
   };
   return (
@@ -134,24 +134,64 @@ const List = () => {
                   <span className="lsOptionText">
                     Thấp nhất <small></small>
                   </span>
-                  <input
-                    type="number"
-                    placeholder={min}
-                    onChange={(e) => setMin(e.target.value)}
-                    className="lsOptionInput"
-                  />
+
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
+                    <div>({Intl.NumberFormat('vi-VN').format(min * 1000)} VND)</div>
+                    <input
+                      type="number"
+                      placeholder={min}
+                      onChange={(e) => setMin(e.target.value)}
+                      className="lsOptionInput"
+                    />
+                  </div>
                 </div>
+
                 <div className="lsOptionItem">
                   <span className="lsOptionText">
                     Cao nhất <small></small>
                   </span>
-                  <input
-                    type="number"
-                    placeholder={max}
-                    onChange={(e) => setMax(e.target.value)}
-                    className="lsOptionInput"
-                  />
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
+                    <div>({Intl.NumberFormat('vi-VN').format(max * 1000)} VND)</div>
+                    <input
+                      type="number"
+                      placeholder={max}
+                      onChange={(e) => setMax(e.target.value)}
+                      className="lsOptionInput"
+                    />
+                  </div>
                 </div>
+
+                {/* thanh giá */}
+                {/* <div class="lsOptionItem">
+                  <span class="lsOptionText">
+                    Thấp nhất <small></small>
+                  </span>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1000"
+                    value={min}
+                    onChange={(e) => setMin(e.target.value)}
+                    class="lsOptionInputRange"
+                  />
+                  <span class="lsOptionValue">{min}</span>
+                </div>
+
+                <div class="lsOptionItem">
+                  <span class="lsOptionText">
+                    Cao nhất <small></small>
+                  </span>
+                  <input
+                    type="range"
+                    min="0"
+                    max="10000"
+                    value={max}
+                    onChange={(e) => setMax(e.target.value)}
+                    class="lsOptionInputRange"
+                  />
+                  <span class="lsOptionValue">{max}</span>
+                </div> */}
+
                 <div className="lsOptionItem">
                   <span className="lsOptionText">Người lớn</span>
                   <input
