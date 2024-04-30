@@ -49,6 +49,7 @@ const SearchItem = ({ item }) => {
   return (
     <div className="searchItem">
       <img src={item.photos[0]} alt="" className="siImg" />
+      
       <div className="siDesc">
         <h1 className="siTitle">{item.name}</h1>
         <span className="siDistance">Distance: {item.distance}m from center</span>
@@ -63,14 +64,16 @@ const SearchItem = ({ item }) => {
         </span> */}
         <span className="siFeatures">Address: {item.address}</span>
       </div>
+
       <div className="siDetails">
         {/* {item.rating && <div className="siRating">
           <span>Excellent</span>
           <button>{item.rating}</button>
         </div>} */}
+
         <div className="siDetailTexts">
-        <span className="siPrice">Price from: {calculatePrice(item.cheapestPrice)} VND</span>
-          <span className="siTaxOp">Cho {options.adult} người, {calculateRoom(item.cheapestPrice)} phòng, {days} đêm</span>
+        <span className="siPrice">Giá từ: {calculatePrice(item.cheapestPrice)} VND</span>
+          <span className="siTaxOp">Cho {options.adult} người, {options.children} trẻ em, {calculateRoom(item.cheapestPrice)} phòng, {days} đêm</span>
           {/* chuyen sang xem thong tin tung hotel */}
           <Link to={`/hotels/${item._id}`}>
           <button className="siCheckButton">More info</button>
