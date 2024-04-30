@@ -319,7 +319,7 @@ export const cancelRoomReservation = async (req, res, next) => {
 
         // có thể đẩy unavai lên trên
         if (matchingDateRange) {
-          console.log("Có phòng ở dưới thỏa mãn đẩy đc lên trên")
+          console.log("Có phòng ở dưới có unavai thỏa mãn đẩy đc lên trên")
           roomNumberToReplace = roomNumberData;
           allDatesToReplace = getDatesInRange(dateRangeToReplace.startDateRange, dateRangeToReplace.endDateRange);
           break;
@@ -372,8 +372,8 @@ export const cancelRoomReservation = async (req, res, next) => {
       await room.save();
       // console.log("sau khi save")
       // console.log(roomNumberCurrent)
-      // đẩy dateRange
-     
+      // xóa dateRange thằng replace
+      
       const roomModifiedDateRangeTwo = await Room.findOneAndUpdate(
         { "roomNumbers._id": roomNumberToReplace._id },
         {
