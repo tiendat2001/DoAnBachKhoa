@@ -138,11 +138,13 @@ const RoomDetails = () => {
             return;
           }
           toast.success('Đóng phòng thành công');
+
+          // HÀM HỦY PHÒNG NHỚ +1 VÀO ENDdATE
         //   setKey(Math.random()); // Bắt reload phần đóng phòng
           roomTypeDataReFetch()
           reFetchRoomCountStatus()
     }
-    console.log(selectedRoomIdsToDelete)
+    // console.log(selectedRoomIdsToDelete)
     let roomIndex = 0; // Khởi tạo biến đếm
     return (
         <div className="listAdmin">

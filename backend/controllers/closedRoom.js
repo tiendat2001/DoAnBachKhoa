@@ -33,3 +33,42 @@ export const deleteAllClosedRoom = async (req, res, next) => {
       next(error);
     }
   }
+
+
+  /// phần test
+
+
+  let testAPILocks = {}; // Lưu trữ biến khóa cho mỗi giá trị id
+
+  function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  
+  export const testAPI = async (req, res, next) => {
+      try {
+          const id = req.params.id;
+  
+          // Kiểm tra xem có yêu cầu khác đang được xử lý với cùng giá trị id không
+          while (testAPILocks[id]) {
+              // Chờ 1 giây trước khi kiểm tra lại
+              await delay(1000); // Chờ 1 giây
+          }
+  
+          // Đặt biến khóa để đánh dấu rằng yêu cầu với giá trị id này đang được thực thi
+          testAPILocks[id] = true;
+  
+          // Sử dụng hàm setTimeout để tạm dừng việc thực hiện trong 5 giây
+          setTimeout(() => {
+              // Sau 5 giây, trả về kết quả "kết thúc"
+              res.status(200).json("kết thúc");
+  
+              // Giải phóng biến khóa sau khi hoàn thành
+              delete testAPILocks[id];
+          }, 10000); // 5 giây = 5000 milliseconds
+      } catch (error) {
+          // Nếu có lỗi xảy ra, giải phóng biến khóa và chuyển giao cho middleware xử lý lỗi
+          delete testAPILocks[id];
+          next(error);
+      }
+  };
+// Hàm delay chờ 1 giây
