@@ -5,6 +5,7 @@ import usersRoute from "./routes/users.js"
 import hotelsRoute from "./routes/hotels.js" 
 import roomsRoute from "./routes/rooms.js" 
 import reservationRoute from "./routes/reservation.js"
+import closedRoomRoute from "./routes/closedRoom.js"
 import mongoose from "mongoose"
 import cookieParser from "cookie-parser"
 import cors from "cors"
@@ -37,6 +38,7 @@ app.use("/api/users", usersRoute)
 app.use("/api/hotels", hotelsRoute)
 app.use("/api/rooms", roomsRoute)
 app.use("/api/reservation", reservationRoute)
+app.use("/api/closedRoom", closedRoomRoute)
 
 
 

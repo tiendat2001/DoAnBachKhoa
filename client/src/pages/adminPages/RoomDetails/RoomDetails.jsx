@@ -21,6 +21,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const RoomDetails = () => {
     const location = useLocation();
+    // id RoomType
     const idRoom = location.pathname.split("/")[4];
     const { data: roomTypeData, loading, error,reFetch:roomTypeDataReFetch } = useFetch(`/rooms/find/${idRoom}`);
     const { data: roomCountStatus, loadingroomCountStatus, errorroomCountStatus,reFetch:reFetchRoomCountStatus } = useFetch(`/rooms/statusRoomCount/${idRoom}`);
@@ -30,7 +31,7 @@ const RoomDetails = () => {
     const [selectedRoomIdsToDelete, setSelectedRoomIdsToDelete] = useState([]);
     const [key, setKey] = useState(Math.random());
     const [roomQuantityToClose, setRoomQuantityToClose] = useState();
-
+    const { user } = useContext(AuthContext) // {user._id}
     // check đường dẫn lần trc
     const navigate = useNavigate()
     const previousPath = location.state?.previousPath;
@@ -48,11 +49,9 @@ const RoomDetails = () => {
             dates.push(new Date(date).getTime());
             date.setDate(date.getDate() + 1);
         }
-
         return dates;
     };
-
-    // tính alldates
+    // tính alldates Close
     const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
     // console.log(alldates)
     const handleDayChange = (item) => {
@@ -88,39 +87,55 @@ const RoomDetails = () => {
     };
     // khi ấn xác nhận đóng phòng
     const handelCloseRoom = async () => {
-        const response = await fetch(`/rooms/find/${idRoom}`);
-        const reFreshRoomTypeData = await response.json();
-        reFreshRoomTypeData.roomNumbers.forEach((roomNumber) => {
-            if (isAvailable(roomNumber) && updatedSelectedRoomToClose.length < roomQuantityToClose) {
-                // đẩy vào mảng _id của phòng hợp lệ để đóng
-                updatedSelectedRoomToClose.push(roomNumber._id);
-            }
-        });
+        // const response = await fetch(`/rooms/find/${idRoom}`);
+        // const reFreshRoomTypeData = await response.json();
+        // reFreshRoomTypeData.roomNumbers.forEach((roomNumber) => {
+        //     if (isAvailable(roomNumber) && updatedSelectedRoomToClose.length < roomQuantityToClose) {
+        //         // đẩy vào mảng _id của phòng hợp lệ để đóng
+        //         updatedSelectedRoomToClose.push(roomNumber._id);
+        //     }
+        // });
 
-        // setSelectedRoomIdsToDelete(updatedSelectedRoomsCopy);
-        console.log(updatedSelectedRoomToClose)
+        // // setSelectedRoomIdsToDelete(updatedSelectedRoomsCopy);
+        // console.log(updatedSelectedRoomToClose)
      
-        try {
-             await Promise.all(
-              updatedSelectedRoomToClose.map(async (roomId) => {
-                try {
-                  const res = await axios.put(`/rooms/availability/${roomId}`, {
-                    dates: alldates,
-                    startDateRange:dates[0].startDate,
-                    endDateRange: addDays(dates[0].endDate,1) // cần cộng 1 ngày do riêng đóng phòng tính cả ngày cuối
-                  });
+        // try {
+        //      await Promise.all(
+        //       updatedSelectedRoomToClose.map(async (roomId) => {
+        //         try {
+        //           const res = await axios.put(`/rooms/availability/${roomId}`, {
+        //             dates: alldates,
+        //             startDateRange:dates[0].startDate,
+        //             endDateRange: addDays(dates[0].endDate,1) // cần cộng 1 ngày do riêng đóng phòng tính cả ngày cuối
+        //           });
                  
-                  return res.data;
-                } catch (error) {
-                  console.log(`Error in room ${roomId}:`, error);
-                  throw error; // Ném lỗi để kích hoạt catch bên ngoài và dừng quá trình xử lý
-                }
-              })
-            );
+        //           return res.data;
+        //         } catch (error) {
+        //           console.log(`Error in room ${roomId}:`, error);
+        //           throw error; // Ném lỗi để kích hoạt catch bên ngoài và dừng quá trình xử lý
+        //         }
+        //       })
+        //     );
+        //   } catch (err) {
+        //     console.log(err)
+        //     alert("Có lỗi xảy ra vui lòng quay lại trang trước và đặt phòng lại")
+        //     return; // Ngưng thực thi hàm nếu có lỗi
+        //   }
+
+
+        // tạo lịch sử đóng phòng
+        try {
+            const upload = axios.post(`/closedRoom/${idRoom}`, {
+              ownerId: user._id,
+              roomTypeId: idRoom,
+              startClose: dates[0].startDate,
+              endClose: dates[0].endDate, // cái này chỉ hiển thị ra bảng lịch sử đóng phòng sẽ là đến hết ngày ( ko cộng 1)
+              quantityRoomClosed:roomQuantityToClose,
+              allDatesClosed: alldates,
+            });
           } catch (err) {
             console.log(err)
-            alert("Có lỗi xảy ra vui lòng quay lại trang trước và đặt phòng lại")
-            return; // Ngưng thực thi hàm nếu có lỗi
+            return;
           }
           toast.success('Đóng phòng thành công');
         //   setKey(Math.random()); // Bắt reload phần đóng phòng

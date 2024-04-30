@@ -15,7 +15,7 @@ router.put("/cancelAvailability/:id", cancelRoomReservation);
 
 // UPDATE ROOM
 router.put("/:id", verifyUserModifyHotel, updateRoom);
-// THÊM PHÒNG NHỎ
+// THÊM PHÒNG NHỎ VÀO LOẠI PHÒNG
 router.put("/addRoomToRoomType/:roomId", addRoomToRoomType);
 // XÓA PHÒNG NHỎ
 router.put("/deleteRoomInRoomType/:roomId", deleteRoomInRoomType);
@@ -32,7 +32,10 @@ router.get("/find/:roomid", getRoomById);
 //GETALL
 router.get("/", getRooms);
 
+// GET STATUS ROOM NEXT 30 DAYS
 router.get("/statusRoomCount/:roomId",statusRoomCount)
+
+
 
 
 export default router
