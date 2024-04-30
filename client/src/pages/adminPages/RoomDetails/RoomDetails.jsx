@@ -28,6 +28,7 @@ const RoomDetails = () => {
     const [dates, setDates] = useState(searchContext.dates);
     const [selectedRoomIdsToDelete, setSelectedRoomIdsToDelete] = useState([]);
     const [key, setKey] = useState(Math.random());
+    const [roomQuantityToClose, setRoomQuantityToClose] = useState();
 
     // check đường dẫn lần trc
     const navigate = useNavigate()
@@ -74,22 +75,29 @@ const RoomDetails = () => {
     };
 
     // thay doi so luong phong dong
+    let updatedSelectedRoomToClose = [];
     const handleSelectChange = (event, roomNumbers) => {
+        // lấy lựa chọn trong select
         let roomQuantitySelected = event.target.value;
+        setRoomQuantityToClose(roomQuantitySelected)
+        updatedSelectedRoomToClose = [];
        
-        let updatedSelectedRoomsCopy = [];
-       
-        roomNumbers.forEach((roomNumber) => {
-            if (isAvailable(roomNumber) && updatedSelectedRoomsCopy.length < roomQuantitySelected) {
-                updatedSelectedRoomsCopy.push(roomNumber._id);
+        
+    };
+    // khi ấn xác nhận đóng phòng
+    const handelCloseRoom = async () => {
+        const response = await fetch(`/rooms/find/${idRoom}`);
+        const reFreshRoomTypeData = await response.json();
+        reFreshRoomTypeData.roomNumbers.forEach((roomNumber) => {
+            if (isAvailable(roomNumber) && updatedSelectedRoomToClose.length < roomQuantityToClose) {
+                // đẩy vào mảng _id của phòng hợp lệ để đóng
+                updatedSelectedRoomToClose.push(roomNumber._id);
             }
         });
 
-        setSelectedRoomIdsToDelete(updatedSelectedRoomsCopy);
-    };
+        // setSelectedRoomIdsToDelete(updatedSelectedRoomsCopy);
+        console.log(updatedSelectedRoomToClose)
 
-    const handelCloseRoom = () => {
-        
     }
     console.log(selectedRoomIdsToDelete)
     let roomIndex = 0; // Khởi tạo biến đếm
@@ -175,7 +183,7 @@ const RoomDetails = () => {
                                 </select>
                             </div>
 
-                            <div>Số lượng phòng hiện đang rao bán: {roomIndex}</div>
+                            <div>Số lượng phòng hiện đang rao bán (có thể đóng): {roomIndex}</div>
 
                             <button onClick={handelCloseRoom}>Xác nhận</button>
 
