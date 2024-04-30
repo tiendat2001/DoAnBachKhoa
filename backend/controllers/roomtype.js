@@ -407,12 +407,13 @@ export const statusRoomCount = async (req, res, next) => {
   try{
     const room = await Room.findById(req.params.roomId);
 
-  const currentDate = addHours(new Date(), 7);
+  const currentDate = addHours(new Date(), 7); // chuyển về thời gian hiện tại theo UTC
+  // console.log(currentDate) 2024-04-30T12:16:05.871Z - time hiện tại nhưng UTC
   currentDate.setHours(14, 0, 0, 0);
-  // console.log(currentDate)
+  // console.log(currentDate) 2024-04-30T07:00:00.000Z
   const roomAvailability = [];
 
-   // Lặp qua 5 ngày tiếp theo
+   // Lặp qua 30 ngày tiếp theo (tinnhs cả ngày hiện tại)
     for (let i = 0; i < 30; i++) {
       const currentDay = addDays(currentDate, i);
       const day = currentDay.getDate();

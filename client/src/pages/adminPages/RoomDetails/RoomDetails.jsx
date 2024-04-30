@@ -10,8 +10,9 @@ import { AuthContext } from '../../../context/AuthContext';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { DateRange } from "react-date-range";
-import { format, addDays, addYears, subYears } from "date-fns";
 import { SearchContext } from '../../../context/SearchContext'
+import { format, addDays, subDays, subHours } from "date-fns";
+
 import {
     faBed,
     faCalendarDays,
@@ -21,8 +22,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const RoomDetails = () => {
     const location = useLocation();
     const idRoom = location.pathname.split("/")[4];
-    const { data: roomTypeData, loading, error } = useFetch(`/rooms/find/${idRoom}`);
-    const { data: roomCountStatus, loadingroomCountStatus, errorroomCountStatus } = useFetch(`/rooms/statusRoomCount/${idRoom}`);
+    const { data: roomTypeData, loading, error,reFetch:roomTypeDataReFetch } = useFetch(`/rooms/find/${idRoom}`);
+    const { data: roomCountStatus, loadingroomCountStatus, errorroomCountStatus,reFetch:reFetchRoomCountStatus } = useFetch(`/rooms/statusRoomCount/${idRoom}`);
     const [openDate, setOpenDate] = useState(false);
     const searchContext = useContext(SearchContext);
     const [dates, setDates] = useState(searchContext.dates);
@@ -37,6 +38,7 @@ const RoomDetails = () => {
         navigate('/admin/rooms');
     }
 
+    // RIÊNG HÀM NÀY Ở ĐÂY SẼ TÍNH CẢ NGÀY CUỐI, VÍ DỤ NGÀY 17-19 THÌ ALLDATES LÀ 17,18,19
     const getDatesInRange = (startDate, endDate) => {
         const start = new Date(startDate);
         const end = new Date(endDate);
@@ -97,7 +99,33 @@ const RoomDetails = () => {
 
         // setSelectedRoomIdsToDelete(updatedSelectedRoomsCopy);
         console.log(updatedSelectedRoomToClose)
-
+     
+        try {
+             await Promise.all(
+              updatedSelectedRoomToClose.map(async (roomId) => {
+                try {
+                  const res = await axios.put(`/rooms/availability/${roomId}`, {
+                    dates: alldates,
+                    startDateRange:dates[0].startDate,
+                    endDateRange: addDays(dates[0].endDate,1) // cần cộng 1 ngày do riêng đóng phòng tính cả ngày cuối
+                  });
+                 
+                  return res.data;
+                } catch (error) {
+                  console.log(`Error in room ${roomId}:`, error);
+                  throw error; // Ném lỗi để kích hoạt catch bên ngoài và dừng quá trình xử lý
+                }
+              })
+            );
+          } catch (err) {
+            console.log(err)
+            alert("Có lỗi xảy ra vui lòng quay lại trang trước và đặt phòng lại")
+            return; // Ngưng thực thi hàm nếu có lỗi
+          }
+          toast.success('Đóng phòng thành công');
+        //   setKey(Math.random()); // Bắt reload phần đóng phòng
+          roomTypeDataReFetch()
+          reFetchRoomCountStatus()
     }
     console.log(selectedRoomIdsToDelete)
     let roomIndex = 0; // Khởi tạo biến đếm
@@ -107,7 +135,7 @@ const RoomDetails = () => {
             <div className="listContainerAdmin">
                 <NavbarAdmin />
 
-                <div className="detailsRoomTypeContainer">
+                <div key={key} className="detailsRoomTypeContainer">
                     <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                         <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>
                         <button onClick={() => navigate(`/admin/rooms/smallRoomDetails/modifyRoomCount/${idRoom}`, { state: { previousPath: '/admin/rooms/smallRoomDetails' } })}>Chỉnh số lượng phòng</button>
