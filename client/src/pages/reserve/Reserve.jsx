@@ -32,7 +32,7 @@ const Reserve = () => {
   const [reFreshRoomData, setReFreshRoomData] = useState();
   var totalPrice = 0;
   var maxPeople = 0;
-  // console.log(startDate)
+  console.log(roomsDetailFromListClient)
   
   const isAvailable = (roomNumber) => {
     const isFound = roomNumber.unavailableDates.some((date) => {
