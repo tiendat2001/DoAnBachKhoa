@@ -34,6 +34,7 @@ const ModifyRoomCount = () => {
         }
         // Lặp qua tất cả các phần tử trong mảng unavailableDates
         for (const date of roomNumber.unavailableDates) {
+            //VÍ DỤ HÔM NAY 1/5 14H10 THÌ XÓA ĐƯỢC PHÒNG NHỎ CÓ ĐƠN NGÀY 1/5 (>14H)
             // Kiểm tra nếu ngày hiện tại không lớn hơn mọi phần tử trong mảng
             if (new Date() <= new Date(date)) {
                 // 14h GMT
