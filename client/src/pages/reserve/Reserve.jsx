@@ -32,8 +32,12 @@ const Reserve = () => {
   const [reFreshRoomData, setReFreshRoomData] = useState();
   var totalPrice = 0;
   var maxPeople = 0;
-  console.log(roomsDetailFromListClient)
-  
+  const roomTypeIdsReserved =roomsDetailFromListClient.map(room => ({
+    roomTypeId: room.roomTypeId,
+    quantity: room.quantity
+  }));
+  // console.log(roomTypeIdsReserved)
+
   const isAvailable = (roomNumber) => {
     const isFound = roomNumber.unavailableDates.some((date) => {
       const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
@@ -135,6 +139,7 @@ const Reserve = () => {
         start: startDate,
         end: endDate,
         roomNumbersId: selectedRoomIdsReserved,
+        roomTypeIdsReserved:roomTypeIdsReserved,
         roomsDetail: detailRooms,
         guest: {adult:options.adult,children:options.children},
         allDatesReserve: alldates,

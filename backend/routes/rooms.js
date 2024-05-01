@@ -6,10 +6,10 @@ const router = express.Router();
 
 //CREATE
 router.post("/:hotelid", verifyUserModifyHotel, createRoom);
-//UPDATE avai
+//đặt phòng
 router.put("/availability/:id", updateRoomAvailability);
-
-router.put("/cancelAvailability/:id", cancelRoomReservation);
+// hủy phòng
+router.put("/cancelAvailability/:id", cancelRoomReservation); // id ở đây là roomTypeId
 
 
 
