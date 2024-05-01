@@ -210,7 +210,7 @@ export const cancelRoomReservation = async (req, res, next) => {
     console.log("bat dau")
     const { startDateRange, endDateRange } = req.body.unavailableRangeDates;
     //   // lấy ra typeRoom to
-    let room = await Room.findOne({ "roomNumbers._id": req.params.id });
+    let room = await Room.findById(req.params.id);
     if (!room) {
       return res.status(404).json("Room not found");
     }

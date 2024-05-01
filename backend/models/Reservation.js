@@ -27,6 +27,12 @@ const ReservationSchema = new mongoose.Schema({
         type: [String],
         required:true,
     },
+    roomTypeIdsReserved:[
+        {
+            roomTypeId: {type:String},
+            quantity:{type:Number},
+        }
+    ],
     roomsDetail:{
         type:String,
     },

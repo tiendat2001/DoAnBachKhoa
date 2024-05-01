@@ -33,6 +33,12 @@ const Reserve = () => {
   var totalPrice = 0;
   var maxPeople = 0;
   // console.log(startDate)
+  // lấy ra id roomType cùng số lượng
+  const roomTypeIdsReserved =roomsDetailFromListClient.map(room => ({
+    roomTypeId: room.roomTypeId,
+    quantity: room.quantity
+  }));
+  // console.log(roomTypeIdsReserved)
   
   const isAvailable = (roomNumber) => {
     const isFound = roomNumber.unavailableDates.some((date) => {
@@ -135,6 +141,7 @@ const Reserve = () => {
         start: startDate,
         end: endDate,
         roomNumbersId: selectedRoomIdsReserved,
+        roomTypeIdsReserved:roomTypeIdsReserved,
         roomsDetail: detailRooms,
         guest: {adult:options.adult,children:options.children},
         allDatesReserve: alldates,

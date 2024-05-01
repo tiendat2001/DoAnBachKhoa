@@ -14,8 +14,8 @@ const ListBooking = () => {
   const { data, loading, error, reFetch } = useFetch(
     `/reservation?username=${user.username}`
   );
- 
-  const handleCancelReserve = async (allDatesReserve, roomNumbersId, reservationId,startDate,endDate) => {
+
+  const handleCancelReserve = async (allDatesReserve, roomNumbersId, reservationId, startDate, endDate, roomTypeIdsReserved) => {
     // console.log(allDatesReserve)
     // console.log(roomNumbersId)
     confirmAlert({
@@ -25,7 +25,7 @@ const ListBooking = () => {
         {
           label: 'Yes',
           onClick: () => {
-            deleteAvailability(allDatesReserve, roomNumbersId, reservationId,startDate,endDate);
+            deleteAvailability(allDatesReserve, roomNumbersId, reservationId, startDate, endDate, roomTypeIdsReserved);
           }
         },
         {
@@ -41,31 +41,51 @@ const ListBooking = () => {
   }
 
   // bỏ unavailabledates trong mỗi phòng đặt
-  const deleteAvailability = async (allDatesReserve, roomNumbersId, reservationId,startDate,endDate) => {
+  const deleteAvailability = async (allDatesReserve, roomNumbersId, reservationId, startDate, endDate, roomTypeIdsReserved) => {
     let hasError = false;
     // console.log(roomNumbersId)
     try {
-      for (const roomId of roomNumbersId) {
-        try {
-          const res = await axios.put(`/rooms/cancelAvailability/${roomId}`, {
-            dates: allDatesReserve,
-            unavailableRangeDates:{
-              startDateRange:startDate,
-              endDateRange:endDate
-            }
-          });
-          console.log(`Room ${roomId} updated successfully.`);
-        } catch (err) {
-          console.error(`Error for room ${roomId}:`, err);
-          hasError = true;
+      // for (const roomId of roomNumbersId) {
+      //   try {
+      //     const res = await axios.put(`/rooms/cancelAvailability/${roomId}`, {
+      //       dates: allDatesReserve,
+      //       unavailableRangeDates:{
+      //         startDateRange:startDate,
+      //         endDateRange:endDate
+      //       }
+      //     });
+      //     console.log(`Room ${roomId} updated successfully.`);
+      //   } catch (err) {
+      //     console.error(`Error for room ${roomId}:`, err);
+      //     hasError = true;
+      //   }
+      // }
+
+      for (const roomTypeId of roomTypeIdsReserved) {
+        for (var i = 0; i < roomTypeId.quantity; i++) {
+          try {
+            const res = await axios.put(`/rooms/cancelAvailability/${roomTypeId.roomTypeId}`, {
+              dates: allDatesReserve,
+              unavailableRangeDates:{
+                startDateRange:startDate,
+                endDateRange:endDate
+              }
+            });
+            // console.log(`Room ${roomId} updated successfully.`);
+          } catch (err) {
+            // console.error(`Error for room ${roomId}:`, err);
+            hasError = true;
+          }
         }
       }
+
+      
     } catch (err) {
       console.error('Error:', err);
       hasError = true;
       // Handle any error occurred during the loop
     }
-    
+
     // chỉnh lại trạng thái
     try {
       await axios.put(`/reservation/${reservationId}`, {
@@ -114,11 +134,10 @@ const ListBooking = () => {
               <div style={{ width: '25%', display: 'flex', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
                 {/* <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id)}
                   disabled={(new Date() > subHours(new Date(item.start), 24)) || !item.status}>Hủy đặt phòng</button> <br /> */}
-                  
-                   <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id,item.start,item.end)}
-                 >Hủy đặt phòng</button> <br />
-                {/* ngày hiện tại phải lớn hơn (ngày nhận phòng -1 là 0h của ngày nhận) mới đc hủy nên kia là trừ 2, nếu chặt chẽ 14h trưa nhận phòng
-                 thì +14h, tức trừ 14+24=34h, tức đặt 14h ngày 13 thì hạn chót hủy là đến 14h ngày 12 */}
+
+                <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id, item.start, item.end, item.roomTypeIdsReserved)}
+                >Hủy đặt phòng</button> <br />
+
                 <div style={{ textAlign: 'right' }}>{new Date() > subHours(new Date(item.start), 24) ? "(Bạn chỉ có thể hủy trước ngày nhận phòng 1 ngày hoặc ngày nhận phòng đã qua)" : ""}</div>
               </div>
 
