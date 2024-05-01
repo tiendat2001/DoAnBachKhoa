@@ -48,12 +48,12 @@ const Sidebar = () => {
             </li>
           </Link> */}
           <p className="title">MỤC</p>
-          <Link to="/users" style={{ textDecoration: "none" }}>
+          {/* <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
               <span>Users</span>
             </li>
-          </Link>
+          </Link> */}
           <Link to="/admin/hotels" style={{ textDecoration: "none" }}>
             <li>
               <StoreIcon className="icon" />

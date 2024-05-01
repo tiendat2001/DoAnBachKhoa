@@ -24,7 +24,10 @@ const RoomDetails = () => {
     // id RoomType
     const idRoom = location.pathname.split("/")[4];
     const { data: roomTypeData, loading, error,reFetch:roomTypeDataReFetch } = useFetch(`/rooms/find/${idRoom}`);
-    const { data: roomCountStatus, loadingroomCountStatus, errorroomCountStatus,reFetch:reFetchRoomCountStatus } = useFetch(`/rooms/statusRoomCount/${idRoom}`);
+    const { data: roomCountStatus, loading:loadingroomCountStatus, 
+        error:errorroomCountStatus,reFetch:reFetchRoomCountStatus } = useFetch(`/rooms/statusRoomCount/${idRoom}`);
+    const { data: roomCloseData, loading:loadingroomCloseData, 
+        error:errorroomCloseData,reFetch:roomCloseDataReFetch } = useFetch(`/closedRoom`);
     const [openDate, setOpenDate] = useState(false);
     const searchContext = useContext(SearchContext);
     const [dates, setDates] = useState(searchContext.dates);
@@ -35,10 +38,12 @@ const RoomDetails = () => {
     // check đường dẫn lần trc
     const navigate = useNavigate()
     const previousPath = location.state?.previousPath;
+    // console.log(previousPath)
     if (previousPath !== '/admin/rooms') {
         navigate('/admin/rooms');
     }
-
+    console.log(roomCloseData)
+    
     // RIÊNG HÀM NÀY Ở ĐÂY SẼ TÍNH CẢ NGÀY CUỐI, VÍ DỤ NGÀY 17-19 THÌ ALLDATES LÀ 17,18,19
     const getDatesInRange = (startDate, endDate) => {
         const start = new Date(startDate);
