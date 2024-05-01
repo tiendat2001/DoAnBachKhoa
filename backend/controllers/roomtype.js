@@ -233,6 +233,9 @@ export const cancelRoomReservation = async (req, res, next) => {
         }
     }
     console.log(roomNumberCurrent)
+    if (!roomNumberCurrent) {
+      return res.status(400).json("Không tìm thấy roomNumberCurrent phù hợp");
+    }
     // const roomNumberCurrent = room.roomNumbers.find(number => number._id.toString() === req.params.id);
     // kiểm tra xem unAvai phòng đấy bị đẩy đi chưa
     let matchingDateRange = roomNumberCurrent.unavailableRangeDates.find(dateRange =>
@@ -243,9 +246,7 @@ export const cancelRoomReservation = async (req, res, next) => {
 
 
 
-    if (!roomNumberCurrent) {
-      return res.status(404).json("Room number not found");
-    }
+   
 
     // tim cac phan tu can xoa trong mang
     const indexesToRemove = [];
