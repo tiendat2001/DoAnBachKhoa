@@ -25,11 +25,11 @@ const RoomDetails = () => {
     const location = useLocation();
     // id RoomType
     const idRoom = location.pathname.split("/")[4];
-    const { data: roomTypeData, loading, error,reFetch:roomTypeDataReFetch } = useFetch(`/rooms/find/${idRoom}`);
-    const { data: roomCountStatus, loading:loadingroomCountStatus, 
-        error:errorroomCountStatus,reFetch:reFetchRoomCountStatus } = useFetch(`/rooms/statusRoomCount/${idRoom}`);
-    const { data: roomCloseData, loading:loadingroomCloseData, 
-        error:errorroomCloseData,reFetch:roomCloseDataReFetch } = useFetch(`/closedRoom`);
+    const { data: roomTypeData, loading, error, reFetch: roomTypeDataReFetch } = useFetch(`/rooms/find/${idRoom}`);
+    const { data: roomCountStatus, loading: loadingroomCountStatus,
+        error: errorroomCountStatus, reFetch: reFetchRoomCountStatus } = useFetch(`/rooms/statusRoomCount/${idRoom}`);
+    const { data: roomCloseData, loading: loadingroomCloseData,
+        error: errorroomCloseData, reFetch: roomCloseDataReFetch } = useFetch(`/closedRoom`);
     const [openDate, setOpenDate] = useState(false);
     const searchContext = useContext(SearchContext);
     const [dates, setDates] = useState(searchContext.dates);
@@ -47,7 +47,7 @@ const RoomDetails = () => {
         navigate('/admin/rooms');
     }
     console.log(roomCloseData)
-    
+
     // RIÊNG HÀM NÀY Ở ĐÂY SẼ TÍNH CẢ NGÀY CUỐI, VÍ DỤ NGÀY 17-19 THÌ ALLDATES LÀ 17,18,19
     const getDatesInRange = (startDate, endDate) => {
         const start = new Date(startDate);
@@ -91,8 +91,8 @@ const RoomDetails = () => {
         let roomQuantitySelected = event.target.value;
         setRoomQuantityToClose(roomQuantitySelected)
         updatedSelectedRoomToClose = [];
-       
-        
+
+
     };
     // khi ấn xác nhận đóng phòng
     const handelCloseRoom = async () => {
@@ -107,7 +107,7 @@ const RoomDetails = () => {
 
         // // setSelectedRoomIdsToDelete(updatedSelectedRoomsCopy);
         // console.log(updatedSelectedRoomToClose)
-     
+
         // try {
         //      await Promise.all(
         //       updatedSelectedRoomToClose.map(async (roomId) => {
@@ -117,7 +117,7 @@ const RoomDetails = () => {
         //             startDateRange:dates[0].startDate,
         //             endDateRange: addDays(dates[0].endDate,1) // cần cộng 1 ngày do riêng đóng phòng tính cả ngày cuối
         //           });
-                 
+
         //           return res.data;
         //         } catch (error) {
         //           console.log(`Error in room ${roomId}:`, error);
@@ -135,23 +135,26 @@ const RoomDetails = () => {
         // tạo lịch sử đóng phòng
         try {
             const upload = axios.post(`/closedRoom/${idRoom}`, {
-              ownerId: decodedToken.id,
-              roomTypeId: idRoom,
-              startClose: dates[0].startDate,
-              endClose: dates[0].endDate, // cái này chỉ hiển thị ra bảng lịch sử đóng phòng sẽ là đến hết ngày ( ko cộng 1)
-              quantityRoomClosed:roomQuantityToClose,
-              allDatesClosed: alldates,
+                ownerId: decodedToken.id,
+                roomTypeId: idRoom,
+                startClose: dates[0].startDate,
+                endClose: dates[0].endDate, // cái này chỉ hiển thị ra bảng lịch sử đóng phòng sẽ là đến hết ngày ( ko cộng 1)
+                quantityRoomClosed: roomQuantityToClose,
+                allDatesClosed: alldates,
             });
-          } catch (err) {
+        } catch (err) {
             console.log(err)
             return;
-          }
-          toast.success('Đóng phòng thành công');
+        }
+        toast.success('Đóng phòng thành công');
 
-          // HÀM HỦY PHÒNG NHỚ +1 VÀO ENDdATE
+        // HÀM HỦY PHÒNG NHỚ +1 VÀO ENDdATE
         //   setKey(Math.random()); // Bắt reload phần đóng phòng
-          roomTypeDataReFetch()
-          reFetchRoomCountStatus()
+        roomTypeDataReFetch()
+        reFetchRoomCountStatus()
+    }
+    const handleCancelCloseRoom = async () => {
+
     }
     // console.log(selectedRoomIdsToDelete)
     let roomIndex = 0; // Khởi tạo biến đếm
@@ -246,7 +249,24 @@ const RoomDetails = () => {
                         <div style={{ fontWeight: 'bold', fontSize: '20px', marginTop: '20px' }}>Lịch sử đóng phòng</div>
 
                         <div className="listRoomClosed">
+                            {/* hàng tiêu đề */}
+                            <div style={{ backgroundColor: '#ccc' }} className="roomCloseContainer">
+                                <div className="roomClose">STT</div>
+                                <div className="roomClose">Đóng từ ngày</div>
+                                <div className="roomClose">Đến hết ngày</div>
+                                <div className="roomClose">Số lượng phòng đóng</div>
+                                <div style={{ width: '20%' }} className="roomClose" >Hành động</div>
+                            </div>
 
+                            {roomCloseData?.map((roomClose, index) => (
+                        <div key={index} className="roomCloseContainer">
+                            <div className="roomClose">{index + 1}</div>
+                            <div className="roomClose">{new Date(new Date(roomClose.startClose)).toLocaleDateString('vi-VN')}</div>
+                            <div className="roomClose">{new Date(new Date(roomClose.endClose)).toLocaleDateString('vi-VN')}</div>
+                            <div className="roomClose">{roomClose.quantityRoomClosed}</div>
+                            <button style={{ width: '20%' }} className="roomNumber"  onClick={() => handleCancelCloseRoom()}>MỞ LẠI</button>
+                        </div>
+                    ))}
                         </div>
 
                     </div>
