@@ -12,10 +12,13 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { jwtDecode } from "jwt-decode";
 
 const ListRoom = () => {
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    const decodedToken = jwtDecode(token);
     const { user } = useContext(AuthContext) // {user._id}
-    const { data: hotelData, loading: hotelLoading, error: hotelError, reFetch: hotelReFetch } = useFetch(`/hotels?ownerId=${user._id}`);
+    const { data: hotelData, loading: hotelLoading, error: hotelError, reFetch: hotelReFetch } = useFetch(`/hotels?ownerId=${decodedToken.id}`);
     const [hotelId, setHotelId] = useState(hotelData.length > 0 ? hotelData[0]._id : null);
     const { data: roomData, loading: roomLoading, error: roomError, reFetch: roomReFetch } = useFetch(`/rooms/${hotelId}`);
     const navigate= useNavigate()
@@ -62,7 +65,7 @@ const ListRoom = () => {
     const deleteRoom = async (typeRoomId) => {
 
         try {
-            const Success = await axios.delete(`/rooms/${typeRoomId}`, { data: { ownerId: user._id } });
+            const Success = await axios.delete(`/rooms/${typeRoomId}`, { data: { ownerId: decodedToken.id } });
 
             if (Success) {
                 // Nếu xóa thành công, tải lại dữ liệu

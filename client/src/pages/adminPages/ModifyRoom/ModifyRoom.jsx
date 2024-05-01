@@ -10,6 +10,8 @@ import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUpload
 import { roomInputs } from '../../../formSource';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+
 
 const ModifyRoom = () => {
     const location = useLocation();
@@ -17,6 +19,8 @@ const ModifyRoom = () => {
     const { data, loading, error } = useFetch(`/rooms/find/${idRoom}`);
     const [files, setFiles] = useState("");
     const [info, setInfo] = useState(data);
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    const decodedToken = jwtDecode(token);
     const { user } = useContext(AuthContext) // {user._id}
     const [isSending, setIsSending] = useState(false);
     const navigate = useNavigate()
@@ -56,7 +60,7 @@ const ModifyRoom = () => {
             const newModifyRoom = {
               ...info,
               ...(list.length > 0 && { photos: list }), // nếu người dùng có thêm ảnh vào thì set lại ảnh mới, ko thì giữ nguyên
-              ownerId: user._id
+              ownerId: decodedToken.id    // _id của tài khoản người dùng
             };
           
             

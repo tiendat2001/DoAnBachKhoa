@@ -18,15 +18,16 @@ const currentDate = new Date();
 const endLessDate = addYears(currentDate, 1)
 
 const ListHotel = () => {
+    // token chứa _id tài khoản và isAdmin
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
     const decodedToken = jwtDecode(token);
-    console.log(decodedToken);
+    // console.log(decodedToken);
     const { user } = useContext(AuthContext) // {user._id}
     const { data, loading, error, reFetch } = useFetch(
         `/hotels?ownerId=${decodedToken.id}`);
     // lấy ra những đơn đặt phòng trong tương lai
     const { data: reservationData, loading: reservationLoading, error: reservationError,
-        reFetch: reservationReFetch } = useFetch(`/reservation?idOwnerHotel=${user._id}&startDay=${currentDate}&endDay=${endLessDate}&status=true`);
+        reFetch: reservationReFetch } = useFetch(`/reservation?idOwnerHotel=${decodedToken.id}&startDay=${currentDate}&endDay=${endLessDate}&status=true`);
     // console.log(reservationData)
     const navigate = useNavigate();
     const handleDelete = (hotelId) => {
@@ -85,7 +86,7 @@ const ListHotel = () => {
         try {
             // Gửi yêu cầu xóa khách sạn đến máy chủ
 
-            const Success = await axios.delete(`/hotels/${hotelId}`, { data: { ownerId: user._id } });
+            const Success = await axios.delete(`/hotels/${hotelId}`, { data: { ownerId: decodedToken.id } });
 
             if (Success) {
                 // Nếu xóa thành công, tải lại dữ liệu

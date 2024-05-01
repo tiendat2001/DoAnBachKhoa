@@ -2,11 +2,11 @@ import React from 'react'
 import './hotelStatistics.css'
 import Sidebar from '../../../components/adminComponents/sidebar/Sidebar'
 import NavbarAdmin from '../../../components/adminComponents/navbarAdmin/NavbarAdmin'
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation , useNavigate } from "react-router-dom";
 import Highcharts from 'highcharts';
 import axios from 'axios';
 import useFetch from '../../../hooks/useFetch';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,  } from 'react';
 const HotelStatistics = () => {
   const location = useLocation();
   const hotelId = location.pathname.split("/")[4];
@@ -15,7 +15,13 @@ const HotelStatistics = () => {
     `/reservation/getRevenue/${hotelId}?month=${month}`);
   const { data: hotelDataByMonth, loading: loadinghotelDataByMonth, error: errorhotelDataByMonth, reFetch: reFetchhotelDataByMonth }
     = useFetch(`/reservation/getRevenueByMonths/${hotelId}`);
-
+  
+   
+    const navigate = useNavigate()
+    const previousPath = location.state?.previousPath;
+    if (previousPath !== '/admin/hotels') {
+      navigate('/admin/hotels');
+    }
     const handleMonthChange = (event) => {
       setMonth(parseInt(event.target.value));
     };

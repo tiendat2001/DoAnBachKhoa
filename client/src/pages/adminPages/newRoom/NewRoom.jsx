@@ -10,14 +10,18 @@ import { roomInputs } from '../../../formSource';
 import { AuthContext } from '../../../context/AuthContext';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+
 const NewRoom = () => {
 
     const [files, setFiles] = useState("");
     const [info, setInfo] = useState({});
     // const [rooms, setRooms] = useState([]);
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    const decodedToken = jwtDecode(token);
     const { user } = useContext(AuthContext) // {user._id}
     const [isSending, setIsSending] = useState(false);
-    const { data, loading, error } = useFetch(`/hotels?ownerId=${user._id}`);
+    const { data, loading, error } = useFetch(`/hotels?ownerId=${decodedToken.id}`);
     const [hotelId, setHotelId] = useState();
     const navigate = useNavigate()
 
@@ -81,7 +85,7 @@ const NewRoom = () => {
             const newRoom = {
               ...info,
               photos: list,
-              ownerId: user._id
+              ownerId: decodedToken.id
             };
     
                 // console.log(newRoom)

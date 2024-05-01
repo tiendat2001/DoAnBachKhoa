@@ -10,11 +10,14 @@ import { hotelInputs } from '../../../formSource';
 import { AuthContext } from '../../../context/AuthContext';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const NewHotel = () => {
   const [files, setFiles] = useState("");
   const [info, setInfo] = useState({});
   // const [rooms, setRooms] = useState([]);
+  const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+  const decodedToken = jwtDecode(token);
   const { user } = useContext(AuthContext) // {user._id}
   const navigate = useNavigate()
 
@@ -53,7 +56,7 @@ const NewHotel = () => {
   //   setRooms(value);
   // };
 
-  console.log(info);
+  // console.log(info);
 
   // khi ng dùng submit
   const handleClick = async (e) => {
@@ -81,7 +84,7 @@ const NewHotel = () => {
         const newhotel = {
           ...info,
           photos: list,
-          ownerId: user._id
+          ownerId: decodedToken.id
         };
 
 
@@ -183,7 +186,7 @@ const NewHotel = () => {
                 style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
               ></textarea>
               <button onClick={handleClick} disabled={isSending}>
-                {isSending ? 'Sending...' : 'Post your hotel'}
+                {isSending ? 'Sending...' : 'Đăng chỗ nghỉ'}
               </button>            </form>
           </div>
 

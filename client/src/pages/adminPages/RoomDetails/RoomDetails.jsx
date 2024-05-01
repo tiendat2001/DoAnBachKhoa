@@ -19,6 +19,8 @@ import {
     faPerson,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { jwtDecode } from "jwt-decode";
+
 const RoomDetails = () => {
     const location = useLocation();
     // id RoomType
@@ -34,6 +36,8 @@ const RoomDetails = () => {
     const [selectedRoomIdsToDelete, setSelectedRoomIdsToDelete] = useState([]);
     const [key, setKey] = useState(Math.random());
     const [roomQuantityToClose, setRoomQuantityToClose] = useState();
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    const decodedToken = jwtDecode(token);
     const { user } = useContext(AuthContext) // {user._id}
     // check đường dẫn lần trc
     const navigate = useNavigate()
@@ -131,7 +135,7 @@ const RoomDetails = () => {
         // tạo lịch sử đóng phòng
         try {
             const upload = axios.post(`/closedRoom/${idRoom}`, {
-              ownerId: user._id,
+              ownerId: decodedToken.id,
               roomTypeId: idRoom,
               startClose: dates[0].startDate,
               endClose: dates[0].endDate, // cái này chỉ hiển thị ra bảng lịch sử đóng phòng sẽ là đến hết ngày ( ko cộng 1)
