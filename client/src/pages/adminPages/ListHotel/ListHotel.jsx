@@ -12,14 +12,18 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { format, addDays, addYears, subYears } from "date-fns";
 import { useNavigate } from 'react-router-dom';
-
+import { jwtDecode } from "jwt-decode";
+import { useEffect } from 'react';
 const currentDate = new Date();
 const endLessDate = addYears(currentDate, 1)
 
 const ListHotel = () => {
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    const decodedToken = jwtDecode(token);
+    console.log(decodedToken);
     const { user } = useContext(AuthContext) // {user._id}
     const { data, loading, error, reFetch } = useFetch(
-        `/hotels?ownerId=${user._id}`);
+        `/hotels?ownerId=${decodedToken.id}`);
     // lấy ra những đơn đặt phòng trong tương lai
     const { data: reservationData, loading: reservationLoading, error: reservationError,
         reFetch: reservationReFetch } = useFetch(`/reservation?idOwnerHotel=${user._id}&startDay=${currentDate}&endDay=${endLessDate}&status=true`);
@@ -53,6 +57,23 @@ const ListHotel = () => {
             ]
         });
     };
+   
+   
+    // useEffect(() => {
+    //     // Lấy token từ cookie (hoặc từ nơi lưu trữ khác)
+    //     const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    
+    //     // Giải mã token và lấy thông tin bên trong
+    //     try {
+    //       const decodedToken = jwtDecode(token);
+    //       // decodedToken bây giờ chứa các thông tin bạn đã đặt trong token ở phía backend
+    //       console.log(decodedToken);
+    //       console.log("đ")
+    //     } catch (error) {
+    //       // Xử lý lỗi nếu có
+    //       console.error('Error decoding token:', error.message);
+    //     }
+    //   }, []);
     // hàm chuyển hướng
     const handleEditHotel = (itemId) => {
         navigate(`/admin/hotels/${itemId}`, { state: { previousPath: '/admin/hotels' } });
