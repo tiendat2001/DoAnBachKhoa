@@ -21,7 +21,7 @@
     /* display: flex; */
 }
 .listAdmin .listContainerAdmin .top h1, .listAdmin .listContainerAdmin .bottom h1 {
-    color: lightgray;
+    /* color: lightgray; */
     font-size: 20px;
 }
 .listAdmin .listContainerAdmin .top .left, .listAdmin .listContainerAdmin .bottom .left {

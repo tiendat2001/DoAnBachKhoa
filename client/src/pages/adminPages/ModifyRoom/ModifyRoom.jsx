@@ -89,8 +89,7 @@ const ModifyRoom = () => {
                 <NavbarAdmin />
                 {/* css từ newHotel.css */}
                 <div className="top">
-                    <h1>Chỉnh sửa loại phòng</h1>
-                    <h3 style={{ fontSize: '14px', color: '#ccc'}}>(Điền vào trường cần sửa thông tin)</h3>
+                    <h1 style={{fontWeight:'bold' }}>Chỉnh sửa thông tin</h1>
                 </div>
 
                 <div className="bottom">

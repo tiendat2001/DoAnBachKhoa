@@ -59,6 +59,11 @@ const HotelStatistics = () => {
           }
         }
       },
+      tooltip: {
+        formatter: function () {
+          return 'Doanh thu: ' + formatCurrency(this.y); // Định dạng giá trị tooltip thành tiền tệ
+        }
+      },
       credits: {
         enabled: false // Tắt chữ bản quyền
       },

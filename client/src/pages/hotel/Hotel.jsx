@@ -171,21 +171,18 @@ const Hotel = () => {
             <div className="hotelDetails">
               <div className="hotelDetailsTexts">
                 <h1 className="hotelTitle">{data.title}</h1>
-                <p className="hotelDesc">{data.desc}</p>
+                <p className="hotelDesc" style={{ whiteSpace: 'pre-line' }}>{data.desc}</p>
+
               </div>
               <div className="hotelDetailsPrice">
-                {/* {days !== 0 && <h1>Perfect for a {days}-night stay!</h1>} */}
                 <span>
-                  Located in the {data.address}, this property has an
-                  excellent location!
+                  Tọa lạc tại {data.address}, đây là một địa điểm tuyệt vời!
                 </span>
 
-                <h2>
-                  <b>Price only from ${data.cheapestPrice?.price ?? 'N/A'} per night</b>
+                <div style={{fontSize:'26px'}}>
+                  <b>Giá chỉ từ {Intl.NumberFormat('vi-VN').format(data.cheapestPrice?.price*1000)} VND mỗi đêm</b>
+                </div>
 
-                </h2>
-
-                {/* <button onClick={handleClick}>Reserve or Book Now!</button> */}
               </div>
             </div>
           </div>

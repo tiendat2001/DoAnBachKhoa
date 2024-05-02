@@ -20,21 +20,21 @@ export const getReservations = async (req, res, next) => {
         const { startDay, endDay, ...query } = req.query;
         let startDayRange;
         let endDayRange;
-       
+
 
         // Kiểm tra nếu startDay và endDay tồn tại trong req.query
         if (startDay && endDay) {
             // ở client gửi 14h GMT+7 nhưng ở đây console ra 14h giờ UTC, phải trừ đi 7h vì trong csdl lưu ngày là 7h UTC
-            startDayRange = subHours(new Date(startDay),7);
-            endDayRange =  subHours(new Date(endDay),7);
+            startDayRange = subHours(new Date(startDay), 7);
+            endDayRange = subHours(new Date(endDay), 7);
         }
         let Reservations;
         if (startDayRange && endDayRange) {
             Reservations = await Reservation.find({
                 ...query,
                 start: {
-                    $gte: startDayRange, 
-                    $lte: endDayRange     
+                    $gte: startDayRange,
+                    $lte: endDayRange
                 }
             }).sort({ updatedAt: -1 });
         } else {
@@ -104,19 +104,19 @@ export const getAllHotelRevenue = async (req, res, next) => {
 
         let reservations;
         // chỉ tính doanh thu tháng trước
-        if(month ==-1){
-            reservations = await Reservation.find({ 
+        if (month == -1) {
+            reservations = await Reservation.find({
                 status: true,
                 start: {
-                    $gte: startDate, 
-                    $lte: endDate     
+                    $gte: startDate,
+                    $lte: endDate
                 }
             });
-        }else{
+        } else {
             //tính doanh thu tất cả
-             reservations = await Reservation.find({ status: true });
+            reservations = await Reservation.find({ status: true });
         }
-       
+
 
         // Tạo một object để lưu trữ tổng doanh thu của từng khách sạn
         const hotelRevenueMap = {};
@@ -225,7 +225,7 @@ export const getRevenueByHotelId = async (req, res, next) => {
                 $lte: endDate
             };
         }
-        // Tìm kiếm các đơn đặt phòng dựa trên searchConditions
+        // Tìm kiếm các đơn đặt phòng dựa trên searchConditions (theo tháng và theo hotelId)
         const reservations = await Reservation.find(searchConditions);
 
         let totalRevenue = 0;
@@ -241,22 +241,33 @@ export const getRevenueByHotelId = async (req, res, next) => {
         // Lặp qua từng đơn đặt phòng và tính tổng doanh thu và số lượng khách
         for (const reservation of reservations) {
             // Lặp qua từng roomNumbersId trong reservation
-            for (const roomNumbersId of reservation.roomNumbersId) {
+            for (const roomReserved of reservation.roomTypeIdsReserved) {
                 // Tìm loại phòng và lấy ra tên loại phòng
-                const room = await Room.findOne({ "roomNumbers._id": roomNumbersId });
-                const roomType = room ? room.title : 'Unknown';
+                // const room = await Room.findOne({ "roomNumbers._id": roomNumbersId });
+                // const roomType = room ? room.title : 'Unknown';
 
-                // Tăng số lượng phòng được bán cho loại phòng này
-                if (soldRooms[roomType]) {
-                    soldRooms[roomType]++;
+                // // Tăng số lượng phòng được bán cho loại phòng này
+                // if (soldRooms[roomType]) {
+                //     soldRooms[roomType]++;
+                // } else {
+                //     soldRooms[roomType] = 1;
+                // }
+
+                // // Cập nhật loại phòng bán được nhiều nhất
+                // if (soldRooms[roomType] > maxSoldRoomCount) {
+                //     maxSoldRoomType = roomType;
+                //     maxSoldRoomCount = soldRooms[roomType];
+                // }
+
+                const { roomTypeId, quantity } = roomReserved;  // roomReserved là 1 trường gồm id của loại phòng cùng số lượng
+                // lấy ra roomType to
+                const roomType = await Room.findById(roomTypeId)
+                const roomTypeName = roomType ? roomType.title : 'Unknown';; //  lấy tên loại phòng dành cho roomTypeId
+
+                if (soldRooms[roomTypeName]) {
+                    soldRooms[roomTypeName] += quantity;
                 } else {
-                    soldRooms[roomType] = 1;
-                }
-
-                // Cập nhật loại phòng bán được nhiều nhất
-                if (soldRooms[roomType] > maxSoldRoomCount) {
-                    maxSoldRoomType = roomType;
-                    maxSoldRoomCount = soldRooms[roomType];
+                    soldRooms[roomTypeName] = quantity;
                 }
             }
 
@@ -266,12 +277,14 @@ export const getRevenueByHotelId = async (req, res, next) => {
         }
         // Trả về kết quả
         res.status(200).json({
+            // 3 ô trên biểu đồ
             totalRevenue: totalRevenue,
             totalGuests: totalGuests,
             totalOrders: totalOrders,
+
             soldRooms: soldRooms,
-            maxSoldRoomType: maxSoldRoomType,
-            maxSoldRoomCount: maxSoldRoomCount
+            // maxSoldRoomType: maxSoldRoomType,
+            // maxSoldRoomCount: maxSoldRoomCount
         });
     } catch (error) {
         next(error);
@@ -285,7 +298,7 @@ export const getRevenueMonthsByHotelId = async (req, res, next) => {
         // console.log(currentDate.getMonth())
         const revenueByMonth = [];
         // console.log(currentDate)
-        for (let i = 1; i < 7; i++) {
+        for (let i = 0; i < 6; i++) {
             // nhìn cho giống GMT
             // nếu sau ko add khi đẩy xuống thì bỏ mấy cái addHours
             const startDate = addHours(startOfMonth(subMonths(currentDate, i)), 7);

@@ -2,7 +2,7 @@ import React from 'react'
 import "./modifyHotel.css"
 import Sidebar from '../../../components/adminComponents/sidebar/Sidebar'
 import NavbarAdmin from '../../../components/adminComponents/navbarAdmin/NavbarAdmin'
-import { Link, useLocation , useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
 import useFetch from '../../../hooks/useFetch';
@@ -29,13 +29,13 @@ const ModifyHotel = () => {
     const navigate = useNavigate()
     const previousPath = location.state?.previousPath;
     if (previousPath !== '/admin/hotels') {
-      navigate('/admin/hotels');
+        navigate('/admin/hotels');
     }
     useEffect(() => {
         if (data) {
-          setInfo(data);
+            setInfo(data);
         }
-      }, [data]);
+    }, [data]);
     const handleChange = (e) => {
         setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
     };
@@ -72,7 +72,7 @@ const ModifyHotel = () => {
             const Success = await axios.put(`/hotels/${idHotel}`, newModifyHotel);
             if (Success) {
                 toast.success('Thành công chỉnh sửa!');
-                //   navigate("/admin/hotels");
+                  navigate("/admin/hotels");
 
             } else toast.error("Error.Please try again");
 
@@ -92,7 +92,8 @@ const ModifyHotel = () => {
                 {/* lấy theo css của newHotel.css */}
                 <div className="listHotelAdminContainer">
                     <div className="top">
-                        <h1>Modify Your Hotel</h1>
+                        <h1 style={{ fontWeight: 'bold' }}>Chỉnh sửa thông tin</h1>
+
                     </div>
 
                     <div className="bottom">
@@ -138,7 +139,7 @@ const ModifyHotel = () => {
                                             onChange={handleChange}
                                             value={info.type}
                                         >
-                                            <option  value={defaultType} >{defaultType}</option> {/* Option mặc định */}
+                                            <option value={defaultType} >{defaultType}</option> {/* Option mặc định */}
                                             <option value="Khách sạn" hidden={defaultType === "Khách sạn"}>Khách sạn</option> {/* Các option của dropdown */}
                                             <option value="Căn hộ" hidden={defaultType === "Căn hộ"}>Căn hộ</option>
 
@@ -161,13 +162,13 @@ const ModifyHotel = () => {
                                     <label>Hotel description</label>
                                     <textarea
                                         id="desc"
-                                        rows="4" /* Số dòng mặc định hiển thị ban đầu */
+                                        rows="10" /* Số dòng mặc định hiển thị ban đầu */
                                         onChange={handleChange}
                                         style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
                                         placeholder={data.desc}
                                         value={info.desc}
                                     ></textarea>
-                                    <button onClick={handleClick}>Send</button>
+                                    <button onClick={handleClick}>Lưu</button>
                                 </form>
                             </div>
 
