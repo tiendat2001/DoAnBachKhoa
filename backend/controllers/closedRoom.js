@@ -60,6 +60,7 @@ export const deleteAllClosedRoom = async (req, res, next) => {
           // Sử dụng hàm setTimeout để tạm dừng việc thực hiện trong 5 giây
           setTimeout(() => {
               // Sau 5 giây, trả về kết quả "kết thúc"
+              console.log("dat")
               res.status(200).json("kết thúc");
   
               // Giải phóng biến khóa sau khi hoàn thành

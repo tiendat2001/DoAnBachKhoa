@@ -148,7 +148,7 @@ const Hotel = () => {
               <span>{data.address}</span>
             </div>
             <span className="hotelDistance">
-              Excellent location – {data.distance}m from center
+              Địa điểm tuyệt vời – {data.distance}m từ trung tâm
             </span>
             {/* <span className="hotelPriceHighlight">
               Book a stay over ${data.cheapestPrice} at this property and get a
