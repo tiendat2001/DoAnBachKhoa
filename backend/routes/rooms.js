@@ -7,7 +7,7 @@ const router = express.Router();
 //CREATE
 router.post("/:hotelid", verifyUserModifyHotel, createRoom);
 //UPDATE avai
-router.put("/availability/:id", updateRoomAvailability);
+router.put("/availability/", updateRoomAvailability);
 
 router.put("/cancelAvailability/:id", cancelRoomReservation);
 

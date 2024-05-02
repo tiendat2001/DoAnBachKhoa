@@ -34,12 +34,12 @@ const Reserve = () => {
   var maxPeople = 0;
   // console.log(startDate)
   // lấy ra id roomType cùng số lượng
-  const roomTypeIdsReserved =roomsDetailFromListClient.map(room => ({
+  const roomTypeIdsReserved = roomsDetailFromListClient.map(room => ({
     roomTypeId: room.roomTypeId,
     quantity: room.quantity
   }));
   // console.log(roomTypeIdsReserved)
-  
+
   const isAvailable = (roomNumber) => {
     const isFound = roomNumber.unavailableDates.some((date) => {
       const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
@@ -68,10 +68,10 @@ const Reserve = () => {
 
   // Tạo chuỗi detailRooms từ roomCounts
   const detailRooms = Object.entries(roomCounts).map(([title, count]) => `${title} (x${count})`).join(', ');
-  const selectedRoomIdsReserved=[]
+  const selectedRoomIdsReserved = []
   // đặt phòng
   const reserveRoom = async () => {
-   
+
     selectedRoomIdsReserved.length = 0; // reset lại mảng
     await Promise.all(roomsDetailFromListClient.map(async (roomDetail) => {
 
@@ -84,55 +84,50 @@ const Reserve = () => {
 
       //Duyệt qua mỗi phần tử trong mảng roomNumbers
       foundRoom.roomNumbers.forEach(roomNumber => {
-          // Kiểm tra xem phòng có sẵn không 
-          if (isAvailable(roomNumber)) {
-              // Nếu phòng có sẵn và số lượng phòng đã chọn chưa đạt tối đa
-              if (selectedQuantity < quantity) {
-                  selectedRoomIdsReserved.push(roomNumber._id); // Thêm roomNumber vào mảng selectedRoomIdsReserved
-                  selectedQuantity++; // Tăng số lượng phòng đã chọn lên 1
-              } else {
-                  return; // Nếu đã đủ số lượng, thoát khỏi vòng lặp
-              }
+        // Kiểm tra xem phòng có sẵn không 
+        if (isAvailable(roomNumber)) {
+          // Nếu phòng có sẵn và số lượng phòng đã chọn chưa đạt tối đa
+          if (selectedQuantity < quantity) {
+            selectedRoomIdsReserved.push(roomNumber._id); // Thêm roomNumber vào mảng selectedRoomIdsReserved
+            selectedQuantity++; // Tăng số lượng phòng đã chọn lên 1
+          } else {
+            return; // Nếu đã đủ số lượng, thoát khỏi vòng lặp
           }
+        }
       });
-  }));
+    }));
 
-  const totalQuantity = roomsDetailFromListClient.reduce((acc, roomDetail) => acc + roomDetail.quantity, 0);
-  // console.log(totalQuantity)
-  if(selectedRoomIdsReserved.length !== totalQuantity){
-    alert("Phòng đã hết! Vui lòng quay lại trang đặt phòng")
-    return; // Thoát khỏi hàm nếu số lượng phòng đã chọn không đủ
-  }
-  
+    const totalQuantity = roomsDetailFromListClient.reduce((acc, roomDetail) => acc + roomDetail.quantity, 0);
+    // console.log(totalQuantity)
+    if (selectedRoomIdsReserved.length !== totalQuantity) {
+      alert("Phòng đã hết! Vui lòng quay lại trang đặt phòng")
+      return; // Thoát khỏi hàm nếu số lượng phòng đã chọn không đủ
+    }
+
     // return;
     console.log(selectedRoomIdsReserved)
-  
+
     // const allDatesPlus = alldates.map(date => addDays(date, 1));
     // const startDatePlus = addDays(startDate, 1)
     // const endDatePlus = addDays(endDate, 1)
 
+
+
     try {
-      await Promise.all(
-        selectedRoomIdsReserved.map(async (roomId) => {
-          try {
-            const res = await axios.put(`/rooms/availability/${roomId}`, {
-              dates: alldates,
-              startDateRange:startDate,
-              endDateRange:endDate,
-            });
-           
-            return res.data;
-          } catch (error) {
-            console.log(`Error in room ${roomId}:`, error);
-            throw error; // Ném lỗi để kích hoạt catch bên ngoài và dừng quá trình xử lý
-          }
-        })
-      );
-    } catch (err) {
-      console.log(err)
-      alert("Có lỗi xảy ra vui lòng quay lại trang trước và đặt phòng lại")
-      return; // Ngưng thực thi hàm nếu có lỗi
+      const copiedRoomIds = [...selectedRoomIdsReserved];
+      const res = await axios.put(`/rooms/availability/`, {
+        selectedRoomIdsReserved: copiedRoomIds,
+        dates: alldates,
+        startDateRange: startDate,
+        endDateRange: endDate,
+
+      });
+    } catch (error) {
+      console.log(error)
+
     }
+
+
     // tạo order
     try {
       const upload = axios.post(`/reservation`, {
@@ -141,9 +136,9 @@ const Reserve = () => {
         start: startDate,
         end: endDate,
         roomNumbersId: selectedRoomIdsReserved,
-        roomTypeIdsReserved:roomTypeIdsReserved,
+        roomTypeIdsReserved: roomTypeIdsReserved,
         roomsDetail: detailRooms,
-        guest: {adult:options.adult,children:options.children},
+        guest: { adult: options.adult, children: options.children },
         allDatesReserve: alldates,
         totalPrice: totalPrice * alldates.length,
         hotelId: hotelId,
@@ -155,7 +150,7 @@ const Reserve = () => {
       console.log(err)
       return;
     }
-    
+
     toast.success('Đặt phòng thành công');
   }
 
@@ -163,7 +158,7 @@ const Reserve = () => {
     <div>
       <Navbar />
       <Header type="list" />
-    
+
       <div className="ReserveContainer">
         <h1>Thông tin đặt phòng</h1>
         {/* chứa thông tin khách sạn đang đặt */}
@@ -186,14 +181,14 @@ const Reserve = () => {
           <div>Tổng thời gian lưu trú:  {alldates.length} đêm</div>
           <div style={{ fontWeight: 'bold' }}>Phòng của bạn:  {detailRooms} </div>
           <div style={{ fontWeight: 'bold' }}>Số người: {options.adult} người lớn và {options.children} trẻ em</div>
-          {(options.adult + options.children*0.5) - maxPeople >= 2 && (
+          {(options.adult + options.children * 0.5) - maxPeople >= 2 && (
             <div style={{ fontWeight: 'bold', color: 'red' }}>
               (Phòng của bạn có thể không chứa đủ người)
             </div>
           )}
           <div style={{ fontWeight: 'bold' }}>
-            Tổng giá: {new Intl.NumberFormat('vi-VN').format(totalPrice * alldates.length*1000)} VND
-            </div>
+            Tổng giá: {new Intl.NumberFormat('vi-VN').format(totalPrice * alldates.length * 1000)} VND
+          </div>
 
 
         </div>
