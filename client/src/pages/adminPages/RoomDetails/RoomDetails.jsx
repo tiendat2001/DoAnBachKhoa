@@ -157,7 +157,7 @@ const RoomDetails = () => {
     }
 
     // MỞ LẠI PHÒNG ĐÃ ĐÓNG
-    const handleCancelCloseRoom = async (allDatesClose,startDateClose, endDateClose, quantityRoomClosed) => {
+    const handleCancelCloseRoom = async (allDatesClose,startDateClose, endDateClose, quantityRoomClosed,roomCloseId) => {
         // console.log(startDateClose)
         // console.log(addDays(new Date(endDateClose), 1))
         let hasError = false;
@@ -177,6 +177,17 @@ const RoomDetails = () => {
                   console.error(err);
                   hasError = true;
                 }
+            }
+
+            // xóa lịch sử closeRoom
+            try {    
+                const Success = await axios.delete(`/closedRoom/${roomCloseId}`, { data: { ownerId: decodedToken.id } });
+                roomCloseDataReFetch()
+               
+            } catch (error) {
+                console.error(error);
+                hasError = true;
+                toast.error('Có lỗi xảy ra trong khi xóa lịch sử đóng phòng');
             }
 
 
@@ -299,7 +310,7 @@ const RoomDetails = () => {
                                     <div className="roomClose">{new Date(new Date(roomClose.endClose)).toLocaleDateString('vi-VN')}</div>
                                     <div className="roomClose">{roomClose.quantityRoomClosed}</div>
                                     <button style={{ width: '20%' }} className="roomNumber" onClick={() => handleCancelCloseRoom(roomClose.allDatesClosed,roomClose.startClose, roomClose.endClose, 
-                                        roomClose.quantityRoomClosed)}>MỞ LẠI</button>
+                                        roomClose.quantityRoomClosed,roomClose._id)}>MỞ LẠI</button>
                                 </div>
                             ))}
                         </div>

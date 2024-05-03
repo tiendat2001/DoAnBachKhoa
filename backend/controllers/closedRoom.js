@@ -22,7 +22,7 @@ export const createClosedRoom = async (req, res, next) => {
       }
   }
 
-  
+  // DELETE ALL CLOSE ROOM
 export const deleteAllClosedRoom = async (req, res, next) => {
     try {
       await ClosedRoom.deleteMany();
@@ -33,6 +33,20 @@ export const deleteAllClosedRoom = async (req, res, next) => {
       next(error);
     }
   }
+
+  // DELETE CLOSE ROOM BY ID
+  export const deleteClosedRoomById = async (req, res, next) => {
+    try {
+        await ClosedRoom.findByIdAndDelete(req.params.id);
+        res.status(200).json("DELETE SUCCESSFUL");
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
+
 
 
   /// phần test
