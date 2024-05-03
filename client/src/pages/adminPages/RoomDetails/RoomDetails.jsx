@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { DateRange } from "react-date-range";
 import { SearchContext } from '../../../context/SearchContext'
 import { format, addDays, subDays, subHours } from "date-fns";
+import { confirmAlert } from 'react-confirm-alert';
+
 
 import {
     faBed,
@@ -157,6 +159,27 @@ const RoomDetails = () => {
     }
 
     // MỞ LẠI PHÒNG ĐÃ ĐÓNG
+    const openHandleCancelCloseRoom = (allDatesClose,startDateClose, endDateClose, quantityRoomClosed,roomCloseId) =>{
+        confirmAlert({
+            title: 'Xác nhận',
+            message: 'Bạn có chắc chắn muốn mở lại phòng đã đóng ?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        // Xác nhận xóa khách sạn
+                        handleCancelCloseRoom(allDatesClose,startDateClose, endDateClose, quantityRoomClosed,roomCloseId);
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => {
+                        // Không làm gì cả
+                    }
+                }
+            ]
+        });
+    }
     const handleCancelCloseRoom = async (allDatesClose,startDateClose, endDateClose, quantityRoomClosed,roomCloseId) => {
         // console.log(startDateClose)
         // console.log(addDays(new Date(endDateClose), 1))
@@ -183,6 +206,8 @@ const RoomDetails = () => {
             try {    
                 const Success = await axios.delete(`/closedRoom/${roomCloseId}`, { data: { ownerId: decodedToken.id } });
                 roomCloseDataReFetch()
+                roomTypeDataReFetch()
+                reFetchRoomCountStatus()
                
             } catch (error) {
                 console.error(error);
@@ -309,7 +334,7 @@ const RoomDetails = () => {
                                     <div className="roomClose">{new Date(new Date(roomClose.startClose)).toLocaleDateString('vi-VN')}</div>
                                     <div className="roomClose">{new Date(new Date(roomClose.endClose)).toLocaleDateString('vi-VN')}</div>
                                     <div className="roomClose">{roomClose.quantityRoomClosed}</div>
-                                    <button style={{ width: '20%' }} className="roomNumber" onClick={() => handleCancelCloseRoom(roomClose.allDatesClosed,roomClose.startClose, roomClose.endClose, 
+                                    <button style={{ width: '20%' }} className="roomNumber" onClick={() => openHandleCancelCloseRoom(roomClose.allDatesClosed,roomClose.startClose, roomClose.endClose, 
                                         roomClose.quantityRoomClosed,roomClose._id)}>MỞ LẠI</button>
                                 </div>
                             ))}

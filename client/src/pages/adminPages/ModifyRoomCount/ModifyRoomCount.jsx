@@ -112,7 +112,7 @@ const ModifyRoomCount = () => {
                         <button onClick={submitDeleteRoom}>Xoá</button>
                     </div>
 
-                    <div style={{fontStyle:'italic', marginBottom:'10px'}}>(Với những phòng đã có người đặt hoặc bạn đã đóng sẽ không thể xóa được)</div>
+                    <div style={{fontStyle:'italic', marginBottom:'10px'}}>(Với những phòng đã có người đặt hoặc bạn đã đóng sẽ hiện màu đỏ, không thể xóa được)</div>
                     {/*  danh sách phòng */}
                     <div style={{ backgroundColor: '#ccc' }} className="roomNumberContainer">
                         <div className="roomNumber">STT</div>
@@ -121,7 +121,8 @@ const ModifyRoomCount = () => {
                         <div style={{ width: '20%' }} className="roomNumber" >Hành động</div>
                     </div>
                     {roomTypeData.roomNumbers?.map((roomNumber, index) => (
-                        <div key={index} className="roomNumberContainer">
+                       <div key={index} className="roomNumberContainer" style={{ backgroundColor: canDelete(roomNumber) ? '' : 'red' }}>
+
                             <div className="roomNumber">{index + 1}</div>
                             <div className="roomNumber">{roomNumber._id}</div>
                             <div className="roomNumber">{roomNumber.status ? 'Mở' : 'Đóng'}</div>
