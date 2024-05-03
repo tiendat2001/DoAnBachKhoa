@@ -12,12 +12,15 @@ const RecentSeenHotel = () => {
       const { data: suggestedHotel, loadingSuggestedHotel, errorSuggestedHotel, reFetchSuggestedHotel } = useFetch(
         `/hotels?city=${mostViewedCity}`
       );
+      const [recentHotelIds, setRecentHotelIds] = useState('');
+
    
     useEffect(() => {
         // console.log(allHotelData)
         //Lấy danh sách ID khách sạn đã xem từ localStorage
         const idHotelSeenString = localStorage.getItem('idHotelSeen');
         const idHotelSeen = idHotelSeenString ? JSON.parse(idHotelSeenString) : [];
+        setRecentHotelIds(idHotelSeen)
         // console.log(idHotelSeen)
         //Tạo một đối tượng để đếm số lần xuất hiện của mỗi thành phố
         const cityCount = {};
@@ -40,16 +43,17 @@ const RecentSeenHotel = () => {
     
         // Cập nhật thành phố được xem nhiều nhất vào state
         setMostViewedCity(mostViewedCity);
+        
       }, [allHotelData]);
-    //   console.log(mostViewedCity)
-    //   console.log(suggestedHotel)
+      console.log(recentHotelIds)
+      console.log(suggestedHotel)
   return (
     <div className="fp">
     {loading ? (
       "Loading"
     ) : (
       <>
-        {suggestedHotel.map((item) => (
+       {suggestedHotel.filter(item => !recentHotelIds.includes(item._id)).map((item, index) => (
           <div className="fpItem" key={item._id}>
             <Link to={`hotels/${item._id}`}>
       <img src={item.photos[0]} alt="" className="fpImg" />

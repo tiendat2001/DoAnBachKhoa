@@ -17,13 +17,15 @@ const Home = () => {
         <h1 className="homeTitle">Nơi có nhiều chỗ nghỉ</h1>
         <Featured />
 
+        <h1 className="homeTitle">Dựa theo tìm kiếm của bạn</h1>
+        <RecentSeenHotel />
+        
         {/* phân loại các khách sạn theo loai như hotel, homestay */}
           <h1 className="homeTitle">Browse by type</h1>
           <PropertyList />
 
-        {/* phần khách sạn được ưa thích FeaturedProperties */}
-        <h1 className="homeTitle">Homes guests love</h1>
-        <RecentSeenHotel />
+     
+        
           
           {/* phần thanh gửi mail */}
           <MailList />
