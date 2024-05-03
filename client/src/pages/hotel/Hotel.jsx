@@ -1,5 +1,5 @@
 import "./hotel.css";
-import React from "react";
+import React, { useEffect } from 'react';
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
@@ -42,6 +42,24 @@ const Hotel = () => {
   const { destination, dates, options } = useContext(SearchContext);
   // console.log(searchContext)
 
+  // lưu id hotel đã xem vào localStorage
+  useEffect(() => {
+    // Lấy danh sách ID khách sạn đã xem từ localStorage
+    const idHotelSeenString = localStorage.getItem('idHotelSeen');
+    let idHotelSeen = idHotelSeenString ? JSON.parse(idHotelSeenString) : [];
+
+    // Kiểm tra nếu danh sách đã đạt đến 5 phần tử, xóa phần tử đầu tiên
+    if (idHotelSeen.length >= 5) {
+      idHotelSeen = idHotelSeen.slice(1);
+    }
+    // Kiểm tra xem ID của khách sạn hiện tại đã có trong danh sách hay chưa
+    if (!idHotelSeen.includes(id)) {
+      // Nếu chưa có, thêm ID mới vào danh sách
+      idHotelSeen.push(id);
+      // Lưu danh sách mới vào localStorage
+      localStorage.setItem('idHotelSeen', JSON.stringify(idHotelSeen));
+    }
+  }, []);
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   function dayDifference(date1, date2) {
     const timeDiff = Math.abs(date2.getTime() - date1.getTime());

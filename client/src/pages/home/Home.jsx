@@ -4,7 +4,7 @@ import Navbar from "../../components/navbar/Navbar";
 import Featured from "../../components/featured/Featured";
 import "./home.css";
 import PropertyList from "../../components/propertyList/PropertyList";
-import FeaturedProperties from "../../components/featuredProperties/FeaturedProperties"
+import RecentSeenHotel from "../../components/recentSeenHotel/RecentSeenHotel";
 import MailList from "../../components/MailList/MailList";
 import Footer from "../../components/footer/Footer";
 const Home = () => {
@@ -23,7 +23,7 @@ const Home = () => {
 
         {/* phần khách sạn được ưa thích FeaturedProperties */}
         <h1 className="homeTitle">Homes guests love</h1>
-          <FeaturedProperties />
+        <RecentSeenHotel />
           
           {/* phần thanh gửi mail */}
           <MailList />
