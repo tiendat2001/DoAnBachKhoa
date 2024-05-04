@@ -24,8 +24,8 @@ router.post("/create_payment_url", function (req, res, next) {
   let vnpUrl = config.get("vnp_Url");
   let returnUrl = config.get("vnp_ReturnUrl");
   // bth 3 tham so nay lay tu req.body
-  let orderId = "Ddddssfsfsdaffaffsfsffdsdfd";
-  let amount = 100000;
+  let orderId = req.body.reservationId;
+  let amount = req.body.amount ;
   let bankCode = "VNBANK";
 
   let locale = "vn";
@@ -83,7 +83,7 @@ router.get("/vnpay_return", function (req, res, next) {
   let hmac = crypto.createHmac("sha512", secretKey);
   let signed = hmac.update(new Buffer(signData, "utf-8")).digest("hex");
 
-  if (1) {
+  if (secureHash === signed) {
     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
     // const orderId = req.query.vnp_TxnRef;
     // con.connect(function (err) {
@@ -140,7 +140,7 @@ router.get("/vnpay_ipn", function (req, res, next) {
             // res.status(200).json({ RspCode: "00", Message: "Success" });
 
             // tự viết
-            // res.redirect("http://localhost:3000");
+            res.redirect("http://localhost:3000/bookings");
             // console.log("dfsdf")
             res.status(200).json({ RspCode: "00", Message: "Success" });
           } else {

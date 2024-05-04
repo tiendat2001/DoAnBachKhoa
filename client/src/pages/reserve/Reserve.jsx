@@ -30,6 +30,7 @@ const Reserve = () => {
   const { data: roomData, loading, error, reFetch } = useFetch(`/rooms/${hotelId}`);
   const { data: hotelData, loading: hotelLoading, error: hotelError } = useFetch(`/hotels/find/${hotelId}`);
   const [reFreshRoomData, setReFreshRoomData] = useState();
+  const navigate = useNavigate()
   var totalPrice = 0;
   var maxPeople = 0;
   // console.log(startDate)
@@ -112,25 +113,26 @@ const Reserve = () => {
     // const endDatePlus = addDays(endDate, 1)
 
 
+    // đẩy available
+    // try {
+    //   const copiedRoomIds = [...selectedRoomIdsReserved];
+    //   const res = await axios.put(`/rooms/availability/`, {
+    //     selectedRoomIdsReserved: copiedRoomIds,
+    //     dates: alldates,
+    //     startDateRange: startDate,
+    //     endDateRange: endDate,
 
-    try {
-      const copiedRoomIds = [...selectedRoomIdsReserved];
-      const res = await axios.put(`/rooms/availability/`, {
-        selectedRoomIdsReserved: copiedRoomIds,
-        dates: alldates,
-        startDateRange: startDate,
-        endDateRange: endDate,
+    //   });
+    // } catch (error) {
+    //   console.log(error)
 
-      });
-    } catch (error) {
-      console.log(error)
-
-    }
+    // }
 
 
     // tạo order
+    let reservationId = ""
     try {
-      const upload = axios.post(`/reservation`, {
+      const newReservation = await axios.post(`/reservation`, {
         username: user.username,
         phoneNumber: "32423424",
         start: startDate,
@@ -146,12 +148,32 @@ const Reserve = () => {
         // hotelName: hotelData.name,
         // hotelContact:hotelData?.hotelContact
       });
+      // lấy id của đơn đặt phòng vừa tạo
+      reservationId = newReservation.data._id;
+
     } catch (err) {
       console.log(err)
       return;
     }
 
-    toast.success('Đặt phòng thành công');
+    // toast.success('Đặt phòng thành công');
+
+    // chuyển hướng thanh toán VNPAY
+    try {
+      const response = await axios.post('/payment/create_payment_url', {
+        reservationId: reservationId,
+        amount: totalPrice * alldates.length * 1000
+      });
+      let paymentUrl = response.data; // Giả sử API trả về link thanh toán trong trường 'paymentUrl'
+      const startIndex = paymentUrl.indexOf('https://');
+      // Cắt bỏ phần URL trước "https://" và lấy phần sau
+      paymentUrl = paymentUrl.substring(startIndex);
+      // chuyển hướng link thanh toán
+      window.location.href = paymentUrl;
+    } catch (error) {
+      console.error('Error creating payment:', error);
+      // Xử lý lỗi nếu cần
+    }
   }
 
   return (
