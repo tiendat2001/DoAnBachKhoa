@@ -5,6 +5,7 @@ import moment from "moment";
 import config from "config";
 import querystring from "qs"
 import crypto from "crypto"
+import Reservation from "../models/Reservation.js";
 
 router.post("/create_payment_url", function (req, res, next) {
   process.env.TZ = "Asia/Ho_Chi_Minh";
@@ -99,7 +100,7 @@ router.get("/vnpay_return", function (req, res, next) {
   }
 });
 
-router.get("/vnpay_ipn", function (req, res, next) {
+router.get("/vnpay_ipn", async function (req, res, next) {
   console.log("gọi ipn")
   let vnp_Params = req.query;
   let secureHash = vnp_Params["vnp_SecureHash"];
@@ -142,14 +143,21 @@ router.get("/vnpay_ipn", function (req, res, next) {
             // tự viết
             res.redirect("http://localhost:3000/bookings");
             // console.log("dfsdf")
-            res.status(200).json({ RspCode: "00", Message: "Success" });
+            // res.status(200).json({ RspCode: "00", Message: "Success" });
           } else {
             console.log("gd that bai")
             // res.redirect("http://localhost:3000");
             //that bai
             //paymentStatus = '2'
             // Ở đây cập nhật trạng thái giao dịch thanh toán thất bại vào CSDL của bạn
-            res.status(200).json({ RspCode: "00", Message: "Success" });
+            try {
+              const reservation = await Reservation.findByIdAndDelete(orderId);
+              
+          } catch (err) {
+              next(err);
+          }
+            res.redirect("http://localhost:3000/bookings");
+            // res.status(200).json({ RspCode: "00", Message: "Success" });
            
           }
         } 

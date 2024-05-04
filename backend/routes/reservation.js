@@ -1,6 +1,6 @@
 import express from "express"
 import { createReservation ,getReservations,updateReservation,deleteAllReservations,
-    getAllHotelRevenue,getRevenueByHotelId,getRevenueMonthsByHotelId
+    getAllHotelRevenue,getRevenueByHotelId,getRevenueMonthsByHotelId,deleteReservationById
 } from "../controllers/reservation.js"
 import { verifyAdmin,verifyUserModifyHotel } from "../utils/verifyToken.js";
 const router = express.Router();
@@ -17,6 +17,9 @@ router.put("/:id",updateReservation)
 
 //DELETE ALL 
 router.delete("/",deleteAllReservations)
+// DELETE BY ID
+router.delete("/:id",deleteReservationById)
+
 
 
 // doanh thu

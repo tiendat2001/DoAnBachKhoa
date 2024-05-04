@@ -89,8 +89,20 @@ export const deleteAllReservations = async (req, res, next) => {
         next(err)
     }
 }
-
-
+// XÓA RESERVATION THEO ID
+export const deleteReservationById = async (req, res, next) => {
+   
+    try {
+        const reservation = await Reservation.findByIdAndDelete(req.params.id);
+        if (reservation) {
+            res.status(200).json('Reservation deleted successfully.');
+        } else {
+            res.status(404).json('Reservation not found.');
+        }
+    } catch (err) {
+        next(err);
+    }
+};
 
 // THỐNG KÊ DOANH THU ALL HOTEL (CHO BÊN ADMINISTRATOR)
 export const getAllHotelRevenue = async (req, res, next) => {
