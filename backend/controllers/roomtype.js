@@ -216,6 +216,7 @@ export const cancelRoomReservation = async (req, res, next) => {
     }
 
      // chỉnh điều kiện chỗ này, lấy ra roomNumber là 1 json phòng nhỏ
+     // lọc từ dưới lên mảng roomNumbers, lấy ra phần tử có unavailableRangeDates phù hợp gán vào roomNumberCurrent
       let roomNumberCurrent = null;
       for (let i = room.roomNumbers.length - 1; i >= 0; i--) {
         const roomNumberData = room.roomNumbers[i];
@@ -246,7 +247,7 @@ export const cancelRoomReservation = async (req, res, next) => {
 
 
 
-   
+   // Xóa dateRangeUnavailable và unavailableDates của roomNumberCurrent vừa tìm đc trong quá trình lặp ở trên
 
     // tim cac phan tu can xoa trong mang
     const indexesToRemove = [];
@@ -295,7 +296,8 @@ export const cancelRoomReservation = async (req, res, next) => {
     let roomNumberLoop = null;
     const roomNumberCurrentIndex = room.roomNumbers.findIndex(number => number._id.toString() == roomNumberCurrent._id);
     console.log(roomNumberCurrentIndex)
-    // tìm các phần tử ở dưới phần tử roomNumberCurrent
+
+    //Sau khi xóa unavailableDates và dateRangeUnavail,  tìm các phần tử ở dưới phần tử roomNumberCurrent để tìm liệu có phần tử nào thay thế
 
     let roomNumberToReplace = null;
     let dateRangeToReplace = null;
@@ -318,7 +320,7 @@ export const cancelRoomReservation = async (req, res, next) => {
 
         });
 
-        // có thể đẩy unavai lên trên
+        // có phần tử ở dưới roomNumberCurrent có unavailableDates để xóa thay cho roomNumberCurrent
         if (matchingDateRange) {
           console.log("Có phòng ở dưới có unavai thỏa mãn đẩy đc lên trên")
           roomNumberToReplace = roomNumberData;
@@ -329,7 +331,8 @@ export const cancelRoomReservation = async (req, res, next) => {
       }
     }
 
-    // đẩy unavai,range đấy lên với roomNumberToReplace,allDatesToReplace vào chỗ currentRoomNumber
+    // đẩy lại unavai,range đấy lên với roomNumberToReplace,allDatesToReplace vào chỗ currentRoomNumber  
+    // (roomNumberToReplace là rỗng- tức ko có phần tử ở dưới nào thay đc thì ko cần làm gì tiếp)
     if (roomNumberToReplace) {
       const { startDateRange, endDateRange } = dateRangeToReplace;
       // console.log(startDateRangeToReplace)
@@ -389,13 +392,7 @@ export const cancelRoomReservation = async (req, res, next) => {
       );
 
       await roomModifiedDateRangeTwo.save();
-
-
-
     }
-
-
-
     res.status(200).json("Room reservation has been canceled successfully.");
   } catch (err) {
     next(err);
