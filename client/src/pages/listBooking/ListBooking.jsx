@@ -73,7 +73,7 @@ const ListBooking = () => {
             });
             // console.log(`Room ${roomId} updated successfully.`);
           } catch (err) {
-            // console.error(`Error for room ${roomId}:`, err);
+            console.error(err);
             hasError = true;
           }
         }
