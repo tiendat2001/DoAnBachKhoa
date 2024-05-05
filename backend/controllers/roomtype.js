@@ -112,7 +112,7 @@ export const updateRoomAvailability = async (req, res, next) => {
           }
         }
       );
-     
+
     }
     res.status(200).json("Room status has been updated.");
   } catch (err) {
@@ -196,7 +196,7 @@ export const getRoomById = async (req, res, next) => {
   }
 };
 // hàm lấy allDates
-const getDatesInRange = (startDate, endDate) => {
+export const getDatesInRange = (startDate, endDate) => {
   const start = new Date(startDate);
   const end = new Date(endDate);
   const date = new Date(start.getTime());
@@ -212,6 +212,7 @@ export const cancelRoomReservation = async (req, res, next) => {
   try {
     console.log("bat dau")
     const { startDateRange, endDateRange } = req.body.unavailableRangeDates;
+    console.log(startDateRange)
     //   // lấy ra typeRoom to
     let room = await Room.findById(req.params.id);
     if (!room) {

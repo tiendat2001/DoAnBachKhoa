@@ -114,19 +114,19 @@ const Reserve = () => {
 
 
     // đẩy available
-    // try {
-    //   const copiedRoomIds = [...selectedRoomIdsReserved];
-    //   const res = await axios.put(`/rooms/availability/`, {
-    //     selectedRoomIdsReserved: copiedRoomIds,
-    //     dates: alldates,
-    //     startDateRange: startDate,
-    //     endDateRange: endDate,
+    try {
+      const copiedRoomIds = [...selectedRoomIdsReserved];
+      const res = await axios.put(`/rooms/availability/`, {
+        selectedRoomIdsReserved: copiedRoomIds,
+        dates: alldates,
+        startDateRange: startDate,
+        endDateRange: endDate,
 
-    //   });
-    // } catch (error) {
-    //   console.log(error)
+      });
+    } catch (error) {
+      console.log(error)
 
-    // }
+    }
 
 
     // tạo order
