@@ -9,6 +9,8 @@ import closedRoomRoute from "./routes/closedRoom.js"
 import mongoose from "mongoose"
 import cookieParser from "cookie-parser"
 import cors from "cors"
+import paymentRoute from "./routes/payment.js"
+
 
 const app = express()
 
@@ -39,6 +41,7 @@ app.use("/api/hotels", hotelsRoute)
 app.use("/api/rooms", roomsRoute)
 app.use("/api/reservation", reservationRoute)
 app.use("/api/closedRoom", closedRoomRoute)
+app.use("/api/payment", paymentRoute)
 
 
 
