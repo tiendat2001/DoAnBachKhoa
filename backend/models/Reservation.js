@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const ReservationSchema = new mongoose.Schema({
-    username:{
+    userId:{
         type:String,
         required:true,
     },

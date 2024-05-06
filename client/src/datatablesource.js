@@ -67,7 +67,7 @@ export const roomColumns = [
 
   // cột danh sách reservations
   export const ReservationColumns = [
-    { field: "username", headerName: "Tài khoản", width: 80 },
+    { field: "userId", headerName: "Tài khoản", width: 80 },
     {
       field: "start",
       headerName: "Check-in",

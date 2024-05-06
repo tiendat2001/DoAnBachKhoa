@@ -33,14 +33,14 @@ const INITIAL_STATE =
 
 const ListReservation = () => {
     const { user } = useContext(AuthContext) // {user._id}
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
-    const decodedToken = jwtDecode(token);
+    // const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    // const decodedToken = jwtDecode(token);
     const searchContext = useContext(SearchContext);
     const [dates, setDates] = useState(searchContext.dates);
     //date này để lọc trong API query
     const [datesToFilter, setDatesToFilter] = useState(INITIAL_STATE);
     const { data: reservationData, loading: reservationLoading, error: reservationError,
-        reFetch: reservationReFetch } = useFetch(`/reservation?idOwnerHotel=${decodedToken.id}&startDay=${datesToFilter[0].startDate}&endDay=${datesToFilter[0].endDate}`);
+        reFetch: reservationReFetch } = useFetch(`/reservation/admin?startDay=${datesToFilter[0].startDate}&endDay=${datesToFilter[0].endDate}`);
     const [openDate, setOpenDate] = useState(false);
     
     // đổi giá trị hiển thị trên lịch

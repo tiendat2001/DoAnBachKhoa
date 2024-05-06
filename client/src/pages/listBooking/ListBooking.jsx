@@ -10,9 +10,9 @@ import { format, addDays, subDays, subHours } from "date-fns";
 import { confirmAlert } from 'react-confirm-alert';
 import { toast } from 'react-toastify';
 const ListBooking = () => {
-  const { user } = useContext(AuthContext)
+  // const { user } = useContext(AuthContext)
   const { data, loading, error, reFetch } = useFetch(
-    `/reservation?username=${user.username}`
+    `/reservation/client`
   );
 
   const handleCancelReserve = async (allDatesReserve, roomNumbersId, reservationId, startDate, endDate, roomTypeIdsReserved) => {

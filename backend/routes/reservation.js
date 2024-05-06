@@ -1,15 +1,19 @@
 import express from "express"
-import { createReservation ,getReservations,updateReservation,deleteAllReservations,
-    getAllHotelRevenue,getRevenueByHotelId,getRevenueMonthsByHotelId
+import { createReservation ,getReservationsByAdmin,updateReservation,deleteAllReservations,
+    getAllHotelRevenue,getRevenueByHotelId,getRevenueMonthsByHotelId,getAllReservations,getReservationsByClient
 } from "../controllers/reservation.js"
-import { verifyAdmin,verifyUserModifyHotel } from "../utils/verifyToken.js";
+import { verifyAdmin,verifyUserModifyHotel,verifyToken } from "../utils/verifyToken.js";
 const router = express.Router();
 
 //CREATE
-router.post("/", createReservation);
+router.post("/",verifyToken, createReservation);
 
 //GET
-router.get("/",getReservations)
+router.get("/admin",verifyToken,getReservationsByAdmin)
+router.get("/client",verifyToken,getReservationsByClient)
+
+//postman
+router.get("/getall",getAllReservations)
 
 //PUT
 router.put("/:id",updateReservation)

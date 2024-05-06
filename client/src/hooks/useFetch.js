@@ -16,6 +16,7 @@ const useFetch = (url) => {
           // Redirect to login page
           window.location.href = '/login'; // Thay đổi đường dẫn đến trang đăng nhập của bạn
         } else {
+          console.log(err)
           setError(err);
         }
       }

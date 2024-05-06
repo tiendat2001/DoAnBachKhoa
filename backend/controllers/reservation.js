@@ -5,6 +5,7 @@ import Room from "../models/RoomType.js"
 import { startOfMonth, endOfMonth, subMonths, addHours, subHours } from 'date-fns';
 
 export const createReservation = async (req, res, next) => {
+    req.body.userId = req.user.id;
     const newReservation = new Reservation(req.body)
     try {
         const savedReservation = await newReservation.save()
@@ -13,15 +14,26 @@ export const createReservation = async (req, res, next) => {
         next(err)
     }
 }
+// GET ALL RESERVATION
+export const getAllReservations = async (req, res, next) => {
+    try {
+        // Lấy tất cả các đặt phòng từ cơ sở dữ liệu
+        const reservations = await Reservation.find();
+        res.status(200).json(reservations); // Trả về danh sách đặt phòng dưới dạng JSON
+    } catch (err) {
+        next(err); // Bắt lỗi và chuyển tiếp đến middleware xử lý lỗi tiếp theo
+    }
+}
 
-// lấy đơn đặt theo điều kiện (theo idOwner, và theo khoảng ngày)
-export const getReservations = async (req, res, next) => {
+// lấy đơn đặt theo điều kiện (theo idOwnerHotel, và theo khoảng ngày)
+export const getReservationsByAdmin = async (req, res, next) => {
     try {
         const { startDay, endDay, ...query } = req.query;
         let startDayRange;
         let endDayRange;
-
         
+        // tìm kiếm theo idOwnerHotel (req.user.id lấy từ req.cookie do chạy middlewware verifyToken)
+        query.idOwnerHotel = req.user.id;
         // Kiểm tra nếu startDay và endDay tồn tại trong req.query
         if (startDay && endDay) {
             // ở client gửi 14h GMT+7 nhưng ở đây console ra 14h giờ UTC, phải trừ đi 7h vì trong csdl lưu ngày là 7h UTC
@@ -66,6 +78,41 @@ export const getReservations = async (req, res, next) => {
         next(err)
     }
 }
+
+export const getReservationsByClient = async (req, res, next) => {
+    try {
+        // tìm kiếm theo userId-chủ đơn đặt phòng (req.user.id lấy từ req.cookie do chạy middlewware verifyToken)    
+         const Reservations = await Reservation.find({
+             userId:req.user.id
+         }
+             ).sort({ updatedAt: -1 });
+      
+        // console.log(startDayRange)
+        // console.log(endDayRange)
+        // console.log(Reservations)
+        // Map through each reservation and fetch hotel details
+        const populatedReservations = await Promise.all(Reservations.map(async (reservation) => {
+            const hotel = await Hotel.findById(reservation.hotelId);
+
+            if (hotel) {
+                // If hotel exists, add hotelName and hotelContact to the reservation
+                return {
+                    ...reservation.toObject(),
+                    hotelName: hotel.name,
+                    hotelContact: hotel.hotelContact
+                };
+            } else {
+                // If hotel does not exist, return reservation without hotel details
+                return reservation;
+            }
+        }));
+
+        res.status(200).json(populatedReservations);
+    } catch (err) {
+        next(err)
+    }
+}
+
 
 export const updateReservation = async (req, res, next) => {
     try {
