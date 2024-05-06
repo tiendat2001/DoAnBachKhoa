@@ -3,12 +3,14 @@ import "./navbar.css"
 import { Link } from "react-router-dom";
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from "react-router-dom";
-
+import axios from 'axios';
 const Navbar = () => {
   const {user , dispatch} = useContext(AuthContext)
 
   const navigate = useNavigate()
-  const handleLogout = ()=>{
+  const handleLogout = async ()=>{
+   
+    const res = await axios.post("/auth/logout");
     navigate("/login");
     dispatch({ type: "LOGOUT"});
     
@@ -23,7 +25,7 @@ const Navbar = () => {
             </Link>
 
            
-            {user.username ? (
+            {user?.username ? (
             <div className="logout">
              <Link to="/admin/hotels">
               <button className="navButton" >Quản lý chỗ nghỉ của bạn</button>
@@ -33,7 +35,7 @@ const Navbar = () => {
               <button className="navButton" >Đơn đặt phòng của bạn</button>
               </Link>
               
-            <h1 className="account">Xin chào,{user.username}</h1> 
+            <h1 className="account">Xin chào,{user?.username}</h1> 
             {/* <Link to="/login"> */}
 
               <button className="navButton" onClick={handleLogout} >Đăng xuất</button>

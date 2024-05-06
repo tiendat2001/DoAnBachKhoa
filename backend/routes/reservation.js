@@ -5,12 +5,12 @@ import { createReservation ,getReservationsByAdmin,updateReservation,deleteAllRe
 import { verifyAdmin,verifyUserModifyHotel,verifyToken } from "../utils/verifyToken.js";
 const router = express.Router();
 
-//CREATE
+//CREATE verify token để truyền vào userId sẽ lấy từ id của token trong cookie của request
 router.post("/",verifyToken, createReservation);
 
 //GET
-router.get("/admin",verifyToken,getReservationsByAdmin)
-router.get("/client",verifyToken,getReservationsByClient)
+router.get("/admin",verifyToken,getReservationsByAdmin) // ListReservation
+router.get("/client",verifyToken,getReservationsByClient) // listBooking
 
 //postman
 router.get("/getall",getAllReservations)
