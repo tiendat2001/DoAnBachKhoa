@@ -21,7 +21,7 @@ export const getReservations = async (req, res, next) => {
         let startDayRange;
         let endDayRange;
 
-
+        
         // Kiểm tra nếu startDay và endDay tồn tại trong req.query
         if (startDay && endDay) {
             // ở client gửi 14h GMT+7 nhưng ở đây console ra 14h giờ UTC, phải trừ đi 7h vì trong csdl lưu ngày là 7h UTC

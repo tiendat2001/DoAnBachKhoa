@@ -12,7 +12,12 @@ const useFetch = (url) => {
         const res = await axios.get(url);
         setData(res.data);
       } catch (err) {
-        setError(err);
+        if (err.response && err.response.status === 401) {
+          // Redirect to login page
+          window.location.href = '/login'; // Thay đổi đường dẫn đến trang đăng nhập của bạn
+        } else {
+          setError(err);
+        }
       }
       setLoading(false);
     };

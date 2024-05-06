@@ -9,7 +9,7 @@ router.post("/:hotelid", verifyUserModifyHotel, createRoom);
 //UPDATE avai
 router.put("/availability/:id", updateRoomAvailability);
 
-router.put("/cancelAvailability/:id", cancelRoomReservation);
+router.put("/cancelAvailability/:id", cancelRoomReservation); // id ở đây là id của typeRoom phòng lớn
 
 
 
