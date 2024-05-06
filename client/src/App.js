@@ -25,6 +25,7 @@ import AllHotelPayment from "./pages/administratorPages/AllHotelPayment/AllHotel
 import { getCookie } from 'react-use-cookie';
 import RoomDetails from "./pages/adminPages/RoomDetails/RoomDetails";
 import ModifyRoomCount from "./pages/adminPages/ModifyRoomCount/ModifyRoomCount";
+import StatusTransaction from "./pages/StatusTransaction/StatusTransaction";
 function App() {
 
 
@@ -62,6 +63,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/bookings" element={<ListBooking />} />
         <Route path="/reserve" element={<Reserve />} />
+        <Route path="/statusTransaction/success" element={<StatusTransaction status="success" />} />
+        <Route path="/statusTransaction/fail" element={<StatusTransaction status="fail" />} />
 
         {/* tổng doanh thu all hotel */}
         <Route path="/administrator" element={<ProtectedAdministratorRoute><Administrator /></ProtectedAdministratorRoute>} />

@@ -143,7 +143,7 @@ router.get("/vnpay_ipn", async function (req, res, next) {
             // res.status(200).json({ RspCode: "00", Message: "Success" });
 
             // tự viết
-            res.redirect("http://localhost:3000/bookings");
+            res.redirect("http://localhost:3000/statusTransaction/success");
             // console.log("dfsdf")
             // res.status(200).json({ RspCode: "00", Message: "Success" });
           } else {
@@ -394,7 +394,7 @@ router.get("/vnpay_ipn", async function (req, res, next) {
             } catch (err) {
               next(err);
             }
-            res.redirect("http://localhost:3000/bookings");
+            res.redirect("http://localhost:3000/statusTransaction/fail");
             // res.status(200).json({ RspCode: "00", Message: "Success" });
 
           }
