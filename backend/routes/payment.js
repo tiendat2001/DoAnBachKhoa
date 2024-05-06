@@ -8,7 +8,7 @@ import crypto from "crypto"
 import Reservation from "../models/Reservation.js";
 import Room from "../models/RoomType.js"
 import axios from 'axios';
-
+import request from "request"
 router.post("/create_payment_url", function (req, res, next) {
   process.env.TZ = "Asia/Ho_Chi_Minh";
 
@@ -497,17 +497,19 @@ router.post("/refund", function (req, res, next) {
   process.env.TZ = "Asia/Ho_Chi_Minh";
   let date = new Date();
 
-  let config = require("config");
-  let crypto = require("crypto");
-
+  // let config = require("config");
+  // let crypto = require("crypto");
+  console.log("refund")
   let vnp_TmnCode = config.get("vnp_TmnCode");
   let secretKey = config.get("vnp_HashSecret");
   let vnp_Api = config.get("vnp_Api");
 
   let vnp_TxnRef = req.body.orderId;
-  let vnp_TransactionDate = req.body.transDate;
+  let vnp_TransactionDate =  moment(date).format("YYYYMMDDHHmmss");
   let vnp_Amount = req.body.amount * 100;
-  let vnp_TransactionType = req.body.transType;
+  
+  let vnp_TransactionType = "03"
+
   let vnp_CreateBy = req.body.user;
 
   let currCode = "VND";
@@ -572,7 +574,6 @@ router.post("/refund", function (req, res, next) {
     vnp_IpAddr: vnp_IpAddr,
     vnp_SecureHash: vnp_SecureHash,
   };
-
   request(
     {
       url: vnp_Api,
