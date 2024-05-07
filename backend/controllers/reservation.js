@@ -31,7 +31,7 @@ export const getReservationsByAdmin = async (req, res, next) => {
         const { startDay, endDay, ...query } = req.query;
         let startDayRange;
         let endDayRange;
-        
+
         // tìm kiếm theo idOwnerHotel - những đơn của chủ tài khoản (req.user.id lấy từ req.cookie do chạy middlewware verifyToken)
         query.idOwnerHotel = req.user.id;
         // Kiểm tra nếu startDay và endDay tồn tại trong req.query
@@ -82,11 +82,11 @@ export const getReservationsByAdmin = async (req, res, next) => {
 export const getReservationsByClient = async (req, res, next) => {
     try {
         // tìm kiếm theo userId-chủ đơn đặt phòng (req.user.id lấy từ req.cookie do chạy middlewware verifyToken)    
-         const Reservations = await Reservation.find({
-             userId:req.user.id
-         }
-             ).sort({ updatedAt: -1 });
-      
+        const Reservations = await Reservation.find({
+            userId: req.user.id
+        }
+        ).sort({ updatedAt: -1 });
+
         // console.log(startDayRange)
         // console.log(endDayRange)
         // console.log(Reservations)
@@ -144,7 +144,7 @@ export const getAllHotelRevenue = async (req, res, next) => {
     try {
         const { month } = req.query
         const currentDate = addHours(new Date(), 7);
-
+        // // tháng 3 thì ngày bắt đầu 2024-03-01T00:00:00.000Z, kết thúc 2024-03-31T23:59:59.999Z
         // khoảng ngày để tính doanh thu tháng trước
         const startDate = addHours(startOfMonth(subMonths(currentDate, 1)), 7);
         const endDate = addHours(endOfMonth(subMonths(currentDate, 1)), 7);
@@ -221,6 +221,66 @@ export const getAllHotelRevenue = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+}
+// KHOẢN TIỀN CẦN THANH TOÁN CHO TỪNG TÀI KHOẢN THÁNG TRC - ADMINISTRATOR
+export const paymentAccountLastMonth = async (req, res, next) => {
+    const currentDate = addHours(new Date(), 7);
+    // // tháng 3 thì ngày bắt đầu 2024-03-01T00:00:00.000Z, kết thúc 2024-03-31T23:59:59.999Z
+    // khoảng ngày để tính doanh thu tháng trước
+    const startDateLastMonth = addHours(startOfMonth(subMonths(currentDate, 1)), 7);
+    const endDateLastMonth = addHours(endOfMonth(subMonths(currentDate, 1)), 7);
+    let reservations;
+    reservations = await Reservation.find({
+        status: true,
+        start: {
+            $gte: startDateLastMonth,
+            $lte: endDateLastMonth
+        }
+    });
+
+
+    // nhóm theo idOnwerHotel và tính tổng giá
+    const groupedReservations = await Reservation.aggregate([
+        {
+            $match: {
+                status: true,
+                start: {
+                    $gte: startDateLastMonth,
+                    $lte: endDateLastMonth
+                }
+            }
+        },
+        {
+            $group: {
+                _id: "$idOwnerHotel", // Phân nhóm theo idOwnerHotel
+                totalPrice: { $sum: "$totalPrice" } // Tính tổng totalPrice cho mỗi nhóm
+            }
+        },
+        {
+            $project: {
+                _id: 0, // Loại bỏ trường _id được tạo ra từ phân nhóm
+                idOwnerHotel: "$_id", // Đổi tên trường _id thành idOwnerHotel
+                totalPrice: 1 // Giữ lại trường totalPrice
+            }
+        }
+    ]);
+
+    // thêm trường email cho kết quả tìm đc
+    let enrichedReservations = [];
+    for (let i = 0; i < groupedReservations.length; i++) {
+        const reservation = groupedReservations[i];
+        const user = await User.findById(reservation.idOwnerHotel);
+        if (user) {
+            const { email,paymentInfo } = user;
+            enrichedReservations.push({
+                totalPrice: reservation.totalPrice,
+                idOwnerHotel: reservation.idOwnerHotel,
+                email: email,
+                paymentInfo:paymentInfo
+            });
+        }
+    }
+    res.status(200).json(enrichedReservations);
 }
 
 // statistic từng hotel

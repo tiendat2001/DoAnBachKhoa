@@ -1,6 +1,6 @@
 import express from "express"
 import { createReservation ,getReservationsByAdmin,updateReservation,deleteAllReservations,
-    getAllHotelRevenue,getRevenueByHotelId,getRevenueMonthsByHotelId,getAllReservations,getReservationsByClient
+    getAllHotelRevenue,getRevenueByHotelId,getRevenueMonthsByHotelId,getAllReservations,getReservationsByClient,paymentAccountLastMonth
 } from "../controllers/reservation.js"
 import { verifyAdmin,verifyUserModifyHotel,verifyToken } from "../utils/verifyToken.js";
 const router = express.Router();
@@ -24,13 +24,18 @@ router.delete("/",deleteAllReservations)
 
 
 // doanh thu
-// GET ALL DOANH THU HOTEL CHO ADMIN
-router.get("/getAllRevenueHotel",getAllHotelRevenue)  // cho theem verifyAdmin de chi admin goi api dc
 
 // GET DOANH THU SO LIEU TUNG HOTEL
 router.get("/getRevenue/:hotelId",getRevenueByHotelId)
 
 // GET DOANH THU THEO THANG TUNG HOTEL
 router.get("/getRevenueByMonths/:hotelId",getRevenueMonthsByHotelId)
+
+//ADMINISTRATOR
+// GET ALL DOANH THU HOTEL CHO ADMINISTRATOR
+router.get("/getAllRevenueHotel",getAllHotelRevenue)   // cho theem verifyAdmin de chi admin goi api dc
+
+// TIỀN CẦN THANH TOÁN CHO TÀI KHOẢN THÁNG TRC
+router.get("/getAllPaymentAccount",paymentAccountLastMonth)   // cho theem verifyAdmin de chi admin goi api dc
 
 export default router
