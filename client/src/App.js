@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect,useState } from "react";
 import "./App.css";
 import Home from "./pages/home/Home";
 import List from "./pages/list/List";
@@ -26,33 +26,92 @@ import { getCookie } from 'react-use-cookie';
 import RoomDetails from "./pages/adminPages/RoomDetails/RoomDetails";
 import ModifyRoomCount from "./pages/adminPages/ModifyRoomCount/ModifyRoomCount";
 import StatusTransaction from "./pages/StatusTransaction/StatusTransaction";
+import axios from 'axios';
 function App() {
 
 
   const ProtectedRoute = ({ children }) => {
-    const { user } = useContext(AuthContext);
-    const userToken = getCookie('access_token');
-    // console.log(userToken)
-    // chua dang nhap (user sẽ mảng rỗng) thi tu dong nhay sang trang login, có user sẵn trong localSto và token trong cookie thì k cần login
-    if (!user.username || !userToken) {
-      return <Navigate to="/login" />;
-    }
+    // const { user } = useContext(AuthContext);
+    // const userToken = getCookie('access_token');
+    // // console.log(userToken)
+    // // chua dang nhap (user sẽ mảng rỗng) thi tu dong nhay sang trang login, có user sẵn trong localSto và token trong cookie thì k cần login
+    // if (!user.username || !userToken) {
+    //   return <Navigate to="/login" />;
+    // }
 
-    return children;
+    // return children;
+
+    // check api
+    const [loading, setLoading] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [firstLoad, setFirstLoad] = useState(true);
+
+    useEffect(() => {
+        const checkAccessToken = async () => {
+            try {
+                const response = await fetch('/auth/checkHasAccessToken');
+                if (response.status === 200) {
+                    setIsLoggedIn(true);
+                }
+            } catch (error) {
+                console.error('Error checking access token:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkAccessToken();
+    }, []);
+
+    if (loading) {
+      return <h1>d</h1>;
+  }
+    if (isLoggedIn) {
+        return children;
+    } else {
+        return <Navigate to="/login" />;
+    }
   };
 
   const ProtectedAdministratorRoute = ({ children }) => {
-    const { user } = useContext(AuthContext);
+    // const { user } = useContext(AuthContext);
     // đang bỏ tạm 
-
     // const userToken = getCookie('access_token');
     // console.log(user)
     // if (!user||!user.isAdmin) {
     //   return <Navigate to="/login" />;
     // }
+   
+    const [loading, setLoading] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [firstLoad, setFirstLoad] = useState(true);
+    useEffect(() => {
+        const checkAccessToken = async () => {
+            try {
+                const response = await fetch('/auth/checkHasAccessTokenAdministrator');
+                if (response.status === 200) {
+                    setIsLoggedIn(true);
+                }
+            } catch (error) {
+                console.error('Error checking access token:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        checkAccessToken();
+    }, []);
 
-    return children;
-  };
+    if (loading) {
+      return <h1>d</h1>;
+  }
+
+    if (isLoggedIn) {
+        return children;
+    } else {
+        return <Navigate to="/login" />;
+    }
+}
+
   return (
     <BrowserRouter>
       <Routes>

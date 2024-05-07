@@ -17,14 +17,16 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { AuthContext } from "../../../context/AuthContext";
+import axios from "axios";
 const SidebarAdministrator = () => {
   // const { dispatch } = useContext(DarkModeContext);
   const {user , dispatch} = useContext(AuthContext)
 
   const navigate = useNavigate();
-  const handleLogOut = (e) => {
+  const handleLogOut = async (e) => {
     e.preventDefault();
     try {
+      const res = await axios.post("/auth/logout");
       dispatch({ type: "LOGOUT"});
       navigate("/login");
     } catch (err) {}
@@ -63,14 +65,14 @@ const SidebarAdministrator = () => {
             </li>
           </Link>
          
-          <p className="title">USER</p>
+          <p className="title">TÀI KHOẢN</p>
           <li>
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>
           <li onClick={handleLogOut}>
             <ExitToAppIcon className="icon" />
-            <span>Logout</span>
+            <span>Đăng xuất</span>
           </li>
         </ul>
       </div>

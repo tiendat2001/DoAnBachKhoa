@@ -11,7 +11,7 @@ const NavbarAdmin = () => {
 
   return (
     <div className="navbarAdmin">
-        <h1 className="navbarAdmin_username">Hello, {user.username}</h1>
+        <h1 className="navbarAdmin_username">Hello, {user?.username}</h1>
     </div>
   );
 };

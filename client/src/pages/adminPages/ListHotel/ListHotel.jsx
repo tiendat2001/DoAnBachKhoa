@@ -27,7 +27,7 @@ const ListHotel = () => {
         `/hotels?ownerId=${decodedToken.id}`);
     // lấy ra những đơn đặt phòng trong tương lai
     const { data: reservationData, loading: reservationLoading, error: reservationError,
-        reFetch: reservationReFetch } = useFetch(`/reservation?idOwnerHotel=${decodedToken.id}&startDay=${currentDate}&endDay=${endLessDate}&status=true`);
+        reFetch: reservationReFetch } = useFetch(`/reservation/admin/?idOwnerHotel=${decodedToken.id}&startDay=${currentDate}&endDay=${endLessDate}&status=true`);
     // console.log(reservationData)
     const navigate = useNavigate();
     const handleDelete = (hotelId) => {

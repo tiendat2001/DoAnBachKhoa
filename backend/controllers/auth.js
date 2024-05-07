@@ -41,7 +41,7 @@ export const login = async (req, res, next) => {
     const { password, isAdmin, ...otherDetails } = user._doc;
     res
       .cookie("access_token", token, {
-        maxAge: 7 * 24 * 60 * 60 * 1000 
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 ngày
       })
     // httpOnly: true, // de bao mat hon , ko duoc truy cap cookie qua javascript
     //  res.cookie("user_id", user._id.toString(), {
@@ -59,4 +59,31 @@ export const logout = (req, res) => {
 
   // Trả về mã trạng thái 200 (OK) hoặc bất kỳ phản hồi nào bạn muốn trả về
   res.status(200).send("Logged out successfully");
+}
+
+// nếu qua đc middleware thì là có token
+export const checkHasToken = (req, res, next) => {
+  // check time expire token
+  const token = req.cookies.access_token;
+  jwt.verify(token, process.env.JWT, (err, decoded) => {
+
+    // Nếu giải mã thành công, kiểm tra thời hạn của token
+    const currentTimestamp = Math.floor(Date.now() / 1000); // Thời gian hiện tại tính bằng giây
+    const issuedAtTimestamp = decoded.iat;
+    const tokenAgeInSeconds = currentTimestamp - issuedAtTimestamp;
+    const tokenAgeInDays = Math.floor(tokenAgeInSeconds / (24 * 60 * 60));
+    if (tokenAgeInDays > 5) { // hạn tổng là 7
+      // Nếu token đã tồn tại quá 5 ngày
+      return next(createError(401, "Token has been alive for more than 5 day"));
+    } else {
+      // Nếu token còn hạn, tiếp tục xử lý
+      res.status(200).json("Token còn hạn hơn 2 ngày");
+    }
+  
+  });
+}
+
+export const checkHasAccessTokenAdministrator = (req, res) => {
+
+  res.status(200).send("Có access Token administrator");
 }

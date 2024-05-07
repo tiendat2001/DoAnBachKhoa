@@ -32,7 +32,7 @@ export const getReservationsByAdmin = async (req, res, next) => {
         let startDayRange;
         let endDayRange;
         
-        // tìm kiếm theo idOwnerHotel (req.user.id lấy từ req.cookie do chạy middlewware verifyToken)
+        // tìm kiếm theo idOwnerHotel - những đơn của chủ tài khoản (req.user.id lấy từ req.cookie do chạy middlewware verifyToken)
         query.idOwnerHotel = req.user.id;
         // Kiểm tra nếu startDay và endDay tồn tại trong req.query
         if (startDay && endDay) {
@@ -78,7 +78,7 @@ export const getReservationsByAdmin = async (req, res, next) => {
         next(err)
     }
 }
-
+// LIST BOOKING
 export const getReservationsByClient = async (req, res, next) => {
     try {
         // tìm kiếm theo userId-chủ đơn đặt phòng (req.user.id lấy từ req.cookie do chạy middlewware verifyToken)    

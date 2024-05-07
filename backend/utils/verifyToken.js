@@ -45,6 +45,9 @@ export const verifyUserModifyHotel = (req, res, next) => {
 
 export const verifyAdmin = (req, res, next) => {
   verifyToken(req, res,  (err) => {
+    if (err) {
+      return next(err); // Trả về lỗi nếu có lỗi từ hàm verifyToken
+    }
          // trong req co thuoc tinh user chứa chua truong id va isAdmin
     if (req.user && req.user.isAdmin) {
         // console.log("dat")

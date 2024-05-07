@@ -17,15 +17,18 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { AuthContext } from "../../../context/AuthContext";
+import axios from "axios";
 const Sidebar = () => {
   // const { dispatch } = useContext(DarkModeContext);
   const {user , dispatch} = useContext(AuthContext)
 
   const navigate = useNavigate();
-  const handleLogOut = (e) => {
+  const handleLogOut = async (e) => {
     e.preventDefault();
     try {
+
       dispatch({ type: "LOGOUT"});
+      const res = await axios.post("/auth/logout");
       navigate("/login");
     } catch (err) {}
   };
