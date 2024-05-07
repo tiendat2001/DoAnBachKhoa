@@ -41,7 +41,7 @@ export const login = async (req, res, next) => {
     const { password, isAdmin, ...otherDetails } = user._doc;
     res
       .cookie("access_token", token, {
-
+        maxAge: 7 * 24 * 60 * 60 * 1000 
       })
     // httpOnly: true, // de bao mat hon , ko duoc truy cap cookie qua javascript
     //  res.cookie("user_id", user._id.toString(), {

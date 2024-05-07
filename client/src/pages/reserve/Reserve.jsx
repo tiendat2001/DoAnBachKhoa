@@ -30,10 +30,19 @@ const Reserve = () => {
   const { data: roomData, loading, error, reFetch } = useFetch(`/rooms/${hotelId}`);
   const { data: hotelData, loading: hotelLoading, error: hotelError } = useFetch(`/hotels/find/${hotelId}`);
   const [reFreshRoomData, setReFreshRoomData] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+  const [paymentType, setPaymentType] = useState();
+  const handlePaymentTypeChange = (event) => {
+    setPaymentType(event.target.value);
+  };
+  const handlePhoneNumberChange = (event) => {
+    setPhoneNumber(event.target.value);
+  };
+  console.log(paymentType)
   var totalPrice = 0;
   var maxPeople = 0;
   // console.log(startDate)
-  // lấy ra id roomType cùng số lượng
+  // lấy ra id roomType cùng số lượng - dùng để cho vào reservation - để thống kê sau này
   const roomTypeIdsReserved = roomsDetailFromListClient.map(room => ({
     roomTypeId: room.roomTypeId,
     quantity: room.quantity
@@ -71,6 +80,11 @@ const Reserve = () => {
   const selectedRoomIdsReserved = []
   // đặt phòng
   const reserveRoom = async () => {
+    // check lại các trường
+    if (!paymentType || !phoneNumber) {
+      toast.error("Vui lòng nhập đầy đủ thông tin thanh toán")
+      return;
+    }
 
     selectedRoomIdsReserved.length = 0; // reset lại mảng
     await Promise.all(roomsDetailFromListClient.map(async (roomDetail) => {
@@ -138,7 +152,7 @@ const Reserve = () => {
     try {
       const newReservation = await axios.post(`/reservation`, {
         // username: user.username,
-        phoneNumber: "32423424",
+        phoneNumber: phoneNumber,
         start: startDate,
         end: endDate,
         roomNumbersId: selectedRoomIdsReserved,
@@ -166,7 +180,8 @@ const Reserve = () => {
     try {
       const response = await axios.post('/payment/create_payment_url', {
         reservationId: reservationId,
-        amount: totalPrice * alldates.length * 1000
+        amount: totalPrice * alldates.length * 1000,
+        paymentType:paymentType
       });
       let paymentUrl = response.data; // Giả sử API trả về link thanh toán trong trường 'paymentUrl'
       const startIndex = paymentUrl.indexOf('https://');
@@ -224,7 +239,40 @@ const Reserve = () => {
           fontWeight: 'bold', fontSize: '25px', padding: '10px'
         }}>  Thông tin thanh toán</div>
         <div className="ReserveDetailContainer">
-          <div>Bla</div>
+          <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '10px' }}>
+            {/* input nhập số điện thoại */}
+            <label htmlFor="phone">Nhập số điện thoại để đặt phòng:</label>
+            <input
+              type="text"
+              id="phone"
+              value={phoneNumber}
+              onChange={handlePhoneNumberChange}
+            />
+          </div>
+
+          {/* nhập hình thức thanh toán */}
+          <div>Chọn hình thức thanh toán"</div>
+          <label>
+            <input
+              type="radio"
+              name="paymentType"
+              value="VNBANK"
+              // checked={paymentType === "VNBANK"}
+              onChange={handlePaymentTypeChange}
+            />
+            Thanh toán thẻ ATM nội địa
+          </label>
+          <br />
+          <label>
+            <input
+              type="radio"
+              name="paymentType"
+              value="INTCARD"
+              // checked={paymentType === "INTCARD"}
+              onChange={handlePaymentTypeChange}
+            />
+            Thanh toán thẻ VISA
+          </label>
 
 
 

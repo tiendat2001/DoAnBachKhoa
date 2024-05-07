@@ -67,7 +67,7 @@ export const roomColumns = [
 
   // cột danh sách reservations
   export const ReservationColumns = [
-    { field: "userId", headerName: "Tài khoản", width: 80 },
+    { field: "_id", headerName: "Mã đặt phòng", width: 160 },
     {
       field: "start",
       headerName: "Check-in",
@@ -132,19 +132,19 @@ export const roomColumns = [
       headerAlign: 'center',
       align:'center'
     },
-    {
-      field: "createdAt",
-      headerName: "Thời gian đặt",
-      width: 115,
-      valueGetter: (params) => new Date(params.value).toLocaleDateString('vi-VN'),
-      headerAlign: 'center',
-      align:'center'
+    // {
+    //   field: "createdAt",
+    //   headerName: "Thời gian đặt",
+    //   width: 115,
+    //   valueGetter: (params) => new Date(params.value).toLocaleDateString('vi-VN'),
+    //   headerAlign: 'center',
+    //   align:'center'
 
-    },
+    // },
     {
       field: "phoneNumber",
       headerName: "Số điện thoại",
-      width: 100,
+      width: 120,
       headerAlign: 'center',
       align:'center'
     },

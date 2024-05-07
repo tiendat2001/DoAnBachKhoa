@@ -45,8 +45,8 @@ const RecentSeenHotel = () => {
     setMostViewedCity(mostViewedCity || "Hà Nội"); // Sử dụng "Hà Nội" làm giá trị mặc định nếu mostViewedCity rỗng
 
   }, [allHotelData]);
-  console.log(mostViewedCity)
-  console.log(suggestedHotel)
+  // console.log(mostViewedCity)
+  // console.log(suggestedHotel)
   // chỉ lấy những khách sạn mà người dùng chưa xem gần đây + lấy tối đa 3 ks để hiển thị
   const filteredHotels = suggestedHotel.filter(item => !recentHotelIds.includes(item._id));
   const limitedSuggestedHotels = filteredHotels.length > 3 ? filteredHotels.slice(0, 3) : filteredHotels;
