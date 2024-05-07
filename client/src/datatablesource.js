@@ -238,14 +238,14 @@ export const roomColumns = [
   export const allHotelPaymentColumn=
   [
     {
-      field: "hotelName",
-      headerName: "Tên chỗ nghỉ",
+      field: "idOwnerHotel",
+      headerName: "Id tài khoản",
       width: 350,
       headerAlign: 'center',
       align:'center'
     },
     {
-      field: "userOwner",
+      field: "email",
       headerName: "Email tài khoản chủ",
       width: 250,
       headerAlign: 'center',
@@ -253,8 +253,8 @@ export const roomColumns = [
     },
  
     {
-      field: "totalRevenue",
-      headerName: "Tổng doanh thu",
+      field: "totalPrice",
+      headerName: "Tổng tiền",
       width: 250,
       valueFormatter: (params) => {
         const multipliedValue = params.value * 1000;
@@ -274,7 +274,7 @@ export const roomColumns = [
       align: 'center',
       valueGetter: (params) => {
           // Lấy giá trị của trường "Tổng doanh thu" từ params.row
-          const totalRevenue = params.row.totalRevenue;
+          const totalRevenue = params.row.totalPrice;
           if (totalRevenue !== undefined && totalRevenue !== null) {
               return totalRevenue * 0.9*1000; // 90% của giá trị "totalRevenue"
           }
