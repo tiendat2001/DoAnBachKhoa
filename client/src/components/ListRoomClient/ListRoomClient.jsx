@@ -295,12 +295,18 @@ const ListRoomClient = ({ hotelId }) => {
           <div key={key} style={{ marginBottom: '10px', display: 'flex', justifyContent: 'flex-end',width: '20%',alignItems:'center',gap:'10px' }}>
 
             <select style={{height:'20px'}}  id={`select_${item._id}`} onChange={(event) => handleSelectChange(event, item.roomNumbers)}>
-              <option value={0}>0 phòng</option>
+              <option id={`defaultOption_${item._id}`} value={0}>0 phòng</option>
               {(() => {
                 let roomIndex = 0; // Khởi tạo biến đếm
-                return item.roomNumbers.map((roomNumber, index) => {
+                const maxOptions = 10; // Số lượng tối đa của option
+                let optionsCount = 0; // Biến đếm số lượng option đã được thêm vào
+                let hasAvailableRoom = false; // Biến kiểm tra xem có phòng nào thỏa mãn không
+                const options= item.roomNumbers.map((roomNumber, index) => {
+                  if (optionsCount >= maxOptions) return null; // Nếu đã thêm đủ số lượng tối đa option thì dừng
                   if (isAvailable(roomNumber)) {
                     roomIndex++; // Tăng giá trị biến đếm khi phòng thỏa mãn điều kiện
+                    optionsCount++; 
+                    hasAvailableRoom = true;
                     return (
                       <option key={roomNumber._id} value={roomIndex}>
                         {`${roomIndex} phòng`}
@@ -309,6 +315,13 @@ const ListRoomClient = ({ hotelId }) => {
                   }
                   return null;
                 });
+
+                // if(hasAvailableRoom){
+                //   return options
+                // } else{
+                  
+                // } 
+              
               })()}
             </select>
 
