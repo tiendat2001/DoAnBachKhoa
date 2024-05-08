@@ -15,10 +15,10 @@ import { toast } from 'react-toastify';
 import { jwtDecode } from "jwt-decode";
 
 const ListRoom = () => {
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
-    const decodedToken = jwtDecode(token);
+    // const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    // const decodedToken = jwtDecode(token);
     const { user } = useContext(AuthContext) // {user._id}
-    const { data: hotelData, loading: hotelLoading, error: hotelError, reFetch: hotelReFetch } = useFetch(`/hotels?ownerId=${decodedToken.id}`);
+    const { data: hotelData, loading: hotelLoading, error: hotelError, reFetch: hotelReFetch } = useFetch(`/hotels/getByAdmin`);
     const [hotelId, setHotelId] = useState(hotelData.length > 0 ? hotelData[0]._id : null);
     const { data: roomData, loading: roomLoading, error: roomError, reFetch: roomReFetch } = useFetch(`/rooms/${hotelId}`);
     const navigate= useNavigate()
@@ -65,7 +65,7 @@ const ListRoom = () => {
     const deleteRoom = async (typeRoomId) => {
 
         try {
-            const Success = await axios.delete(`/rooms/${typeRoomId}`, { data: { ownerId: decodedToken.id } });
+            const Success = await axios.delete(`/rooms/${typeRoomId}`);
 
             if (Success) {
                 // Nếu xóa thành công, tải lại dữ liệu

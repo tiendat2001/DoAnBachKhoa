@@ -25,7 +25,7 @@ export const getAllReservations = async (req, res, next) => {
     }
 }
 
-// lấy đơn đặt theo điều kiện (theo idOwnerHotel, và theo khoảng ngày)
+// lấy đơn đặt theo điều kiện (theo idOwnerHotel- so sánh với req.user.id trong token, và theo khoảng ngày)
 export const getReservationsByAdmin = async (req, res, next) => {
     try {
         const { startDay, endDay, ...query } = req.query;

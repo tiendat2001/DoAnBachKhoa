@@ -20,8 +20,8 @@ const ModifyHotel = () => {
     const [files, setFiles] = useState("");
     const [info, setInfo] = useState(data);
     // const [rooms, setRooms] = useState([]);
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
-    const decodedToken = jwtDecode(token);
+    // const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    // const decodedToken = jwtDecode(token);
     const { user } = useContext(AuthContext) // {user._id}
     // dùng để select default type chỗ nghỉ
     const defaultType = data.type;
@@ -62,8 +62,7 @@ const ModifyHotel = () => {
 
             const newModifyHotel = {
                 ...info,
-                ...(list.length > 0 && { photos: list }), // nếu người dùng có thêm ảnh vào thì set lại ảnh mới, ko thì giữ nguyên
-                ownerId: decodedToken.id // _id của tài khoản người dùng lấy từ access token
+                ...(list.length > 0 && { photos: list })// nếu người dùng có thêm ảnh vào thì set lại ảnh mới, ko thì giữ nguyên
             };
 
 

@@ -48,7 +48,7 @@ export const updateRoom = async (req, res, next) => {
     // tìm id của hotel có room sẽ chỉnh sửa
     const hotelToUpdate = await Hotel.findById(roomToUpdate.hotelId);
 
-    if (hotelToUpdate.ownerId !== req.body.ownerId) {
+    if (hotelToUpdate.ownerId !== req.user.id) {
       return res.status(403).json({ message: "You are not authorized to update room to this hotel" });
     }
     const updatedRoom = await Room.findByIdAndUpdate(
@@ -123,7 +123,7 @@ export const deleteRoom = async (req, res, next) => {
     // tìm id của hotel có room sẽ chỉnh sửa
     const hotelToUpdate = await Hotel.findById(roomToDelete.hotelId);
 
-    if (hotelToUpdate.ownerId !== req.body.ownerId) {
+    if (hotelToUpdate.ownerId !== req.user.id) {
       return res.status(403).json({ message: "You are not authorized to delete room from this hotel" });
     }
     // xóa room và cập nhật lại trong Hotel

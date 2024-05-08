@@ -1,19 +1,22 @@
 import express from "express"
 import Hotel from "../models/Hotel.js" // phai co .js
-import {createHotel, deleteHotel,getHotelById,  getHotels, updateHotel,countByCity,countByType ,getHotelRoomsType} from "../controllers/hotel.js";
+import {createHotel, deleteHotel,getHotelById,  getHotels, updateHotel,countByCity,countByType ,getHotelRoomsType,getHotelsByAdmin} from "../controllers/hotel.js";
 import { verifyAdmin, verifyUser,verifyToken,verifyUserModifyHotel } from "../utils/verifyToken.js";
 
 const router = express.Router()
 //CREATE
 router.post("/",createHotel);
 //UPDATE
-router.put("/:id",verifyUserModifyHotel, updateHotel); // trong body API sẽ có id của chủ sở hữu, so sánh nó token hiện tại
+router.put("/:id",verifyToken, updateHotel); 
 //DELETE
-router.delete("/:id",verifyUserModifyHotel,deleteHotel);
+router.delete("/:id",verifyToken,deleteHotel);
 //GET
 router.get("/find/:id", getHotelById);
-//GETALL hoặc get theo condition
+//GETALL hoặc get theo condition (cho client)
 router.get("/", getHotels);
+
+// GET NHỮNG HOTEL LÀ CỦA MÌNH (CHO BÊN ADMIN-NGƯỜI BÁN)
+router.get("/getByAdmin",verifyToken, getHotelsByAdmin);
 
 router.get("/countByCity", countByCity); // để ý api này sẽ bị nhầm với api get by id nếu ở trên ko ghi thêm chữ find
 

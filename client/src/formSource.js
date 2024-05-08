@@ -25,8 +25,8 @@ export const hotelInputs = [
     },
     {
       id: "distance",
-      label: "Distance from City Center",
-      type: "text",
+      label: "Khoảng cách đến trung tâm (m)",
+      type: "number",
       placeholder: "",
     },
     {

@@ -15,19 +15,19 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import { useEffect } from 'react';
 const currentDate = new Date();
-const endLessDate = addYears(currentDate, 1)
+const endLessDate = addYears(currentDate, 10)
 
 const ListHotel = () => {
     // token chứa _id tài khoản và isAdmin
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
-    const decodedToken = jwtDecode(token);
-    // console.log(decodedToken);
+    // const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    // const decodedToken = jwtDecode(token);
+    // // console.log(decodedToken);
     const { user } = useContext(AuthContext) // {user._id}
     const { data, loading, error, reFetch } = useFetch(
-        `/hotels?ownerId=${decodedToken.id}`);
+        `/hotels/getByAdmin`);
     // lấy ra những đơn đặt phòng trong tương lai
     const { data: reservationData, loading: reservationLoading, error: reservationError,
-        reFetch: reservationReFetch } = useFetch(`/reservation/admin/?idOwnerHotel=${decodedToken.id}&startDay=${currentDate}&endDay=${endLessDate}&status=true`);
+        reFetch: reservationReFetch } = useFetch(`/reservation/admin/?startDay=${currentDate}&endDay=${endLessDate}&status=true`);
     // console.log(reservationData)
     const navigate = useNavigate();
     const handleDelete = (hotelId) => {
@@ -59,22 +59,7 @@ const ListHotel = () => {
         });
     };
    
-   
-    // useEffect(() => {
-    //     // Lấy token từ cookie (hoặc từ nơi lưu trữ khác)
-    //     const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
-    
-    //     // Giải mã token và lấy thông tin bên trong
-    //     try {
-    //       const decodedToken = jwtDecode(token);
-    //       // decodedToken bây giờ chứa các thông tin bạn đã đặt trong token ở phía backend
-    //       console.log(decodedToken);
-    //       console.log("đ")
-    //     } catch (error) {
-    //       // Xử lý lỗi nếu có
-    //       console.error('Error decoding token:', error.message);
-    //     }
-    //   }, []);
+
     // hàm chuyển hướng
     const handleEditHotel = (itemId) => {
         navigate(`/admin/hotels/${itemId}`, { state: { previousPath: '/admin/hotels' } });
@@ -86,12 +71,12 @@ const ListHotel = () => {
         try {
             // Gửi yêu cầu xóa khách sạn đến máy chủ
 
-            const Success = await axios.delete(`/hotels/${hotelId}`, { data: { ownerId: decodedToken.id } });
+            const Success = await axios.delete(`/hotels/${hotelId}`);
 
             if (Success) {
                 // Nếu xóa thành công, tải lại dữ liệu
                 reFetch();
-                toast.success('Hotel deleted successfully!');
+                toast.success('Xóa thành công');
             } else {
                 toast.error('Failed to delete hotel. Please try again.');
             }
