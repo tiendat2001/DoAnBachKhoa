@@ -1,5 +1,6 @@
 import ClosedRoom from "../models/ClosedRoom.js";
 export const createClosedRoom = async (req, res, next) => {
+    req.body.ownerId = req.user.id; // Thêm ownerId từ req.user.id
     const newClosedRoom = new ClosedRoom(req.body)
     try {
         const savedClosedRoom = await newClosedRoom.save()

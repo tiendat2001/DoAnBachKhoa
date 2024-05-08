@@ -43,21 +43,21 @@ const ListRoom = () => {
         navigate(path, { state: { previousPath: '/admin/rooms' } });
     };
     const handleDelete = (typeRoomId) => {
-        // Kiểm tra xem có phần tử nào trong reservationDataFuture thỏa mãn điều kiện
-        const hasMatchingTypeRoomId = reservationDataFuture.some(reservation => {
-            // Kiểm tra xem reservation có thuộc tính roomTypeIdsReserved không
-            if (reservation.roomTypeIdsReserved) {
-                // Duyệt qua mỗi phần tử trong roomTypeIdsReserved để kiểm tra roomTypeId
-                return reservation.roomTypeIdsReserved.some(({ roomTypeId }) => roomTypeId === typeRoomId);
-            }
-            return false; // Nếu không có roomTypeIdsReserved, không thỏa mãn điều kiện
-        });
+        // // Kiểm tra xem phòng đấy có đơn sắp tới ko
+        // const hasMatchingTypeRoomId = reservationDataFuture.some(reservation => {
+        //     // Kiểm tra xem reservation có thuộc tính roomTypeIdsReserved không
+        //     if (reservation.roomTypeIdsReserved) {
+        //         // Duyệt qua mỗi phần tử trong roomTypeIdsReserved để kiểm tra roomTypeId
+        //         return reservation.roomTypeIdsReserved.some(({ roomTypeId }) => roomTypeId === typeRoomId);
+        //     }
+        //     return false; // Nếu không có roomTypeIdsReserved, không thỏa mãn điều kiện
+        // });
 
-        // Nếu có phần tử thỏa mãn điều kiện, hiển thị thông báo lỗi
-        if (hasMatchingTypeRoomId) {
-            toast.error("Loại phòng này sắp có đơn đặt sắp tới")
-            return; // Dừng hàm
-        }
+        // // Nếu có phần tử thỏa mãn điều kiện, hiển thị thông báo lỗi
+        // if (hasMatchingTypeRoomId) {
+        //     toast.error("Loại phòng này sắp có đơn đặt sắp tới")
+        //     return; // Dừng hàm
+        // }
         // xacs nhan xoa
         confirmAlert({
             title: 'Confirm',
