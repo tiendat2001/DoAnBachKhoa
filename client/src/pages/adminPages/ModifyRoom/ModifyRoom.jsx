@@ -39,6 +39,7 @@ const ModifyRoom = () => {
 
       // khi người dùng submit
       const handleClick = async (e) => {
+        setIsSending(true)
         e.preventDefault();
         try {
           const list = await Promise.all(
@@ -68,14 +69,14 @@ const ModifyRoom = () => {
     
             const Success = await axios.put(`/rooms/${idRoom}`, newModifyRoom);
             if (Success) {
+              setIsSending(false)
               toast.success('Thành công chỉnh sửa!');
               navigate(`/admin/rooms`);
     
-            } else toast.error("Error.Please try again");
-    
-    
-         
-    
+            } else{
+              toast.error("Error.Please try again");
+              setIsSending(false)
+            } 
     
         } catch (err) {
           console.log(error);
@@ -156,7 +157,7 @@ const ModifyRoom = () => {
                             ></textarea>
                             
                             <button onClick={handleClick} disabled={isSending}>
-                                {isSending ? 'Sending...' : 'Lưu thông tin loại phòng'}
+                                {isSending ? 'Đang lưu...' : 'Lưu thông tin loại phòng'}
                             </button>            
                             </form>
                     </div>

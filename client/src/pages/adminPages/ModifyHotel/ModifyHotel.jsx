@@ -19,6 +19,8 @@ const ModifyHotel = () => {
     // console.log(data)
     const [files, setFiles] = useState("");
     const [info, setInfo] = useState(data);
+    const [isSending, setIsSending] = useState(false);
+
     // const [rooms, setRooms] = useState([]);
     // const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
     // const decodedToken = jwtDecode(token);
@@ -42,6 +44,7 @@ const ModifyHotel = () => {
     console.log(info)
 
     const handleClick = async (e) => {
+        setIsSending(true)
         e.preventDefault();
         try {
             const list = await Promise.all(
@@ -70,14 +73,15 @@ const ModifyHotel = () => {
 
             const Success = await axios.put(`/hotels/${idHotel}`, newModifyHotel);
             if (Success) {
+                setIsSending(false)
                 toast.success('Thành công chỉnh sửa!');
-                  navigate("/admin/hotels");
+                navigate("/admin/hotels");
 
-            } else toast.error("Error.Please try again");
+            } else {
+                toast.error("Error.Please try again");
+                setIsSending(false)
 
-
-
-
+            }
 
         } catch (err) {
             console.log(error);
@@ -167,7 +171,9 @@ const ModifyHotel = () => {
                                         placeholder={data.desc}
                                         value={info.desc}
                                     ></textarea>
-                                    <button onClick={handleClick}>Lưu</button>
+                                    <button onClick={handleClick} disabled={isSending}>
+                                        {isSending ? 'Đang lưu...' : 'Lưu thông tin loại phòng'}
+                                    </button>
                                 </form>
                             </div>
 

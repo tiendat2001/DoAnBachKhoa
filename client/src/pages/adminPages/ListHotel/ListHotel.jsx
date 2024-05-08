@@ -58,15 +58,15 @@ const ListHotel = () => {
             ]
         });
     };
-   
+
 
     // hàm chuyển hướng
     const handleEditHotel = (itemId) => {
         navigate(`/admin/hotels/${itemId}`, { state: { previousPath: '/admin/hotels' } });
-      };
-      const handleStatisticHotel = (itemId) => {
+    };
+    const handleStatisticHotel = (itemId) => {
         navigate(`/admin/hotels/revenue/${itemId}`, { state: { previousPath: '/admin/hotels' } });
-      };
+    };
     const deleteHotel = async (hotelId) => {
         try {
             // Gửi yêu cầu xóa khách sạn đến máy chủ
@@ -95,9 +95,8 @@ const ListHotel = () => {
                 <div className="listHotelAdminContainer">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <h1>Your Hotels</h1>
-                        <Link to={`/admin/hotels/new`}>
-                            <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}>THÊM CHỖ NGHỈ MỚI</button>
-
+                        <Link to={`/admin/hotels/new`}>           
+                            <button className="addHotel_btn" >Thêm chỗ nghỉ mới</button>         
                         </Link>
                     </div>
 
@@ -119,19 +118,14 @@ const ListHotel = () => {
                                         {/* <span className="siTaxOp">Cho {options.adult} người, {days} đêm</span> */}
                                         {/* <Link to={`/hotels/${item._id}`}>
                                             </Link> */}
-                                         <button
-                                            style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}
-                                            onClick={() => handleStatisticHotel(item._id)}
-                                        >
-                                            Thống kê số liệu
-                                        </button>
                                         <button
-                                            style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }}
-                                            onClick={() => handleEditHotel(item._id)}
-                                        >
+                                            onClick={() => handleStatisticHotel(item._id)}
+                                        >Thống kê số liệu </button>
+                                            
+                                        <button onClick={() => handleEditHotel(item._id)} >
                                             Chỉnh sửa thông tin
                                         </button>
-                                        <button style={{ fontSize: '14px', backgroundColor: '#ccc', border: 'none', height: '40px' }} onClick={() => handleDelete(item._id)}>Xóa chỗ nghỉ</button>
+                                        <button onClick={() => handleDelete(item._id)}>Xóa chỗ nghỉ</button>
 
                                     </div>
                                 </div>

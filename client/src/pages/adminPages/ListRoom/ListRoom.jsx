@@ -13,7 +13,9 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { jwtDecode } from "jwt-decode";
-
+import { addYears } from "date-fns";
+const currentDate = new Date();
+const endLessDate = addYears(currentDate, 10)
 const ListRoom = () => {
     // const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
     // const decodedToken = jwtDecode(token);
@@ -21,7 +23,10 @@ const ListRoom = () => {
     const { data: hotelData, loading: hotelLoading, error: hotelError, reFetch: hotelReFetch } = useFetch(`/hotels/getByAdmin`);
     const [hotelId, setHotelId] = useState(hotelData.length > 0 ? hotelData[0]._id : null);
     const { data: roomData, loading: roomLoading, error: roomError, reFetch: roomReFetch } = useFetch(`/rooms/${hotelId}`);
-    const navigate= useNavigate()
+    // lấy ra những đơn đặt phòng trong tương lai
+    const { data: reservationDataFuture, loading: reservationLoading, error: reservationError,
+        reFetch: reservationReFetch } = useFetch(`/reservation/admin/?startDay=${currentDate}&endDay=${endLessDate}&status=true`);
+    const navigate = useNavigate()
     const handleHotelChange = (e) => {
         setHotelId(e.target.value);
     };
@@ -36,9 +41,23 @@ const ListRoom = () => {
     // chuyển hướng
     const handleNavigation = (path) => {
         navigate(path, { state: { previousPath: '/admin/rooms' } });
-      };
+    };
     const handleDelete = (typeRoomId) => {
+        // Kiểm tra xem có phần tử nào trong reservationDataFuture thỏa mãn điều kiện
+        const hasMatchingTypeRoomId = reservationDataFuture.some(reservation => {
+            // Kiểm tra xem reservation có thuộc tính roomTypeIdsReserved không
+            if (reservation.roomTypeIdsReserved) {
+                // Duyệt qua mỗi phần tử trong roomTypeIdsReserved để kiểm tra roomTypeId
+                return reservation.roomTypeIdsReserved.some(({ roomTypeId }) => roomTypeId === typeRoomId);
+            }
+            return false; // Nếu không có roomTypeIdsReserved, không thỏa mãn điều kiện
+        });
 
+        // Nếu có phần tử thỏa mãn điều kiện, hiển thị thông báo lỗi
+        if (hasMatchingTypeRoomId) {
+            toast.error("Loại phòng này sắp có đơn đặt sắp tới")
+            return; // Dừng hàm
+        }
         // xacs nhan xoa
         confirmAlert({
             title: 'Confirm',
