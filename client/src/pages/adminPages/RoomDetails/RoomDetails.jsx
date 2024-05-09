@@ -76,6 +76,9 @@ const RoomDetails = () => {
 
     // phần đóng phòng
     const isAvailable = (roomNumber) => {
+        if (!roomNumber.status) {
+            return false; // Nếu status là false, room không khả dụng
+          }
         const isFound = roomNumber.unavailableDates.some((date) => {
             const dateMinusOneDay = new Date(date).getTime();
             return alldates.includes(dateMinusOneDay);

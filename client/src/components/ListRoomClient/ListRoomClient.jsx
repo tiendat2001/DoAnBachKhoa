@@ -103,16 +103,12 @@ const ListRoomClient = ({ hotelId }) => {
   const getDatesInRange = (startDate, endDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
-
     const date = new Date(start.getTime());
-
     const dates = [];
-
     while (date < end) {
       dates.push(new Date(date).getTime());
       date.setDate(date.getDate() + 1);
     }
-
     return dates;
   };
 
@@ -123,8 +119,10 @@ const ListRoomClient = ({ hotelId }) => {
   //   console.log(date.toLocaleDateString());
   // });
 
-  // từ front end đẩy xuống csdl bị lệch 1 ngày, ví dụ ở front 13 xuống csdl sẽ là 12, còn từ csdl lên front thì 12 sẽ bị lên thành 13
   const isAvailable = (roomNumber) => {
+    if (!roomNumber.status) {
+      return false; // Nếu status là false, room không khả dụng
+    }
     const isFound = roomNumber.unavailableDates.some((date) => {
       const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
       // console.log(new Date(dateMinusOneDay));
