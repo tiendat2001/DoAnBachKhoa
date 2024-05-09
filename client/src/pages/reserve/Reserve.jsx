@@ -32,6 +32,7 @@ const Reserve = () => {
   const [reFreshRoomData, setReFreshRoomData] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
   const [paymentType, setPaymentType] = useState();
+  const [isSending, setIsSending] = useState(false);
   const handlePaymentTypeChange = (event) => {
     setPaymentType(event.target.value);
   };
@@ -80,9 +81,11 @@ const Reserve = () => {
   const selectedRoomIdsReserved = []
   // đặt phòng
   const reserveRoom = async () => {
+    setIsSending(true)
     // check lại các trường
     if (!paymentType || !phoneNumber) {
       toast.error("Vui lòng nhập đầy đủ thông tin thanh toán")
+      setIsSending(false)
       return;
     }
 
@@ -163,6 +166,7 @@ const Reserve = () => {
         totalPrice: totalPrice * alldates.length,
         hotelId: hotelId,
         idOwnerHotel: hotelData.ownerId,
+        status: -1
         // hotelName: hotelData.name,
         // hotelContact:hotelData?.hotelContact
       });
@@ -177,22 +181,24 @@ const Reserve = () => {
     toast.success('Đặt phòng thành công');
 
     // chuyển hướng thanh toán VNPAY
-    // try {
-    //   const response = await axios.post('/payment/create_payment_url', {
-    //     reservationId: reservationId,
-    //     amount: totalPrice * alldates.length * 1000,
-    //     paymentType:paymentType
-    //   });
-    //   let paymentUrl = response.data; // Giả sử API trả về link thanh toán trong trường 'paymentUrl'
-    //   const startIndex = paymentUrl.indexOf('https://');
-    //   // Cắt bỏ phần URL trước "https://" và lấy phần sau
-    //   paymentUrl = paymentUrl.substring(startIndex);
-    //   // chuyển hướng link thanh toán
-    //   window.location.href = paymentUrl;
-    // } catch (error) {
-    //   console.error('Error creating payment:', error);
-    //   // Xử lý lỗi nếu cần
-    // }
+    try {
+      const response = await axios.post('/payment/create_payment_url', {
+        reservationId: reservationId,
+        amount: totalPrice * alldates.length * 1000,
+        paymentType: paymentType
+      });
+      let paymentUrl = response.data; // Giả sử API trả về link thanh toán trong trường 'paymentUrl'
+      const startIndex = paymentUrl.indexOf('https://');
+      // Cắt bỏ phần URL trước "https://" và lấy phần sau
+      paymentUrl = paymentUrl.substring(startIndex);
+      // chuyển hướng link thanh toán
+      window.location.href = paymentUrl;
+    } catch (error) {
+      console.error('Error creating payment:', error);
+      // Xử lý lỗi nếu cần
+    }
+
+    setIsSending(false)
   }
 
   return (
@@ -278,8 +284,9 @@ const Reserve = () => {
 
         </div>
 
-        <button onClick={reserveRoom} className="rButton">
-          Đặt phòng
+        <button onClick={reserveRoom} className="rButton" disabled={isSending}>
+          {isSending ? 'Đang xử lý...' : 'Thanh toán'}
+          
         </button>
 
       </div>

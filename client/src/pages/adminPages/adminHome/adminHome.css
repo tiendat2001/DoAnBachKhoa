@@ -4,5 +4,5 @@
 }
 /* listContainerAdmin chiếm 6 lần so với sideBar */
 .listAdmin .listContainerAdmin {  
-    flex: 6;
+    flex: 8;
 }

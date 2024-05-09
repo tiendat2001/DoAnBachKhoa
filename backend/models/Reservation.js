@@ -57,8 +57,8 @@ const ReservationSchema = new mongoose.Schema({
         require:true,
     },
     status:{
-        type:Boolean,
-        default:true,
+        type:Number,
+       
     },
 },
 { timestamps : true }

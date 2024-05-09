@@ -67,7 +67,7 @@ export const roomColumns = [
 
   // cột danh sách reservations
   export const ReservationColumns = [
-    { field: "_id", headerName: "Mã đặt phòng", width: 160 },
+    { field: "_id", headerName: "Mã đặt phòng", width: 140 },
     {
       field: "start",
       headerName: "Check-in",
@@ -153,12 +153,32 @@ export const roomColumns = [
       headerName: "Trạng thái",
       width: 100,
       renderCell: (params) => {
-        const statusText = params.value ? "OK" : "HỦY";
-        const statusColor = params.value ? "green" : "red";
+        let statusText;
+        let statusColor;
+      
+        switch (params.value) {
+          case 1:
+            statusText = "OK";
+            statusColor = "green";
+            break;
+          case 0:
+            statusText = "HỦY";
+            statusColor = "red";
+            break;
+          case -1:
+            statusText = "Đang chờ";
+            statusColor = "blue";
+            break;
+          default:
+            statusText = "Không xác định";
+            statusColor = "black";
+            break;
+        }
+      
         return (
-            <span style={{ color: statusColor }}>{statusText}</span>
+          <span style={{ color: statusColor }}>{statusText}</span>
         );
-    },
+      },
       headerAlign: 'center',
       align:'center'
     },

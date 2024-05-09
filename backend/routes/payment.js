@@ -139,7 +139,11 @@ router.get("/vnpay_ipn", async function (req, res, next) {
             //thanh cong
             //paymentStatus = '1'
             // Ở đây cập nhật trạng thái giao dịch thanh toán thành công vào CSDL của bạn
-
+            const updatedReservation = await Reservation.findByIdAndUpdate(
+              orderId, 
+              { status: 1 },
+              { new: true } 
+            );
             // res.status(200).json({ RspCode: "00", Message: "Success" });
 
             // tự viết

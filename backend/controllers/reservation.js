@@ -153,7 +153,7 @@ export const getAllHotelRevenue = async (req, res, next) => {
         // chỉ tính doanh thu tháng trước
         if (month == -1) {
             reservations = await Reservation.find({
-                status: true,
+                status: 1,
                 start: {
                     $gte: startDate,
                     $lte: endDate
@@ -161,7 +161,7 @@ export const getAllHotelRevenue = async (req, res, next) => {
             });
         } else {
             //tính doanh thu tất cả
-            reservations = await Reservation.find({ status: true });
+            reservations = await Reservation.find({ status: 1 });
         }
 
 
@@ -231,7 +231,7 @@ export const paymentAccountLastMonth = async (req, res, next) => {
     const endDateLastMonth = addHours(endOfMonth(subMonths(currentDate, 1)), 7);
     let reservations;
     reservations = await Reservation.find({
-        status: true,
+        status: 1,
         start: {
             $gte: startDateLastMonth,
             $lte: endDateLastMonth
@@ -243,7 +243,7 @@ export const paymentAccountLastMonth = async (req, res, next) => {
     const groupedReservations = await Reservation.aggregate([
         {
             $match: {
-                status: true,
+                status: 1,
                 start: {
                     $gte: startDateLastMonth,
                     $lte: endDateLastMonth
@@ -322,7 +322,7 @@ export const getRevenueByHotelId = async (req, res, next) => {
         }
         // Tạo một đối tượng chứa các điều kiện tìm kiếm
         const searchConditions = {
-            status: true,
+            status: 1,
             hotelId: req.params.hotelId
         };
 
@@ -416,7 +416,7 @@ export const getRevenueMonthsByHotelId = async (req, res, next) => {
                 {
                     $match: {
                         hotelId: req.params.hotelId,
-                        status: true, // ID của khách sạn
+                        status: 1, 
 
                         start: {
                             $gte: startDate, // Ngày bắt đầu của tháng

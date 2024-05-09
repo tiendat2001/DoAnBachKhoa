@@ -66,9 +66,9 @@ const ListBooking = () => {
           try {
             const res = await axios.put(`/rooms/cancelAvailability/${roomTypeId.roomTypeId}`, {
               dates: allDatesReserve,
-              unavailableRangeDates:{
-                startDateRange:startDate,
-                endDateRange:endDate
+              unavailableRangeDates: {
+                startDateRange: startDate,
+                endDateRange: endDate
               }
             });
             // console.log(`Room ${roomId} updated successfully.`);
@@ -79,7 +79,7 @@ const ListBooking = () => {
         }
       }
 
-      
+
     } catch (err) {
       console.error('Error:', err);
       hasError = true;
@@ -89,7 +89,7 @@ const ListBooking = () => {
     // chỉnh lại trạng thái
     try {
       await axios.put(`/reservation/${reservationId}`, {
-        status: false
+        status: 0
       })
     } catch (err) {
       hasError = true;
@@ -122,8 +122,8 @@ const ListBooking = () => {
                 <div>Phòng đặt: {item.roomsDetail}</div>
                 <div style={{ fontWeight: 'bold' }}>Ngày nhận phòng: 14h ngày {new Date(new Date(item.start)).toLocaleDateString('vi-VN')}</div>
                 <div style={{ fontWeight: 'bold' }}>Ngày trả phòng: 12h ngày {new Date(new Date(item.end)).toLocaleDateString('vi-VN')}</div>
-                <div style={{ color: item.status ? 'green' : 'red' }}>
-                  Tình trạng: {item.status ? "Thành công" : "Hủy"}
+                <div style={{ color: item.status === 1 ? 'green' : item.status === 0 ? 'red' : 'blue' }}>
+                  Tình trạng: {item.status === 1 ? "Thành công" : item.status === 0 ? "Hủy" : "Đang chờ"}
                 </div>
                 <div>Thông tin liên lạc chỗ nghỉ: {item.hotelContact}</div>
 

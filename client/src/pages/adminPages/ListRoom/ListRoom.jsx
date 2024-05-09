@@ -25,7 +25,7 @@ const ListRoom = () => {
     const { data: roomData, loading: roomLoading, error: roomError, reFetch: roomReFetch } = useFetch(`/rooms/${hotelId}`);
     // lấy ra những đơn đặt phòng trong tương lai
     const { data: reservationDataFuture, loading: reservationLoading, error: reservationError,
-        reFetch: reservationReFetch } = useFetch(`/reservation/admin/?startDay=${currentDate}&endDay=${endLessDate}&status=true`);
+        reFetch: reservationReFetch } = useFetch(`/reservation/admin/?startDay=${currentDate}&endDay=${endLessDate}&status=1`);
     const navigate = useNavigate()
     const handleHotelChange = (e) => {
         setHotelId(e.target.value);
@@ -44,20 +44,20 @@ const ListRoom = () => {
     };
     const handleDelete = (typeRoomId) => {
         // // Kiểm tra xem phòng đấy có đơn sắp tới ko
-        // const hasMatchingTypeRoomId = reservationDataFuture.some(reservation => {
-        //     // Kiểm tra xem reservation có thuộc tính roomTypeIdsReserved không
-        //     if (reservation.roomTypeIdsReserved) {
-        //         // Duyệt qua mỗi phần tử trong roomTypeIdsReserved để kiểm tra roomTypeId
-        //         return reservation.roomTypeIdsReserved.some(({ roomTypeId }) => roomTypeId === typeRoomId);
-        //     }
-        //     return false; // Nếu không có roomTypeIdsReserved, không thỏa mãn điều kiện
-        // });
+        const hasMatchingTypeRoomId = reservationDataFuture.some(reservation => {
+            // Kiểm tra xem reservation có thuộc tính roomTypeIdsReserved không
+            if (reservation.roomTypeIdsReserved) {
+                // Duyệt qua mỗi phần tử trong roomTypeIdsReserved để kiểm tra roomTypeId
+                return reservation.roomTypeIdsReserved.some(({ roomTypeId }) => roomTypeId === typeRoomId);
+            }
+            return false; // Nếu không có roomTypeIdsReserved, không thỏa mãn điều kiện
+        });
 
-        // // Nếu có phần tử thỏa mãn điều kiện, hiển thị thông báo lỗi
-        // if (hasMatchingTypeRoomId) {
-        //     toast.error("Loại phòng này sắp có đơn đặt sắp tới")
-        //     return; // Dừng hàm
-        // }
+        // Nếu có phần tử thỏa mãn điều kiện, hiển thị thông báo lỗi
+        if (hasMatchingTypeRoomId) {
+            toast.error("Loại phòng này sắp có đơn đặt sắp tới")
+            return; // Dừng hàm
+        }
         // xacs nhan xoa
         confirmAlert({
             title: 'Confirm',

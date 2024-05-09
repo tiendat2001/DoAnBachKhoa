@@ -27,7 +27,7 @@ const ListHotel = () => {
         `/hotels/getByAdmin`);
     // lấy ra những đơn đặt phòng trong tương lai
     const { data: reservationData, loading: reservationLoading, error: reservationError,
-        reFetch: reservationReFetch } = useFetch(`/reservation/admin/?startDay=${currentDate}&endDay=${endLessDate}&status=true`);
+        reFetch: reservationReFetch } = useFetch(`/reservation/admin/?startDay=${currentDate}&endDay=${endLessDate}&status=1`);
     // console.log(reservationData)
     const navigate = useNavigate();
     const handleDelete = (hotelId) => {
