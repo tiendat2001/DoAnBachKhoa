@@ -295,7 +295,8 @@ const ListRoomClient = ({ hotelId }) => {
           <div key={key} style={{ marginBottom: '10px', display: 'flex', justifyContent: 'flex-end',width: '20%',alignItems:'center',gap:'10px' }}>
 
             <select style={{height:'20px'}}  id={`select_${item._id}`} onChange={(event) => handleSelectChange(event, item.roomNumbers)}>
-              <option id={`defaultOption_${item._id}`} value={0}>0 phòng</option>
+              
+              {/* <option id={`defaultOption_${item._id}`} value={0}>0 phòng</option> */}
               {(() => {
                 let roomIndex = 0; // Khởi tạo biến đếm
                 const maxOptions = 10; // Số lượng tối đa của option
@@ -316,11 +317,18 @@ const ListRoomClient = ({ hotelId }) => {
                   return null;
                 });
 
-                // if(hasAvailableRoom){
-                //   return options
-                // } else{
-                  
-                // } 
+                if(hasAvailableRoom){
+                  return (
+                    <>
+                      <option  value={0}>0 phòng</option>
+                      {options}
+                    </>
+                  );
+                } else{
+                  return (
+                    <option  value={0}>Hết phòng</option>
+                    );
+                } 
               
               })()}
             </select>
