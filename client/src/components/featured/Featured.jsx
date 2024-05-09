@@ -10,23 +10,11 @@ const Featured = () => {
   const { data, loading, error } = useFetch(
     "/hotels/countByCity"
   );
-  const [destination, setDestination] = useState("");
-
-  const [openDate, setOpenDate] = useState(false);
-  const [dates, setDate] = useState([
-    {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 1),
-      key: "selection",
-    },
-  ]);
+  const searchContext = useContext(SearchContext);
+  const [destination, setDestination] = useState(searchContext.destination);
+  const [dates, setDates] = useState(searchContext.dates);
+  const [options, setOptions] = useState(searchContext.options);
   
-
-  const [options, setOptions] = useState({
-    adult: 1,
-    children: 0,
-    room: 1,
-  });
   const navigate = useNavigate();
   const { dispatch } = useContext(SearchContext);
 

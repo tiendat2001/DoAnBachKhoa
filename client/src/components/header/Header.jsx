@@ -30,6 +30,7 @@ const Header = ({ type }) => {
   const navigate = useNavigate();
   // sự kiện chỉnh sửa số người, room
   const handleOption = (name, operation) => {
+   
     setOptions((prev) => {
       return {
         ...prev,
@@ -37,6 +38,7 @@ const Header = ({ type }) => {
         [name]: operation === "i" ? options[name] + 1 : options[name] - 1,
       };
     });
+    dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
   };
 
   // Search Context
@@ -119,7 +121,12 @@ const Header = ({ type }) => {
                     editableDateInputs={true}
                     onChange={(item) => {    
                       const newSelection = { ...item.selection };
-                      const { startDate, endDate } = newSelection;
+                      let  { startDate, endDate } = newSelection;
+                      if(startDate === endDate){
+                        console.log("d")
+                        // nếu người dùng chỉ chọn 1 ngày
+                         endDate = addDays(new Date(startDate), 1);
+                      } 
                       startDate.setHours(14, 0, 0, 0);
                       endDate.setHours(14, 0, 0, 0);
                       setDates([{ ...newSelection, startDate, endDate }]);

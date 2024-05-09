@@ -9,6 +9,8 @@ import { DateRange } from "react-date-range";
 import SearchItem from "../../components/searchItem/SearchItem";
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../context/SearchContext";
+import { addDays } from 'date-fns';
+
 const List = () => {
   const location = useLocation();
   const searchContext = useContext(SearchContext);
@@ -45,7 +47,11 @@ const List = () => {
 
   const handleDayChange = (item) => {
     const newSelection = { ...item.selection };
-    const { startDate, endDate } = newSelection;
+    let  { startDate, endDate } = newSelection;
+    if(startDate === endDate){
+      // nếu người dùng chỉ chọn 1 ngày
+       endDate = addDays(new Date(startDate), 1);
+    } 
     startDate.setHours(14, 0, 0, 0);
     endDate.setHours(14, 0, 0, 0);
     setDates([{ ...newSelection, startDate, endDate }]);

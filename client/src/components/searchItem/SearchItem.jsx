@@ -51,7 +51,6 @@ const SearchItem = ({ item }) => {
   };
 
   const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
-  console.log(alldates)
   const isAvailable = (roomNumber) => {
     if (!roomNumber.status) {
       return false; // Nếu status là false, room không khả dụng
@@ -63,7 +62,7 @@ const SearchItem = ({ item }) => {
 
     return !isFound;
   };
-  console.log(alldates)
+  // console.log(alldates)
   let totalRooms = 0;
   totalRooms = allTypeRoom.reduce((total, typeRoom) => {
     // Lấy số lượng phòng từ thuộc tính roomNumbers của mỗi phần tử trong mảng allTypeRoom
@@ -72,7 +71,7 @@ const SearchItem = ({ item }) => {
     // Thêm số lượng phòng từ typeRoom vào tổng số lượng phòng
     return total + numRooms;
   }, 0);
-  console.log(totalRooms)
+  // console.log(totalRooms)
   return (
     <div className="searchItem">
       <img src={item.photos[0]} alt="" className="siImg" />
