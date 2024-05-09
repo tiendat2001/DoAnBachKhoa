@@ -3,6 +3,7 @@ import Room from "../models/RoomType.js"
 
 // viet xu ly khi goi api
 export const createHotel = async (req, res, next) => {
+  req.body.ownerId = req.user.id;
   const newHotel = new Hotel(req.body)
 
   try {

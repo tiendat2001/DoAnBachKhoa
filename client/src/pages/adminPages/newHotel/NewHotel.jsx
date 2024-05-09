@@ -16,8 +16,8 @@ const NewHotel = () => {
   const [files, setFiles] = useState("");
   const [info, setInfo] = useState({});
   // const [rooms, setRooms] = useState([]);
-  const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
-  const decodedToken = jwtDecode(token);
+  // const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+  // const decodedToken = jwtDecode(token);
   const { user } = useContext(AuthContext) // {user._id}
   const navigate = useNavigate()
 
@@ -84,7 +84,7 @@ const NewHotel = () => {
         const newhotel = {
           ...info,
           photos: list,
-          ownerId: decodedToken.id
+          // ownerId: decodedToken.id
         };
 
 

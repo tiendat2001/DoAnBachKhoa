@@ -12,7 +12,7 @@ export const createRoom = async (req, res, next) => {
 
   try {
     const hotel = await Hotel.findById(hotelId);
-    if (hotel.ownerId !== req.body.ownerId) {
+    if (hotel.ownerId !== req.user.id) {
       return res.status(403).json({ message: "You are not authorized to add room to this hotel" });
     }
     // GÁN TRƯỜNG HOTELID cho room mới tạo qua params truyền vào

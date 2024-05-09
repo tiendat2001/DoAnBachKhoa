@@ -63,7 +63,7 @@ const SearchItem = ({ item }) => {
 
     return !isFound;
   };
-
+  console.log(alldates)
   let totalRooms = 0;
   totalRooms = allTypeRoom.reduce((total, typeRoom) => {
     // Lấy số lượng phòng từ thuộc tính roomNumbers của mỗi phần tử trong mảng allTypeRoom

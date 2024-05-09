@@ -5,7 +5,7 @@ import { verifyAdmin,verifyUserModifyHotel,verifyToken } from "../utils/verifyTo
 const router = express.Router();
 
 //CREATE
-router.post("/:hotelid", verifyUserModifyHotel, createRoom);
+router.post("/:hotelid", verifyToken, createRoom);
 //UPDATE avai
 router.put("/availability/:id", updateRoomAvailability);
 

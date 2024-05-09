@@ -5,7 +5,7 @@ import { verifyAdmin, verifyUser,verifyToken,verifyUserModifyHotel } from "../ut
 
 const router = express.Router()
 //CREATE
-router.post("/",createHotel);
+router.post("/",verifyToken,createHotel);
 //UPDATE
 router.put("/:id",verifyToken, updateHotel); 
 //DELETE
