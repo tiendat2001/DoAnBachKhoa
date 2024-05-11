@@ -419,6 +419,7 @@ export const statusRoomCount = async (req, res, next) => {
       const year = currentDay.getFullYear() 
 
       // Tìm số lượng phòng trống cho ngày hiện tại
+      // lặp từng phần tử trong roomNumbers, với mỗi ptu check isRoomAvailable (hàm some phải false và status phải true) nếu true thì tăng biến count lên 1
       const availableRoomsCount = room.roomNumbers.reduce((count, roomNumber) => {
         const isRoomAvailable = roomNumber.status && !roomNumber.unavailableDates.some(date => {
           return new Date(date).toISOString().slice(0, 10) === currentDay.toISOString().slice(0, 10);
@@ -499,3 +500,29 @@ export const deleteRoomInRoomType = async (req, res, next) => {
     res.status(500).json({ message: 'Đã xảy ra lỗi khi xóa phòng' });
   }
 };
+
+// chỉnh status phòng nhỏ
+export const changeStatusRoomInRoomType = async (req, res, next) => {
+  try{
+    const roomType = await Room.findOne({ "roomNumbers._id": req.params.roomId });
+
+    // Nếu không tìm thấy phòng
+    if (!roomType) {
+      return res.status(404).json("Không tìm thấy loại phòng có chứa _id phòng nhỏ này");
+    }
+
+    // Lấy trạng thái hiện tại của phòng
+    const currentStatus = roomType.roomNumbers.find(room => room._id == req.params.roomId).status;
+    await Room.updateOne(
+      { "roomNumbers._id": req.params.roomId },
+      {
+        $set: {
+          "roomNumbers.$.status": !currentStatus    // Chỉnh sửa trạng thái
+        }
+      }
+    );
+    res.status(200).json("Chỉnh status thành công")
+   } catch (err) {
+    next(err);
+  }
+}

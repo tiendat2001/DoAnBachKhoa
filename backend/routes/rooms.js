@@ -1,12 +1,13 @@
 import express from "express"
-import { createRoom, deleteRoom, getRoomsByHotelId, getRooms, updateRoom, updateRoomAvailability,getRoomById,cancelRoomReservation,statusRoomCount, addRoomToRoomType, deleteRoomInRoomType} from "../controllers/roomtype.js";
+import { createRoom, deleteRoom, getRoomsByHotelId, getRooms, updateRoom, updateRoomAvailability,
+    getRoomById,cancelRoomReservation,statusRoomCount, addRoomToRoomType, deleteRoomInRoomType,changeStatusRoomInRoomType} from "../controllers/roomtype.js";
 import { verifyAdmin,verifyUserModifyHotel,verifyToken } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
 //CREATE
 router.post("/:hotelid", verifyToken, createRoom);
-//UPDATE avai
+//UPDATE avai khi đặt phòng, hủy/đóng phòng
 router.put("/availability/:id", updateRoomAvailability);
 
 router.put("/cancelAvailability/:id", cancelRoomReservation); // id ở đây là id của typeRoom phòng lớn
@@ -19,6 +20,8 @@ router.put("/:id", verifyToken, updateRoom);
 router.put("/addRoomToRoomType/:roomId", addRoomToRoomType);
 // XÓA PHÒNG NHỎ
 router.put("/deleteRoomInRoomType/:roomId", deleteRoomInRoomType);
+// CHỈNH STATUS PHÒNG NHỎ
+router.put("/changeStatusRoomInRoomType/:roomId", changeStatusRoomInRoomType);
 
 
 //DELETE ROOM
