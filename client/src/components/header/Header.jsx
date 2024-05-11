@@ -52,7 +52,7 @@ const Header = ({ type }) => {
 
     navigate("/hotels", { state: { destination, dates, options } });
   };
-
+  console.log(dates)
   return (
     <div className="header">
       <div
@@ -119,7 +119,8 @@ const Header = ({ type }) => {
                 {openDate && (
                   <DateRange
                     editableDateInputs={true}
-                    onChange={(item) => {    
+                    onChange={(item) => {
+                      const utc = new Date().getTimezoneOffset()/60    //-7
                       const newSelection = { ...item.selection };
                       let  { startDate, endDate } = newSelection;
                       if(startDate === endDate){
@@ -127,8 +128,8 @@ const Header = ({ type }) => {
                         // nếu người dùng chỉ chọn 1 ngày
                          endDate = addDays(new Date(startDate), 1);
                       } 
-                      startDate.setHours(14, 0, 0, 0);
-                      endDate.setHours(14, 0, 0, 0);
+                      startDate.setHours(7-utc, 0, 0, 0);
+                      endDate.setHours(7-utc, 0, 0, 0);
                       setDates([{ ...newSelection, startDate, endDate }]);
                     }}
                     moveRangeOnFirstSelection={false}
