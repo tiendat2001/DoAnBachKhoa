@@ -80,7 +80,10 @@ export const getHotels = async (req, res, next) => {
     if (type && type !== '') { // Kiểm tra và thêm type vào query nếu không rỗng
       query.type = type;
     }
-    const hotels = await Hotel.find(query).limit(req.query.limit);
+    const hotels = await Hotel.aggregate([
+      { $match: query }, // Lọc dựa trên điều kiện query nếu cần
+      // { $sample: { size: 10 } } // Lấy mẫu ngẫu nhiên với số lượng giới hạn
+    ]);
     res.status(200).json(hotels);
   } catch (err) {
     next(err);
