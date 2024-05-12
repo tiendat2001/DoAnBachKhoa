@@ -61,6 +61,30 @@ export const logout = (req, res) => {
   res.status(200).send("Logged out successfully");
 }
 
+export const changePassword = async (req, res,next) => {
+  const user = await User.findById(req.user.id)
+  if (!user) return next(createError(404, "User not found!"));
+  const isOldPasswordCorrect = await bcrypt.compare(
+    req.body.oldPassword,
+    user.password
+  );
+  if (!isOldPasswordCorrect)
+    return next(createError(400, "Mật khẩu cũ ko đúng!"));
+
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(req.body.newPassword, salt);
+    const modifyUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { password: hash,},
+      { new: true }
+    )
+
+    res.status(200).json({
+      message:"Change password successfully",
+      newUser:modifyUser
+    });
+}
+
 // nếu qua đc middleware thì là có token
 export const checkHasToken = (req, res, next) => {
   // check time expire token
