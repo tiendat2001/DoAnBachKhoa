@@ -94,42 +94,46 @@ const ListHotel = () => {
 
                 <div className="listHotelAdminContainer">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <h1>Your Hotels</h1>
-                        <Link to={`/admin/hotels/new`}>           
-                            <button className="addHotel_btn" >Thêm chỗ nghỉ mới</button>         
+                        <h1>Chỗ nghỉ của bạn</h1>
+                        <Link to={`/admin/hotels/new`}>
+                            <button className="addHotel_btn" >Thêm chỗ nghỉ mới</button>
                         </Link>
                     </div>
 
                     {loading ? (
                         "loading"
                     ) : (
+
                         <>
-                            {data.map((item) => (
-                                <div className="listHotelAdmin" key={item._id}>
-                                    <img src={item.photos[0]} alt="" className="siImg" />
-                                    <div className="siDesc">
-                                        <h1 className="siTitle">{item.name}</h1>
-                                        <span className="siDistance">Khoảng cách đến trung tâm: {item.distance}m từ trung tâm</span>
+                            {data.length === 0 ? (
+                                <div>Bạn chưa có chỗ nghỉ nào</div>
+                            ) : (
+                                data.map((item) => (
+                                    <div className="listHotelAdmin" key={item._id}>
+                                        <img src={item.photos[0]} alt="" className="siImg" />
+                                        <div className="siDesc">
+                                            <h1 className="siTitle">{item.name}</h1>
+                                            <span className="siDistance">Khoảng cách đến trung tâm: {item.distance}m từ trung tâm</span>
 
-                                        <span className="siFeatures">Địa chỉ chỗ nghỉ: {item.address}</span>
+                                            <span className="siFeatures">Địa chỉ chỗ nghỉ: {item.address}</span>
 
-                                    </div>
-                                    <div className="listHotel_btn">
-                                        {/* <span className="siTaxOp">Cho {options.adult} người, {days} đêm</span> */}
-                                        {/* <Link to={`/hotels/${item._id}`}>
+                                        </div>
+                                        <div className="listHotel_btn">
+                                            {/* <span className="siTaxOp">Cho {options.adult} người, {days} đêm</span> */}
+                                            {/* <Link to={`/hotels/${item._id}`}>
                                             </Link> */}
-                                        <button
-                                            onClick={() => handleStatisticHotel(item._id)}
-                                        >Thống kê số liệu </button>
-                                            
-                                        <button onClick={() => handleEditHotel(item._id)} >
-                                            Chỉnh sửa thông tin
-                                        </button>
-                                        <button onClick={() => handleDelete(item._id)}>Xóa chỗ nghỉ</button>
+                                            <button
+                                                onClick={() => handleStatisticHotel(item._id)}
+                                            >Thống kê số liệu </button>
 
+                                            <button onClick={() => handleEditHotel(item._id)} >
+                                                Chỉnh sửa thông tin
+                                            </button>
+                                            <button onClick={() => handleDelete(item._id)}>Xóa chỗ nghỉ</button>
+
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                )))}
                         </>
                     )}
                 </div>

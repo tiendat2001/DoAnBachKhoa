@@ -1,7 +1,7 @@
 export const hotelInputs = [
     {
       id: "name",
-      label: "Name",
+      label: "Tên",
       type: "text",
       placeholder: "",
     },
@@ -13,13 +13,13 @@ export const hotelInputs = [
     // },
     {
       id: "city",
-      label: "City",
+      label: "Thành phố",
       type: "text",
       placeholder: "",
     },
     {
       id: "address",
-      label: "Address",
+      label: "Địa chỉ",
       type: "text",
       placeholder: "",
     },
@@ -59,7 +59,7 @@ export const hotelInputs = [
     },
     {
       id: "price",
-      label: "Giá",
+      label: "Giá (Đơn vị: nghìn đồng. Ví dụ giá 250.000 VND thì hãy ghi 250)",
       type: "text",
       placeholder: "",
     },

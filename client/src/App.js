@@ -1,4 +1,4 @@
-import React, { useContext, useEffect,useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./App.css";
 import Home from "./pages/home/Home";
 import List from "./pages/list/List";
@@ -26,10 +26,11 @@ import { getCookie } from 'react-use-cookie';
 import RoomDetails from "./pages/adminPages/RoomDetails/RoomDetails";
 import ModifyRoomCount from "./pages/adminPages/ModifyRoomCount/ModifyRoomCount";
 import StatusTransaction from "./pages/StatusTransaction/StatusTransaction";
+import ModifyUser from "./pages/adminPages/modifyUser/ModifyUser";
 import axios from 'axios';
 function App() {
 
-
+  // phải có access token ms đc vào
   const ProtectedRoute = ({ children }) => {
     // const { user } = useContext(AuthContext);
     // const userToken = getCookie('access_token');
@@ -47,28 +48,28 @@ function App() {
     const [firstLoad, setFirstLoad] = useState(true);
 
     useEffect(() => {
-        const checkAccessToken = async () => {
-            try {
-                const response = await fetch('/auth/checkHasAccessToken');
-                if (response.status === 200) {
-                    setIsLoggedIn(true);
-                }
-            } catch (error) {
-                console.error('Error checking access token:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        checkAccessToken();
+      const checkAccessToken = async () => {
+        try {
+          const response = await fetch('/auth/checkHasAccessToken');
+          if (response.status === 200) {
+            setIsLoggedIn(true);
+          }
+        } catch (error) {
+          console.error('Error checking access token:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      checkAccessToken();
     }, []);
 
     if (loading) {
-      return <h1>d</h1>;
-  }
+      return <h1>Loading ....</h1>;
+    }
     if (isLoggedIn) {
-        return children;
+      return children;
     } else {
-        return <Navigate to="/login" />;
+      return <Navigate to="/login" />;
     }
   };
 
@@ -80,37 +81,37 @@ function App() {
     // if (!user||!user.isAdmin) {
     //   return <Navigate to="/login" />;
     // }
-   
+
     const [loading, setLoading] = useState(true);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [firstLoad, setFirstLoad] = useState(true);
     useEffect(() => {
-        const checkAccessToken = async () => {
-            try {
-                const response = await fetch('/auth/checkHasAccessTokenAdministrator');
-                if (response.status === 200) {
-                    setIsLoggedIn(true);
-                }
-            } catch (error) {
-                console.error('Error checking access token:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        
-        checkAccessToken();
+      const checkAccessToken = async () => {
+        try {
+          const response = await fetch('/auth/checkHasAccessTokenAdministrator');
+          if (response.status === 200) {
+            setIsLoggedIn(true);
+          }
+        } catch (error) {
+          console.error('Error checking access token:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      checkAccessToken();
     }, []);
 
     if (loading) {
-      return <h1>d</h1>;
-  }
+      return <h1>Loading ....</h1>;
+    }
 
     if (isLoggedIn) {
-        return children;
+      return children;
     } else {
-        return <Navigate to="/login" />;
+      return <Navigate to="/login" />;
     }
-}
+  }
 
   return (
     <BrowserRouter>
@@ -120,8 +121,8 @@ function App() {
         <Route path="/hotels/:id" element={<Hotel />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/bookings" element={<ListBooking />} />
-        <Route path="/reserve" element={<Reserve />} />
+        <Route path="/bookings" element={<ProtectedRoute><ListBooking /></ProtectedRoute>} />
+        <Route path="/reserve" element={<ProtectedRoute><Reserve /></ProtectedRoute>} />
         <Route path="/statusTransaction/success" element={<StatusTransaction status="success" />} />
         <Route path="/statusTransaction/fail" element={<StatusTransaction status="fail" />} />
 
@@ -133,6 +134,12 @@ function App() {
           <Route index element={
             <ProtectedRoute>
               <AdminHome />
+            </ProtectedRoute>
+          } />
+
+          <Route path="modifyAccount" element={
+            <ProtectedRoute>
+              <ModifyUser />
             </ProtectedRoute>
           } />
 
@@ -199,8 +206,6 @@ function App() {
 
 
         </Route>
-
-
       </Routes>
       <ToastContainer />
     </BrowserRouter>

@@ -98,10 +98,12 @@ const Sidebar = () => {
             <span>Settings</span>
           </li> */}
           <p className="title">TÀI KHOẢN</p>
+          <Link to="/admin/modifyAccount" style={{ textDecoration: "none" }}>
           <li>
             <AccountCircleOutlinedIcon className="icon" />
-            <span>Profile</span>
+            <span>Đổi mật khẩu</span>
           </li>
+          </Link>
           <li onClick={handleLogOut}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
