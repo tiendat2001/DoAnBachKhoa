@@ -13,7 +13,7 @@ import React from "react";
 import { AuthContext } from '../../context/AuthContext';
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
-import { format, addDays, subDays } from "date-fns";
+import { format, addDays, subHours } from "date-fns";
 import { toast } from 'react-toastify';
 import { useLocation } from "react-router-dom";
 const Reserve = () => {
@@ -184,22 +184,22 @@ const Reserve = () => {
     toast.success('Đặt phòng thành công');
 
     // chuyển hướng thanh toán VNPAY
-    try {
-      const response = await axios.post('/payment/create_payment_url', {
-        reservationId: reservationId,
-        amount: totalPrice * alldates.length * 1000,
-        paymentType: paymentType
-      });
-      let paymentUrl = response.data; // Giả sử API trả về link thanh toán trong trường 'paymentUrl'
-      const startIndex = paymentUrl.indexOf('https://');
-      // Cắt bỏ phần URL trước "https://" và lấy phần sau
-      paymentUrl = paymentUrl.substring(startIndex);
-      // chuyển hướng link thanh toán
-      window.location.href = paymentUrl;
-    } catch (error) {
-      console.error('Error creating payment:', error);
-      // Xử lý lỗi nếu cần
-    }
+    // try {
+    //   const response = await axios.post('/payment/create_payment_url', {
+    //     reservationId: reservationId,
+    //     amount: totalPrice * alldates.length * 1000,
+    //     paymentType: paymentType
+    //   });
+    //   let paymentUrl = response.data; // Giả sử API trả về link thanh toán trong trường 'paymentUrl'
+    //   const startIndex = paymentUrl.indexOf('https://');
+    //   // Cắt bỏ phần URL trước "https://" và lấy phần sau
+    //   paymentUrl = paymentUrl.substring(startIndex);
+    //   // chuyển hướng link thanh toán
+    //   window.location.href = paymentUrl;
+    // } catch (error) {
+    //   console.error('Error creating payment:', error);
+    //   // Xử lý lỗi nếu cần
+    // }
 
     setIsSending(false)
   }
@@ -226,8 +226,9 @@ const Reserve = () => {
           fontWeight: 'bold', fontSize: '25px', padding: '10px'
         }}>  Chi tiết đặt phòng của bạn</div>
         <div className="ReserveDetailContainer">
-          <div>Thời gian nhận phòng: từ 14h ngày {startDate.toLocaleDateString('vi-VN')}</div>
-          <div>Thời gian trả phòng: cho đến 12h ngày {endDate.toLocaleDateString('vi-VN')}</div>
+          <div>Thời gian nhận phòng:  {startDate.toLocaleString('vi-VN')}</div>
+          <div>Thời gian trả phòng:  {subHours(endDate,2).toLocaleString('vi-VN')}</div>
+          <div>(Thời gian được tính theo múi giờ hiện tại máy của bạn)</div>
           <div>Tổng thời gian lưu trú:  {alldates.length} đêm</div>
           <div style={{ fontWeight: 'bold' }}>Phòng của bạn:  {detailRooms} </div>
           <div style={{ fontWeight: 'bold' }}>Số người: {options.adult} người lớn và {options.children} trẻ em</div>

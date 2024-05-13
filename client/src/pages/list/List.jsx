@@ -9,7 +9,7 @@ import { DateRange } from "react-date-range";
 import SearchItem from "../../components/searchItem/SearchItem";
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../context/SearchContext";
-import { addDays } from 'date-fns';
+import { addDays,addHours } from 'date-fns';
 
 const List = () => {
   const location = useLocation();
@@ -46,14 +46,16 @@ const List = () => {
 
 
   const handleDayChange = (item) => {
+    const utc = new Date().getTimezoneOffset()/60 //-7
     const newSelection = { ...item.selection };
     let  { startDate, endDate } = newSelection;
     if(startDate === endDate){
       // nếu người dùng chỉ chọn 1 ngày
        endDate = addDays(new Date(startDate), 1);
-    } 
-    startDate.setHours(14, 0, 0, 0);
-    endDate.setHours(14, 0, 0, 0);
+    }
+    // 14+ getTimezoneOffset Múi giờ lệch ở khách sạn mà nó đặt -dùng addHours
+    startDate = addHours(startDate, 7-utc);
+    endDate = addHours(endDate, 7-utc);
     setDates([{ ...newSelection, startDate, endDate }]);
   };
 

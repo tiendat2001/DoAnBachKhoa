@@ -5,7 +5,7 @@ import useFetch from '../../hooks/useFetch';
 import "./listRoomClient.css"
 import { useContext, useState, useEffect } from "react";
 import { SearchContext } from '../../context/SearchContext';
-import { format, addDays, subDays } from "date-fns";
+import { format, addDays, subDays,addHours } from "date-fns";
 import { DateRange } from "react-date-range";
 import {
   faBed,
@@ -27,8 +27,8 @@ const ListRoomClient = ({ hotelId }) => {
   const [selectedRooms, setSelectedRooms] = useState([]);
   const searchContext = useContext(SearchContext);
   const [dates, setDates] = useState(searchContext.dates);
-  dates[0].startDate.setHours(14, 0, 0, 0);
-  dates[0].endDate.setHours(14, 0, 0, 0);
+  // dates[0].startDate.setHours(14, 0, 0, 0);
+  // dates[0].endDate.setHours(14, 0, 0, 0);
   const [options, setOptions] = useState(searchContext.options);
   const [destination, setDestination] = useState(searchContext.destination);
   const [openDate, setOpenDate] = useState(false);
@@ -50,7 +50,7 @@ const ListRoomClient = ({ hotelId }) => {
     // console.log("thay doi")
   }, [destination, dates, options]);
 
-
+  console.log(dates)
   const handleOpen = (i) => {
     // setSlideNumber(i);
     setOpenExpandPhoto(true);
@@ -72,10 +72,16 @@ const ListRoomClient = ({ hotelId }) => {
   // };
 
   const handleDayChange = (item) => {
+    const utc = new Date().getTimezoneOffset()/60 //-7
     const newSelection = { ...item.selection };
-    const { startDate, endDate } = newSelection;
-    startDate.setHours(14, 0, 0, 0);
-    endDate.setHours(14, 0, 0, 0);
+    let  { startDate, endDate } = newSelection;
+    if(startDate === endDate){
+      // nếu người dùng chỉ chọn 1 ngày
+       endDate = addDays(new Date(startDate), 1);
+    }
+    // 14+ getTimezoneOffset Múi giờ lệch ở khách sạn mà nó đặt 
+    startDate = addHours(startDate, 7-utc);
+    endDate = addHours(endDate, 7-utc);
     setDates([{ ...newSelection, startDate, endDate }]);
     setSelectedRoomIds([])
     setKey(Math.random()); // Bắt reload lại phần chọn phòng

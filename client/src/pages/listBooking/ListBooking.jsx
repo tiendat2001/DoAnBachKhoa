@@ -120,8 +120,9 @@ const ListBooking = () => {
                 <div>Mã đặt phòng: {item._id}</div>
                 <div>Khách sạn đặt: {item.hotelName}</div>
                 <div>Phòng đặt: {item.roomsDetail}</div>
-                <div style={{ fontWeight: 'bold' }}>Ngày nhận phòng: 14h ngày {new Date(new Date(item.start)).toLocaleDateString('vi-VN')}</div>
-                <div style={{ fontWeight: 'bold' }}>Ngày trả phòng: 12h ngày {new Date(new Date(item.end)).toLocaleDateString('vi-VN')}</div>
+                <div style={{ fontWeight: 'bold' }}>Ngày nhận phòng:  {new Date(item.start).toLocaleString('vi-VN')}</div>
+                <div style={{ fontWeight: 'bold' }}>Ngày trả phòng: {subHours(new Date(item.end),2).toLocaleString('vi-VN')}</div>
+                <div>(Thời gian được tính theo múi giờ hiện tại máy của bạn)</div>
                 <div style={{ color: item.status === 1 ? 'green' : item.status === 0 ? 'red' : 'blue' }}>
                   Tình trạng: {item.status === 1 ? "Thành công" : item.status === 0 ? "Hủy" : "Đang chờ"}
                 </div>
@@ -137,8 +138,7 @@ const ListBooking = () => {
 
                 <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id, item.start, item.end, item.roomTypeIdsReserved)}
                 >Hủy đặt phòng</button> <br />
-
-                <div style={{ textAlign: 'right' }}>{new Date() > subHours(new Date(item.start), 24) ? "(Bạn chỉ có thể hủy trước ngày nhận phòng 1 ngày hoặc ngày nhận phòng đã qua)" : ""}</div>
+                <div style={{ textAlign: 'right' }}>{new Date() > subHours(new Date(item.start), 24) ? `(Bạn chỉ có thể hủy trước thời gian nhận phòng 1 ngày (trước ${subHours(new Date(item.start),24).toLocaleString('vi-VN')})` : ""}</div>
               </div>
 
             </div>

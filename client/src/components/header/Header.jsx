@@ -12,7 +12,7 @@ import { useState, useContext } from "react";
 // hien calendar
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { format, addDays } from "date-fns";
+import { format, addDays,addHours,subHours } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import { SearchContext } from "../../context/SearchContext";
@@ -30,7 +30,7 @@ const Header = ({ type }) => {
   const navigate = useNavigate();
   // sự kiện chỉnh sửa số người, room
   const handleOption = (name, operation) => {
-   
+
     setOptions((prev) => {
       return {
         ...prev,
@@ -120,16 +120,16 @@ const Header = ({ type }) => {
                   <DateRange
                     editableDateInputs={true}
                     onChange={(item) => {
-                      const utc = new Date().getTimezoneOffset()/60    //-7
+                      const utc = new Date().getTimezoneOffset() / 60 //-7
                       const newSelection = { ...item.selection };
-                      let  { startDate, endDate } = newSelection;
-                      if(startDate === endDate){
-                        console.log("d")
+                      let { startDate, endDate } = newSelection;
+                      if (startDate === endDate) {
                         // nếu người dùng chỉ chọn 1 ngày
-                         endDate = addDays(new Date(startDate), 1);
-                      } 
-                      startDate.setHours(7-utc, 0, 0, 0);
-                      endDate.setHours(7-utc, 0, 0, 0);
+                        endDate = addDays(new Date(startDate), 1);
+                      }
+                      // 14+ getTimezoneOffset Múi giờ lệch ở khách sạn mà nó đặt -dùng addHours
+                      startDate = addHours(startDate, 7 - utc);
+                      endDate = addHours(endDate, 7 - utc);
                       setDates([{ ...newSelection, startDate, endDate }]);
                     }}
                     moveRangeOnFirstSelection={false}
