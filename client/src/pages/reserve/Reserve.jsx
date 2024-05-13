@@ -127,30 +127,35 @@ const Reserve = () => {
     // return;
     console.log(selectedRoomIdsReserved)
 
-    // const allDatesPlus = alldates.map(date => addDays(date, 1));
-    // const startDatePlus = addDays(startDate, 1)
-    // const endDatePlus = addDays(endDate, 1)
-
+    // Đẩy available
     try {
-      await Promise.all(
-        selectedRoomIdsReserved.map(async (roomId) => {
-          try {
-            const res = await axios.put(`/rooms/availability/${roomId}`, {
-              dates: alldates,
-              startDateRange: startDate,
-              endDateRange: endDate,
-            });
+      // await Promise.all(
+      //   selectedRoomIdsReserved.map(async (roomId) => {
+      //     try {
+      //       const res = await axios.put(`/rooms/availability/${roomId}`, {
+      //         dates: alldates,
+      //         startDateRange: startDate,
+      //         endDateRange: endDate,
+      //       });
 
-            return res.data;
-          } catch (error) {
-            console.log(`Error in room ${roomId}:`, error);
-            throw error; // Ném lỗi để kích hoạt catch bên ngoài và dừng quá trình xử lý
-          }
-        })
-      );
+      //       return res.data;
+      //     } catch (error) {
+      //       console.log(error);
+           
+      //     }
+      //   })
+      // );
+      const copiedRoomIds = [...selectedRoomIdsReserved];
+      const res = await axios.put(`/rooms/availability/`, {
+        selectedRoomIdsReserved: copiedRoomIds,
+        dates: alldates,
+        startDateRange: startDate,
+        endDateRange: endDate,
+      });
     } catch (err) {
       console.log(err)
-      alert("Có lỗi xảy ra vui lòng quay lại trang trước và đặt phòng lại")
+      toast.error("Có lỗi xảy ra vui lòng quay lại trang trước và đặt phòng lại")
+      setIsSending(false)
       return; // Ngưng thực thi hàm nếu có lỗi
     }
     // tạo order
@@ -184,22 +189,22 @@ const Reserve = () => {
     toast.success('Đặt phòng thành công');
 
     // chuyển hướng thanh toán VNPAY
-    // try {
-    //   const response = await axios.post('/payment/create_payment_url', {
-    //     reservationId: reservationId,
-    //     amount: totalPrice * alldates.length * 1000,
-    //     paymentType: paymentType
-    //   });
-    //   let paymentUrl = response.data; // Giả sử API trả về link thanh toán trong trường 'paymentUrl'
-    //   const startIndex = paymentUrl.indexOf('https://');
-    //   // Cắt bỏ phần URL trước "https://" và lấy phần sau
-    //   paymentUrl = paymentUrl.substring(startIndex);
-    //   // chuyển hướng link thanh toán
-    //   window.location.href = paymentUrl;
-    // } catch (error) {
-    //   console.error('Error creating payment:', error);
-    //   // Xử lý lỗi nếu cần
-    // }
+    try {
+      const response = await axios.post('/payment/create_payment_url', {
+        reservationId: reservationId,
+        amount: totalPrice * alldates.length * 1000,
+        paymentType: paymentType
+      });
+      let paymentUrl = response.data; // Giả sử API trả về link thanh toán trong trường 'paymentUrl'
+      const startIndex = paymentUrl.indexOf('https://');
+      // Cắt bỏ phần URL trước "https://" và lấy phần sau
+      paymentUrl = paymentUrl.substring(startIndex);
+      // chuyển hướng link thanh toán
+      window.location.href = paymentUrl;
+    } catch (error) {
+      console.error('Error creating payment:', error);
+      // Xử lý lỗi nếu cần
+    }
 
     setIsSending(false)
   }
