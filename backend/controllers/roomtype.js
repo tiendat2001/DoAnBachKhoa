@@ -88,9 +88,6 @@ const isAvailable = (roomNumber,alldates) => {
 export const updateRoomAvailability = async (req, res, next) => {
   try {
     const selectedRoomIdsReserved = []
-    let selectedQuantity = 0; // Số lượng phòng đã chọn
-    console.log(req.body.roomTypeIdsReserved)
-
     await Promise.all(req.body.roomTypeIdsReserved.map(async (roomDetail) => {
       const { roomTypeId, quantity } = roomDetail; // Lấy ra roomNumbers và quantity từ mỗi phần tử
       let selectedQuantity = 0; // Số lượng phòng đã chọn
@@ -102,7 +99,7 @@ export const updateRoomAvailability = async (req, res, next) => {
         if (isAvailable(roomNumber,req.body.dates)) {
           // Nếu phòng có sẵn và số lượng phòng đã chọn chưa đạt tối đa
           if (selectedQuantity < quantity) {
-            selectedRoomIdsReserved.push(roomNumber._id); // Thêm roomNumber vào mảng selectedRoomIdsReserved
+            selectedRoomIdsReserved.push(roomNumber._id.toString()); // Thêm roomNumber vào mảng selectedRoomIdsReserved
             selectedQuantity++; // Tăng số lượng phòng đã chọn lên 1
           } else {
             return; // Nếu đã đủ số lượng, thoát khỏi vòng lặp
@@ -114,47 +111,38 @@ export const updateRoomAvailability = async (req, res, next) => {
     const totalQuantity = req.body.roomTypeIdsReserved.reduce((acc, roomDetail) => acc + roomDetail.quantity, 0);
     console.log(totalQuantity)
     if (selectedRoomIdsReserved.length !== totalQuantity) {
-     
+      return res.status(404).json({ error: "Hết phòng (chọn ko đủ số phòng)" });
     }
-    console.log(selectedRoomIdsReserved)
 
+    // bắt đầu đẩy
+    for (const selectedRoomId of selectedRoomIdsReserved) {
+      const room = await Room.findOne({ "roomNumbers._id": selectedRoomId });
+      if (!room) {
+        return res.status(404).json({ error: "Room not found" });
+      }
 
+      const roomNumber = room.roomNumbers.find(number => number._id.toString() === selectedRoomId);
 
+      if (!roomNumber) {
+        return res.status(404).json({ error: "Room number not found" });
+      }
 
+      const { unavailableDates } = roomNumber;
+      const { startDateRange, endDateRange } = req.body;
+      //Nếu không có ngày nào trùng lặp, thêm các ngày mới vào mảng unavailableDates
+      await Room.updateOne(
+        { "roomNumbers._id": selectedRoomId },
+        {
+          $push: {
+            "roomNumbers.$.unavailableDates": { $each: req.body.dates }
+          },
+          $addToSet: {
+            "roomNumbers.$.unavailableRangeDates": { startDateRange, endDateRange }
+          }
+        }
+      );
 
-
-    // const selectedRoomIdsReserved = req.body.selectedRoomIdsReserved;
-
-
-    // sau khi check xong, bắt đầu đẩy ngày vào
-    // for (const selectedRoomId of selectedRoomIdsReserved) {
-    //   const room = await Room.findOne({ "roomNumbers._id": selectedRoomId });
-    //   if (!room) {
-    //     return res.status(404).json({ error: "Room not found" });
-    //   }
-
-    //   const roomNumber = room.roomNumbers.find(number => number._id.toString() === selectedRoomId);
-
-    //   if (!roomNumber) {
-    //     return res.status(404).json({ error: "Room number not found" });
-    //   }
-
-    //   const { unavailableDates } = roomNumber;
-    //   const { startDateRange, endDateRange } = req.body;
-    //   //Nếu không có ngày nào trùng lặp, thêm các ngày mới vào mảng unavailableDates
-    //   await Room.updateOne(
-    //     { "roomNumbers._id": selectedRoomId },
-    //     {
-    //       $push: {
-    //         "roomNumbers.$.unavailableDates": { $each: req.body.dates }
-    //       },
-    //       $addToSet: {
-    //         "roomNumbers.$.unavailableRangeDates": { startDateRange, endDateRange }
-    //       }
-    //     }
-    //   );
-
-    // }
+    }
     res.status(200).json("Room status has been updated.");
   } catch (err) {
     next(err);
