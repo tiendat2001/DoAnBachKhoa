@@ -148,8 +148,19 @@ export const getRoomById = async (req, res, next) => {
     next(err);
   }
 };
+// COPY TỪ ĐÂY
+const isAvailable = (roomNumber,alldates) => {
+  if (!roomNumber.status) {
+    return false; // Nếu status là false, room không khả dụng
+  }
+  const isFound = roomNumber.unavailableDates.some((date) => {
+    const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
+    // console.log(new Date(dateMinusOneDay));
+    return alldates.includes(dateMinusOneDay);
+  });
 
-
+  return !isFound;
+};
 let roomTypeAPILocks = {}; // Lưu trữ biến khóa cho mỗi giá trị id
 function clearLockedRoomTypeIds(lockedRoomTypeIds) {
   for (const id of lockedRoomTypeIds) {
@@ -161,45 +172,50 @@ function delay(ms) {
 }
 // khi đặt phòng
 export const updateRoomAvailability = async (req, res, next) => {
-  const selectedRoomIdsReserved = req.body.selectedRoomIdsReserved;
+  console.log("bắt đầu đặt phòng, check khóa")
   let lockedRoomTypeIds=[]
   try {
-    // kiểm tra xem các khóa của các loại phòng cbi đẩy, và khóa lại
-    for (const selectedRoomId of selectedRoomIdsReserved) {
-      const roomTypeIdLock = await Room.findOne({ "roomNumbers._id": selectedRoomId });
-      while (roomTypeAPILocks[roomTypeIdLock._id]) {
+    // kiểm tra xem các khóa của các loại phòng cbi đẩy, và khóa lại những id room Type của phòng cbi chỉnh
+    for (const roomDetail of req.body.roomTypeIdsReserved) {
+      while (roomTypeAPILocks[roomDetail.roomTypeId]) {
         // Chờ 1 giây trước khi kiểm tra lại
         await delay(1000); // Chờ 1 giây
       }
-      roomTypeAPILocks[roomTypeIdLock._id] = true;
+      roomTypeAPILocks[roomDetail.roomTypeId] = true;
       // lưu những id type room đã khóa
-      lockedRoomTypeIds.push(roomTypeIdLock._id);
+      lockedRoomTypeIds.push(roomDetail.roomTypeId);
     }
 
-   
-    // kiểm tra ngày trc khi đẩy
-    for (const selectedRoomId of selectedRoomIdsReserved) {
-      const room = await Room.findOne({ "roomNumbers._id": selectedRoomId });
-      if (!room) {
-        return res.status(404).json({ error: "Room not found" });
-      }
-      const roomNumber = room.roomNumbers.find(number => number._id.toString() === selectedRoomId);
-      if (!roomNumber) {
-        return res.status(404).json({ error: "Room number not found" });
-      }
-      const { unavailableDates } = roomNumber;
-      // kiểm tra có 2 người đặt cùng 1 phòng nhỏ
-      const duplicateDates = req.body.dates.filter(date => {
-        const dateString = new Date(date).toISOString();
-        return unavailableDates.some(unavailableDate => unavailableDate.toISOString() === dateString);
+    console.log("khóa đã đc mở, bắt đầu tìm id")
+   // tìm id phòng nhỏ
+   const selectedRoomIdsReserved = []
+    await Promise.all(req.body.roomTypeIdsReserved.map(async (roomDetail) => {
+      const { roomTypeId, quantity } = roomDetail; // Lấy ra roomNumbers và quantity từ mỗi phần tử
+      let selectedQuantity = 0; // Số lượng phòng đã chọn
+      const reFreshRoomData = await Room.find({ hotelId: req.body.hotelId });
+      const foundRoom = reFreshRoomData.find(room => room._id == roomTypeId);
+      //Duyệt qua mỗi phần tử trong mảng roomNumbers
+      foundRoom.roomNumbers.forEach(roomNumber => {
+        // Kiểm tra xem phòng có sẵn không 
+        if (isAvailable(roomNumber,req.body.dates)) {
+          // Nếu phòng có sẵn và số lượng phòng đã chọn chưa đạt tối đa
+          if (selectedQuantity < quantity) {
+            selectedRoomIdsReserved.push(roomNumber._id.toString()); // Thêm roomNumber vào mảng selectedRoomIdsReserved
+            selectedQuantity++; // Tăng số lượng phòng đã chọn lên 1
+          } else {
+            return; // Nếu đã đủ số lượng, thoát khỏi vòng lặp
+          }
+        }
       });
-      if (duplicateDates.length > 0) {
-        clearLockedRoomTypeIds(lockedRoomTypeIds);
-        return res.status(400).json({ error: "Đã có phòng nhỏ có người đặt ngày này" });
-      }
+    }));
+
+    const totalQuantity = req.body.roomTypeIdsReserved.reduce((acc, roomDetail) => acc + roomDetail.quantity, 0);
+    if (selectedRoomIdsReserved.length !== totalQuantity) {
+      return res.status(404).json({ error: "Hết phòng (chọn ko đủ số phòng)" });
     }
 
-    // sau khi check xong, bắt đầu đẩy ngày vào
+     
+    // bắt đầu đẩy
     for (const selectedRoomId of selectedRoomIdsReserved) {
       const room = await Room.findOne({ "roomNumbers._id": selectedRoomId });
       if (!room) {
@@ -228,6 +244,8 @@ export const updateRoomAvailability = async (req, res, next) => {
       );
 
     }
+    // await delay(20000); // Chờ 5 giây
+    console.log("Đặt phòng kết thúc, giải phóng khóa")
     clearLockedRoomTypeIds(lockedRoomTypeIds);
     res.status(200).json("Room status has been updated.");
   } catch (err) {
@@ -251,7 +269,7 @@ const getDatesInRange = (startDate, endDate) => {
 // hủy phòng
 export const cancelRoomReservation = async (req, res, next) => {
   try {
-    console.log("bat dau")
+    console.log("bat dau hủy phòng")
 
     const { startDateRange, endDateRange } = req.body.unavailableRangeDates;
     //   // lấy ra typeRoom to
@@ -266,9 +284,9 @@ export const cancelRoomReservation = async (req, res, next) => {
     }
     // khóa lại type room id cbi chỉnh
     roomTypeAPILocks[room._id] = true;
-    console.log("Chờ 20s");
-    await delay(20000); // Chờ 10 giây
-    console.log("Đã chờ 20s, tiếp tục thực hiện...");
+    // console.log("Chờ 10s");
+    //  await delay(10000); // Chờ 10 giây
+    // console.log("Đã chờ 10s, tiếp tục thực hiện...");
     
 
 
@@ -302,10 +320,7 @@ export const cancelRoomReservation = async (req, res, next) => {
 
     // if (matchingDateRange) console.log("phòng hiện tại có avai để đẩy")
 
-
-
     // Xóa dateRangeUnavailable và unavailableDates của roomNumberCurrent vừa tìm đc trong quá trình lặp ở trên
-
     // tim cac phan tu can xoa trong mang
     const indexesToRemove = [];
     req.body.dates.forEach(date => {
@@ -453,7 +468,7 @@ export const cancelRoomReservation = async (req, res, next) => {
 
     // giải phóng biến khóa
     delete roomTypeAPILocks[room._id] 
-    console.log("Giải phóng khóa kết thúc")
+    console.log("Giải phóng khóa kết thúc, kết thúc hủy phòng")
     res.status(200).json("Room reservation has been canceled successfully.");
   } catch (err) {
     next(err);
