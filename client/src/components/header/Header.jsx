@@ -52,7 +52,7 @@ const Header = ({ type }) => {
 
     navigate("/hotels", { state: { destination, dates, options } });
   };
-  console.log(dates)
+  // console.log(dates)
   return (
     <div className="header">
       <div

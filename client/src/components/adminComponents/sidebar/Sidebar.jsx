@@ -14,20 +14,18 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import { Link } from "react-router-dom";
 // import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import React from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import axios from "axios";
 const Sidebar = () => {
   // const { dispatch } = useContext(DarkModeContext);
   const { user, dispatch } = useContext(AuthContext)
-  const [selectedItem, setSelectedItem] = useState("");
   const navigate = useNavigate();
-
- 
-
-  const handleChangeSelectedItem = (item,) => {
-    setSelectedItem(item);
+  const location = useLocation();
+  const [selectedItem, setSelectedItem] = useState(location.state?.item);
+  const handleChangeSelectedItem = (item) => {
+    navigate(`/admin/${item}`, { state: { item } });
   };
 
 
@@ -64,24 +62,26 @@ const Sidebar = () => {
               <span>Users</span>
             </li>
           </Link> */}
-          <Link to="/admin/hotels" style={{ textDecoration: "none" }} onClick={() => handleChangeSelectedItem("hotels")}>
+          <div  style={{ textDecoration: "none" }} onClick={() => handleChangeSelectedItem("hotels")}>
             <li style={{ backgroundColor: selectedItem == 'hotels' ? '#ece8ff' : '' }}>
               <StoreIcon className="icon" />
               <span>Chỗ nghỉ</span>
             </li>
-          </Link>
-          <Link to="/admin/rooms" style={{ textDecoration: "none" }} onClick={() => handleChangeSelectedItem("rooms")}>
+          </div>
+
+          <div  style={{ textDecoration: "none" }} onClick={() => handleChangeSelectedItem("rooms")}>
             <li style={{ backgroundColor: selectedItem == 'rooms' ? '#ece8ff' : '' }}>
               <CreditCardIcon className="icon" />
               <span>Phòng</span>
             </li>
-          </Link>
-          <Link to="/admin/reservations" style={{ textDecoration: "none" }} onClick={() => handleChangeSelectedItem("reservations")}>
+          </div>
+
+          <div  style={{ textDecoration: "none" }} onClick={() => handleChangeSelectedItem("reservations")}>
             <li style={{ backgroundColor: selectedItem == 'reservations' ? '#ece8ff' : '' }}>
               <LocalShippingIcon className="icon" />
               <span>Đơn đặt phòng</span>
             </li>
-          </Link>
+          </div>
           {/* <p className="title">USEFUL</p>
           <li>
             <InsertChartIcon className="icon" />
@@ -106,12 +106,12 @@ const Sidebar = () => {
           </li> */}
           <p className="title">TÀI KHOẢN</p>
 
-          <Link to="/admin/changePassword" style={{ textDecoration: "none" }}>
-            <li>
+          <div  style={{ textDecoration: "none" }}  onClick={() => handleChangeSelectedItem("changePassword")}>
+            <li style={{ backgroundColor: selectedItem == 'changePassword' ? '#ece8ff' : '' }}>
               <AccountCircleOutlinedIcon className="icon" />
               <span>Đổi mật khẩu</span>
             </li>
-          </Link>
+          </div>
 
           <li onClick={handleLogOut}>
             <ExitToAppIcon className="icon" />

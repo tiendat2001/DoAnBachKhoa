@@ -6,6 +6,7 @@ import { format,addDays } from "date-fns";
 import "./featured.css";
 import React from "react";
 import { SearchContext } from "../../context/SearchContext";
+import { listProvinces } from "../../listObject";
 const Featured = () => {
   const { data, loading, error } = useFetch(
     "/hotels/countByCity"
@@ -21,7 +22,12 @@ const Featured = () => {
   function handleSearch(destination) {
     dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
     navigate("/hotels", );
-    // console.log("dfasfa");
+  }
+
+  const getImageProvinceUrl = (provinceName) =>{
+    const provinceFound = listProvinces.find(province => province.name == provinceName)
+    console.log(provinceFound?.imageUrl)
+    return provinceFound?.imageUrl
   }
   return (
     <div className="featured">
@@ -35,7 +41,7 @@ const Featured = () => {
             onClick={() => handleSearch(data[0].city)}
           >
             <img
-              src="https://cdn.tgdd.vn/Files/2022/03/28/1422795/kinh-nghiem-du-lich-chua-bai-dinh-ninh-binh-day-du-tu-a-z-202203282349275615.jpg"
+              src={getImageProvinceUrl(data[0]?.city)}
               alt=""
               className="featuredImg"
             />
@@ -47,7 +53,7 @@ const Featured = () => {
 
           <div className="featuredItem"  onClick={() => handleSearch(data[1].city)}>
             <img
-              src="https://ik.imagekit.io/tvlk/blog/2023/09/ho-guom-1.jpg?tr=dpr-2,w-675"
+              src={getImageProvinceUrl(data[1]?.city)}
               alt=""
               className="featuredImg"
             />
@@ -59,9 +65,10 @@ const Featured = () => {
               <h2>{data[1]?.quantity} chỗ nghỉ</h2>
             </div>
           </div>
+
           <div className="featuredItem"  onClick={() => handleSearch(data[2].city)}>
             <img
-              src="https://cf.bstatic.com/xdata/images/city/max500/689422.webp?k=2595c93e7e067b9ba95f90713f80ba6e5fa88a66e6e55600bd27a5128808fdf2&o="
+              src={getImageProvinceUrl(data[2]?.city)}
               alt=""
               className="featuredImg"
             />
