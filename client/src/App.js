@@ -137,7 +137,7 @@ function App() {
             </ProtectedRoute>
           } />
 
-          <Route path="modifyAccount" element={
+          <Route path="changePassword" element={
             <ProtectedRoute>
               <ModifyUser />
             </ProtectedRoute>

@@ -25,11 +25,11 @@ router.delete("/",deleteAllReservations)
 
 // doanh thu
 
-// GET DOANH THU SO LIEU TUNG HOTEL
-router.get("/getRevenue/:hotelId",getRevenueByHotelId)
+// GET DOANH THU SO LIEU STATISTIC TUNG HOTEL
+router.get("/getRevenue/:hotelId",verifyToken,getRevenueByHotelId)
 
-// GET DOANH THU THEO THANG TUNG HOTEL
-router.get("/getRevenueByMonths/:hotelId",getRevenueMonthsByHotelId)
+// GET DOANH THU THEO THANG TUNG HOTEL - bieu do duong
+router.get("/getRevenueByMonths/:hotelId",verifyToken,getRevenueMonthsByHotelId)
 
 //ADMINISTRATOR
 // GET ALL DOANH THU HOTEL CHO ADMINISTRATOR

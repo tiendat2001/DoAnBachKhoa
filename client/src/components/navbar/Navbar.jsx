@@ -44,7 +44,7 @@ const Navbar = () => {
             {showInfoUser && (
               <div className="account_options" >
                 <Link to="/update-info">Cập nhật thông tin</Link>
-                <Link to="/admin/modifyAccount">Đổi mật khẩu</Link>
+                <Link to="/admin/changePassword">Đổi mật khẩu</Link>
               </div>
             )}
             </div>

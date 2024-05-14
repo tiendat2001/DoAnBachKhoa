@@ -31,11 +31,8 @@ const ListRoom = () => {
         setHotelId(e.target.value);
     };
     useEffect(() => {
-        // Gọi roomReFetch khi hotelId thay đổi để load lại dữ liệu phòng mới
-        if (hotelId) {
-            roomReFetch();
-        }
-    }, [hotelId]);
+        setHotelId(hotelData[0]?._id)
+    }, [hotelData]);
     // console.log(roomData)
 
     // chuyển hướng

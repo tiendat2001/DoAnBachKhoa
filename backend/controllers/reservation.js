@@ -271,12 +271,12 @@ export const paymentAccountLastMonth = async (req, res, next) => {
         const reservation = groupedReservations[i];
         const user = await User.findById(reservation.idOwnerHotel);
         if (user) {
-            const { email,paymentInfo } = user;
+            const { email, paymentInfo } = user;
             enrichedReservations.push({
                 totalPrice: reservation.totalPrice,
                 idOwnerHotel: reservation.idOwnerHotel,
                 email: email,
-                paymentInfo:paymentInfo
+                paymentInfo: paymentInfo
             });
         }
     }
@@ -286,6 +286,12 @@ export const paymentAccountLastMonth = async (req, res, next) => {
 // statistic từng hotel
 export const getRevenueByHotelId = async (req, res, next) => {
     try {
+        // Kiểm tra có quyền xem ko
+        const hotelToCheck = await Hotel.findById(req.params.hotelId);
+        if (req.user.id !== hotelToCheck.ownerId && !req.user.isAdmin) {
+            return res.status(403).json({ message: "Bạn ko có quyền xem số liệu hotel này" });
+        }
+
         const { month } = req.query
         const currentDate = addHours(new Date(), 7);
         // // tháng 3 thì ngày bắt đầu 2024-03-01T00:00:00.000Z, kết thúc 2024-03-31T23:59:59.999Z
@@ -401,6 +407,12 @@ export const getRevenueByHotelId = async (req, res, next) => {
 // doanh thu theo tung thang - BIEEU DO DUONG
 export const getRevenueMonthsByHotelId = async (req, res, next) => {
     try {
+        // Kiểm tra có quyền xem ko
+        const hotelToCheck = await Hotel.findById(req.params.hotelId);
+        if (req.user.id !== hotelToCheck.ownerId && !req.user.isAdmin) {
+            return res.status(403).json({ message: "Bạn ko có quyền xem số liệu hotel này" });
+        }
+
         const currentDate = addHours(new Date(), 7);
         // console.log(currentDate.getMonth())
         const revenueByMonth = [];
@@ -416,7 +428,7 @@ export const getRevenueMonthsByHotelId = async (req, res, next) => {
                 {
                     $match: {
                         hotelId: req.params.hotelId,
-                        status: 1, 
+                        status: 1,
 
                         start: {
                             $gte: startDate, // Ngày bắt đầu của tháng
