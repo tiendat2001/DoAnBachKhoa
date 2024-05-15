@@ -10,7 +10,7 @@ import SearchItem from "../../components/searchItem/SearchItem";
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../context/SearchContext";
 import { addDays,addHours } from 'date-fns';
-
+import { listProvinces } from "../../listObject";
 const List = () => {
   const location = useLocation();
   const searchContext = useContext(SearchContext);
@@ -18,6 +18,7 @@ const List = () => {
   const [dates, setDates] = useState(searchContext.dates);
   const [openDate, setOpenDate] = useState(false);
   const [options, setOptions] = useState(searchContext.options);
+  const [suggestedDestination, setSuggestedDestination] = useState([]);
   const [min, setMin] = useState(100);
   const [max, setMax] = useState(10000);
   const [type, setType] = useState("");
@@ -26,11 +27,24 @@ const List = () => {
     `/hotels?city=${destination}&type=${type}`
   );
   const { dispatch } = useContext(SearchContext);
-
+    // gợi ý tìm kiếm
   const handleDestinationChange = (e) => {
     setDestination(e.target.value);
+    if (e.target.value) {
+      const filteredSuggestions = listProvinces.filter(province =>
+        province.name.toLowerCase().startsWith(e.target.value.toLowerCase())
+      ).map(province => province.name);
+      setSuggestedDestination(filteredSuggestions);
+    } else {
+      setSuggestedDestination([]);
+    }
+  };
+  const handleSuggestionClick = (suggestion) => {
+    setDestination(suggestion);
+    setSuggestedDestination([]);
   };
 
+  // loại chỗ nghỉ
   const handleChangeType = (event) => {
     setType(event.target.value);
   };
@@ -99,10 +113,26 @@ const List = () => {
       <div className="listContainer">
         <div className="listWrapper">
           <div className="listSearch">
-            <h1 className="lsTitle">Search</h1>
+            <h1 className="lsTitle">Tìm kiếm</h1>
             <div className="lsItem">
               <label>Địa điểm</label>
               <input placeholder={destination} value={destination} onChange={handleDestinationChange} type="text" />
+              {suggestedDestination.length > 0 && (
+                // style inline để đè 1 số cái khác so với header, css còn lại ở header.css
+                  <div className="suggestionDestination" style={{width:'94%'}}> 
+                    <div  className="suggestionsList">
+                      {suggestedDestination.map((suggestion, index) => (
+                        <div 
+                          key={index}
+                          style={{ top: '64px' }}
+                          onClick={() => handleSuggestionClick(suggestion)}
+                        >
+                          {suggestion}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
             </div>
             <div className="lsItem">
               <label>Check-in</label>

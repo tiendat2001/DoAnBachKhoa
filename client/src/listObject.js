@@ -12,11 +12,11 @@ export const listProvinces = [
       imageUrl: "https://cf.bstatic.com/xdata/images/city/max500/689422.webp?k=2595c93e7e067b9ba95f90713f80ba6e5fa88a66e6e55600bd27a5128808fdf2&o="
     },
     {
-      name: "Hải Phòng",
+      name: "Hải Phòng",
       imageUrl: "https://example.com/haiphong.jpg"
     },
     {
-      name: "Cần Thơ",
+      name: "Cần Thơ",
       imageUrl: "https://example.com/cantho.jpg"
     }
   ];

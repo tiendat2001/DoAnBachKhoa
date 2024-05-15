@@ -12,12 +12,12 @@ import { useState, useContext } from "react";
 // hien calendar
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { format, addDays,addHours,subHours } from "date-fns";
+import { format, addDays, addHours, subHours } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from '../../context/AuthContext';
-
+import { listProvinces } from '../../listObject';
 const Header = ({ type }) => {
   const searchContext = useContext(SearchContext);
   const [destination, setDestination] = useState(searchContext.destination);
@@ -26,8 +26,25 @@ const Header = ({ type }) => {
   const [options, setOptions] = useState(searchContext.options);
 
   const [openOptions, setOpenOptions] = useState(false);
-
+  const [suggestedDestination, setSuggestedDestination] = useState([]);
   const navigate = useNavigate();
+  const handleDestinationChange = (e) => {
+    const value = e.target.value;
+    setDestination(value);
+    if (value) {
+      const filteredSuggestions = listProvinces.filter(province =>
+        province.name.toLowerCase().startsWith(value.toLowerCase())
+      ).map(province => province.name);
+      setSuggestedDestination(filteredSuggestions);
+    } else {
+      setSuggestedDestination([]);
+    }
+  }
+  // chỉnh list gợi ý
+  const handleSuggestionClick = (suggestion) => {
+    setDestination(suggestion);
+    setSuggestedDestination([]);
+  };
   // sự kiện chỉnh sửa số người, room
   const handleOption = (name, operation) => {
 
@@ -85,7 +102,7 @@ const Header = ({ type }) => {
         {type !== "list" && (
           <>
             <h1 className="headerTitle">
-              Bạn có thể đi đến bất cứ đâu bạn muốn
+              Du lịch đến bất cứ đâu trên Việt Nam
             </h1>
             <p className="headerDesc">
               Chọn khách sạn với giá rẻ nhất dành cho bạn
@@ -95,14 +112,31 @@ const Header = ({ type }) => {
               {/* thanh search city */}
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faBed} className="headerIcon" />
-                <input
+                <input style ={{fontSize:'16px',color: 'black'}}
                   type="text"
-                  placeholder="Hà Nội"
+                  value={destination}
                   className="headerSearchInput "
                   // doi trang thai state destination moi khi thay doi
-                  onChange={(e) => setDestination(e.target.value)}
+                  onChange={handleDestinationChange}
                 />
+                {suggestedDestination.length > 0 && (
+                  <div className="suggestionDestination">
+                    <div  className="suggestionsList">
+                      {suggestedDestination.map((suggestion, index) => (
+                        <div 
+                          key={index}
+                          className="suggestionItem"
+                          onClick={() => handleSuggestionClick(suggestion)}
+                        >
+                          {suggestion}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
+
+
 
               {/* thanh search ngày */}
               <div className="headerSearchItem">

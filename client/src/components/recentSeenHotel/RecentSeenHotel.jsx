@@ -20,7 +20,11 @@ const RecentSeenHotel = () => {
     //Lấy danh sách ID khách sạn đã xem từ localStorage
     const idHotelSeenString = localStorage.getItem('idHotelSeen');
     const idHotelSeen = idHotelSeenString ? JSON.parse(idHotelSeenString) : [];
-    setRecentHotelIds(idHotelSeen)
+    // nếu người dùng chưa xem ks nào (lần đầu vào localStorage rỗng => để mặc định HN)
+    if(idHotelSeen.length == 0){
+      setMostViewedCity("Hà Nội")
+    } 
+    setRecentHotelIds(idHotelSeen) 
     // console.log(idHotelSeen)
     //Tạo một đối tượng để đếm số lần xuất hiện của mỗi thành phố
     const cityCount = {};
@@ -40,16 +44,17 @@ const RecentSeenHotel = () => {
         mostViewedCity = city;
       }
     }
-
+    console.log("mostviewcity"+mostViewedCity)
     // Cập nhật thành phố được xem nhiều nhất vào state
-    setMostViewedCity(mostViewedCity || "Hà Nội"); // Sử dụng "Hà Nội" làm giá trị mặc định nếu mostViewedCity rỗng
-
+    // setMostViewedCity(mostViewedCity || "Hà Nội"); // Sử dụng "Hà Nội" làm giá trị mặc định nếu mostViewedCity rỗng
+    setMostViewedCity(mostViewedCity)
   }, [allHotelData]);
-  // console.log(mostViewedCity)
+  console.log(mostViewedCity)
   // console.log(suggestedHotel)
-  // chỉ lấy những khách sạn mà người dùng chưa xem gần đây + lấy tối đa 3 ks để hiển thị
+  // chỉ lấy những khách sạn mà người dùng chưa xem gần đây- id khách sạn ko có trg local storage + lấy tối đa 3 ks để hiển thị
   const filteredHotels = suggestedHotel.filter(item => !recentHotelIds.includes(item._id));
   const limitedSuggestedHotels = filteredHotels.length > 3 ? filteredHotels.slice(0, 3) : filteredHotels;
+  console.log(limitedSuggestedHotels)
   return (
     <div className="fp">
       {loading || !mostViewedCity ? (

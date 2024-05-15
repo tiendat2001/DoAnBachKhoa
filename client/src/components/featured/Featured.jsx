@@ -26,7 +26,6 @@ const Featured = () => {
 
   const getImageProvinceUrl = (provinceName) =>{
     const provinceFound = listProvinces.find(province => province.name == provinceName)
-    console.log(provinceFound?.imageUrl)
     return provinceFound?.imageUrl
   }
   return (

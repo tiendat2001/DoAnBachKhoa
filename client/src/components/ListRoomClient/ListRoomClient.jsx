@@ -50,7 +50,7 @@ const ListRoomClient = ({ hotelId }) => {
     // console.log("thay doi")
   }, [destination, dates, options]);
 
-  console.log(dates)
+  // console.log(dates)
   const handleOpen = (i) => {
     // setSlideNumber(i);
     setOpenExpandPhoto(true);
