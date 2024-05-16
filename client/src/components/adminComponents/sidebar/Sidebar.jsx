@@ -23,7 +23,7 @@ const Sidebar = () => {
   const { user, dispatch } = useContext(AuthContext)
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedItem, setSelectedItem] = useState(location.state?.item);
+  const [selectedItem, setSelectedItem] = useState(location.state?.item || 'hotels');
   const handleChangeSelectedItem = (item) => {
     navigate(`/admin/${item}`, { state: { item } });
   };

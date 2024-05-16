@@ -123,7 +123,7 @@ const ListBooking = () => {
                 <div style={{ fontWeight: 'bold' }}>Ngày nhận phòng:  {new Date(item.start).toLocaleString('vi-VN')}</div>
                 <div style={{ fontWeight: 'bold' }}>Ngày trả phòng: {subHours(new Date(item.end),2).toLocaleString('vi-VN')}</div>
                 <div>(Thời gian được tính theo múi giờ hiện tại máy của bạn)</div>
-                <div style={{ color: item.status === 1 ? 'green' : item.status === 0 ? 'red' : 'blue' }}>
+                <div style={{ color: item.status === 1 ? 'green' : item.status === 0 ? 'red' : 'blue',fontWeight: 'bold' }}>
                   Tình trạng: {item.status === 1 ? "Thành công" : item.status === 0 ? "Hủy" : "Đang chờ"}
                 </div>
                 <div>Thông tin liên lạc chỗ nghỉ: {item.hotelContact}</div>
