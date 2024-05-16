@@ -151,7 +151,7 @@ const Reserve = () => {
         dates: alldates,
         startDateRange: startDate,
         endDateRange: endDate,
-        hotelId: hotelId,
+        // hotelId: hotelId,
       });
     } catch (err) {
       console.log(err)

@@ -15,7 +15,7 @@ const Featured = () => {
   const [destination, setDestination] = useState(searchContext.destination);
   const [dates, setDates] = useState(searchContext.dates);
   const [options, setOptions] = useState(searchContext.options);
-  
+
   const navigate = useNavigate();
   const { dispatch } = useContext(SearchContext);
 

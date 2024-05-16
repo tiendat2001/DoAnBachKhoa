@@ -93,45 +93,52 @@ const RoomDetails = () => {
         // lấy lựa chọn trong select
         let roomQuantitySelected = event.target.value;
         setRoomQuantityToClose(roomQuantitySelected)
-        updatedSelectedRoomToClose = [];
+        // updatedSelectedRoomToClose = [];
 
 
     };
     // khi ấn xác nhận đóng phòng
     const handelCloseRoom = async () => {
-        const response = await fetch(`/rooms/find/${idRoom}`);
-        const reFreshRoomTypeData = await response.json();
-        reFreshRoomTypeData.roomNumbers.forEach((roomNumber) => {
-            if (isAvailable(roomNumber) && updatedSelectedRoomToClose.length < roomQuantityToClose) {
-                // đẩy vào mảng _id của phòng hợp lệ để đóng
-                updatedSelectedRoomToClose.push(roomNumber._id);
-            }
-        });
+        // const response = await fetch(`/rooms/find/${idRoom}`);
+        // const reFreshRoomTypeData = await response.json();
+        // reFreshRoomTypeData.roomNumbers.forEach((roomNumber) => {
+        //     if (isAvailable(roomNumber) && updatedSelectedRoomToClose.length < roomQuantityToClose) {
+        //         // đẩy vào mảng _id của phòng hợp lệ để đóng
+        //         updatedSelectedRoomToClose.push(roomNumber._id);
+        //     }
+        // });
 
         // setSelectedRoomIdsToDelete(updatedSelectedRoomsCopy);
         // console.log(updatedSelectedRoomToClose)
 
         // NHƯ API LUC ĐẶT PHÒNG ĐẨY AVAI
         try {
-             await Promise.all(
-              updatedSelectedRoomToClose.map(async (roomId) => {
-                try {
-                  const res = await axios.put(`/rooms/availability/${roomId}`, {
-                    dates: alldates,
-                    startDateRange:dates[0].startDate,
-                    endDateRange: addDays(dates[0].endDate,1) // cần cộng 1 ngày do riêng đóng phòng tính cả ngày cuối
-                  });
+            //  await Promise.all(
+            //   updatedSelectedRoomToClose.map(async (roomId) => {
+            //     try {
+            //       const res = await axios.put(`/rooms/availability/${roomId}`, {
+            //         dates: alldates,
+            //         startDateRange:dates[0].startDate,
+            //         endDateRange: addDays(dates[0].endDate,1) // cần cộng 1 ngày do riêng đóng phòng tính cả ngày cuối
+            //       });
 
-                  return res.data;
-                } catch (error) {
-                  console.log(`Error in room ${roomId}:`, error);
-                  throw error; // Ném lỗi để kích hoạt catch bên ngoài và dừng quá trình xử lý
-                }
-              })
-            );
+            //       return res.data;
+            //     } catch (error) {
+            //       console.log(`Error in room ${roomId}:`, error);
+            //       throw error; // Ném lỗi để kích hoạt catch bên ngoài và dừng quá trình xử lý
+            //     }
+            //   })
+            // );
+            console.log("át")
+            const res = await axios.put(`/rooms/availability/`, {
+                roomTypeIdsReserved:[{roomTypeId: idRoom, quantity:parseInt(roomQuantityToClose, 10)}], // chuyển về dạng số
+                dates: alldates,
+                startDateRange:dates[0].startDate,
+                endDateRange: addDays(dates[0].endDate,1) // cần cộng 1 ngày do riêng đóng phòng tính cả ngày cuối
+              });
           } catch (err) {
             console.log(err)
-            alert("Có lỗi xảy ra vui lòng quay lại trang trước và đặt phòng lại")
+            toast.error("Có lỗi xảy ra vui lòng thử lại")
             return; // Ngưng thực thi hàm nếu có lỗi
           }
 

@@ -193,8 +193,9 @@ export const updateRoomAvailability = async (req, res, next) => {
     await Promise.all(req.body.roomTypeIdsReserved.map(async (roomDetail) => {
       const { roomTypeId, quantity } = roomDetail; // Lấy ra roomNumbers và quantity từ mỗi phần tử
       let selectedQuantity = 0; // Số lượng phòng đã chọn
-      const reFreshRoomData = await Room.find({ hotelId: req.body.hotelId });
-      const foundRoom = reFreshRoomData.find(room => room._id == roomTypeId);
+      // const reFreshRoomData = await Room.find({ hotelId: req.body.hotelId });
+      // const foundRoom = reFreshRoomData.find(room => room._id == roomTypeId);
+      const foundRoom = await Room.findById(roomTypeId)
       //Duyệt qua mỗi phần tử trong mảng roomNumbers
       foundRoom.roomNumbers.forEach(roomNumber => {
         // Kiểm tra xem phòng có sẵn không 
@@ -212,7 +213,8 @@ export const updateRoomAvailability = async (req, res, next) => {
 
     const totalQuantity = req.body.roomTypeIdsReserved.reduce((acc, roomDetail) => acc + roomDetail.quantity, 0);
     if (selectedRoomIdsReserved.length !== totalQuantity) {
-      return res.status(404).json({ error: "Hết phòng (chọn ko đủ số phòng)" });
+      clearLockedRoomTypeIds(lockedRoomTypeIds);
+      return res.status(404).json({ error: "Hết phòng (chọn ko đủ số phòng). Vui lòng thử lại" });
     }
 
      
@@ -220,12 +222,14 @@ export const updateRoomAvailability = async (req, res, next) => {
     for (const selectedRoomId of selectedRoomIdsReserved) {
       const room = await Room.findOne({ "roomNumbers._id": selectedRoomId });
       if (!room) {
+        clearLockedRoomTypeIds(lockedRoomTypeIds);
         return res.status(404).json({ error: "Room not found" });
       }
 
       const roomNumber = room.roomNumbers.find(number => number._id.toString() === selectedRoomId);
 
       if (!roomNumber) {
+        clearLockedRoomTypeIds(lockedRoomTypeIds);
         return res.status(404).json({ error: "Room number not found" });
       }
 
