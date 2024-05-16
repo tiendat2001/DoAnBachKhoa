@@ -35,6 +35,7 @@ const ListRoomClient = ({ hotelId }) => {
   // const [expandedPhotoIndex, setExpandedPhotoIndex] = useState(null); // State để lưu index của ảnh đang được phóng to
   const [openExpandPhoto, setOpenExpandPhoto] = useState(false);
   const [slideNumber, setSlideNumber] = useState(0);
+  const [indexItem, setIndexItem] = useState(0);
   const { dispatch } = useContext(SearchContext);
   const [selectedRoomIds, setSelectedRoomIds] = useState([]);
   const [key, setKey] = useState(Math.random());
@@ -51,12 +52,15 @@ const ListRoomClient = ({ hotelId }) => {
   }, [destination, dates, options]);
 
   // console.log(dates)
-  const handleOpen = (i) => {
-    // setSlideNumber(i);
-    setOpenExpandPhoto(true);
+  const handleOpen = (i,indexItem) => {
+   
+    setSlideNumber(i);       // set vị trí ảnh trong mảng data[index].photos
+    setIndexItem(indexItem)  // set vị trí phần tử data (tức từng roomType mà người dùng click vào)
+    setOpenExpandPhoto(true); // để mở slider ảnh phóng to
   };
-  // console.log("at")
-  const handleMove = (direction, item) => { // item chính là thông tin từng room
+
+  console.log(data[indexItem]?.photos)
+  const handleMove = (direction, item) => { // item chính là data[index], là thông tin room-room chứa ảnh người dùng c
     let newSlideNumber;
 
     if (direction === "l") {
@@ -247,14 +251,19 @@ const ListRoomClient = ({ hotelId }) => {
             <div className="rDesc">Số lượng người: {item.maxPeople}</div>
             <div className="rMax">{item.desc}</div>
             <div className="rImages">
-              {item.photos?.map((photo, i) => (
+              {item.photos?.slice(0,3).map((photo, i) => (
                 <div className="rImgWrapper" key={i}>
                   <img
                     src={photo}
                     alt=""
                     className="roomImg"
-                    onClick={() => handleOpen(i)}
+                    onClick={() => handleOpen(i,index)}
                   />
+                  {i === 2 && item.photos.length > 3 && (
+                    <div style={{fontStyle:'italic'}}>
+                      (Còn {item.photos.length - 3} ảnh tiếp...)
+                    </div>
+                  )}
                   {/* Kiểm tra nếu index của ảnh được click trùng với expandedPhotoIndex thì hiển thị ảnh phóng to */}
                   {openExpandPhoto && (
                     <div className="expandedPhotoWrapper">
@@ -267,11 +276,12 @@ const ListRoomClient = ({ hotelId }) => {
                       <FontAwesomeIcon
                         icon={faCircleArrowLeft}
                         className="arrow"
-                        onClick={() => handleMove("l", item)}
+                        onClick={() => handleMove("l", data[indexItem])}
                       />
+                      {/* hiển thị ảnh phóng to */}
                       <div className="sliderWrapper">
                         <img
-                          src={item.photos[slideNumber]}
+                          src={data[indexItem].photos[slideNumber]}
                           alt=""
                           className="sliderImg"
                         />
@@ -279,7 +289,7 @@ const ListRoomClient = ({ hotelId }) => {
                       <FontAwesomeIcon
                         icon={faCircleArrowRight}
                         className="arrow"
-                        onClick={() => handleMove("r", item)}
+                        onClick={() => handleMove("r", data[indexItem])}
                       />
 
                     </div>

@@ -272,7 +272,7 @@ const RoomDetails = () => {
 
                     <div className="closeRoomContainer">
                         <div style={{ fontWeight: 'bold', fontSize: '20px' }}>Đóng phòng</div>
-                        <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Bạn có thể đóng 1 số lượng phòng vào 1 số ngày nhất định)</div>
+                        <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Bạn có thể đóng 1 số lượng phòng vào trong 1 khoảng ngày nhất định)</div>
 
                         {/* css từ listRoomClient */}
                         <div className="selectRoomClose">
@@ -336,7 +336,14 @@ const RoomDetails = () => {
                                 <div style={{ width: '20%' }} className="roomClose" >Hành động</div>
                             </div>
 
-                            {roomCloseData?.map((roomClose, index) => (
+                            {roomCloseData
+                            // lấy những cái >= ngày hiện tại
+                             ?.filter(roomClose => {
+                                const currentDate = new Date();
+                                currentDate.setHours(0, 0, 0, 0);
+                                return new Date(roomClose.startClose) > currentDate;
+                            })
+                            .map((roomClose, index) => (
                                 <div key={index} className="roomCloseContainer">
                                     <div className="roomClose">{index + 1}</div>
                                     <div className="roomClose">{new Date(new Date(roomClose.startClose)).toLocaleDateString('vi-VN')}</div>

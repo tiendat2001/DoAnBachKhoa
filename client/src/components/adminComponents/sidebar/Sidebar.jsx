@@ -4,12 +4,12 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
-// import InsertChartIcon from "@mui/icons-material/InsertChart";
+import HouseIcon from '@mui/icons-material/House';
 // import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 // import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 // import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
-// import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
+import BookOnlineIcon from '@mui/icons-material/BookOnline';
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
 // import { DarkModeContext } from "../../context/darkModeContext";
@@ -71,14 +71,14 @@ const Sidebar = () => {
 
           <div  style={{ textDecoration: "none" }} onClick={() => handleChangeSelectedItem("rooms")}>
             <li style={{ backgroundColor: selectedItem == 'rooms' ? '#ece8ff' : '' }}>
-              <CreditCardIcon className="icon" />
+              <HouseIcon className="icon" />
               <span>Phòng</span>
             </li>
           </div>
 
           <div  style={{ textDecoration: "none" }} onClick={() => handleChangeSelectedItem("reservations")}>
             <li style={{ backgroundColor: selectedItem == 'reservations' ? '#ece8ff' : '' }}>
-              <LocalShippingIcon className="icon" />
+              <BookOnlineIcon className="icon" />
               <span>Đơn đặt phòng</span>
             </li>
           </div>
