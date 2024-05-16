@@ -41,97 +41,6 @@ export const createRoom = async (req, res, next) => {
   }
 };
 
-export const updateRoom = async (req, res, next) => {
-  try {
-
-    const roomToUpdate = await Room.findById(req.params.id)  // req.params.id là _id của type room sẽ chỉnh sửa
-    // tìm id của hotel có room sẽ chỉnh sửa
-    const hotelToUpdate = await Hotel.findById(roomToUpdate.hotelId);
-
-    if (hotelToUpdate.ownerId !== req.user.id) {
-      return res.status(403).json({ message: "You are not authorized to update room to this hotel" });
-    }
-    const updatedRoom = await Room.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true }
-    );
-
-    // chỉnh sửa lại giá thấp nhất của khách sạn ( phòng người dùng đổi giá phòng)
-    const hotelId = hotelToUpdate._id
-    const cheapestRoom = await Room.findOne({ hotelId }).sort({ price: 1 }).limit(1);
-    await Hotel.findByIdAndUpdate(hotelId, {
-      cheapestPrice: {
-        price: cheapestRoom.price,
-        people: cheapestRoom.maxPeople
-      }
-    });
-
-    res.status(200).json(updatedRoom);
-  } catch (err) {
-    next(err);
-  }
-};
-
-// khi đặt phòng
-export const updateRoomAvailability = async (req, res, next) => {
-  try {
-    const selectedRoomIdsReserved = req.body.selectedRoomIdsReserved;
-    // kiểm tra ngày trc khi đẩy
-    for (const selectedRoomId of selectedRoomIdsReserved) {
-      const room = await Room.findOne({ "roomNumbers._id": selectedRoomId });
-      if (!room) {
-        return res.status(404).json({ error: "Room not found" });
-      }
-      const roomNumber = room.roomNumbers.find(number => number._id.toString() === selectedRoomId);
-      if (!roomNumber) {
-        return res.status(404).json({ error: "Room number not found" });
-      }
-      const { unavailableDates } = roomNumber;
-      // kiểm tra có 2 người đặt cùng 1 phòng nhỏ
-      const duplicateDates = req.body.dates.filter(date => {
-        const dateString = new Date(date).toISOString();
-        return unavailableDates.some(unavailableDate => unavailableDate.toISOString() === dateString);
-      });
-      if (duplicateDates.length > 0) {
-        return res.status(400).json({ error: "Đã có phòng nhỏ có người đặt ngày này" });
-      }
-    }
-
-    // sau khi check xong, bắt đầu đẩy ngày vào
-    for (const selectedRoomId of selectedRoomIdsReserved) {
-      const room = await Room.findOne({ "roomNumbers._id": selectedRoomId });
-      if (!room) {
-        return res.status(404).json({ error: "Room not found" });
-      }
-
-      const roomNumber = room.roomNumbers.find(number => number._id.toString() === selectedRoomId);
-
-      if (!roomNumber) {
-        return res.status(404).json({ error: "Room number not found" });
-      }
-
-      const { unavailableDates } = roomNumber;
-      const { startDateRange, endDateRange } = req.body;
-      //Nếu không có ngày nào trùng lặp, thêm các ngày mới vào mảng unavailableDates
-      await Room.updateOne(
-        { "roomNumbers._id": selectedRoomId },
-        {
-          $push: {
-            "roomNumbers.$.unavailableDates": { $each: req.body.dates }
-          },
-          $addToSet: {
-            "roomNumbers.$.unavailableRangeDates": { startDateRange, endDateRange }
-          }
-        }
-      );
-
-    }
-    res.status(200).json("Room status has been updated.");
-  } catch (err) {
-    next(err);
-  }
-};
 export const deleteRoom = async (req, res, next) => {
   // console.log("Dat")
   try {
@@ -208,6 +117,144 @@ export const getRoomById = async (req, res, next) => {
     next(err);
   }
 };
+
+// UPDATE INFO ROOM TYPE
+export const updateRoom = async (req, res, next) => {
+  try {
+
+    const roomToUpdate = await Room.findById(req.params.id)  // req.params.id là _id của type room sẽ chỉnh sửa
+    // tìm id của hotel có room sẽ chỉnh sửa
+    const hotelToUpdate = await Hotel.findById(roomToUpdate.hotelId);
+
+    if (hotelToUpdate.ownerId !== req.user.id) {
+      return res.status(403).json({ message: "You are not authorized to update room to this hotel" });
+    }
+    const updatedRoom = await Room.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+
+    // chỉnh sửa lại giá thấp nhất của khách sạn ( phòng người dùng đổi giá phòng)
+    const hotelId = hotelToUpdate._id
+    const cheapestRoom = await Room.findOne({ hotelId }).sort({ price: 1 }).limit(1);
+    await Hotel.findByIdAndUpdate(hotelId, {
+      cheapestPrice: {
+        price: cheapestRoom.price,
+        people: cheapestRoom.maxPeople
+      }
+    });
+
+    res.status(200).json(updatedRoom);
+  } catch (err) {
+    next(err);
+  }
+};
+const isAvailable = (roomNumber,alldates) => {
+  if (!roomNumber.status) {
+    return false; // Nếu status là false, room không khả dụng
+  }
+  const isFound = roomNumber.unavailableDates.some((date) => {
+    const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
+    // console.log(new Date(dateMinusOneDay));
+    return alldates.includes(dateMinusOneDay);
+  });
+
+  return !isFound;
+};
+let roomTypeAPILocks = {}; // Lưu trữ biến khóa cho mỗi giá trị id
+function clearLockedRoomTypeIds(lockedRoomTypeIds) {
+  for (const id of lockedRoomTypeIds) {
+      delete roomTypeAPILocks[id];
+  }
+}
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+// khi đặt phòng
+export const updateRoomAvailability = async (req, res, next) => {
+  console.log("bắt đầu đặt phòng, check khóa")
+  let lockedRoomTypeIds=[]
+  try {
+    // kiểm tra xem các khóa của các loại phòng cbi đẩy, và khóa lại những id room Type của phòng cbi chỉnh
+    for (const roomDetail of req.body.roomTypeIdsReserved) {
+      while (roomTypeAPILocks[roomDetail.roomTypeId]) {
+        // Chờ 1 giây trước khi kiểm tra lại
+        await delay(1000); // Chờ 1 giây
+      }
+      roomTypeAPILocks[roomDetail.roomTypeId] = true;
+      // lưu những id type room đã khóa
+      lockedRoomTypeIds.push(roomDetail.roomTypeId);
+    }
+
+    console.log("khóa đã đc mở, bắt đầu tìm id")
+   // tìm id phòng nhỏ
+   const selectedRoomIdsReserved = []
+    await Promise.all(req.body.roomTypeIdsReserved.map(async (roomDetail) => {
+      const { roomTypeId, quantity } = roomDetail; // Lấy ra roomNumbers và quantity từ mỗi phần tử
+      let selectedQuantity = 0; // Số lượng phòng đã chọn
+      const reFreshRoomData = await Room.find({ hotelId: req.body.hotelId });
+      const foundRoom = reFreshRoomData.find(room => room._id == roomTypeId);
+      //Duyệt qua mỗi phần tử trong mảng roomNumbers
+      foundRoom.roomNumbers.forEach(roomNumber => {
+        // Kiểm tra xem phòng có sẵn không 
+        if (isAvailable(roomNumber,req.body.dates)) {
+          // Nếu phòng có sẵn và số lượng phòng đã chọn chưa đạt tối đa
+          if (selectedQuantity < quantity) {
+            selectedRoomIdsReserved.push(roomNumber._id.toString()); // Thêm roomNumber vào mảng selectedRoomIdsReserved
+            selectedQuantity++; // Tăng số lượng phòng đã chọn lên 1
+          } else {
+            return; // Nếu đã đủ số lượng, thoát khỏi vòng lặp
+          }
+        }
+      });
+    }));
+
+    const totalQuantity = req.body.roomTypeIdsReserved.reduce((acc, roomDetail) => acc + roomDetail.quantity, 0);
+    if (selectedRoomIdsReserved.length !== totalQuantity) {
+      return res.status(404).json({ error: "Hết phòng (chọn ko đủ số phòng)" });
+    }
+
+     
+    // bắt đầu đẩy
+    for (const selectedRoomId of selectedRoomIdsReserved) {
+      const room = await Room.findOne({ "roomNumbers._id": selectedRoomId });
+      if (!room) {
+        return res.status(404).json({ error: "Room not found" });
+      }
+
+      const roomNumber = room.roomNumbers.find(number => number._id.toString() === selectedRoomId);
+
+      if (!roomNumber) {
+        return res.status(404).json({ error: "Room number not found" });
+      }
+
+      const { unavailableDates } = roomNumber;
+      const { startDateRange, endDateRange } = req.body;
+      //Nếu không có ngày nào trùng lặp, thêm các ngày mới vào mảng unavailableDates
+      await Room.updateOne(
+        { "roomNumbers._id": selectedRoomId },
+        {
+          $push: {
+            "roomNumbers.$.unavailableDates": { $each: req.body.dates }
+          },
+          $addToSet: {
+            "roomNumbers.$.unavailableRangeDates": { startDateRange, endDateRange }
+          }
+        }
+      );
+
+    }
+    // await delay(20000); // Chờ 5 giây
+    console.log("Đặt phòng kết thúc, giải phóng khóa")
+    clearLockedRoomTypeIds(lockedRoomTypeIds);
+    res.status(200).json("Room status has been updated.");
+  } catch (err) {
+    clearLockedRoomTypeIds(lockedRoomTypeIds);
+    next(err);
+  }
+};
+
 // hàm lấy allDates
 const getDatesInRange = (startDate, endDate) => {
   const start = new Date(startDate);
@@ -223,20 +270,33 @@ const getDatesInRange = (startDate, endDate) => {
 // hủy phòng
 export const cancelRoomReservation = async (req, res, next) => {
   try {
-    console.log("bat dau")
+    console.log("bat dau hủy phòng")
+
     const { startDateRange, endDateRange } = req.body.unavailableRangeDates;
     //   // lấy ra typeRoom to
     let room = await Room.findById(req.params.id);
     if (!room) {
       return res.status(404).json("Room not found");
     }
+    // kiểm tra khóa 
+    while (roomTypeAPILocks[room._id]) {
+      // Chờ 1 giây trước khi kiểm tra lại
+      await delay(1000); // Chờ 1 giây
+    }
+    // khóa lại type room id cbi chỉnh
+    roomTypeAPILocks[room._id] = true;
+    // console.log("Chờ 10s");
+    //  await delay(10000); // Chờ 10 giây
+    // console.log("Đã chờ 10s, tiếp tục thực hiện...");
+    
+
 
     // chỉnh điều kiện chỗ này, lấy ra roomNumber là 1 json phòng nhỏ
     // lọc từ dưới lên mảng roomNumbers, lấy ra phần tử có unavailableRangeDates phù hợp gán vào roomNumberCurrent
     let roomNumberCurrent = null;
     for (let i = room.roomNumbers.length - 1; i >= 0; i--) {
       const roomNumberData = room.roomNumbers[i];
-      console.log("lặp")
+      // console.log("lặp")
       if (roomNumberData.unavailableRangeDates && roomNumberData.unavailableRangeDates.length > 0) {
         // console.log(roomNumberData)
         const matchingDateRange = roomNumberData.unavailableRangeDates.find(dateRange =>
@@ -249,7 +309,7 @@ export const cancelRoomReservation = async (req, res, next) => {
         }
       }
     }
-    console.log(roomNumberCurrent)
+    // console.log(roomNumberCurrent)
     if (!roomNumberCurrent) {
       return res.status(400).json("Không tìm thấy roomNumberCurrent phù hợp");
     }
@@ -259,12 +319,9 @@ export const cancelRoomReservation = async (req, res, next) => {
       dateRange.startDateRange.toISOString() == startDateRange &&
       dateRange.endDateRange.toISOString() == endDateRange);
 
-    if (matchingDateRange) console.log("phòng hiện tại có avai để đẩy")
-
-
+    // if (matchingDateRange) console.log("phòng hiện tại có avai để đẩy")
 
     // Xóa dateRangeUnavailable và unavailableDates của roomNumberCurrent vừa tìm đc trong quá trình lặp ở trên
-
     // tim cac phan tu can xoa trong mang
     const indexesToRemove = [];
     req.body.dates.forEach(date => {
@@ -301,8 +358,8 @@ export const cancelRoomReservation = async (req, res, next) => {
     // await roomModifiedDateRange.save();
     room.markModified('roomNumbers');
     await room.save();
-    console.log("check")
-    console.log(roomNumberCurrent)
+    // console.log("check")
+    // console.log(roomNumberCurrent)
     // sau khi đẩy các ptu ở vị trí hiện tại, bắt đầu check
     // let alldates;
     // alldates = getDatesInRange(startDateRange, endDateRange);
@@ -311,7 +368,7 @@ export const cancelRoomReservation = async (req, res, next) => {
     let alldates;
     let roomNumberLoop = null;
     const roomNumberCurrentIndex = room.roomNumbers.findIndex(number => number._id.toString() == roomNumberCurrent._id);
-    console.log(roomNumberCurrentIndex)
+    // console.log(roomNumberCurrentIndex)
 
     //Sau khi xóa unavailableDates và dateRangeUnavail,  tìm các phần tử ở dưới phần tử roomNumberCurrent để tìm liệu có phần tử nào thay thế
 
@@ -338,7 +395,7 @@ export const cancelRoomReservation = async (req, res, next) => {
 
         // có phần tử ở dưới roomNumberCurrent có unavailableDates để xóa thay cho roomNumberCurrent
         if (matchingDateRange) {
-          console.log("Có phòng ở dưới có unavai thỏa mãn đẩy đc lên trên")
+          // console.log("Có phòng ở dưới có unavai thỏa mãn đẩy đc lên trên")
           roomNumberToReplace = roomNumberData;
           allDatesToReplace = getDatesInRange(dateRangeToReplace.startDateRange, dateRangeToReplace.endDateRange);
           break;
@@ -409,12 +466,15 @@ export const cancelRoomReservation = async (req, res, next) => {
 
       await roomModifiedDateRangeTwo.save();
     }
+
+    // giải phóng biến khóa
+    delete roomTypeAPILocks[room._id] 
+    console.log("Giải phóng khóa kết thúc, kết thúc hủy phòng")
     res.status(200).json("Room reservation has been canceled successfully.");
   } catch (err) {
     next(err);
   }
 };
-
 
 // so luong phong trong 30 ngay toi
 export const statusRoomCount = async (req, res, next) => {

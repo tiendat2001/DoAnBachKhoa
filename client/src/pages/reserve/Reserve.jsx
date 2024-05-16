@@ -147,10 +147,11 @@ const Reserve = () => {
       // );
       const copiedRoomIds = [...selectedRoomIdsReserved];
       const res = await axios.put(`/rooms/availability/`, {
-        selectedRoomIdsReserved: copiedRoomIds,
+        roomTypeIdsReserved:roomTypeIdsReserved,
         dates: alldates,
         startDateRange: startDate,
         endDateRange: endDate,
+        hotelId: hotelId,
       });
     } catch (err) {
       console.log(err)
