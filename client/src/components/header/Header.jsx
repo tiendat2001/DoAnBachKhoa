@@ -157,16 +157,16 @@ const Header = ({ type }) => {
                       const utc = new Date().getTimezoneOffset() / 60 //-7
                       const newSelection = { ...item.selection };
                       let { startDate, endDate } = newSelection;
-                      if (startDate === endDate) {
+                      if(startDate === endDate){
                         // nếu người dùng chỉ chọn 1 ngày
-                        endDate = addDays(new Date(startDate), 1);
+                         endDate = addDays(new Date(startDate), 1);
                       }
-                      // 14+ getTimezoneOffset Múi giờ lệch ở khách sạn mà nó đặt -dùng addHours
+                      // 14+ getTimezoneOffset Múi giờ lệch ở khách sạn mà nó đặt thay cho số 7
                       startDate = addHours(startDate, 7 - utc);
                       endDate = addHours(endDate, 7 - utc);
                       setDates([{ ...newSelection, startDate, endDate }]);
                     }}
-                    moveRangeOnFirstSelection={false}
+                    moveRangeOnFirstSelection={true}
                     ranges={dates}
                     className="date"
                     minDate={new Date()} // ngày tối thiểu đc chọn
@@ -252,7 +252,7 @@ const Header = ({ type }) => {
               </div>
               <div className="headerSearchItem">
                 <button className="headerBtn" onClick={handleSearch}>
-                  Search
+                  Tìm kiếm
                 </button>
               </div>
             </div>

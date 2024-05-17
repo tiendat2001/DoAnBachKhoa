@@ -10,11 +10,26 @@ export const createClosedRoom = async (req, res, next) => {
     }
     // console.log("d")
   }
-
+  // TEST POSTMAN
   export const getAllClosedRoom = async (req, res, next) => {
     try {
         // Sử dụng phương thức find() để lấy tất cả các bản ghi của model ClosedRoom
         const closedRooms = await ClosedRoom.find();
+    
+        // Trả về danh sách các phòng đã đóng
+        res.status(200).json(closedRooms);
+    } catch (err) {
+        next(err);
+      }
+  }
+
+  export const getAllClosedRoomByRoomTypeId = async (req, res, next) => {
+    try {
+        // Sử dụng phương thức find() để lấy tất cả các bản ghi của model ClosedRoom
+        const closedRooms = await ClosedRoom.find({ 
+            ownerId: req.user.id,
+            roomTypeId:req.params.roomTypeId
+        });
     
         // Trả về danh sách các phòng đã đóng
         res.status(200).json(closedRooms);

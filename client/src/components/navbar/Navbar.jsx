@@ -9,7 +9,7 @@ const Navbar = () => {
   const [showInfoUser, setShowInfoUser] = useState(false);
   const navigate = useNavigate()
   const handleLogout = async () => {
-
+    
     const res = await axios.post("/auth/logout");
     navigate("/login");
     dispatch({ type: "LOGOUT" });

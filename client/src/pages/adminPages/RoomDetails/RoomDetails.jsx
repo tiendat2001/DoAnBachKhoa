@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { DateRange } from "react-date-range";
 import { SearchContext } from '../../../context/SearchContext'
-import { format, addDays, subDays, subHours } from "date-fns";
+import { format, addDays, subDays, addHours } from "date-fns";
 import { confirmAlert } from 'react-confirm-alert';
 import {
     faBed,
@@ -21,6 +21,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { jwtDecode } from "jwt-decode";
 
+
 const RoomDetails = () => {
     const location = useLocation();
     // id RoomType
@@ -29,24 +30,22 @@ const RoomDetails = () => {
     const { data: roomCountStatus, loading: loadingroomCountStatus,
         error: errorroomCountStatus, reFetch: reFetchRoomCountStatus } = useFetch(`/rooms/statusRoomCount/${idRoom}`);
     const { data: roomCloseData, loading: loadingroomCloseData,
-        error: errorroomCloseData, reFetch: roomCloseDataReFetch } = useFetch(`/closedRoom`);
+        error: errorroomCloseData, reFetch: roomCloseDataReFetch } = useFetch(`/closedRoom/${idRoom}`);
     const [openDate, setOpenDate] = useState(false);
     const searchContext = useContext(SearchContext);
     const [dates, setDates] = useState(searchContext.dates);
     const [selectedRoomIdsToDelete, setSelectedRoomIdsToDelete] = useState([]);
     const [key, setKey] = useState(Math.random());
-    const [roomQuantityToClose, setRoomQuantityToClose] = useState();
+    const [roomQuantityToClose, setRoomQuantityToClose] = useState(0);
     // const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
     // const decodedToken = jwtDecode(token);
     const { user } = useContext(AuthContext) // {user._id}
     // check đường dẫn lần trc
     const navigate = useNavigate()
     const previousPath = location.state?.previousPath;
-    // console.log(previousPath)
     if (previousPath !== '/admin/rooms') {
         navigate('/admin/rooms');
     }
-    // console.log(roomCloseData)
 
     // RIÊNG HÀM NÀY Ở ĐÂY SẼ TÍNH CẢ NGÀY CUỐI, VÍ DỤ NGÀY 17-19 THÌ ALLDATES LÀ 17,18,19
     const getDatesInRange = (startDate, endDate) => {
@@ -64,10 +63,12 @@ const RoomDetails = () => {
     const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
     // console.log(alldates)
     const handleDayChange = (item) => {
+        const utc = new Date().getTimezoneOffset() / 60 //-7
         const newSelection = { ...item.selection };
-        const { startDate, endDate } = newSelection;
-        startDate.setHours(14, 0, 0, 0);
-        endDate.setHours(14, 0, 0, 0);
+        let { startDate, endDate } = newSelection;
+        startDate = addHours(startDate, 7 - utc);
+        endDate = addHours(endDate, 7 - utc);
+
         setDates([{ ...newSelection, startDate, endDate }]);
         setKey(Math.random()); // Bắt reload lại phần chọn phòng
         setSelectedRoomIdsToDelete([])
@@ -129,7 +130,10 @@ const RoomDetails = () => {
             //     }
             //   })
             // );
-            console.log("át")
+            if(parseInt(roomQuantityToClose, 10) == 0){
+                toast.error("Số lượng phòng muốn đóng phải lớn hơn 0")
+                return;
+            }
             const res = await axios.put(`/rooms/availability/`, {
                 roomTypeIdsReserved:[{roomTypeId: idRoom, quantity:parseInt(roomQuantityToClose, 10)}], // chuyển về dạng số
                 dates: alldates,
@@ -159,11 +163,12 @@ const RoomDetails = () => {
         }
         toast.success('Đóng phòng thành công');
         roomCloseDataReFetch()
+        roomTypeDataReFetch()
+        reFetchRoomCountStatus()
 
         // HÀM HỦY PHÒNG NHỚ +1 VÀO ENDdATE
         //   setKey(Math.random()); // Bắt reload phần đóng phòng
-        roomTypeDataReFetch()
-        reFetchRoomCountStatus()
+        
     }
 
     // MỞ LẠI PHÒNG ĐÃ ĐÓNG
