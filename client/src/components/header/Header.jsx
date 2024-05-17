@@ -12,7 +12,7 @@ import { useState, useContext } from "react";
 // hien calendar
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { format, addDays, addHours, subHours } from "date-fns";
+import { format, addDays, addHours, addYears } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import { SearchContext } from "../../context/SearchContext";
@@ -170,6 +170,7 @@ const Header = ({ type }) => {
                     ranges={dates}
                     className="date"
                     minDate={new Date()} // ngày tối thiểu đc chọn
+                    maxDate={addDays(new Date(),365)}
                   />
                 )}
               </div>

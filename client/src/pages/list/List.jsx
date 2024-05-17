@@ -9,7 +9,7 @@ import { DateRange } from "react-date-range";
 import SearchItem from "../../components/searchItem/SearchItem";
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../context/SearchContext";
-import { addDays,addHours } from 'date-fns';
+import { addDays, addHours } from 'date-fns';
 import { listProvinces } from "../../listObject";
 const List = () => {
   const location = useLocation();
@@ -22,12 +22,13 @@ const List = () => {
   const [min, setMin] = useState(100);
   const [max, setMax] = useState(10000);
   const [type, setType] = useState("");
+  const [sortOrder, setSortOrder] = useState('asc');
   // console.log(dates)
   const { data, loading, error, reFetch } = useFetch(
     `/hotels?city=${destination}&type=${type}`
   );
   const { dispatch } = useContext(SearchContext);
-    // gợi ý tìm kiếm
+  // gợi ý tìm kiếm
   const handleDestinationChange = (e) => {
     setDestination(e.target.value);
     if (e.target.value) {
@@ -60,16 +61,16 @@ const List = () => {
 
 
   const handleDayChange = (item) => {
-    const utc = new Date().getTimezoneOffset()/60 //-7
+    const utc = new Date().getTimezoneOffset() / 60 //-7
     const newSelection = { ...item.selection };
-    let  { startDate, endDate } = newSelection;
-    if(startDate === endDate){
+    let { startDate, endDate } = newSelection;
+    if (startDate === endDate) {
       // nếu người dùng chỉ chọn 1 ngày
-       endDate = addDays(new Date(startDate), 1);
+      endDate = addDays(new Date(startDate), 1);
     }
     // 14+ getTimezoneOffset Múi giờ lệch ở khách sạn mà nó đặt -dùng addHours
-    startDate = addHours(startDate, 7-utc);
-    endDate = addHours(endDate, 7-utc);
+    startDate = addHours(startDate, 7 - utc);
+    endDate = addHours(endDate, 7 - utc);
     setDates([{ ...newSelection, startDate, endDate }]);
   };
 
@@ -88,6 +89,8 @@ const List = () => {
     return diffDays;
   }
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
+
+  // tính giá hiển thị theo phòng rẻ nhất của ks và lựa chọn của người dùng
   const calculatePrice = (cheapestPrice) => {
     let totalPrice = 0;
     let totalPeople = parseInt(options.adult, 10) + parseFloat(options.children) * 0.5;
@@ -106,6 +109,11 @@ const List = () => {
       }
     return totalPrice
   };
+
+  // sort giá
+  const handleSortChange = (event) => {
+    setSortOrder(event.target.value); // Cập nhật state khi người dùng thay đổi cách sắp xếp
+  };
   return (
     <div>
       <Navbar />
@@ -119,20 +127,20 @@ const List = () => {
               <input placeholder={destination} value={destination} onChange={handleDestinationChange} type="text" />
               {suggestedDestination.length > 0 && (
                 // style inline để đè 1 số cái khác so với header, css còn lại ở header.css
-                  <div className="suggestionDestination" style={{width:'94%'}}> 
-                    <div  className="suggestionsList">
-                      {suggestedDestination.map((suggestion, index) => (
-                        <div 
-                          key={index}
-                          style={{ top: '64px' }}
-                          onClick={() => handleSuggestionClick(suggestion)}
-                        >
-                          {suggestion}
-                        </div>
-                      ))}
-                    </div>
+                <div className="suggestionDestination" style={{ width: '94%' }}>
+                  <div className="suggestionsList">
+                    {suggestedDestination.map((suggestion, index) => (
+                      <div
+                        key={index}
+                        style={{ top: '64px' }}
+                        onClick={() => handleSuggestionClick(suggestion)}
+                      >
+                        {suggestion}
+                      </div>
+                    ))}
                   </div>
-                )}
+                </div>
+              )}
             </div>
             <div className="lsItem">
               <label>Check-in</label>
@@ -202,7 +210,7 @@ const List = () => {
               </div>
             </div>
             {/* đang css tạm */}
-            <div style={{marginTop:'-15px'}} className="lsItem">
+            <div style={{ marginTop: '-15px' }} className="lsItem">
               {/*  chinh gia tien */}
               <label>Lựa chọn </label>
               <div className="lsOptions">
@@ -244,19 +252,37 @@ const List = () => {
             <button onClick={handleClick}>Tìm kiếm</button>
           </div>
           <div className="listResult">
+            {/* dropdown sort theo giá */}
+            <div style={{ textAlign: 'right', marginBottom: '10px' }}>
+              <label>
+                Sắp xếp theo giá:&nbsp; 
+                <select value={sortOrder} onChange={handleSortChange}>
+                  <option value="asc">Thấp đến cao</option>
+                  <option value="desc">Cao đến thấp</option>
+                </select>
+              </label>
+            </div>
+
             {loading ? (
               "loading"
             ) : (
               <>
-                {data.map((item) => {
-                  const price = calculatePrice(item.cheapestPrice);
-                  // đang lọc giá dạng số 100 là 100.000
-                  // console.log(max)
-                  if (price >= min && price <= max) {
-                    return <SearchItem item={item} key={item._id} />;
-                  }
-                  return null;
-                })}
+                {data
+                  .sort((a, b) => {
+                    const priceA = calculatePrice(a.cheapestPrice);
+                    const priceB = calculatePrice(b.cheapestPrice);
+                    return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
+                  })
+                  // .filter((item) => calculatePrice(item.cheapestPrice)>=min && calculatePrice(item.cheapestPrice)<= max)
+                  .map((item) => {
+                    const price = calculatePrice(item.cheapestPrice);
+                    // đang lọc giá dạng số 100 là 100.000
+                    // console.log(max)
+                    if (price >= min && price <= max) {
+                      return <SearchItem item={item} key={item._id} />;
+                    }
+                    return null;
+                  })}
               </>
             )}
           </div>
