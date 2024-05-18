@@ -42,8 +42,9 @@
 .listAdmin .listContainerAdmin .top .right form, .listAdmin .listContainerAdmin .bottom .right form {
     display: flex;
     flex-wrap: wrap;
-    gap: 30px;
-    justify-content: space-between;
+    gap: 25px;
+    /* justify-content: space-between; */
+    flex-direction: column;
 }
 .listAdmin .listContainerAdmin .top .right form .selectRooms, .listAdmin .listContainerAdmin .bottom .right form .selectRooms {
     width: 100%;
@@ -53,7 +54,7 @@
     padding: 10px;
 }
 .listAdmin .listContainerAdmin .top .right form .formInput, .listAdmin .listContainerAdmin .bottom .right form .formInput {
-    width: 140%;
+    width: 100%;
 }
 .listAdmin .listContainerAdmin .top .right form .formInput label, .listAdmin .listContainerAdmin .bottom .right form .formInput label {
     display: flex;

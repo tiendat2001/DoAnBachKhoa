@@ -129,7 +129,7 @@ const ListHotel = () => {
                                             <button onClick={() => handleEditHotel(item._id)} >
                                                 Chỉnh sửa thông tin
                                             </button>
-                                            <button onClick={() => handleDelete(item._id)}>Xóa chỗ nghỉ</button>
+                                            <button style={{backgroundColor:'red'}} onClick={() => handleDelete(item._id)}>Xóa chỗ nghỉ</button>
 
                                         </div>
                                     </div>

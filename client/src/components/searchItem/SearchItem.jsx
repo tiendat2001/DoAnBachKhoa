@@ -91,7 +91,7 @@ const SearchItem = ({ item }) => {
         <span className="siFacilities">
           {item.facilities?.map(facility =>
             (
-              <div className="siFacilities_item"  style={{width:'33%'}}>{facility}</div>
+              <div className="siFacilities_item"  style={{width:'30%'}}>{facility}</div>
             ))}
         </span> 
       </div>

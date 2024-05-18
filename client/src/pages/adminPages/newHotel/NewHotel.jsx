@@ -6,15 +6,21 @@ import { useState, useContext } from "react";
 import Sidebar from '../../../components/adminComponents/sidebar/Sidebar'
 import NavbarAdmin from '../../../components/adminComponents/navbarAdmin/NavbarAdmin'
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
-import { hotelInputs } from '../../../formSource';
+import { hotelInputs, hotelFacilities } from '../../../formSource';
 import { AuthContext } from '../../../context/AuthContext';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
+
 const NewHotel = () => {
   const [files, setFiles] = useState("");
   const [info, setInfo] = useState({});
+  const [selectedFacilities, setSelectedFacilities] = useState([]);
+  const [customFacilities, setCustomFacilities] = useState("");
+  const handleCustomFacilitiesChange = (event) => {
+    setCustomFacilities(event.target.value);
+  };
   // const [rooms, setRooms] = useState([]);
   // const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
   // const decodedToken = jwtDecode(token);
@@ -31,13 +37,13 @@ const NewHotel = () => {
   const validateInputs = () => {
     // Check if all hotelInputs are filled
     for (let input of hotelInputs) {
-      if (!document.getElementById(input.id).value ||!document.getElementById("type").value) {
-        console.log("dffds")
+      if (!document.getElementById(input.id).value || !document.getElementById("type").value) {
         return false;
       }
     }
     // Check if description is filled
-    if (!document.getElementById("desc").value.trim()) {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
+    if (!document.getElementById("desc").value.trim() ||(!customFacilities && selectedFacilities.length ==0)
+    || (files.length === 0)) {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
       return false;
     }
     return true;
@@ -45,19 +51,22 @@ const NewHotel = () => {
 
   // khi ng dùng nhập thông tin
   const handleChange = (e) => {
-    setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+    setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value, }));
+
+  };
+  // facilities người dùng tích
+  const handleCheckboxChange = (facility) => {
+    setSelectedFacilities((prevSelected) => {
+      // nếu người dùng tích cái đã có - tức bỏ nó đi thì bỏ nó khỏi mảng
+      if (prevSelected.includes(facility)) {
+        return prevSelected.filter((item) => item !== facility);
+      } else {
+        return [...prevSelected, facility];
+      }
+    });
   };
 
-  // const handleSelect = (e) => {
-  //   const value = Array.from(
-  //     e.target.selectedOptions,
-  //     (option) => option.value
-  //   );
-  //   setRooms(value);
-  // };
-
-  // console.log(info);
-
+  // console.log(selectedFacilities)
   // khi ng dùng submit
   const handleClick = async (e) => {
     e.preventDefault();
@@ -81,12 +90,14 @@ const NewHotel = () => {
       if (!validateInputs()) {
         toast.error("Please fill in all fields before submitting.");
       } else {
+        const customFacilitiesArray = customFacilities.split(',').map(item => item.trim()).filter(item => item);
+        const allSelectedFacilities = [...selectedFacilities, ...customFacilitiesArray];
         const newhotel = {
           ...info,
           photos: list,
+          facilities: allSelectedFacilities
           // ownerId: decodedToken.id
         };
-
 
         const Success = await axios.post("/hotels", newhotel);
         if (Success) {
@@ -112,7 +123,7 @@ const NewHotel = () => {
       <div className="listContainerAdmin">
         <NavbarAdmin />
         <div className="top">
-          <h1>Add New Hotel</h1>
+          <h1>Thêm chỗ nghỉ</h1>
         </div>
         <div className="bottom">
 
@@ -157,8 +168,8 @@ const NewHotel = () => {
                   id='type'
                   onChange={handleChange}
                   value={info.type}
-                > 
-                  <option value="" >Chọn loại chỗ nghỉ</option> {/* Các option của dropdown */}            
+                >
+                  <option value="" >Chọn loại chỗ nghỉ</option> {/* Các option của dropdown */}
                   <option value="Khách sạn" >Khách sạn</option> {/* Các option của dropdown */}
                   <option value="Căn hộ" >Căn hộ</option>
 
@@ -185,9 +196,40 @@ const NewHotel = () => {
                 onChange={handleChange}
                 style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
               ></textarea>
+
+
+              <div className="hotelFacilities">
+                <div style={{ marginBottom: '10px' }}>Cơ sở vật chất chỗ nghỉ </div>
+                {hotelFacilities.map((facility) => (
+                  <div style={{ marginBottom: "10px" }} key={facility}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        value={facility}
+                        onChange={() => handleCheckboxChange(facility)}
+                        checked={selectedFacilities.includes(facility)}
+                      />
+                      {facility}
+                    </label>
+                  </div>
+                ))}
+
+                {/* tự nhập */}
+                <div className="customFacilities">
+                  <label>Nhập cơ sở vật chất khác (ngăn cách bằng dấu phẩy): </label>
+                  <input style={{width:"100%"}}
+                    type="text"
+                    value={customFacilities}
+                    placeholder="Ví dụ:Thuê xe đạp, Dịch vụ phòng"
+                    onChange={handleCustomFacilitiesChange}
+                  />
+                </div>
+              </div>
+
               <button onClick={handleClick} disabled={isSending}>
                 {isSending ? 'Đang lưu...' : 'Đăng chỗ nghỉ'}
-              </button>            </form>
+              </button>
+            </form>
           </div>
 
 

@@ -8,10 +8,11 @@ import { useEffect, useState, useContext } from "react";
 import useFetch from '../../../hooks/useFetch';
 import { AuthContext } from '../../../context/AuthContext';
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
-import { hotelInputs } from '../../../formSource';
+import { hotelInputs, hotelFacilities } from '../../../formSource';
 import { toast } from 'react-toastify';
 import { jwtDecode } from "jwt-decode";
 
+// css từ new Hotel
 const ModifyHotel = () => {
     const location = useLocation();
     const idHotel = location.pathname.split("/")[3];
@@ -19,9 +20,11 @@ const ModifyHotel = () => {
     // console.log(data)
     const [files, setFiles] = useState("");
     const [info, setInfo] = useState(data);
+    const [selectedFacilities, setSelectedFacilities] = useState([]);
+    const [customFacilities, setCustomFacilities] = useState("");
+   
     const [isSending, setIsSending] = useState(false);
 
-    // const [rooms, setRooms] = useState([]);
     // const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
     // const decodedToken = jwtDecode(token);
     const { user } = useContext(AuthContext) // {user._id}
@@ -33,15 +36,40 @@ const ModifyHotel = () => {
     if (previousPath !== '/admin/hotels') {
         navigate('/admin/hotels');
     }
+
     useEffect(() => {
+       
         if (data) {
             setInfo(data);
+           // lấy facilities của hotel hiện tại cho vào các biến phù hợp
+           const initialSelectedFacilities = data.facilities?.filter(facility => hotelFacilities?.includes(facility));
+           const initialCustomFacilities = data.facilities?.filter(facility => !hotelFacilities?.includes(facility)).join(", ");
+           setSelectedFacilities(initialSelectedFacilities);
+           setCustomFacilities(initialCustomFacilities);
         }
     }, [data]);
+
     const handleChange = (e) => {
         setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
     };
-    console.log(info)
+
+    // chỉnh check box facilities
+    const handleCheckboxChange = (facility) => {
+        setSelectedFacilities((prevSelected) => {
+          // nếu người dùng tích cái đã có - tức bỏ nó đi thì bỏ nó khỏi mảng
+          if (prevSelected.includes(facility)) {
+            return prevSelected.filter((item) => item !== facility);
+          } else {
+            return [...prevSelected, facility];
+          }
+        });
+      };
+      // facilities tự nhập
+      const handleCustomFacilitiesChange = (event) => {
+        setCustomFacilities(event.target.value);
+      };
+    
+    // console.log(info)
 
     const handleClick = async (e) => {
         setIsSending(true)
@@ -61,11 +89,14 @@ const ModifyHotel = () => {
                     return url;
                 })
             );
-
-
+            
+            // lấy facilities từ checkbox và người dùng nhập
+            const customFacilitiesArray = customFacilities.split(',').map(item => item.trim()).filter(item => item);
+            const allSelectedFacilities = [...selectedFacilities, ...customFacilitiesArray];
             const newModifyHotel = {
                 ...info,
-                ...(list.length > 0 && { photos: list })// nếu người dùng có thêm ảnh vào thì set lại ảnh mới, ko thì giữ nguyên
+                ...(list.length > 0 && { photos: list }),// nếu người dùng có thêm ảnh vào thì set lại ảnh mới, ko thì giữ nguyên
+                facilities: allSelectedFacilities
             };
 
 
@@ -171,6 +202,37 @@ const ModifyHotel = () => {
                                         placeholder={data.desc}
                                         value={info.desc}
                                     ></textarea>
+
+                                    <div className="hotelFacilities">
+                                        <div style={{ marginBottom: '10px' }}>Cơ sở vật chất chỗ nghỉ </div>
+                                        {hotelFacilities.map((facility) => (
+                                            <div style={{ marginBottom: "10px" }} key={facility}>
+                                                <label>
+                                                    <input
+                                                        type="checkbox"
+                                                        value={facility}
+                                                        onChange={() => handleCheckboxChange(facility)}
+                                                        checked={selectedFacilities?.includes(facility)}
+                                                    />
+                                                    {facility}
+                                                </label>
+                                            </div>
+                                        ))}
+
+                                        {/* tự nhập */}
+                                        <div className="customFacilities">
+                                            <label>Nhập cơ sở vật chất khác (ngăn cách bằng dấu phẩy): </label>
+                                            <input style={{ width: "100%" }}
+                                                type="text"
+                                                value={customFacilities}
+                                                placeholder="Ví dụ:Thuê xe đạp, Dịch vụ phòng"
+                                                onChange={handleCustomFacilitiesChange}
+                                            />
+                                        </div>
+                                    </div>
+
+
+
                                     <button onClick={handleClick} disabled={isSending}>
                                         {isSending ? 'Đang lưu...' : 'Lưu thông tin chỗ nghỉ'}
                                     </button>

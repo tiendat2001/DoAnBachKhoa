@@ -32,7 +32,7 @@ export const hotelInputs = [
     {
       id: "hotelContact",
       label: "Số điện thoại liên lạc của chỗ nghỉ",
-      type: "text",
+      type: "number",
       placeholder: "",
     },
     // {
@@ -78,3 +78,13 @@ export const hotelInputs = [
     // },
  
   ];
+
+  export const hotelFacilities = 
+  [
+    "Free Wifi",
+    "Chỗ đậu xe",
+    "Miễn phí ăn sáng",
+    "Bể bơi",
+    "Phòng tập Gym",
+    "Spa"
+  ]

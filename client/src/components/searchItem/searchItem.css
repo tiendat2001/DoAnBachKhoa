@@ -70,7 +70,9 @@
     font-size: 12px;
     font-weight: bold;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap:10px;
+    flex-wrap: wrap;
 
   }
 
