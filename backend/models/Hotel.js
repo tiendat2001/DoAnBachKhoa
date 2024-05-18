@@ -28,10 +28,12 @@ const HotelSchema = new mongoose.Schema({
   photos: {
     type: [String],
   },
- 
   desc: {
     type: String,
     required: true,
+  },
+  facilities: {
+    type: [String],
   },
   rating: {
     type: Number,
@@ -48,11 +50,11 @@ const HotelSchema = new mongoose.Schema({
   cheapestPrice: {
     price: {
       type: Number,
-      default: 0 // or any default value you prefer
+      default: 0 
     },
     people: {
       type: Number,
-      default: 0 // or any default value you prefer
+      default: 0 
     }
   }
 

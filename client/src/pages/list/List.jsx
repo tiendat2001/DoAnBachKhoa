@@ -90,7 +90,7 @@ const List = () => {
   }
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
 
-  // tính giá hiển thị theo phòng rẻ nhất của ks và lựa chọn của người dùng
+  // tính giá hiển thị theo phòng rẻ nhất của ks và lựa chọn của người dùng, ko hiện những phòng chưa có phòng- phép chia cho 0-cheapestPrice.people
   const calculatePrice = (cheapestPrice) => {
     let totalPrice = 0;
     let totalPeople = parseInt(options.adult, 10) + parseFloat(options.children) * 0.5;

@@ -88,9 +88,12 @@ const SearchItem = ({ item }) => {
           You can cancel later, so lock in this great price today!
         </span> */}
         <span className="siFeatures">Address: {item.address}</span>
-        {/* <span className="siSubtitle">
-          Studio Apartment with Air conditioning
-        </span>  */}
+        <span className="siFacilities">
+          {item.facilities?.map(facility =>
+            (
+              <div className="siFacilities_item"  style={{width:'33%'}}>{facility}</div>
+            ))}
+        </span> 
       </div>
 
       <div className="siDetails">

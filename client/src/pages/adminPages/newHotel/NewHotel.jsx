@@ -140,7 +140,7 @@ const NewHotel = () => {
             <form>
               <div className="formInput">
                 <label htmlFor="file">
-                  Image: <DriveFolderUploadOutlinedIcon className="icon" />
+                  Up ảnh: <DriveFolderUploadOutlinedIcon className="icon" />
                 </label>
                 <input
                   type="file"
@@ -178,7 +178,7 @@ const NewHotel = () => {
                 </div>
               ))}
               {/* test */}
-              <label>Hotel description</label>
+              <label>Mô tả chỗ nghỉ của bạn </label>
               <textarea
                 id="desc"
                 rows="4" /* Số dòng mặc định hiển thị ban đầu */
@@ -186,7 +186,7 @@ const NewHotel = () => {
                 style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
               ></textarea>
               <button onClick={handleClick} disabled={isSending}>
-                {isSending ? 'Sending...' : 'Đăng chỗ nghỉ'}
+                {isSending ? 'Đang lưu...' : 'Đăng chỗ nghỉ'}
               </button>            </form>
           </div>
 

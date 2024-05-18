@@ -66,9 +66,19 @@
   }
 
   
-  .siSubtitle{
+  .siFacilities{
     font-size: 12px;
     font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+
+  }
+
+  .siFacilities_item{
+    padding:5px;
+    border: 2px rgb(164, 164, 255) solid;
+    box-sizing: border-box;
+    color:#008009
   }
   
   .siFeatures{

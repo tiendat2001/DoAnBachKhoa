@@ -54,7 +54,6 @@ const RecentSeenHotel = () => {
   // chỉ lấy những khách sạn mà người dùng chưa xem gần đây- id khách sạn ko có trg local storage + lấy tối đa 3 ks để hiển thị
   const filteredHotels = suggestedHotel.filter(item => !recentHotelIds.includes(item._id));
   const limitedSuggestedHotels = filteredHotels.length > 3 ? filteredHotels.slice(0, 3) : filteredHotels;
-  console.log(limitedSuggestedHotels)
   return (
     <div className="fp">
       {loading || !mostViewedCity ? (

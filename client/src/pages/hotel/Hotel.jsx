@@ -188,17 +188,24 @@ const Hotel = () => {
             </div>
             <div className="hotelDetails">
               <div className="hotelDetailsTexts">
-                <h1 className="hotelTitle">{data.title}</h1>
+                {/* <h1 className="hotelTitle">sdf</h1> */}
                 <p className="hotelDesc" style={{ whiteSpace: 'pre-line' }}>{data.desc}</p>
 
+                <div style={{fontWeight:'bold'}}>Cơ sở vật chất chỗ nghỉ</div>
+                <span className="hotelDetailsTexts_facilities">
+                  {data.facilities?.map(facility =>
+                  (
+                    <div className="hotelDetailsTexts_facilities_item" style={{ width: '33%' }}>{facility}</div>
+                  ))}
+                </span>
               </div>
               <div className="hotelDetailsPrice">
                 <span>
                   Tọa lạc tại {data.address}, đây là một địa điểm tuyệt vời!
                 </span>
 
-                <div style={{fontSize:'26px'}}>
-                  <b>Giá chỉ từ {Intl.NumberFormat('vi-VN').format(data.cheapestPrice?.price*1000)} VND mỗi đêm</b>
+                <div style={{ fontSize: '26px' }}>
+                  <b>Giá chỉ từ {Intl.NumberFormat('vi-VN').format(data.cheapestPrice?.price * 1000)} VND mỗi đêm</b>
                 </div>
 
               </div>
