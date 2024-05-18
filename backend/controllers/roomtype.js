@@ -487,8 +487,8 @@ export const statusRoomCount = async (req, res, next) => {
 
     const currentDate = new Date() // theo UTC
     // console.log(currentDate) 2024-04-30T12:16:05.871Z - time hiện tại nhưng UTC
-    currentDate.setHours(14, 0, 0, 0);
-    // console.log(currentDate) // 7hUTC
+    currentDate.setHours(14, 0, 0, 0);  // 7hUTC
+    // console.log(currentDate)
     const roomAvailability = [];
 
     // Lặp qua 30 ngày tiếp theo (tinnhs cả ngày hiện tại)
@@ -497,12 +497,12 @@ export const statusRoomCount = async (req, res, next) => {
       const day = currentDay.getDate();
       const month = currentDay.getMonth() + 1;// Tháng bắt đầu từ 0
       const year = currentDay.getFullYear()
-
+    
       // Tìm số lượng phòng trống cho ngày hiện tại
       // lặp từng phần tử trong roomNumbers, với mỗi ptu check isRoomAvailable (hàm some phải false và status phải true) nếu true thì tăng biến count lên 1
       const availableRoomsCount = room.roomNumbers.reduce((count, roomNumber) => {
         const isRoomAvailable = roomNumber.status && !roomNumber.unavailableDates.some(date => {
-          return new Date(date).toISOString().slice(0, 10) === currentDay.toISOString().slice(0, 10);
+          return new Date(date).toISOString().slice(0, 10) === currentDay.toISOString().slice(0, 10); // so sanhs 7hUTC
         });
         return isRoomAvailable ? count + 1 : count;
       }, 0);
@@ -522,11 +522,20 @@ export const statusRoomCount = async (req, res, next) => {
 // thêm phòng nhỏ vào loại phòng
 export const addRoomToRoomType = async (req, res, next) => {
   try {
+    
     // Lấy ra thông tin phòng từ ID
     const room = await Room.findById(req.params.roomId);
     if (!room) {
       return res.status(404).json({ message: 'Không tìm thấy phòng' });
     }
+    // check quyền
+    // tìm id của hotel có room sẽ chỉnh sửa
+    const hotelToUpdate = await Hotel.findById(room.hotelId);
+    if (hotelToUpdate.ownerId !== req.user.id) {
+      return res.status(403).json({ message: "You are not authorized to change this type room" });
+    }
+
+
     // Số lượng phần tử cần thêm từ req.body
     const roomCountToAdd = req.body.roomCountToAdd;
     // Tạo số lượng phần tử rỗng tương ứng
@@ -551,6 +560,12 @@ export const deleteRoomInRoomType = async (req, res, next) => {
     const room = await Room.findById(req.params.roomId);
     if (!room) {
       return res.status(404).json({ message: 'Không tìm thấy phòng' });
+    }
+    // check quyền
+    // tìm id của hotel có room sẽ chỉnh sửa
+    const hotelToUpdate = await Hotel.findById(room.hotelId);
+    if (hotelToUpdate.ownerId !== req.user.id) {
+      return res.status(403).json({ message: "You are not authorized to change this type room" });
     }
 
     // Số lượng phần tử cần xóa từ req.body
@@ -589,6 +604,12 @@ export const changeStatusRoomInRoomType = async (req, res, next) => {
     // Nếu không tìm thấy phòng
     if (!roomType) {
       return res.status(404).json("Không tìm thấy loại phòng có chứa _id phòng nhỏ này");
+    }
+    // check quyền
+    // tìm id của hotel có room sẽ chỉnh sửa
+    const hotelToUpdate = await Hotel.findById(roomType.hotelId);
+    if (hotelToUpdate.ownerId !== req.user.id) {
+      return res.status(403).json({ message: "You are not authorized to change this type room" });
     }
 
     // Lấy trạng thái hiện tại của phòng

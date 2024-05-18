@@ -17,11 +17,11 @@ router.put("/cancelAvailability/:id", cancelRoomReservation); // id ở đây l
 // UPDATE ROOM
 router.put("/:id", verifyToken, updateRoom);
 // THÊM PHÒNG NHỎ VÀO LOẠI PHÒNG
-router.put("/addRoomToRoomType/:roomId", addRoomToRoomType);
+router.put("/addRoomToRoomType/:roomId",verifyToken, addRoomToRoomType);
 // XÓA PHÒNG NHỎ
-router.put("/deleteRoomInRoomType/:roomId", deleteRoomInRoomType);
+router.put("/deleteRoomInRoomType/:roomId",verifyToken, deleteRoomInRoomType);
 // CHỈNH STATUS PHÒNG NHỎ
-router.put("/changeStatusRoomInRoomType/:roomId", changeStatusRoomInRoomType);
+router.put("/changeStatusRoomInRoomType/:roomId",verifyToken, changeStatusRoomInRoomType);
 
 
 //DELETE ROOM
