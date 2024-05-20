@@ -69,6 +69,10 @@
     width: 50px;
   }
   
+  .lsItem_hotelFacilities{
+    color: #555;
+    font-size: 14px;
+  }
   .listSearch>button{
     padding: 10px;
     background-color: #0071c2;

@@ -104,7 +104,7 @@ const SearchItem = ({ item }) => {
 
         <div className="siDetailTexts">
           <span className="siPrice">Giá từ: {calculatePrice(item.cheapestPrice)} VND</span>
-          <span className="siTaxOp">Cho {options.adult} người, {options.children} trẻ em, {calculateRoom(item.cheapestPrice)} phòng, {days} đêm</span>
+          <span className="siTaxOp">Cho {options.adult} người, {options.children > 0 && `, ${options.children} trẻ em`}, {calculateRoom(item.cheapestPrice)} phòng, {days} đêm</span>
           {/* chuyen sang xem thong tin tung hotel */}
 
           <Link to={`/hotels/${item._id}`}>

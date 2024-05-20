@@ -11,6 +11,7 @@ import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../context/SearchContext";
 import { addDays, addHours } from 'date-fns';
 import { listProvinces } from "../../listObject";
+import { hotelFacilities } from "../../formSource";
 const List = () => {
   const location = useLocation();
   const searchContext = useContext(SearchContext);
@@ -22,12 +23,25 @@ const List = () => {
   const [min, setMin] = useState(100);
   const [max, setMax] = useState(10000);
   const [type, setType] = useState("");
+  const [selectedFacilities, setSelectedFacilities] = useState([]);
   const [sortOrder, setSortOrder] = useState('asc');
   // console.log(dates)
   const { data, loading, error, reFetch } = useFetch(
     `/hotels?city=${destination}&type=${type}`
   );
   const { dispatch } = useContext(SearchContext);
+  // checkbox facilities
+  const handleCheckboxChange = (facility) => {
+    setSelectedFacilities((prevSelected) => {
+      // nếu người dùng tích cái đã có - tức bỏ nó đi thì bỏ nó khỏi mảng
+      if (prevSelected.includes(facility)) {
+        return prevSelected.filter((item) => item !== facility);
+      } else {
+        return [...prevSelected, facility];
+      }
+    });
+  };
+  console.log(selectedFacilities)
   // gợi ý tìm kiếm
   const handleDestinationChange = (e) => {
     setDestination(e.target.value);
@@ -249,13 +263,30 @@ const List = () => {
                 </div>
               </div>
             </div>
+
+            <div className="lsItem">
+              <label>Cơ sở vật chất chỗ nghỉ</label>
+              {hotelFacilities.map((facility) => (
+                <div className="lsItem_hotelFacilities" key={facility}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      value={facility}
+                      onChange={() => handleCheckboxChange(facility)}
+                      checked={selectedFacilities?.includes(facility)}
+                    />
+                    {facility}
+                  </label>
+                </div>
+              ))}
+            </div>
             <button onClick={handleClick}>Tìm kiếm</button>
           </div>
           <div className="listResult">
             {/* dropdown sort theo giá */}
             <div style={{ textAlign: 'right', marginBottom: '10px' }}>
               <label>
-                Sắp xếp theo giá:&nbsp; 
+                Sắp xếp theo giá:&nbsp;
                 <select value={sortOrder} onChange={handleSortChange}>
                   <option value="asc">Thấp đến cao</option>
                   <option value="desc">Cao đến thấp</option>
@@ -268,12 +299,19 @@ const List = () => {
             ) : (
               <>
                 {data
+                  // sắp xếp
                   .sort((a, b) => {
                     const priceA = calculatePrice(a.cheapestPrice);
                     const priceB = calculatePrice(b.cheapestPrice);
                     return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
                   })
                   // .filter((item) => calculatePrice(item.cheapestPrice)>=min && calculatePrice(item.cheapestPrice)<= max)
+                  // lọc theo cơ sở vật chất
+                  .filter(hotel => {
+                    // tra ve true neu tat ca phan tu thoa man
+                    return selectedFacilities.every(facility => hotel.facilities?.includes(facility));
+                  })
+
                   .map((item) => {
                     const price = calculatePrice(item.cheapestPrice);
                     // đang lọc giá dạng số 100 là 100.000
