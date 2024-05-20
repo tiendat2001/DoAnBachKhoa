@@ -155,7 +155,7 @@ const ModifyHotel = () => {
                                 <form>
                                     <div className="formInput">
                                         <label htmlFor="file">
-                                            Up ảnh: <DriveFolderUploadOutlinedIcon className="icon" />
+                                            Up ảnh (Click vào đây để thêm ảnh): <DriveFolderUploadOutlinedIcon className="icon" />
                                         </label>
                                         <input
                                             type="file"

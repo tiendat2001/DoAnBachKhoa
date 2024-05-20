@@ -79,9 +79,13 @@ const SearchItem = ({ item }) => {
       <div className="siDesc">
         <h1 className="siTitle">{item.name}</h1>
         <span className="siDistance">Khoảng cách: {item.distance}m từ trung tâm</span>
-        {  totalRooms && (totalRooms <6 || totalRooms < options.room)   ?
-          <span className="siRoomLeft">Chỉ còn {totalRooms} phòng!</span> : null
-        }
+        {totalRooms === 0 ? (
+          <span className="siRoomLeft">Hết phòng!</span>
+        ) : (
+          totalRooms && (totalRooms < 6 || totalRooms < options.room) && (
+            <span className="siRoomLeft">Chỉ còn {totalRooms} phòng!</span>
+          )
+        )}
         {/* <span className="siFeatures">{item.desc}</span> */}
         {/* <span className="siCancelOp">Free cancellation </span>
         <span className="siCancelOpSubtitle">
@@ -90,10 +94,10 @@ const SearchItem = ({ item }) => {
         <span className="siFeatures">Address: {item.address}</span>
         <span className="siFacilities">
           {item.facilities?.map(facility =>
-            (
-              <div className="siFacilities_item"  style={{width:'30%'}}>{facility}</div>
-            ))}
-        </span> 
+          (
+            <div className="siFacilities_item" style={{ width: '30%' }}>{facility}</div>
+          ))}
+        </span>
       </div>
 
       <div className="siDetails">

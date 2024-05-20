@@ -27,7 +27,7 @@ const Administrator = () => {
                     className="datagridAllHotelRenvenue"  // css từ listRoom.css
                     rows={hotelRevenue}
                     columns={RenenueAllHotelColumn}
-                    pageSize={5}
+                    pageSize={10}
                     rowsPerPageOptions={[5]}
                     checkboxSelection
                     getRowId={(row) => row.hotelId}

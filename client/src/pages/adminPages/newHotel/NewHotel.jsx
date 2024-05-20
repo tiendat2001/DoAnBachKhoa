@@ -151,7 +151,7 @@ const NewHotel = () => {
             <form>
               <div className="formInput">
                 <label htmlFor="file">
-                  Up ảnh: <DriveFolderUploadOutlinedIcon className="icon" />
+                  Up ảnh: (Click vào đây để thêm ảnh) <DriveFolderUploadOutlinedIcon className="icon" />
                 </label>
                 <input
                   type="file"
@@ -192,7 +192,7 @@ const NewHotel = () => {
               <label>Mô tả chỗ nghỉ của bạn </label>
               <textarea
                 id="desc"
-                rows="4" /* Số dòng mặc định hiển thị ban đầu */
+                rows="10" /* Số dòng mặc định hiển thị ban đầu */
                 onChange={handleChange}
                 style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
               ></textarea>

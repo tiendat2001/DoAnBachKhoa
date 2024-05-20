@@ -267,7 +267,7 @@ const Reserve = () => {
           </div>
 
           {/* nhập hình thức thanh toán */}
-          <div>Chọn hình thức thanh toán"</div>
+          <div>Chọn hình thức thanh toán</div>
           <label>
             <input
               type="radio"

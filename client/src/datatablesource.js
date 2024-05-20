@@ -211,7 +211,8 @@ export const roomColumns = [
       //   </div>
       // ),
       width: 115,
-      valueGetter: (params) => new Date(params.value).toLocaleDateString('vi-VN'),
+      valueFormatter: (params) => formatDate(params.value),
+      comparator: (a, b) => new Date(a).getTime() - new Date(b).getTime(),
       headerAlign: 'center',
       align:'center'
 
@@ -274,7 +275,7 @@ export const roomColumns = [
  
     {
       field: "totalPrice",
-      headerName: "Tổng tiền",
+      headerName: "Tổng doanh thu",
       width: 250,
       valueFormatter: (params) => {
         const multipliedValue = params.value * 1000;
