@@ -187,7 +187,7 @@ const Reserve = () => {
       return;
     }
 
-    toast.success('Đặt phòng thành công');
+    toast.success('Đi đến trang thanh toán');
 
     // chuyển hướng thanh toán VNPAY
     try {

@@ -16,7 +16,7 @@ router.get("/client",verifyToken,getReservationsByClient) // listBooking
 router.get("/getall",getAllReservations)
 
 //PUT
-router.put("/:id",updateReservation)
+router.put("/:id",verifyToken,updateReservation)
 
 
 //DELETE ALL 

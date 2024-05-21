@@ -133,11 +133,12 @@ const ListBooking = () => {
               </div>
 
               <div style={{ width: '25%', display: 'flex', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
-                {/* <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id)}
-                  disabled={(new Date() > subHours(new Date(item.start), 24)) || !item.status}>Hủy đặt phòng</button> <br /> */}
-
                 <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id, item.start, item.end, item.roomTypeIdsReserved)}
-                >Hủy đặt phòng</button> <br />
+                  disabled={(new Date() > subHours(new Date(item.start), 24)) || !item.status}>Hủy đặt phòng</button> <br />
+
+                {/* <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id, item.start, item.end, item.roomTypeIdsReserved)}
+                >Hủy đặt phòng</button>  */}
+                <br />
                 <div style={{ textAlign: 'right' }}>(Bạn chỉ có thể hủy trước thời gian nhận phòng 1 ngày (trước {subHours(new Date(item.start),24).toLocaleString('vi-VN')}))</div>
               </div>
 

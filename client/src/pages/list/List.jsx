@@ -41,7 +41,7 @@ const List = () => {
       }
     });
   };
-  console.log(selectedFacilities)
+  // console.log(selectedFacilities)
   // gợi ý tìm kiếm
   const handleDestinationChange = (e) => {
     setDestination(e.target.value);

@@ -116,6 +116,13 @@ export const getReservationsByClient = async (req, res, next) => {
 
 export const updateReservation = async (req, res, next) => {
     try {
+
+        // check xem có đc update reservation đó không
+        const reservationToUpdated = await Reservation.findByIdAndUpdate(req.params.id)
+        if(req.user.id !== reservationToUpdated.userId){
+            return res.status(403).json({ message: "Bạn ko có quyền update reservation này" });
+        }
+
         const updatedReservation = await Reservation.findByIdAndUpdate(
             req.params.id,
             { $set: req.body },

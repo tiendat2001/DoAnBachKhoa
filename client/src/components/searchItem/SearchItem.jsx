@@ -79,7 +79,7 @@ const SearchItem = ({ item }) => {
       <div className="siDesc">
         <h1 className="siTitle">{item.name}</h1>
         <span className="siDistance">Khoảng cách: {item.distance}m từ trung tâm</span>
-        {totalRooms === 0 ? (
+        {totalRooms && totalRooms === 0 ? (
           <span className="siRoomLeft">Hết phòng!</span>
         ) : (
           totalRooms && (totalRooms < 6 || totalRooms < options.room) && (

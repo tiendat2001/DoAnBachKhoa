@@ -59,7 +59,6 @@ const ListRoomClient = ({ hotelId }) => {
     setOpenExpandPhoto(true); // để mở slider ảnh phóng to
   };
 
-  console.log(data[indexItem]?.photos)
   const handleMove = (direction, item) => { // item chính là data[index], là thông tin room-room chứa ảnh người dùng c
     let newSlideNumber;
 
