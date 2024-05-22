@@ -5,7 +5,7 @@ import Sidebar from '../../../components/adminComponents/sidebar/Sidebar'
 import NavbarAdmin from '../../../components/adminComponents/navbarAdmin/NavbarAdmin'
 import { toast } from 'react-toastify';
 import axios from 'axios';
-const ModifyUser = () => {
+const ModifyUser = ({ modify }) => {
     const [credentials, setCredentials] = useState({
         oldPassword: undefined,
         newPassword: undefined,
@@ -36,6 +36,8 @@ const ModifyUser = () => {
             <div className="listContainerAdmin">
                 <NavbarAdmin />
 
+                {/*  doi mat khau */}
+                {modify === 'changePassword' ? (
                 <div className="modifyUserContainer">
                     <h1>Đổi mật khẩu</h1>
                     <div className="modifyUserContainer_changePassword">
@@ -65,6 +67,19 @@ const ModifyUser = () => {
                         <button onClick={handleChangePassword}>Đổi mật khẩu</button>
                     </div>
                 </div>
+
+                // update payment info
+                ) : modify === 'updatePaymentInfo' ? (
+                    <>
+                        <h1>dfdsf</h1>
+                    </>
+                ) : (
+                    <h1>Trạng thái không hợp lệ</h1>
+                )}
+
+
+
+
             </div>
         </div>
 

@@ -16,11 +16,11 @@ const router = express.Router();
 //     res.send("hello admin, you are admin")
 // });
 //UPDATE
-router.put("/:id", verifyUser, updateUser);
+router.put("/", verifyToken, updateUser);
 //DELETE
 router.delete("/:id", verifyUser, deleteUser);
 //GET
-router.get("/:id",  verifyUser, getUser);
+router.get("/getUserByTokenId",  verifyToken, getUser);
 //GETALL
 router.get("/", getUsers);
 

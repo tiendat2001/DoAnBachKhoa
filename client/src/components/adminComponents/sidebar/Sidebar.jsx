@@ -24,6 +24,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedItem, setSelectedItem] = useState(location.state?.item || 'hotels');
+  console.log(selectedItem)
   const handleChangeSelectedItem = (item) => {
     navigate(`/admin/${item}`, { state: { item } });
   };
@@ -106,10 +107,16 @@ const Sidebar = () => {
           </li> */}
           <p className="title">TÀI KHOẢN</p>
 
-          <div  style={{ textDecoration: "none" }}  onClick={() => handleChangeSelectedItem("changePassword")}>
+          <div  style={{ textDecoration: "none" }} onClick={() => handleChangeSelectedItem("changePassword")}>
             <li style={{ backgroundColor: selectedItem == 'changePassword' ? '#ece8ff' : '' }}>
-              <AccountCircleOutlinedIcon className="icon" />
+              <BookOnlineIcon className="icon" />
               <span>Đổi mật khẩu</span>
+            </li>
+          </div>
+          <div  style={{ textDecoration: "none" }}  onClick={() => handleChangeSelectedItem("updatePaymentInfo")}>
+            <li style={{ backgroundColor: selectedItem == 'updatePaymentInfo' ? '#ece8ff' : '' }}>
+              <AccountCircleOutlinedIcon className="icon" />
+              <span>Cập nhật tài khoản thanh toán</span>
             </li>
           </div>
 

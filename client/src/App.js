@@ -27,6 +27,7 @@ import RoomDetails from "./pages/adminPages/RoomDetails/RoomDetails";
 import ModifyRoomCount from "./pages/adminPages/ModifyRoomCount/ModifyRoomCount";
 import StatusTransaction from "./pages/StatusTransaction/StatusTransaction";
 import ModifyUser from "./pages/adminPages/modifyUser/ModifyUser";
+import UpdatePaymentInfo from "./pages/adminPages/UpdatePaymentInfo/UpdatePaymentInfo";
 import axios from 'axios';
 function App() {
 
@@ -139,7 +140,13 @@ function App() {
 
           <Route path="changePassword" element={
             <ProtectedRoute>
-              <ModifyUser />
+              <ModifyUser modify="changePassword" />
+            </ProtectedRoute>
+          } />
+
+          <Route path="updatePaymentInfo" element={
+            <ProtectedRoute>
+              <UpdatePaymentInfo />
             </ProtectedRoute>
           } />
 

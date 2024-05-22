@@ -3,6 +3,7 @@ import Hotel from "../models/Hotel.js"
 import User from "../models/User.js"
 import Room from "../models/RoomType.js"
 import { startOfMonth, endOfMonth, subMonths, addHours, subHours } from 'date-fns';
+import { startOfToday } from "date-fns";
 
 export const createReservation = async (req, res, next) => {
     req.body.userId = req.user.id;
@@ -29,17 +30,26 @@ export const getAllReservations = async (req, res, next) => {
 export const getReservationsByAdmin = async (req, res, next) => {
     try {
         const { startDay, endDay, ...query } = req.query;
+        // console.log(startDay) 14h GMT+7
+        // console.log(new Date(startDay)) 14h UTC
         let startDayRange;
         let endDayRange;
-
+        const utcDate = new Date(Date.UTC(new Date(startDay).getUTCFullYear(), new Date(startDay).getUTCMonth(), new Date(startDay).getUTCDate(), 0, 0, 0, 0));
+       
         // tìm kiếm theo idOwnerHotel - những đơn của chủ tài khoản (req.user.id lấy từ req.cookie do chạy middlewware verifyToken)
         query.idOwnerHotel = req.user.id;
         // Kiểm tra nếu startDay và endDay tồn tại trong req.query
         if (startDay && endDay) {
             // ở client gửi 14h GMT+7 nhưng ở đây console ra 14h giờ UTC, phải trừ đi 7h vì trong csdl lưu ngày là 7h UTC
-            startDayRange = subHours(new Date(startDay), 7);
-            endDayRange = subHours(new Date(endDay), 7);
+            // startDayRange = subHours(new Date(startDay), 7);
+            // endDayRange = subHours(new Date(endDay), 7);
+
+            //nếu client chọn ngày 24 (bất kể múi giờ gì) thì 2024-05-24T00:00:00.000Z và 2024-05-24T23:59:59.999Z
+            startDayRange = new Date(Date.UTC(new Date(startDay).getUTCFullYear(), new Date(startDay).getUTCMonth(), new Date(startDay).getUTCDate(), 0, 0, 0, 0));
+            endDayRange = new Date(Date.UTC(new Date(endDay).getUTCFullYear(), new Date(endDay).getUTCMonth(), new Date(endDay).getUTCDate(), 23, 59, 59, 999));
         }
+        // console.log(startDayRange)
+        // console.log(endDayRange)
         let Reservations;
         if (startDayRange && endDayRange) {
             Reservations = await Reservation.find({

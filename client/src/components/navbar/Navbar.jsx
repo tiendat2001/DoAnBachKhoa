@@ -1,4 +1,4 @@
-import React, { useContext,useState } from 'react'
+import React, { useContext, useState } from 'react'
 import "./navbar.css"
 import { Link } from "react-router-dom";
 import { AuthContext } from '../../context/AuthContext';
@@ -8,8 +8,15 @@ const Navbar = () => {
   const { user, dispatch } = useContext(AuthContext)
   const [showInfoUser, setShowInfoUser] = useState(false);
   const navigate = useNavigate()
+  const handleUpdateInfo = () => {
+    navigate('/update-info');
+  };
+
+  const handleChangePassword = (item) => {
+    navigate('/admin/changePassword',{ state: { item } });
+  };
   const handleLogout = async () => {
-    
+
     const res = await axios.post("/auth/logout");
     navigate("/login");
     dispatch({ type: "LOGOUT" });
@@ -40,13 +47,13 @@ const Navbar = () => {
             </Link>
 
             <div className="account" >
-            <h1 onClick={toggleOptions}>Xin chào, {user?.username}</h1>
-            {showInfoUser && (
-              <div className="account_options" >
-                <Link to="/update-info">Cập nhật thông tin</Link>
-                <Link to="/admin/changePassword">Đổi mật khẩu</Link>
-              </div>
-            )}
+              <h1 onClick={toggleOptions}>Xin chào, {user?.username}</h1>
+              {showInfoUser && (
+                <div className="account_options" >
+                  <div style={{fontWeight:'bold', cursor:'pointer'}} onClick={handleUpdateInfo}>Cập nhật thông tin</div>
+                  <div  style={{fontWeight:'bold', cursor:'pointer'}}  onClick={() => handleChangePassword("changePassword")}>Đổi mật khẩu</div>
+                </div>
+              )}
             </div>
             {/* <Link to="/login"> */}
 
