@@ -1,6 +1,7 @@
 import express from "express"
 import { createReservation ,getReservationsByAdmin,updateReservation,deleteAllReservations,
-    getAllHotelRevenue,getRevenueByHotelId,getRevenueMonthsByHotelId,getAllReservations,getReservationsByClient,paymentAccountLastMonth
+    getAllHotelRevenue,getRevenueByHotelId,getRevenueMonthsByHotelId,getAllReservations,
+    getReservationsByClient,paymentAccountLastMonth,sendEmailStatusReservation
 } from "../controllers/reservation.js"
 import { verifyAdmin,verifyUserModifyHotel,verifyToken } from "../utils/verifyToken.js";
 const router = express.Router();
@@ -37,5 +38,8 @@ router.get("/getAllRevenueHotel",getAllHotelRevenue)   // cho theem verifyAdmin 
 
 // TIỀN CẦN THANH TOÁN CHO TÀI KHOẢN THÁNG TRC
 router.get("/getAllPaymentAccount",paymentAccountLastMonth)   // cho theem verifyAdmin de chi admin goi api dc
+
+// SEND EMAIL
+router.put("/email/sendEmailStatusReservation",sendEmailStatusReservation)   // cho theem verifyAdmin de chi admin goi api dc
 
 export default router

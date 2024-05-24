@@ -4,6 +4,7 @@ import User from "../models/User.js"
 import Room from "../models/RoomType.js"
 import { startOfMonth, endOfMonth, subMonths, addHours, subHours } from 'date-fns';
 import { startOfToday } from "date-fns";
+import nodemailer from "nodemailer"
 
 export const createReservation = async (req, res, next) => {
     req.body.userId = req.user.id;
@@ -472,5 +473,42 @@ export const getRevenueMonthsByHotelId = async (req, res, next) => {
         res.status(200).json(revenueByMonth);
     } catch (error) {
         next(error);
+    }
+}
+
+// send email
+export const sendEmailStatusReservation = async (req, res, next) => {
+    try {
+        const userReserved = await User.findById(req.body.userId)
+        console.log(userReserved.email)
+        let emailContent=''
+        emailContent=`Thông tin đặt phòng của bạn\nMã đặt phòng: ${req.body.reservationId}\nTổng giá: ${req.body.amount}\nNgày nhận phòng:${req.body.startDate}\nNgày trả phòng:${req.body.endDate}`
+
+
+        // Tạo transporter sử dụng dịch vụ email, ở đây sử dụng Gmail làm ví dụ
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'clonetiendat@gmail.com', // Đổi thành email NGƯỜI GỬI
+                pass: ''   //  app password
+            }
+        });
+
+        // Cấu hình email
+        let mailOptions = {
+            from: 'clonetiendat@gmail.com', // Đổi thành email của bạn
+            to: userReserved.email, // Đổi thành email người nhận
+            subject: 'THÔNG BÁO ĐẶT PHÒNG THÀNH CÔNG',
+            text: emailContent
+        };
+
+        // Gửi email
+        let info = await transporter.sendMail(mailOptions);
+
+        console.log('Email sent: ' + info.response);
+        res.status(200).json('Email sent successfully');
+    } catch (error) {
+        console.error('Error sending email: ', error);
+        res.status(500).json('Error sending email');
     }
 }
