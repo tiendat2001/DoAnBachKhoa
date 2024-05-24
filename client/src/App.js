@@ -28,6 +28,7 @@ import ModifyRoomCount from "./pages/adminPages/ModifyRoomCount/ModifyRoomCount"
 import StatusTransaction from "./pages/StatusTransaction/StatusTransaction";
 import ModifyUser from "./pages/adminPages/modifyUser/ModifyUser";
 import UpdatePaymentInfo from "./pages/adminPages/UpdatePaymentInfo/UpdatePaymentInfo";
+import Policy from "./pages/Policy/Policy";
 import axios from 'axios';
 function App() {
 
@@ -124,6 +125,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/bookings" element={<ProtectedRoute><ListBooking /></ProtectedRoute>} />
         <Route path="/reserve" element={<ProtectedRoute><Reserve /></ProtectedRoute>} />
+        <Route path="/policy" element={<Policy />} />
         <Route path="/statusTransaction/success" element={<StatusTransaction status="success" />} />
         <Route path="/statusTransaction/fail" element={<StatusTransaction status="fail" />} />
 
@@ -131,6 +133,8 @@ function App() {
         <Route path="/administrator" element={<ProtectedAdministratorRoute><Administrator /></ProtectedAdministratorRoute>} />
         <Route path="/administrator/allHotelPayments" element={<ProtectedAdministratorRoute><AllHotelPayment /></ProtectedAdministratorRoute>} />
 
+
+        {/* cho admin */}
         <Route path="/admin/">
           <Route index element={
             <ProtectedRoute>
