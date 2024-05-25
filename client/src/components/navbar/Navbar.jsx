@@ -50,7 +50,7 @@ const Navbar = () => {
               <h1 onClick={toggleOptions}>Xin chào, {user?.username}</h1>
               {showInfoUser && (
                 <div className="account_options" >
-                  <div style={{fontWeight:'bold', cursor:'pointer'}} onClick={handleUpdateInfo}>Cập nhật thông tin</div>
+                  {/* <div style={{fontWeight:'bold', cursor:'pointer'}} onClick={handleUpdateInfo}>Cập nhật thông tin</div> */}
                   <div  style={{fontWeight:'bold', cursor:'pointer'}}  onClick={() => handleChangePassword("changePassword")}>Đổi mật khẩu</div>
                 </div>
               )}

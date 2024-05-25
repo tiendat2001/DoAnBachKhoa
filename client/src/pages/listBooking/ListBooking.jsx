@@ -6,7 +6,7 @@ import { useState, useContext } from "react";
 import axios from 'axios';
 import useFetch from '../../hooks/useFetch';
 import { AuthContext } from '../../context/AuthContext';
-import { format, addDays, subDays, subHours } from "date-fns";
+import { format, addDays, subDays, subHours,addHours } from "date-fns";
 import { confirmAlert } from 'react-confirm-alert';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
@@ -18,12 +18,14 @@ const ListBooking = () => {
 
   const handleCancelReserve = async (allDatesReserve, roomNumbersId, reservationId, startDate, endDate, roomTypeIdsReserved,selectedReservation) => {
     let message=""
-    // trong khoảng time 3 ngày trc ngày đặt thì bị tính phí đêm đầu
-    if((new Date() > subHours(new Date(selectedReservation.start), 24*3))){
+     // hủy trong khoảng time 3 ngày trc ngày nhận phòng và ko trong khoảng 24h sau thời gian đặt thì bị coi là muộn- tính phí đêm đầu
+    const isLateCancel = (new Date() > subHours(new Date(selectedReservation.start), 24*3)) &&
+     (new Date() > addHours(new Date(selectedReservation.createdAt), 24))
+   
+    if(isLateCancel){
       message=`Bạn có chắc chắn muốn hủy đơn đặt phòng này? Bạn không thể hoàn tác sau khi hủy. Bạn mất phí hủy 
       (phí đêm đầu- ${new Intl.NumberFormat('vi-VN').format(selectedReservation.totalPrice/selectedReservation.allDatesReserve.length * 1000)} VND)
        nếu hủy đơn đặt này.`
-
     } else  message="Bạn có chắc chắn muốn hủy đơn đặt phòng này? Bạn không thể hoàn tác sau khi hủy. Bạn sẽ không mất phí hủy nếu hủy đơn đặt này"
    
     confirmAlert({
@@ -91,7 +93,6 @@ const ListBooking = () => {
     } catch (err) {
       console.error('Error:', err);
       hasError = true;
-      // Handle any error occurred during the loop
     }
 
     // chỉnh lại trạng thái
