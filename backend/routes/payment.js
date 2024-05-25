@@ -151,6 +151,7 @@ router.get("/vnpay_ipn", async function (req, res, next) {
             //   const res = await axios.put(`http://localhost:8800/api/reservation/email/sendEmailStatusReservation`, {
             //     userId:reservationSuccess.userId,
             //     reservationId:reservationSuccess._id,
+            //     emailSubject:"THÔNG BÁO ĐẶT PHÒNG THÀNH CÔNG",
             //     amount: `${new Intl.NumberFormat('vi-VN').format(reservationSuccess.totalPrice*1000)} VND`,
             //     startDate: new Date(reservationSuccess.start).toLocaleDateString('vi-VN'),
             //     endDate: new Date(reservationSuccess.end).toLocaleDateString('vi-VN'),

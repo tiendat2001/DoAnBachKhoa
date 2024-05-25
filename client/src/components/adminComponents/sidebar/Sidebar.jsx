@@ -24,7 +24,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedItem, setSelectedItem] = useState(location.state?.item || 'hotels');
-  console.log(selectedItem)
+  // console.log(selectedItem)
   const handleChangeSelectedItem = (item) => {
     navigate(`/admin/${item}`, { state: { item } });
   };

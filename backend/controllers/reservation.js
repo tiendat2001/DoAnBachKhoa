@@ -482,7 +482,9 @@ export const sendEmailStatusReservation = async (req, res, next) => {
         const userReserved = await User.findById(req.body.userId)
         console.log(userReserved.email)
         let emailContent=''
-        emailContent=`Thông tin đặt phòng của bạn\nMã đặt phòng: ${req.body.reservationId}\nTổng giá: ${req.body.amount}\nNgày nhận phòng:${req.body.startDate}\nNgày trả phòng:${req.body.endDate}`
+        if(!req.body.emailContent){
+            emailContent=`Thông tin đặt phòng của bạn\nMã đặt phòng: ${req.body.reservationId}\nTổng giá: ${req.body.amount}\nNgày nhận phòng:${req.body.startDate}\nNgày trả phòng:${req.body.endDate}`
+        } else  emailContent= req.body.emailContent
 
 
         // Tạo transporter sử dụng dịch vụ email, ở đây sử dụng Gmail làm ví dụ
@@ -498,7 +500,7 @@ export const sendEmailStatusReservation = async (req, res, next) => {
         let mailOptions = {
             from: 'clonetiendat@gmail.com', // Đổi thành email của bạn
             to: userReserved.email, // Đổi thành email người nhận
-            subject: 'THÔNG BÁO ĐẶT PHÒNG THÀNH CÔNG',
+            subject: req.body.emailSubject,
             text: emailContent
         };
 
