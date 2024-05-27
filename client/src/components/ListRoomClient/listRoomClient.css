@@ -1,6 +1,6 @@
 /* thanh search ngày */
 
-.headerSearchHotel {
+.RoomClientContainer_searchDates {
     height: 40px;
     background-color: white;
     border: 3px solid #febb02;
@@ -14,8 +14,8 @@
     position: relative;
   }
   
-  .headerIconHotel {
-    color: lightgray;
+  .RoomClientContainer_icon {
+    color: black;
   }
   
   .headerSearchItemHotel {
@@ -28,7 +28,7 @@
     border: none;
     outline: none;
   }
-  
+/*   
   .headerSearchInputHotel::placeholder{
     color: lightgray;
     cursor: pointer;
@@ -38,7 +38,7 @@
     color: lightgray;
     cursor: pointer;
     font-weight: bold;
-  }
+  } */
 
  
 

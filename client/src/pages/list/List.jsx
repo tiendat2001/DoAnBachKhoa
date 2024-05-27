@@ -128,6 +128,34 @@ const List = () => {
   const handleSortChange = (event) => {
     setSortOrder(event.target.value); // Cập nhật state khi người dùng thay đổi cách sắp xếp
   };
+
+  const renderSearchItem = () => {
+    const filteredData = data
+      // sắp xếp theo giá
+      .sort((a, b) => {
+        const priceA = calculatePrice(a.cheapestPrice);
+        const priceB = calculatePrice(b.cheapestPrice);
+        return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
+      })
+      // lấy ra các phần tử trong khoảng giá - calculatePrice là tính giá theo option người dùng như ngày, số phòng...
+      // lấy theo giá phòng rẻ nhất của chỗ nghỉ đó
+      .filter((item) => calculatePrice(item.cheapestPrice) >= min && calculatePrice(item.cheapestPrice) <= max)
+      // lọc theo cơ sở vật chất
+      .filter(hotel => {
+        // trả về true nếu tất cả phần tử thỏa mãn - lấy ra các phần tử có facility người dùng tích
+        return selectedFacilities.every(facility => hotel.facilities?.includes(facility));
+      });
+
+    if (filteredData.length === 0) {
+      return <p>Không có chỗ nghỉ thỏa mãn yêu cầu của bạn.</p>;
+    }
+    return filteredData.map((item) => (
+      <SearchItem item={item} key={item._id} />
+    ));
+  }
+
+
+
   return (
     <div>
       <Navbar />
@@ -298,29 +326,8 @@ const List = () => {
               "loading"
             ) : (
               <>
-                {data
-                  // sắp xếp
-                  .sort((a, b) => {
-                    const priceA = calculatePrice(a.cheapestPrice);
-                    const priceB = calculatePrice(b.cheapestPrice);
-                    return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
-                  })
-                  // .filter((item) => calculatePrice(item.cheapestPrice)>=min && calculatePrice(item.cheapestPrice)<= max)
-                  // lọc theo cơ sở vật chất
-                  .filter(hotel => {
-                    // tra ve true neu tat ca phan tu thoa man
-                    return selectedFacilities.every(facility => hotel.facilities?.includes(facility));
-                  })
 
-                  .map((item) => {
-                    const price = calculatePrice(item.cheapestPrice);
-                    // đang lọc giá dạng số 100 là 100.000
-                    // console.log(max)
-                    if (price >= min && price <= max) {
-                      return <SearchItem item={item} key={item._id} />;
-                    }
-                    return null;
-                  })}
+                {renderSearchItem()}
               </>
             )}
           </div>

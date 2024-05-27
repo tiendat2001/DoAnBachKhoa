@@ -46,7 +46,6 @@ const ListRoomClient = ({ hotelId }) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // console.log("Updated changes:", dates);
     dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
     // console.log("thay doi")
   }, [destination, dates, options]);
@@ -181,7 +180,7 @@ const ListRoomClient = ({ hotelId }) => {
       return;
     }
 
-     // Lặp qua từng item trong data
+     // Lặp qua từng item trong data, lấy ra những loại phòng mà người dùng chọn
     data.forEach((item) => {
     const selectedValue = parseInt(document.getElementById(`select_${item._id}`).value);
       // Kiểm tra nếu số lượng phòng đã chọn khác 0
@@ -208,14 +207,10 @@ const ListRoomClient = ({ hotelId }) => {
     <div className="RoomClientContainer">
       {/* tieu de va thanh search ngay */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-
         <h1>Bạn muốn đặt phòng?</h1>
-        {/* HIển thị ngày */}
-
-        <div style={{ width: '30%' }} className="headerSearchHotel">
-
-          <FontAwesomeIcon icon={faCalendarDays} className="headerIconHotel" />
-
+        {/* Hiển thị ngày */}
+        <div style={{ width: '30%' }} className="RoomClientContainer_searchDates">
+          <FontAwesomeIcon icon={faCalendarDays} className="RoomClientContainer_icon" />
           <span onClick={() => setOpenDate(!openDate)}>{`${format(
             dates[0].startDate,
             "MM/dd/yyyy"
@@ -231,11 +226,10 @@ const ListRoomClient = ({ hotelId }) => {
             />
 
           )}
-
-
-
         </div>
-        <div ><FontAwesomeIcon icon={faPerson} className="headerIconHotel" /> {options.adult} người lớn, {options.children} trẻ em</div>
+
+        {/* Hiện số người */}
+        <div ><FontAwesomeIcon icon={faPerson} className="RoomClientContainer_icon" /> {options.adult} người lớn, {options.children} trẻ em</div>
 
       </div>
 
@@ -311,8 +305,8 @@ const ListRoomClient = ({ hotelId }) => {
               
               {/* <option id={`defaultOption_${item._id}`} value={0}>0 phòng</option> */}
               {(() => {
-                let roomIndex = 0; // Khởi tạo biến đếm
-                const maxOptions = 10; // Số lượng tối đa của option
+                let roomIndex = 0; 
+                const maxOptions = 10; // Số lượng phòng tối đa sẽ hiện của thẻ option
                 let optionsCount = 0; // Biến đếm số lượng option đã được thêm vào
                 let hasAvailableRoom = false; // Biến kiểm tra xem có phòng nào thỏa mãn không
                 const options= item.roomNumbers.map((roomNumber, index) => {
@@ -338,12 +332,14 @@ const ListRoomClient = ({ hotelId }) => {
                     </>
                   );
                 } else{
+                  // ko còn phòng nào
                   return (
                     <option  value={0}>Hết phòng</option>
                     );
                 } 
               
-              })()}
+              })
+              ()}
             </select>
 
             <div style={{ width: '30%', height: '100%', fontSize: '14px' }}>(Chọn số lượng phòng muốn đặt)</div>
