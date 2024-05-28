@@ -108,7 +108,7 @@ export const roomColumns = [
     {
       field: "guest",
       headerName: "Số người",
-      width: 150,
+      width: 100,
       cellClassName: 'wrap-content', // xuống dòng khi nội dung dài
       headerAlign: 'center',
       align:'center',

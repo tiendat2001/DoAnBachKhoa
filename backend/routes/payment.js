@@ -6,7 +6,7 @@ import config from "config";
 import querystring from "qs"
 import crypto from "crypto"
 import Reservation from "../models/Reservation.js";
-import Room from "../models/RoomType.js"
+import Room from "../models/Room.js"
 import axios from 'axios';
 import request from "request"
 router.post("/create_payment_url", function (req, res, next) {

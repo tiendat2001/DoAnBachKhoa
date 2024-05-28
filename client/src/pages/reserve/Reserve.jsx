@@ -155,7 +155,7 @@ const Reserve = () => {
       });
     } catch (err) {
       console.log(err)
-      toast.error("Có lỗi xảy ra vui lòng quay lại trang trước và đặt phòng lại")
+      toast.error(err.response.data.message)
       setIsSending(false)
       return; // Ngưng thực thi hàm nếu có lỗi
     }

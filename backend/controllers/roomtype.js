@@ -1,4 +1,4 @@
-import Room from "../models/RoomType.js";
+import Room from "../models/Room.js";
 import Hotel from "../models/Hotel.js";
 import { startOfMonth, endOfMonth, subMonths, addHours, subHours, addDays } from 'date-fns';
 
@@ -214,7 +214,7 @@ export const updateRoomAvailability = async (req, res, next) => {
     const totalQuantity = req.body.roomTypeIdsReserved.reduce((acc, roomDetail) => acc + roomDetail.quantity, 0);
     if (selectedRoomIdsReserved.length !== totalQuantity) {
       clearLockedRoomTypeIds(lockedRoomTypeIds);
-      return res.status(404).json({ error: "Hết phòng (chọn ko đủ số phòng). Vui lòng thử lại" });
+      return res.status(404).json({ error: "Hết phòng (chọn ko đủ số phòng). Vui lòng quay lại trang trước và thử lại" });
     }
 
      
@@ -548,7 +548,7 @@ export const addRoomToRoomType = async (req, res, next) => {
     res.status(200).json({ message: 'Đã thêm phòng thành công', room: updatedRoom });
   } catch (error) {
     console.error('Lỗi khi thêm phòng:', error);
-    res.status(500).json({ message: 'Đã xảy ra lỗi khi thêm phòng' });
+    next(err);
   }
 
 }

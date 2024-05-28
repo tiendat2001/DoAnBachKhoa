@@ -24,7 +24,7 @@ const currentDate = new Date();
 const INITIAL_STATE =
     [
         {
-            startDate: subYears(currentDate, 100),
+            startDate: subYears(currentDate, 100), // ngày từ 100 năm trước và sau 100 năm
             endDate: addYears(currentDate, 100),
             key: "selection",
         },
@@ -42,7 +42,7 @@ const ListReservation = () => {
     const { data: reservationData, loading: reservationLoading, error: reservationError,
         reFetch: reservationReFetch } = useFetch(`/reservation/admin?startDay=${datesToFilter[0].startDate}&endDay=${datesToFilter[0].endDate}`);
     const [openDate, setOpenDate] = useState(false);
-    
+
     // đổi giá trị hiển thị trên lịch
     const handleDayChange = (item) => {
         const newSelection = { ...item.selection };
@@ -55,15 +55,36 @@ const ListReservation = () => {
 
     // khi bấm lọc mới lưu vào biến trong API query
     const filterByDates = () => {
-          //date này để lọc trong API query
+        //date này để lọc trong API query
         setDatesToFilter(dates);
     }
 
     const cancelFilterByDates = () => {
         //date này để lọc trong API query
-      setDatesToFilter(INITIAL_STATE);
-  }
-
+        setDatesToFilter(INITIAL_STATE);
+    }
+    const requestCancel = async (reservationId) => {
+       console.log(reservationId)
+    }
+    // thêm cột xóa sửa
+    const actionColumn = [
+        {
+            field: "action",
+            headerName: "Yêu cầu hủy",
+            minWidth: 100,
+            headerAlign: 'center',
+            
+            renderCell: (params) => {
+                return (
+                    <div className="cellAction">
+                        <div className="viewButton wrap-content" onClick={() => requestCancel(params.row._id)}>
+                            Yêu cầu hủy
+                        </div>
+                    </div>
+                );
+            },
+        },
+    ];
     return (
         <div className="listAdmin">
             <Sidebar />
@@ -74,7 +95,7 @@ const ListReservation = () => {
                 <div className="ListReservationAdminContainer">
                     <h2>Đặt phòng</h2>
 
-                    <div style={{display:'flex',justifyContent:'flex-start',gap:"10px",marginBottom:'10px', textAlign:'center'}}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-start', gap: "10px", marginBottom: '10px', textAlign: 'center' }}>
                         {/* css từ listRoomCLient */}
                         <div style={{ width: '20%' }} className="headerSearchHotel">
                             <FontAwesomeIcon icon={faCalendarDays} className="headerIconHotel" />
@@ -96,7 +117,7 @@ const ListReservation = () => {
 
                         <button onClick={filterByDates}>Lọc theo ngày</button>
                         <button onClick={cancelFilterByDates}>Hủy lọc</button>
-                        <div style={{fontStyle:'italic'}}>(Lọc theo ngày được tính theo ngày check in của đơn, ví dụ nếu <br/>để khoảng ngày 19 đến 20 sẽ lấy đơn có check in ngày 19 và 20)</div>
+                        <div style={{ fontStyle: 'italic' }}>(Lọc theo ngày được tính theo ngày check in của đơn, ví dụ nếu <br />để khoảng ngày 19 đến 20 sẽ lấy đơn có check in ngày 19 và 20)</div>
                     </div>
 
 
@@ -105,7 +126,7 @@ const ListReservation = () => {
                     <DataGrid autoHeight
                         // className="datagrid"
                         rows={reservationData}
-                        columns={ReservationColumns}
+                        columns={ReservationColumns.concat(actionColumn)}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
                         checkboxSelection
