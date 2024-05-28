@@ -1,10 +1,53 @@
 .ListReservationAdminContainer{
     width:97%;
-    margin:auto
+    margin:auto;
+    position: relative;
 }
 .wrap-content {
     white-space: normal !important;
-
-
   }
+  .cellRequestCancel {
+    margin:auto;
+   display: flex;
+   align-items: center;
+   gap: 15px;
+}
+.cellRequestCancel .viewButton {
+   padding: 2px 5px;
+   border-radius: 5px;
+   color: darkblue;
+   border: 1px dotted rgba(0, 0, 139, 0.596);
+   cursor: pointer;
+}
+
+.modalCancelRequest{
+  position: fixed;
+  width: 40%;
+  height: 20%;
+  /*  3cái dưới đảm bảo để nó ở giữa */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white; /* Hoặc màu nền mong muốn */
+  padding: 20px; /* Khoảng đệm bên trong modal */
+  z-index: 1000; /* Đảm bảo modal luôn ở trên các phần tử khác */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px; /* Bo góc cho modal */
   
+}
+
+.modalCancelRequest .modal-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap:10px;
+}
+
+.modal_title{
+  font-weight: bold;
+  font-size: 24px;
+
+}
+.modalCancelRequest textarea{
+  width: 50%;
+}

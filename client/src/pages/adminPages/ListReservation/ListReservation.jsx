@@ -11,6 +11,7 @@ import NavbarAdmin from '../../../components/adminComponents/navbarAdmin/NavbarA
 import { DateRange } from "react-date-range";
 import { format, addDays, addYears, subYears } from "date-fns";
 import { SearchContext } from '../../../context/SearchContext'
+import { toast } from 'react-toastify';
 import {
     faBed,
     faCalendarDays,
@@ -18,7 +19,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { jwtDecode } from "jwt-decode";
-
+import Modal from 'react-modal';
+import axios from 'axios';
 const currentDate = new Date();
 // để hiện tất cả reservations (khi người dùng chưa lọc theo ngày)
 const INITIAL_STATE =
@@ -42,6 +44,8 @@ const ListReservation = () => {
     const { data: reservationData, loading: reservationLoading, error: reservationError,
         reFetch: reservationReFetch } = useFetch(`/reservation/admin?startDay=${datesToFilter[0].startDate}&endDay=${datesToFilter[0].endDate}`);
     const [openDate, setOpenDate] = useState(false);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [reasonCancel, setReasonCancel] = useState('');
 
     // đổi giá trị hiển thị trên lịch
     const handleDayChange = (item) => {
@@ -63,21 +67,49 @@ const ListReservation = () => {
         //date này để lọc trong API query
         setDatesToFilter(INITIAL_STATE);
     }
-    const requestCancel = async (reservationId) => {
-       console.log(reservationId)
+
+    // mở modal yêu cầu hủy
+    const closeModalCancelRequest = () =>{
+        setModalIsOpen(false)
+    }
+    const openRequestCancelModal = (canceledReservation) => {
+        setModalIsOpen(true)
+    }
+
+
+    // khi admin bấm yêu cầu hủy đơn đặt
+    const requestCancel = async (canceledReservation) => {
+        // kiểm tra nếu thời gian nhận phòng đơn đấy đã qua hoặc đơn đấy ở status 0 là hủy thì ko đc 
+        if (new Date() > new Date(canceledReservation.start) || !canceledReservation.status) {
+            toast.error("Bạn không thể yêu cầu hủy đơn này!")
+            return;
+        }
+
+        try {
+            const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {
+                userId: canceledReservation.userId, // gửi cho email của account khách - userId khách
+                emailSubject: "THÔNG BÁO YÊU CẦU HỦY ĐƠN ĐẶT PHÒNG TỪ CHỦ CHỖ NGHỈ ",
+                emailContent: `Đơn đặt phòng mã ${canceledReservation._id} của quý khách được chủ chỗ nghỉ yêu cầu hủy \n Lý do hủy: `
+            });
+        } catch (err) {
+            console.log(err)
+            return;
+        }
+
     }
     // thêm cột xóa sửa
     const actionColumn = [
         {
             field: "action",
             headerName: "Yêu cầu hủy",
-            minWidth: 100,
+            minWidth: 120,
             headerAlign: 'center',
-            
+
             renderCell: (params) => {
                 return (
-                    <div className="cellAction">
-                        <div className="viewButton wrap-content" onClick={() => requestCancel(params.row._id)}>
+                    // css từ listRoom.css
+                    <div className="cellRequestCancel">
+                        <div className="viewButton wrap-content" onClick={() => openRequestCancelModal(params.row)}>
                             Yêu cầu hủy
                         </div>
                     </div>
@@ -92,7 +124,25 @@ const ListReservation = () => {
             <div className="listContainerAdmin">
                 <NavbarAdmin />
 
+                {/* Modal */}
+                
+
+
+
                 <div className="ListReservationAdminContainer">
+                {modalIsOpen && (
+                    <div className="modalCancelRequest">
+                        <div className="modal-content">
+                            <span className="close" onClick={closeModalCancelRequest}>&times;</span>
+                            <div className="modal_title">YÊU CẦU HỦY PHÒNG</div>
+                            <textarea placeholder="Nhập lý do muốn hủy" type="text" value={reasonCancel} onChange={(e) => setReasonCancel(e.target.value)} />
+                            <div className="modal_container-btn">
+                                <button className="modal_btn" onClick={requestCancel}>Xác nhận</button>
+                            </div>
+
+                        </div>
+                    </div>
+                )}
                     <h2>Đặt phòng</h2>
 
                     <div style={{ display: 'flex', justifyContent: 'flex-start', gap: "10px", marginBottom: '10px', textAlign: 'center' }}>
@@ -129,7 +179,7 @@ const ListReservation = () => {
                         columns={ReservationColumns.concat(actionColumn)}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
-                        checkboxSelection
+                        // checkboxSelection
                         getRowId={(row) => row._id}
                         getRowHeight={(params) => params.length > 100 ? 100 : 70} // Xác định chiều cao hàng dựa trên chiều dài của mô tả
 

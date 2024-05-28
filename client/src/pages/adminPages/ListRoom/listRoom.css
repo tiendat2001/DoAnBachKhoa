@@ -72,7 +72,7 @@
 
 .datagrid{
     margin:10px auto;
-    width: 95%;
+    max-width: 95%;
     height:100px;
 }
 .ListRoomAdminContainer{

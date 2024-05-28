@@ -99,7 +99,7 @@ const ListRoom = () => {
     const actionColumn = [
         {
             field: "action",
-            headerName: "Action",
+            headerName: "Hành động",
             width: 270,
             headerAlign: 'center',
             renderCell: (params) => {
@@ -168,7 +168,7 @@ const ListRoom = () => {
                     columns={roomColumns.concat(actionColumn)}
                     pageSize={5}
                     rowsPerPageOptions={[5]}
-                    checkboxSelection
+                    // checkboxSelection
                     getRowId={(row) => row._id}
                     localeText={{
                         noRowsLabel: <span style={{ color: 'red' }}>Bạn chưa chọn chỗ nghỉ hoặc chỗ nghỉ này chưa có phòng</span>,

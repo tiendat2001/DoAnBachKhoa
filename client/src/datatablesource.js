@@ -71,7 +71,7 @@ export const roomColumns = [
     {
       field: "start",
       headerName: "Check-in",
-      width: 115,
+      width: 90,
       valueFormatter: (params) => formatDate(params.value),
       headerAlign: 'center',
       align:'center',
@@ -81,7 +81,7 @@ export const roomColumns = [
     {
       field: "end",
       headerName: "Check-out",
-      width: 115,
+      width: 90,
       valueFormatter: (params) => formatDate(params.value),
       headerAlign: 'center',
       align:'center'
