@@ -93,9 +93,10 @@ const SearchItem = ({ item }) => {
         </span> */}
         <span className="siFeatures">Address: {item.address}</span>
         <span className="siFacilities">
-          {item.facilities?.map(facility =>
-          (
-            <div className="siFacilities_item" style={{ width: '30%' }}>{facility}</div>
+          {item.facilities?.map((facility, index) => (
+            <div className="siFacilities_item" style={{ width: '30%' }} key={index}>
+              {facility}
+            </div>
           ))}
         </span>
       </div>

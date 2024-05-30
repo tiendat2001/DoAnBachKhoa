@@ -1,19 +1,35 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import "./navbar.css"
 import { Link } from "react-router-dom";
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 const Navbar = () => {
-  const { user, dispatch } = useContext(AuthContext)
+  const [user, setUser] = useState("")
+  const { dispatch } = useContext(AuthContext)
   const [showInfoUser, setShowInfoUser] = useState(false);
   const navigate = useNavigate()
+  useEffect(() => {
+    function checkUserData() {
+      const item = JSON.parse(localStorage.getItem('user'));
+      if (item) {
+        setUser(item)
+      }
+    }
+    // đợi cho localstorage cập nhật
+    setTimeout(checkUserData, 1);
+    window.addEventListener('storage', checkUserData)
+  
+    return () => {
+      window.removeEventListener('storage', checkUserData)
+    }
+  }, [])
   const handleUpdateInfo = () => {
     navigate('/update-info');
   };
 
   const handleChangePassword = (item) => {
-    navigate('/admin/changePassword',{ state: { item } });
+    navigate('/admin/changePassword', { state: { item } });
   };
   const handleLogout = async () => {
 
@@ -51,7 +67,7 @@ const Navbar = () => {
               {showInfoUser && (
                 <div className="account_options" >
                   {/* <div style={{fontWeight:'bold', cursor:'pointer'}} onClick={handleUpdateInfo}>Cập nhật thông tin</div> */}
-                  <div  style={{fontWeight:'bold', cursor:'pointer'}}  onClick={() => handleChangePassword("changePassword")}>Đổi mật khẩu</div>
+                  <div style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => handleChangePassword("changePassword")}>Đổi mật khẩu</div>
                 </div>
               )}
             </div>

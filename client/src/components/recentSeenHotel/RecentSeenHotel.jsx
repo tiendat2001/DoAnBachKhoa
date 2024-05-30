@@ -44,12 +44,12 @@ const RecentSeenHotel = () => {
         mostViewedCity = city;
       }
     }
-    console.log("mostviewcity"+mostViewedCity)
+    // console.log("mostviewcity"+mostViewedCity)
     // Cập nhật thành phố được xem nhiều nhất vào state
     // setMostViewedCity(mostViewedCity || "Hà Nội"); // Sử dụng "Hà Nội" làm giá trị mặc định nếu mostViewedCity rỗng
     setMostViewedCity(mostViewedCity)
   }, [allHotelData]);
-  console.log(mostViewedCity)
+  // console.log(mostViewedCity)
   // console.log(suggestedHotel)
   // chỉ lấy những khách sạn mà người dùng chưa xem gần đây- id khách sạn ko có trg local storage + lấy tối đa 3 ks để hiển thị
   const filteredHotels = suggestedHotel.filter(item => !recentHotelIds.includes(item._id));

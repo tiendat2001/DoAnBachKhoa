@@ -21,7 +21,7 @@ const Home = () => {
         <RecentSeenHotel />
         
         {/* phân loại các khách sạn theo loai như hotel, homestay */}
-          <h1 className="homeTitle">Browse by type</h1>
+          <h1 className="homeTitle">Theo loại chỗ nghỉ</h1>
           <PropertyList />
 
      
