@@ -315,6 +315,7 @@ export const cancelRoomReservation = async (req, res, next) => {
     }
     // console.log(roomNumberCurrent)
     if (!roomNumberCurrent) {
+      delete roomTypeAPILocks[room._id] 
       return res.status(400).json("Không tìm thấy roomNumberCurrent phù hợp");
     }
     // const roomNumberCurrent = room.roomNumbers.find(number => number._id.toString() === req.params.id);
@@ -340,7 +341,10 @@ export const cancelRoomReservation = async (req, res, next) => {
       const newUnavailableDates = roomNumberCurrent.unavailableDates.filter((_, index) => !indexesToRemove.includes(index));
       roomNumberCurrent.unavailableDates = newUnavailableDates;
 
-    } else { return res.status(400).json("None of these dates are marked as unavailable"); }
+    } else {
+      delete roomTypeAPILocks[room._id] 
+       return res.status(400).json("None of these dates are marked as unavailable"); 
+      }
     room.markModified('roomNumbers');
     await room.save();
 
@@ -449,7 +453,10 @@ export const cancelRoomReservation = async (req, res, next) => {
         roomNumberToReplace.unavailableDates = newUnavailableDates;
         // console.log("hien tai")
         // console.log(roomNumberCurrent)
-      } else { return res.status(400).json("None of these dates are marked as unavailable"); }
+      } else {
+         delete roomTypeAPILocks[room._id] 
+         return res.status(400).json("None of these dates are marked as unavailable"); 
+        }
       await room.save();
       // console.log("sau khi save")
       // console.log(roomNumberCurrent)
@@ -476,6 +483,7 @@ export const cancelRoomReservation = async (req, res, next) => {
     console.log("Giải phóng khóa kết thúc, kết thúc hủy phòng")
     res.status(200).json("Room reservation has been canceled successfully.");
   } catch (err) {
+    delete roomTypeAPILocks[room._id] 
     next(err);
   }
 };

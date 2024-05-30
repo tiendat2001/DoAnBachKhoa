@@ -17,7 +17,7 @@ const ListBooking = () => {
   );
   const [isSending,setIsSending] = useState(false)
 
-  const handleCancelReserve = async (allDatesReserve, roomNumbersId, reservationId, startDate, endDate, roomTypeIdsReserved, selectedReservation) => {
+  const handleCancelReserve = async (selectedReservation) => {
     let message = ""
     let cancelFee =0;
     // hủy trong khoảng time 3 ngày trc ngày nhận phòng và ko trong khoảng 24h sau thời gian đặt thì bị coi là muộn
@@ -39,7 +39,7 @@ const ListBooking = () => {
         {
           label: 'Yes',
           onClick: () => {
-            deleteAvailability(allDatesReserve, roomNumbersId, reservationId, startDate, endDate, roomTypeIdsReserved,cancelFee,selectedReservation);
+            deleteAvailability(cancelFee,selectedReservation);
           }
         },
         {
@@ -55,21 +55,21 @@ const ListBooking = () => {
   }
 
   // bỏ unavailabledates trong mỗi phòng đặt
-  const deleteAvailability = async (allDatesReserve, roomNumbersId, reservationId, startDate, endDate, roomTypeIdsReserved,cancelFee,selectedReservation) => {
+  const deleteAvailability = async (cancelFee,selectedReservation) => {
     setIsSending(true)
     let hasError = false;
     // console.log(roomNumbersId)
     try {
 
       // đẩy available
-      for (const roomTypeId of roomTypeIdsReserved) {
+      for (const roomTypeId of selectedReservation.roomTypeIdsReserved) {
         for (var i = 0; i < roomTypeId.quantity; i++) {
           try {
             const res = await axios.put(`/rooms/cancelAvailability/${roomTypeId.roomTypeId}`, {
-              dates: allDatesReserve,
+              dates: selectedReservation.allDatesReserve,
               unavailableRangeDates: {
-                startDateRange: startDate,
-                endDateRange: endDate
+                startDateRange: selectedReservation.start,
+                endDateRange: selectedReservation.end
               }
             });
             // console.log(`Room ${roomId} updated successfully.`);
@@ -84,7 +84,7 @@ const ListBooking = () => {
 
       // chỉnh lại trạng thái reservation
       try {
-        await axios.put(`/reservation/${reservationId}`, {
+        await axios.put(`/reservation/${selectedReservation._id}`, {
           status: 0,
           cancelDetails:{
             cancelFee:cancelFee
@@ -165,7 +165,7 @@ const ListBooking = () => {
               </div>
 
               <div style={{ width: '25%', display: 'flex', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
-                <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id, item.start, item.end, item.roomTypeIdsReserved, item)}
+                <button className="cancel_booking" onClick={() => handleCancelReserve(item)}
                   disabled={(new Date() > subHours(new Date(item.start), 0)) || !item.status}>
                     {isSending ? 'Đang xử lý' : 'Hủy đặt phòng' }</button> <br />
 
