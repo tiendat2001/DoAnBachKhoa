@@ -19,13 +19,16 @@ const ListBooking = () => {
 
   const handleCancelReserve = async (allDatesReserve, roomNumbersId, reservationId, startDate, endDate, roomTypeIdsReserved, selectedReservation) => {
     let message = ""
-    // hủy trong khoảng time 3 ngày trc ngày nhận phòng và ko trong khoảng 24h sau thời gian đặt thì bị coi là muộn- tính phí đêm đầu
-    const isLateCancel = (new Date() > subHours(new Date(selectedReservation.start), 24 * 3)) &&
-      (new Date() > addHours(new Date(selectedReservation.createdAt), 24))
+    let cancelFee =0;
+    // hủy trong khoảng time 3 ngày trc ngày nhận phòng và ko trong khoảng 24h sau thời gian đặt thì bị coi là muộn
+    // và ko phải là yêu cầu hủy từ admin- tính phí đêm đầu
+    const isLateCancel = (new Date() > subHours(new Date(selectedReservation.start), 24 * 3)) &&  !selectedReservation.cancelDetails.isAdminCancel
+      //&& (new Date() > addHours(new Date(selectedReservation.createdAt), 24))
 
     if (isLateCancel) {
+      cancelFee = selectedReservation.totalPrice / selectedReservation.allDatesReserve.length
       message = `Bạn có chắc chắn muốn hủy đơn đặt phòng này? Bạn không thể hoàn tác sau khi hủy. Bạn mất phí hủy 
-      (phí đêm đầu- ${new Intl.NumberFormat('vi-VN').format(selectedReservation.totalPrice / selectedReservation.allDatesReserve.length * 1000)} VND)
+      (phí đêm đầu- ${new Intl.NumberFormat('vi-VN').format(cancelFee* 1000)} VND)
        nếu hủy đơn đặt này.`
     } else message = "Bạn có chắc chắn muốn hủy đơn đặt phòng này? Bạn không thể hoàn tác sau khi hủy. Bạn sẽ không mất phí hủy nếu hủy đơn đặt này"
 
@@ -36,7 +39,7 @@ const ListBooking = () => {
         {
           label: 'Yes',
           onClick: () => {
-            deleteAvailability(allDatesReserve, roomNumbersId, reservationId, startDate, endDate, roomTypeIdsReserved,isLateCancel,selectedReservation);
+            deleteAvailability(allDatesReserve, roomNumbersId, reservationId, startDate, endDate, roomTypeIdsReserved,cancelFee,selectedReservation);
           }
         },
         {
@@ -52,7 +55,7 @@ const ListBooking = () => {
   }
 
   // bỏ unavailabledates trong mỗi phòng đặt
-  const deleteAvailability = async (allDatesReserve, roomNumbersId, reservationId, startDate, endDate, roomTypeIdsReserved,isLateCancel,selectedReservation) => {
+  const deleteAvailability = async (allDatesReserve, roomNumbersId, reservationId, startDate, endDate, roomTypeIdsReserved,cancelFee,selectedReservation) => {
     setIsSending(true)
     let hasError = false;
     // console.log(roomNumbersId)
@@ -82,7 +85,10 @@ const ListBooking = () => {
       // chỉnh lại trạng thái reservation
       try {
         await axios.put(`/reservation/${reservationId}`, {
-          status: 0
+          status: 0,
+          cancelDetails:{
+            cancelFee:cancelFee
+        }
         })
       } catch (err) {
         hasError = true;
@@ -91,18 +97,18 @@ const ListBooking = () => {
       }
 
       // gửi email xác nhận đã hủy phòng thành công
-      let emailSubject = "THÔNG BÁO HỦY PHÒNG THÀNH CÔNG"
-      try {
-        const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {
-          userId:selectedReservation.userId,
-          emailSubject:"THÔNG BÁO HỦY PHÒNG THÀNH CÔNG",
-          emailContent:`Đơn đặt phòng mã ${reservationId} của quý khách đã được hủy thành công`
-        });
-      } catch (err) {
-        hasError = true;
-        console.log(err)
-        return;
-      }
+      // let emailSubject = "THÔNG BÁO HỦY PHÒNG THÀNH CÔNG"
+      // try {
+      //   const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {
+      //     userId:selectedReservation.userId,
+      //     emailSubject:"THÔNG BÁO HỦY PHÒNG THÀNH CÔNG",
+      //     emailContent:`Đơn đặt phòng mã ${reservationId} của quý khách đã được hủy thành công`
+      //   });
+      // } catch (err) {
+      //   hasError = true;
+      //   console.log(err)
+      //   return;
+      // }
 
     } catch (err) {
       console.error('Error:', err);
@@ -146,6 +152,12 @@ const ListBooking = () => {
                 <div style={{ color: item.status === 1 ? 'green' : item.status === 0 ? 'red' : 'blue', fontWeight: 'bold' }}>
                   Tình trạng: {item.status === 1 ? "Thành công" : item.status === 0 ? "Hủy" : "Đang chờ"}
                 </div>
+                {/* xem có yêu cầu hủy từ chủ chỗ nghỉ ko */}
+                {item.status ===1 && item.cancelDetails.isAdminCancel ? 
+                (
+                  <div style={{ fontWeight: 'bold',color:'red',fontStyle:'italic' }}>(Đơn này đang được yêu cầu hủy từ chủ chỗ nghỉ. <br/>
+                   Bạn sẽ không mất phí hủy nếu hủy đơn này)</div>
+                ):''}
                 <div>Thông tin liên lạc chỗ nghỉ: {item.hotelContact}</div>
 
 

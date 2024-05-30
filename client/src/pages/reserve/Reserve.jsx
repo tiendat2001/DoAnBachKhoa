@@ -175,7 +175,7 @@ const Reserve = () => {
         totalPrice: totalPrice * alldates.length,
         hotelId: hotelId,
         idOwnerHotel: hotelData.ownerId,
-        status: -1
+        status: -1,
         // hotelName: hotelData.name,
         // hotelContact:hotelData?.hotelContact
       });

@@ -22,10 +22,11 @@ const ReservationSchema = new mongoose.Schema({
     // },
     idOwnerHotel:{
         type:String,
+        require:true,
     },
     roomNumbersId:{
         type: [String],
-        required:true,
+        // required:true,
     },
     roomTypeIdsReserved:[
         {
@@ -58,8 +59,12 @@ const ReservationSchema = new mongoose.Schema({
     },
     status:{
         type:Number,
-       
+        required:true,
     },
+    cancelDetails:{
+        cancelFee:{type:Number, default:0},
+        isAdminCancel:{type:Boolean, default:false},
+    }
 },
 { timestamps : true }
 );

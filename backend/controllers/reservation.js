@@ -128,9 +128,9 @@ export const getReservationsByClient = async (req, res, next) => {
 export const updateReservation = async (req, res, next) => {
     try {
 
-        // check xem có đc update reservation đó không
+        // check xem có đc update reservation đó không (chỉ chủ đơn hoặc chủ khách sạn có đơn đó mới có quyền)
         const reservationToUpdated = await Reservation.findByIdAndUpdate(req.params.id)
-        if(req.user.id !== reservationToUpdated.userId){
+        if(req.user.id !== reservationToUpdated.userId && req.user.id !== reservationToUpdated.idOwnerHotel){
             return res.status(403).json({ message: "Bạn ko có quyền update reservation này" });
         }
 

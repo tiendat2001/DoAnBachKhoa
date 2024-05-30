@@ -32,7 +32,6 @@ const INITIAL_STATE =
         },
     ];
 
-
 const ListReservation = () => {
     const { user } = useContext(AuthContext) // {user._id}
     // const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
@@ -46,7 +45,8 @@ const ListReservation = () => {
     const [openDate, setOpenDate] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [reasonCancel, setReasonCancel] = useState('');
-
+    const [selectedCancelReservation, setSelectedCancelReservation] = useState("");
+    console.log(selectedCancelReservation)
     // đổi giá trị hiển thị trên lịch
     const handleDayChange = (item) => {
         const newSelection = { ...item.selection };
@@ -69,31 +69,62 @@ const ListReservation = () => {
     }
 
     // mở modal yêu cầu hủy
-    const closeModalCancelRequest = () =>{
+    const closeModalCancelRequest = () => {
         setModalIsOpen(false)
     }
     const openRequestCancelModal = (canceledReservation) => {
-        setModalIsOpen(true)
-    }
-
-
-    // khi admin bấm yêu cầu hủy đơn đặt
-    const requestCancel = async (canceledReservation) => {
         // kiểm tra nếu thời gian nhận phòng đơn đấy đã qua hoặc đơn đấy ở status 0 là hủy thì ko đc 
         if (new Date() > new Date(canceledReservation.start) || !canceledReservation.status) {
             toast.error("Bạn không thể yêu cầu hủy đơn này!")
             return;
         }
+        setSelectedCancelReservation(canceledReservation)
+        setModalIsOpen(true)
+    }
 
+
+    // khi admin bấm yêu cầu hủy đơn đặt
+    const requestCancel = async () => {
+        let hasError = false
         try {
-            const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {
-                userId: canceledReservation.userId, // gửi cho email của account khách - userId khách
-                emailSubject: "THÔNG BÁO YÊU CẦU HỦY ĐƠN ĐẶT PHÒNG TỪ CHỦ CHỖ NGHỈ ",
-                emailContent: `Đơn đặt phòng mã ${canceledReservation._id} của quý khách được chủ chỗ nghỉ yêu cầu hủy \n Lý do hủy: `
-            });
+            // chỉnh lại reservation này là do admin yêu cầu hủy
+            try {
+                await axios.put(`/reservation/${selectedCancelReservation._id}`, {
+                    cancelDetails: {
+                        isAdminCancel: true
+                    }
+                })
+            } catch (err) {
+                hasError = true;
+                console.log(err)
+                return;
+            }
+
+            // gửi email xác nhận cho khách về yêu cầu hủy của admin
+            try {
+                const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {
+                    userId: selectedCancelReservation.userId, // gửi cho email của account khách - userId khách
+                    emailSubject: "THÔNG BÁO YÊU CẦU HỦY ĐƠN ĐẶT PHÒNG TỪ CHỦ CHỖ NGHỈ ",
+                    emailContent: `Đơn đặt phòng mã ${selectedCancelReservation._id} của quý khách được chủ chỗ nghỉ yêu cầu hủy \n Lý do hủy: ${reasonCancel} `
+                });
+            } catch (err) {
+                console.log(err)
+                hasError = true;
+                return;
+            }
+
         } catch (err) {
             console.log(err)
-            return;
+        } finally {
+            if (hasError) {
+                toast.error("Đã xảy ra lỗi. Vui lòng thử lại.");
+                setModalIsOpen(false)
+            } else {
+                toast.success("Gửi yêu cầu hủy thành công thành công");
+                setModalIsOpen(false)
+            }
+            // setIsSending(false)
+            // reFetch();
         }
 
     }
@@ -106,10 +137,20 @@ const ListReservation = () => {
             headerAlign: 'center',
 
             renderCell: (params) => {
+                const { cancelDetails, status } = params.row;
+                const isAdminCancel = cancelDetails?.isAdminCancel;
+            
+                if (isAdminCancel && status) {
+                    return (
+                        <div className="cellRequestCancel">
+                            <div style={{color:"blueviolet"}}>Đã yêu cầu hủy</div>
+                        </div>
+                    );
+                }
+            
                 return (
-                    // css từ listRoom.css
                     <div className="cellRequestCancel">
-                        <div className="viewButton wrap-content" onClick={() => openRequestCancelModal(params.row)}>
+                        <div className="requestCancelButton" onClick={() => openRequestCancelModal(params.row)}>
                             Yêu cầu hủy
                         </div>
                     </div>
@@ -125,24 +166,24 @@ const ListReservation = () => {
                 <NavbarAdmin />
 
                 {/* Modal */}
-                
+
 
 
 
                 <div className="ListReservationAdminContainer">
-                {modalIsOpen && (
-                    <div className="modalCancelRequest">
-                        <div className="modal-content">
-                            <span className="close" onClick={closeModalCancelRequest}>&times;</span>
-                            <div className="modal_title">YÊU CẦU HỦY PHÒNG</div>
-                            <textarea placeholder="Nhập lý do muốn hủy" type="text" value={reasonCancel} onChange={(e) => setReasonCancel(e.target.value)} />
-                            <div className="modal_container-btn">
-                                <button className="modal_btn" onClick={requestCancel}>Xác nhận</button>
-                            </div>
+                    {modalIsOpen && (
+                        <div className="modalCancelRequest">
+                            <div className="modal-content">
+                                <span className="close" onClick={closeModalCancelRequest}>&times;</span>
+                                <div className="modal_title">YÊU CẦU HỦY PHÒNG</div>
+                                <textarea placeholder="Nhập lý do muốn hủy" type="text" value={reasonCancel} rows="4" onChange={(e) => setReasonCancel(e.target.value)} />
+                                <div className="modal_container-btn">
+                                    <button className="modal_btn" onClick={requestCancel}>Xác nhận</button>
+                                </div>
 
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
                     <h2>Đặt phòng</h2>
 
                     <div style={{ display: 'flex', justifyContent: 'flex-start', gap: "10px", marginBottom: '10px', textAlign: 'center' }}>
