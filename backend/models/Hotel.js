@@ -40,9 +40,9 @@ const HotelSchema = new mongoose.Schema({
     min: 0,
     max: 5,
   },
-  rooms: {
-    type: [String],
-  },
+  // rooms: {
+  //   type: [String],
+  // },
   hotelContact: {
     type: String,
     default:"Không có"
