@@ -39,7 +39,7 @@ const NewRoom = () => {
             }
         }
         // Check if description is filled
-        if (!document.getElementById("desc").value.trim() || (files.length === 0) || hotelId == null) {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
+        if (!document.getElementById("desc").value.trim() ||  hotelId == null) {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
             return false;
         }
         return true;
