@@ -119,10 +119,10 @@ const Reserve = () => {
 
     const totalQuantity = roomsDetailFromListClient.reduce((acc, roomDetail) => acc + roomDetail.quantity, 0);
     // console.log(totalQuantity)
-    if (selectedRoomIdsReserved.length !== totalQuantity) {
-      alert("Phòng đã hết! Vui lòng quay lại trang đặt phòng")
-      return; // Thoát khỏi hàm nếu số lượng phòng đã chọn không đủ
-    }
+    // if (selectedRoomIdsReserved.length !== totalQuantity) {
+    //   alert("Phòng đã hết! Vui lòng quay lại trang đặt phòng")
+    //   return; // Thoát khỏi hàm nếu số lượng phòng đã chọn không đủ
+    // }
 
     // return;
     console.log(selectedRoomIdsReserved)
@@ -155,37 +155,42 @@ const Reserve = () => {
       });
     } catch (err) {
       console.log(err)
-      toast.error(err.response.data.message)
+      if(err.response.data.message){
+        toast.error(err.response.data.message)
+      } else {
+        toast.error("Có lỗi xảy ra!. Vui lòng thử lại")
+      }
+      
       setIsSending(false)
       return; // Ngưng thực thi hàm nếu có lỗi
     }
     // tạo order
-    // let reservationId = ""
-    // try {
-    //   const newReservation = await axios.post(`/reservation`, {
-    //     // username: user.username,
-    //     phoneNumber: phoneNumber,
-    //     start: startDate,
-    //     end: endDate,
-    //     roomNumbersId: selectedRoomIdsReserved,
-    //     roomTypeIdsReserved: roomTypeIdsReserved,
-    //     roomsDetail: detailRooms,
-    //     guest: { adult: options.adult, children: options.children },
-    //     allDatesReserve: alldates,
-    //     totalPrice: totalPrice * alldates.length,
-    //     hotelId: hotelId,
-    //     idOwnerHotel: hotelData.ownerId,
-    //     status: -1,
-    //     // hotelName: hotelData.name,
-    //     // hotelContact:hotelData?.hotelContact
-    //   });
-    //   // lấy id của đơn đặt phòng vừa tạo
-    //   reservationId = newReservation.data._id;
+    let reservationId = ""
+    try {
+      const newReservation = await axios.post(`/reservation`, {
+        // username: user.username,
+        phoneNumber: phoneNumber,
+        start: startDate,
+        end: endDate,
+        roomNumbersId: selectedRoomIdsReserved,
+        roomTypeIdsReserved: roomTypeIdsReserved,
+        roomsDetail: detailRooms,
+        guest: { adult: options.adult, children: options.children },
+        allDatesReserve: alldates,
+        totalPrice: totalPrice * alldates.length,
+        hotelId: hotelId,
+        idOwnerHotel: hotelData.ownerId,
+        status: -1,
+        // hotelName: hotelData.name,
+        // hotelContact:hotelData?.hotelContact
+      });
+      // lấy id của đơn đặt phòng vừa tạo
+      reservationId = newReservation.data._id;
 
-    // } catch (err) {
-    //   console.log(err)
-    //   return;
-    // }
+    } catch (err) {
+      console.log(err)
+      return;
+    }
 
     toast.success('Đi đến trang thanh toán');
 
