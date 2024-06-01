@@ -14,10 +14,7 @@
   display: grid;
   grid-template-columns: repeat(6, 16.5%); /* 6 cột với chiều rộng là 20% */
   grid-template-rows: repeat(5, auto); /* 5 hàng với chiều cao là 100px */
-  
- 
   }
-  
   .grid-item {
     border: 1px solid #ccc;
     padding: 10px;
@@ -26,9 +23,7 @@
   }
 
   /*  thanh search ngày */
-  /* thanh search ngày */
-
-.headerSearchHotel {
+.closeRoomSearchBar {
   height: 40px;
   background-color: white;
   border: 3px solid #febb02;
@@ -42,30 +37,10 @@
   position: relative;
 }
 
-.headerIconHotel {
-  color: lightgray;
-}
-
-.headerSearchItemHotel {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.headerSearchInputHotel {
-  border: none;
-  outline: none;
-}
-
-.headerSearchInputHotel::placeholder{
-  color: lightgray;
-  cursor: pointer;
-  font-weight: bold;
-}
-.headerSearchTextHotel {
-  color: lightgray;
-  cursor: pointer;
-  font-weight: bold;
+.closeRoomSearchBar .dateRange{
+    position: absolute;
+    top: 50px;
+    z-index: 2; 
 }
 
 .selectRoomClose{
