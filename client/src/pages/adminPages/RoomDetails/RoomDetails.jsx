@@ -95,8 +95,6 @@ const RoomDetails = () => {
         let roomQuantitySelected = event.target.value;
         setRoomQuantityToClose(roomQuantitySelected)
         // updatedSelectedRoomToClose = [];
-
-
     };
     // khi ấn xác nhận đóng phòng
     const handelCloseRoom = async () => {
@@ -142,7 +140,7 @@ const RoomDetails = () => {
               });
           } catch (err) {
             console.log(err)
-            toast.error("Có lỗi xảy ra vui lòng thử lại")
+            toast.error("Có lỗi xảy ra vui lòng tải lại trang và thử lại")
             return; // Ngưng thực thi hàm nếu có lỗi
           }
 
@@ -165,13 +163,10 @@ const RoomDetails = () => {
         roomCloseDataReFetch()
         roomTypeDataReFetch()
         reFetchRoomCountStatus()
-
-        // HÀM HỦY PHÒNG NHỚ +1 VÀO ENDdATE
-        //   setKey(Math.random()); // Bắt reload phần đóng phòng
         
     }
 
-    // MỞ LẠI PHÒNG ĐÃ ĐÓNG
+    // ẤN MỞ LẠI PHÒNG ĐÃ ĐÓNG
     const openHandleCancelCloseRoom = (allDatesClose,startDateClose, endDateClose, quantityRoomClosed,roomCloseId) =>{
         confirmAlert({
             title: 'Xác nhận',
@@ -180,7 +175,6 @@ const RoomDetails = () => {
                 {
                     label: 'Yes',
                     onClick: () => {
-                        // Xác nhận xóa khách sạn
                         handleCancelCloseRoom(allDatesClose,startDateClose, endDateClose, quantityRoomClosed,roomCloseId);
                     }
                 },
@@ -232,7 +226,6 @@ const RoomDetails = () => {
         } catch (err) {
             console.error('Error:', err);
             hasError = true;
-            // Handle any error occurred during the loop
         }
         if(!hasError){
             toast.success("Đã mở lại phòng đóng")
@@ -279,11 +272,10 @@ const RoomDetails = () => {
                         <div style={{ fontWeight: 'bold', fontSize: '20px' }}>Đóng phòng</div>
                         <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Bạn có thể đóng 1 số lượng phòng vào trong 1 khoảng ngày nhất định)</div>
 
-                        {/* css từ listRoomClient */}
                         <div className="selectRoomClose">
-
-                            <div style={{ width: '20%' }} className="headerSearchHotel">
-                                <FontAwesomeIcon icon={faCalendarDays} className="headerIconHotel" />
+                                {/* thanh chọn khoảng ngày muốn đóng phòng */}
+                            <div style={{ width: '20%' }} className="closeRoomSearchBar">
+                                <FontAwesomeIcon icon={faCalendarDays} className="icon" />
                                 <span onClick={() => setOpenDate(!openDate)}>{`${format(
                                     dates[0].startDate,
                                     "dd/MM/yyyy"
@@ -295,7 +287,7 @@ const RoomDetails = () => {
                                         ranges={dates}
                                         moveRangeOnFirstSelection={false}
                                         editableDateInputs={true}
-                                        className="date"
+                                        className="dateRange"
                                     />
                                 )}
                             </div>

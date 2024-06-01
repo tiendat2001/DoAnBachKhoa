@@ -19,19 +19,20 @@ const SearchItem = ({ item }) => {
     return diffDays;
   }
 
-  // tính toán để hiển thị giá và option theo lựa chọn người dùng
+  // tính toán để hiển thị giá và option theo lựa chọn người dùng - theo phòng rẻ nhất của hotel đấy
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
   const calculatePrice = (cheapestPrice) => {
     let totalPrice = 0;
-    let totalPeople = parseInt(options.adult, 10) + parseFloat(options.children) * 0.5;
+    let totalPeople = parseInt(options.adult, 10) + parseFloat(options.children) * 0.5; // trẻ em tính 0.5
+    // nếu người dùng có lựa chọn số phòng , totalPeople / cheapestPrice.people để tính số phòng có thể chứa đc totalPeople.
+    // Math floor làm tròn xuống số nguyên gần nhất 1.2 =>1
     if (options.room > Math.floor(totalPeople / cheapestPrice.people)) {
       totalPrice = cheapestPrice.price * options.room * days;
     } else
-      // console.log(totalPeople)
+      // nếu số người người dùng chọn ít hơn so với sức chứa của phòng rẻ nhất (VD: chọn 1 người mà phòng rẻ nhất hotel đó chứa 2 người)
       if (Math.floor(totalPeople / cheapestPrice.people) == 0) {
         totalPrice = cheapestPrice.price * days;
       } else {
-        //new Intl.NumberFormat('vi-VN').format(params.value*1000)
         totalPrice = cheapestPrice.price * Math.floor(totalPeople / cheapestPrice.people) * days;
       }
     // nhân 1000 chỉ là để hiển thị, còn lọc giá ở trang list ko nhân 1000
@@ -41,13 +42,12 @@ const SearchItem = ({ item }) => {
 
   const calculateRoom = (cheapestPrice) => {
     let totalPeople = parseInt(options.adult, 10) + parseFloat(options.children) * 0.5;
-
+    // nếu số phòng người dùng chọn nhiều hơn phòng có thể chứa totalPeople thì tính theo options.room đó
     if (options.room > Math.floor(totalPeople / cheapestPrice.people)) return options.room
+    // tính số phòng theo Math.floor(totalPeople / cheapestPrice.people)
     else {
       return Math.floor(totalPeople / cheapestPrice.people)
     }
-
-
   };
 
   const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);

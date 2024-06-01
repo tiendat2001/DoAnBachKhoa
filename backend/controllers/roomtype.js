@@ -19,9 +19,9 @@ export const createRoom = async (req, res, next) => {
     newRoom.hotelId = hotelId
     const savedRoom = await newRoom.save();
     try {
-      await Hotel.findByIdAndUpdate(hotelId, { // tim hotel theo id, day room id của phòng mới tạo vào thuộc tính rooms trong hotel
-        $push: { rooms: savedRoom._id },
-      });
+      // await Hotel.findByIdAndUpdate(hotelId, { // tim hotel theo id, day room id của phòng mới tạo vào thuộc tính rooms trong hotel
+      //   $push: { rooms: savedRoom._id },
+      // });
 
       const cheapestRoom = await Room.findOne({ hotelId }).sort({ price: 1 }).limit(1);
 
@@ -54,15 +54,15 @@ export const deleteRoom = async (req, res, next) => {
     // xóa room và cập nhật lại trong Hotel
     const deleteRoom = await Room.findById(req.params.id);   // req.params.id là _id của type room sẽ chỉnh sửa
     await Room.findByIdAndDelete(req.params.id);
-    try {
-      await Hotel.findByIdAndUpdate(deleteRoom.hotelId, {
-        $pull: { rooms: req.params.id },
-      });
-    } catch (err) {
-      next(err);
-    }
+    // try {
+    //   await Hotel.findByIdAndUpdate(deleteRoom.hotelId, {
+    //     $pull: { rooms: req.params.id },
+    //   });
+    // } catch (err) {
+    //   next(err);
+    // }
 
-    // update price khi xóa phòng (đã test - còn trường hợp nếu ko còn phòng nào)
+    // update price khi xóa phòng 
     const hotelId = hotelToUpdate._id
     const cheapestRoom = await Room.findOne({ hotelId }).sort({ price: 1 }).limit(1);
     if (cheapestRoom) {
@@ -74,7 +74,7 @@ export const deleteRoom = async (req, res, next) => {
         }
       });
     } else {
-      // Nếu cheapestRoom không được tìm thấy
+      // Nếu cheapestRoom không được tìm thấy khi xóa ko còn phòng nào
       await Hotel.findByIdAndUpdate(hotelId, {
         cheapestPrice: {
           price: 0,
