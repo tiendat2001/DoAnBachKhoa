@@ -128,11 +128,9 @@ const ListRoomClient = ({ hotelId }) => {
   // });
 
   const isAvailable = (roomNumber, dateToCheck) => {
-
     if (!roomNumber.status) {
       return false; // Nếu status là false, room không khả dụng
     }
-
     const isFound = roomNumber.unavailableDates.some((date) => {
       const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
       // console.log(new Date(dateMinusOneDay));
@@ -329,12 +327,19 @@ const ListRoomClient = ({ hotelId }) => {
                   }
 
                 }
-                if (roomAvailable === 999) roomAvailable = 0;
+                const maxOptions = 10; // Số lượng phòng tối đa sẽ hiện của thẻ option
                 const options = [];
-                options.push(<option value={0}>0 phòng</option>);
-                for (let i = 1; i <= roomAvailable; i++) {
-                  options.push(<option value={i}>{i} phòng</option>);
+                //  ko còn phòng trống nào
+                if (roomAvailable === 0){
+                  options.push(<option value={0}>Hết phòng</option>);
+                }else{
+                  options.push(<option value={0}>0 phòng</option>);
+                  for (let i = 1; i <= roomAvailable; i++) {
+                    if(i>maxOptions) break;
+                    options.push(<option value={i}>{i} phòng</option>);
+                  }
                 }
+               
 
                 return options;
 
