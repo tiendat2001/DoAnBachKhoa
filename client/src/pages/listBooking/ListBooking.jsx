@@ -20,8 +20,8 @@ const ListBooking = () => {
   const handleCancelReserve = async (selectedReservation) => {
     let message = ""
     let cancelFee =0;
-    // hủy trong khoảng time 3 ngày trc ngày nhận phòng và ko trong khoảng 24h sau thời gian đặt thì bị coi là muộn
-    // và ko phải là yêu cầu hủy từ admin- tính phí đêm đầu
+    // hủy trong khoảng time 3 ngày trc ngày nhận phòng và ko trong khoảng 24h sau thời gian đặt 
+    // và ko phải là yêu cầu hủy từ admin thì bị coi là muộn - tính phí đêm đầu
     const isLateCancel = (new Date() > subHours(new Date(selectedReservation.start), 24 * 3)) &&  !selectedReservation.cancelDetails.isAdminCancel
       //&& (new Date() > addHours(new Date(selectedReservation.createdAt), 24))
 
@@ -102,7 +102,7 @@ const ListBooking = () => {
       //   const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {
       //     userId:selectedReservation.userId,
       //     emailSubject:"THÔNG BÁO HỦY PHÒNG THÀNH CÔNG",
-      //     emailContent:`Đơn đặt phòng mã ${reservationId} của quý khách đã được hủy thành công`
+      //     emailContent:`Đơn đặt phòng mã ${selectedReservation._id} của quý khách đã được hủy thành công.\n Chi tiết đơn đặt xem tại trên website`
       //   });
       // } catch (err) {
       //   hasError = true;

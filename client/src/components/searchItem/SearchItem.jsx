@@ -51,27 +51,53 @@ const SearchItem = ({ item }) => {
   };
 
   const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
-  const isAvailable = (roomNumber) => {
+  const isAvailable = (roomNumber, dateToCheck) => {
     if (!roomNumber.status) {
       return false; // Nếu status là false, room không khả dụng
     }
     const isFound = roomNumber.unavailableDates.some((date) => {
-      const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() vì hàm getDatesInRange đang để timestamp
-      return alldates.includes(dateMinusOneDay);
+      const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
+      // console.log(new Date(dateMinusOneDay));
+      return dateToCheck == dateMinusOneDay;
     });
 
     return !isFound;
   };
   // console.log(alldates)
-  let totalRooms = 0;
-  totalRooms = allTypeRoom.reduce((total, typeRoom) => {
-    // Lấy số lượng phòng từ thuộc tính roomNumbers của mỗi phần tử trong mảng allTypeRoom
-    const availabelRooms = typeRoom.roomNumbers.filter(roomNumber => isAvailable(roomNumber))
-    const numRooms = availabelRooms.length;
-    // Thêm số lượng phòng từ typeRoom vào tổng số lượng phòng
-    return total + numRooms;
-  }, 0);
-  // console.log(totalRooms)
+  // tính tổng phòng available của mỗi loại phòng
+  const calculateAvailableRoomsEveryTypeRoom = (roomNumbers) => {
+    let roomAvailable = 999;
+    for (let date of alldates) {
+      let dateAvailableCount = 0;
+      //Với mỗi date, duyệt qua các phần tử trong mảng roomNumbers
+      for (let roomNumber of roomNumbers) {
+        // Kiểm tra xem phòng đó có date hiện tại trống ko
+        if (isAvailable(roomNumber, date)) {
+          // có phòng thỏa mãn date hiện tại
+          dateAvailableCount++
+        }
+      };
+      // với mỗi date sau khi lặp hết các room nhỏ, cập nhật roomAvailable (roomAvailable sẽ là 
+      // dateAvailableCount nhỏ nhất trong tất cả các date )
+      if (dateAvailableCount < roomAvailable) {
+        roomAvailable = dateAvailableCount
+      }
+      return roomAvailable
+    }
+  }
+   // tính tổng phòng avalaible của hotel đó
+  const caculateTotalRoomsAvailable = () => {
+    let totalRooms = 0;
+    totalRooms = allTypeRoom.reduce((total, typeRoom) => {
+      // Với mỗi loại phòng tính toán số phòng available của loại phòng đó, truyền vào roomNumbers
+      const availabeRooms = calculateAvailableRoomsEveryTypeRoom(typeRoom.roomNumbers)
+      // Thêm số lượng phòng từ typeRoom vào tổng số lượng phòng
+      return total + availabeRooms;
+    }, 0);
+    return totalRooms
+  }
+  // tính tổng phòng avalaible của hotel đó
+  const totalRooms = caculateTotalRoomsAvailable()
   return (
     <div className="searchItem">
       <img src={item.photos[0]} alt="" className="siImg" />

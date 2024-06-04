@@ -5,7 +5,7 @@ import useFetch from '../../hooks/useFetch';
 import "./listRoomClient.css"
 import { useContext, useState, useEffect } from "react";
 import { SearchContext } from '../../context/SearchContext';
-import { format, addDays, subDays,addHours } from "date-fns";
+import { format, addDays, subDays, addHours } from "date-fns";
 import { DateRange } from "react-date-range";
 import {
   faBed,
@@ -23,7 +23,7 @@ import { toast } from 'react-toastify';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ListRoomClient = ({ hotelId }) => {
-  const { data, loading,error,reFetch } = useFetch(`/rooms/${hotelId}`);
+  const { data, loading, error, reFetch } = useFetch(`/rooms/${hotelId}`);
   const [selectedRooms, setSelectedRooms] = useState([]);
   const searchContext = useContext(SearchContext);
   const [dates, setDates] = useState(searchContext.dates);
@@ -51,8 +51,8 @@ const ListRoomClient = ({ hotelId }) => {
   }, [destination, dates, options]);
 
   // console.log(dates)
-  const handleOpen = (i,indexItem) => {
-   
+  const handleOpen = (i, indexItem) => {
+
     setSlideNumber(i);       // set vị trí ảnh trong mảng data[index].photos
     setIndexItem(indexItem)  // set vị trí phần tử data (tức từng roomType mà người dùng click vào)
     setOpenExpandPhoto(true); // để mở slider ảnh phóng to
@@ -74,16 +74,16 @@ const ListRoomClient = ({ hotelId }) => {
   // };
 
   const handleDayChange = (item) => {
-    const utc = new Date().getTimezoneOffset()/60 //-7
+    const utc = new Date().getTimezoneOffset() / 60 //-7
     const newSelection = { ...item.selection };
-    let  { startDate, endDate } = newSelection;
-    if(startDate === endDate){
+    let { startDate, endDate } = newSelection;
+    if (startDate === endDate) {
       // nếu người dùng chỉ chọn 1 ngày
-       endDate = addDays(new Date(startDate), 1);
+      endDate = addDays(new Date(startDate), 1);
     }
     // 14+ getTimezoneOffset Múi giờ lệch ở khách sạn mà nó đặt 
-    startDate = addHours(startDate, 7-utc);
-    endDate = addHours(endDate, 7-utc);
+    startDate = addHours(startDate, 7 - utc);
+    endDate = addHours(endDate, 7 - utc);
     setDates([{ ...newSelection, startDate, endDate }]);
     setSelectedRoomIds([])
     setKey(Math.random()); // Bắt reload lại phần chọn phòng
@@ -127,14 +127,14 @@ const ListRoomClient = ({ hotelId }) => {
   //   console.log(date.toLocaleDateString());
   // });
 
-  const isAvailable = (roomNumber) => {
+  const isAvailable = (roomNumber, dateToCheck) => {
     if (!roomNumber.status) {
       return false; // Nếu status là false, room không khả dụng
     }
     const isFound = roomNumber.unavailableDates.some((date) => {
       const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
       // console.log(new Date(dateMinusOneDay));
-      return alldates.includes(dateMinusOneDay);
+      return dateToCheck == dateMinusOneDay;
     });
 
     return !isFound;
@@ -175,33 +175,37 @@ const ListRoomClient = ({ hotelId }) => {
   // hàm nút đặt phòng
   const reserveRoom = async () => {
     //check xem đăng nhập chưa
-    if(!user.username){
+    if (!user.username) {
       navigate("/login")
       return;
     }
 
-     // Lặp qua từng item trong data, lấy ra những loại phòng mà người dùng chọn
+    // Lặp qua từng item trong data, lấy ra những loại phòng mà người dùng chọn
     data.forEach((item) => {
-    const selectedValue = parseInt(document.getElementById(`select_${item._id}`).value);
+      const selectedValue = parseInt(document.getElementById(`select_${item._id}`).value);
       // Kiểm tra nếu số lượng phòng đã chọn khác 0
-    if (selectedValue !== 0) {
-      // Thêm đối tượng vào mảng selectedRoomDetais, mảng này để sử dụng cho bên reserve
-      selectedRoomDetais.push({ roomTypeId:item._id, typeRoom:item.title, quantity: selectedValue });
-    }
+      if (selectedValue !== 0) {
+        // Thêm đối tượng vào mảng selectedRoomDetais, mảng này để sử dụng cho bên reserve
+        selectedRoomDetais.push({ roomTypeId: item._id, typeRoom: item.title, quantity: selectedValue });
+      }
 
-});
-  
-    if (selectedRoomIds.length > 0 && alldates.length >=1) {
-      navigate("/reserve", { state: { selectedRoomIds, alldates, hotelId, startDate: dates[0].startDate, endDate: dates[0].endDate, 
-        seletedRoomIdsReserved:selectedRoomDetais } });
-        //seletedRoomIdsReserved là mảng để truyền vào reserve xử lý tìm id sau
+    });
+
+    if (selectedRoomIds.length > 0 && alldates.length >= 1) {
+      navigate("/reserve", {
+        state: {
+          selectedRoomIds, alldates, hotelId, startDate: dates[0].startDate, endDate: dates[0].endDate,
+          seletedRoomIdsReserved: selectedRoomDetais
+        }
+      });
+      //seletedRoomIdsReserved là mảng để truyền vào reserve xử lý tìm id sau
     } else {
       toast.error('Bạn chưa chọn phòng muốn đặt hoặc ngày bạn chọn phải tối thiểu 1 đêm');
     }
 
   };
 
-  
+
 
   return (
     <div className="RoomClientContainer">
@@ -244,16 +248,16 @@ const ListRoomClient = ({ hotelId }) => {
             <div className="rDesc">Số lượng người: {item.maxPeople}</div>
             <div className="rMax">{item.desc}</div>
             <div className="rImages">
-              {item.photos?.slice(0,3).map((photo, i) => (
+              {item.photos?.slice(0, 3).map((photo, i) => (
                 <div className="rImgWrapper" key={i}>
                   <img
                     src={photo}
                     alt=""
                     className="roomImg"
-                    onClick={() => handleOpen(i,index)}
+                    onClick={() => handleOpen(i, index)}
                   />
                   {i === 2 && item.photos.length > 3 && (
-                    <div style={{fontStyle:'italic'}}>
+                    <div style={{ fontStyle: 'italic' }}>
                       (Còn {item.photos.length - 3} ảnh tiếp...)
                     </div>
                   )}
@@ -294,52 +298,87 @@ const ListRoomClient = ({ hotelId }) => {
 
           {/*  hiện giá */}
           <div>
-            Giá phòng: {new Intl.NumberFormat('vi-VN').format(item.price*1000) } VND
+            Giá phòng: {new Intl.NumberFormat('vi-VN').format(item.price * 1000)} VND
             <br />
             (Mỗi đêm)
           </div>
           {/* chứa chỗ chọn phòng */}
-          <div key={key} style={{ marginBottom: '10px', display: 'flex', justifyContent: 'flex-end',width: '20%',alignItems:'center',gap:'10px' }}>
+          <div key={key} style={{ marginBottom: '10px', display: 'flex', justifyContent: 'flex-end', width: '20%', alignItems: 'center', gap: '10px' }}>
 
-            <select style={{height:'20px'}}  id={`select_${item._id}`} onChange={(event) => handleSelectChange(event, item.roomNumbers)}>
-              
+            <select style={{ height: '20px' }} id={`select_${item._id}`} onChange={(event) => handleSelectChange(event, item.roomNumbers)}>
+
               {/* <option id={`defaultOption_${item._id}`} value={0}>0 phòng</option> */}
               {(() => {
-                let roomIndex = 0; 
-                const maxOptions = 10; // Số lượng phòng tối đa sẽ hiện của thẻ option
-                let optionsCount = 0; // Biến đếm số lượng option đã được thêm vào
-                let hasAvailableRoom = false; // Biến kiểm tra xem có phòng nào thỏa mãn không
-                const options= item.roomNumbers.map((roomNumber, index) => {
-                  if (optionsCount >= maxOptions) return null; // Nếu đã thêm đủ số lượng tối đa option thì dừng
-                  if (isAvailable(roomNumber)) {
-                    roomIndex++; // Tăng giá trị biến đếm khi phòng thỏa mãn điều kiện
-                    optionsCount++; 
-                    hasAvailableRoom = true;
-                    return (
-                      <option key={roomNumber._id} value={roomIndex}>
-                        {`${roomIndex} phòng`}
-                      </option>
-                    );
+                let roomAvailable = 999;
+                for (let date of alldates) {
+                  let dateAvailableCount = 0;
+                  //Với mỗi date, duyệt qua các phần tử trong mảng roomNumbers
+                  for (let roomNumber of item.roomNumbers) {
+                    // Kiểm tra xem phòng đó có date hiện tại trống ko
+                    if (isAvailable(roomNumber, date)) {
+                      // có phòng thỏa mãn date hiện tại
+                      dateAvailableCount++
+                    }
+                  };
+                  // với mỗi date sau khi lặp hết các room nhỏ, cập nhật roomAvailable (roomAvailable sẽ là 
+                  // dateAvailableCount nhỏ nhất trong tất cả các date )
+                  if (dateAvailableCount < roomAvailable) {
+                    roomAvailable = dateAvailableCount
                   }
-                  return null;
-                });
 
-                if(hasAvailableRoom){
-                  return (
-                    <>
-                      <option  value={0}>0 phòng</option>
-                      {options}
-                    </>
-                  );
-                } else{
-                  // ko còn phòng nào
-                  return (
-                    <option  value={0}>Hết phòng</option>
-                    );
-                } 
-              
+                }
+                const maxOptions = 10; // Số lượng phòng tối đa sẽ hiện của thẻ option
+                const options = [];
+                //  ko còn phòng trống nào
+                if (roomAvailable === 0){
+                  options.push(<option value={0}>Hết phòng</option>);
+                }else{
+                  options.push(<option value={0}>0 phòng</option>);
+                  for (let i = 1; i <= roomAvailable; i++) {
+                    if(i>maxOptions) break;
+                    options.push(<option value={i}>{i} phòng</option>);
+                  }
+                }
+               
+
+                return options;
+
+
+                // let roomIndex = 0; 
+                // const maxOptions = 10; // Số lượng phòng tối đa sẽ hiện của thẻ option
+                // let optionsCount = 0; // Biến đếm số lượng option đã được thêm vào
+                // let hasAvailableRoom = false; // Biến kiểm tra xem có phòng nào thỏa mãn không
+                // const options= item.roomNumbers.map((roomNumber, index) => {
+                //   if (optionsCount >= maxOptions) return null; // Nếu đã thêm đủ số lượng tối đa option thì dừng
+                //   if (isAvailable(roomNumber)) {
+                //     roomIndex++; // Tăng giá trị biến đếm khi phòng thỏa mãn điều kiện
+                //     optionsCount++; 
+                //     hasAvailableRoom = true;
+                //     return (
+                //       <option key={roomNumber._id} value={roomIndex}>
+                //         {`${roomIndex} phòng`}
+                //       </option>
+                //     );
+                //   }
+                //   return null;
+                // });
+
+                // if(hasAvailableRoom){
+                //   return (
+                //     <>
+                //       <option  value={0}>0 phòng</option>
+                //       {options}
+                //     </>
+                //   );
+                // } else{
+                //   // ko còn phòng nào
+                //   return (
+                //     <option  value={0}>Hết phòng</option>
+                //     );
+                // } 
+
               })
-              ()}
+                ()}
             </select>
 
             <div style={{ width: '30%', height: '100%', fontSize: '14px' }}>(Chọn số lượng phòng muốn đặt)</div>
@@ -373,10 +412,11 @@ const ListRoomClient = ({ hotelId }) => {
       <button onClick={reserveRoom} className="rButton">
         Đi đến trang đặt phòng
       </button>
-    
+
 
     </div>
   )
 }
 
 export default ListRoomClient
+

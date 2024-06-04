@@ -73,8 +73,8 @@ const ListReservation = () => {
         setModalIsOpen(false)
     }
     const openRequestCancelModal = (canceledReservation) => {
-        // kiểm tra nếu thời gian nhận phòng đơn đấy đã qua hoặc đơn đấy ở status 0 là hủy thì ko đc 
-        if (new Date() > new Date(canceledReservation.start) || !canceledReservation.status) {
+        // kiểm tra nếu thời gian nhận phòng đơn đấy đã qua hoặc đơn đấy ở status khác 1 (tức khác thành công) là hủy thì ko đc 
+        if (new Date() > new Date(canceledReservation.start) || canceledReservation.status !== 1) {
             toast.error("Bạn không thể yêu cầu hủy đơn này!")
             return;
         }

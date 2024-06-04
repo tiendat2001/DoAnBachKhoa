@@ -76,13 +76,14 @@ const RoomDetails = () => {
     // console.log(dates)
 
     // phần đóng phòng
-    const isAvailable = (roomNumber) => {
+    const isAvailable = (roomNumber, dateToCheck) => {
         if (!roomNumber.status) {
             return false; // Nếu status là false, room không khả dụng
-          }
+        }
         const isFound = roomNumber.unavailableDates.some((date) => {
-            const dateMinusOneDay = new Date(date).getTime();
-            return alldates.includes(dateMinusOneDay);
+            const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
+            // console.log(new Date(dateMinusOneDay));
+            return dateToCheck == dateMinusOneDay;
         });
 
         return !isFound;
@@ -128,21 +129,21 @@ const RoomDetails = () => {
             //     }
             //   })
             // );
-            if(parseInt(roomQuantityToClose, 10) == 0){
+            if (parseInt(roomQuantityToClose, 10) == 0) {
                 toast.error("Số lượng phòng muốn đóng phải lớn hơn 0")
                 return;
             }
             const res = await axios.put(`/rooms/availability/`, {
-                roomTypeIdsReserved:[{roomTypeId: idRoom, quantity:parseInt(roomQuantityToClose, 10)}], // chuyển về dạng số
+                roomTypeIdsReserved: [{ roomTypeId: idRoom, quantity: parseInt(roomQuantityToClose, 10) }], // chuyển về dạng số
                 dates: alldates,
-                startDateRange:dates[0].startDate,
-                endDateRange: addDays(dates[0].endDate,1) // cần cộng 1 ngày do riêng đóng phòng tính cả ngày cuối
-              });
-          } catch (err) {
+                startDateRange: dates[0].startDate,
+                endDateRange: addDays(dates[0].endDate, 1) // cần cộng 1 ngày do riêng đóng phòng tính cả ngày cuối
+            });
+        } catch (err) {
             console.log(err)
             toast.error("Có lỗi xảy ra vui lòng tải lại trang và thử lại")
             return; // Ngưng thực thi hàm nếu có lỗi
-          }
+        }
 
 
         // tạo lịch sử đóng phòng
@@ -163,11 +164,11 @@ const RoomDetails = () => {
         roomCloseDataReFetch()
         roomTypeDataReFetch()
         reFetchRoomCountStatus()
-        
+
     }
 
     // ẤN MỞ LẠI PHÒNG ĐÃ ĐÓNG
-    const openHandleCancelCloseRoom = (allDatesClose,startDateClose, endDateClose, quantityRoomClosed,roomCloseId) =>{
+    const openHandleCancelCloseRoom = (allDatesClose, startDateClose, endDateClose, quantityRoomClosed, roomCloseId) => {
         confirmAlert({
             title: 'Xác nhận',
             message: 'Bạn có chắc chắn muốn mở lại phòng đã đóng ?',
@@ -175,7 +176,7 @@ const RoomDetails = () => {
                 {
                     label: 'Yes',
                     onClick: () => {
-                        handleCancelCloseRoom(allDatesClose,startDateClose, endDateClose, quantityRoomClosed,roomCloseId);
+                        handleCancelCloseRoom(allDatesClose, startDateClose, endDateClose, quantityRoomClosed, roomCloseId);
                     }
                 },
                 {
@@ -187,7 +188,7 @@ const RoomDetails = () => {
             ]
         });
     }
-    const handleCancelCloseRoom = async (allDatesClose,startDateClose, endDateClose, quantityRoomClosed,roomCloseId) => {
+    const handleCancelCloseRoom = async (allDatesClose, startDateClose, endDateClose, quantityRoomClosed, roomCloseId) => {
         // console.log(startDateClose)
         // console.log(addDays(new Date(endDateClose), 1))
         let hasError = false;
@@ -195,27 +196,27 @@ const RoomDetails = () => {
             // gọi API bằng số lượng quantity của typeRoom đó
             for (var i = 0; i < quantityRoomClosed; i++) {
                 try {
-                  const res = await axios.put(`/rooms/cancelAvailability/${roomTypeData._id}`, {
-                    dates: allDatesClose,
-                    unavailableRangeDates:{
-                      startDateRange:startDateClose,
-                      endDateRange: addDays(new Date(endDateClose), 1) // cộng 1 do riêng đóng phòng tính cả phòng cuối
-                    }
-                  });
-                  // console.log(`Room ${roomId} updated successfully.`);
+                    const res = await axios.put(`/rooms/cancelAvailability/${roomTypeData._id}`, {
+                        dates: allDatesClose,
+                        unavailableRangeDates: {
+                            startDateRange: startDateClose,
+                            endDateRange: addDays(new Date(endDateClose), 1) // cộng 1 do riêng đóng phòng tính cả phòng cuối
+                        }
+                    });
+                    // console.log(`Room ${roomId} updated successfully.`);
                 } catch (err) {
-                  console.error(err);
-                  hasError = true;
+                    console.error(err);
+                    hasError = true;
                 }
             }
 
             // xóa lịch sử closeRoom
-            try {    
+            try {
                 const Success = await axios.delete(`/closedRoom/${roomCloseId}`);
                 roomCloseDataReFetch()
                 roomTypeDataReFetch()
                 reFetchRoomCountStatus()
-               
+
             } catch (error) {
                 console.error(error);
                 hasError = true;
@@ -227,13 +228,13 @@ const RoomDetails = () => {
             console.error('Error:', err);
             hasError = true;
         }
-        if(!hasError){
+        if (!hasError) {
             toast.success("Đã mở lại phòng đóng")
         }
 
     }
     // console.log(selectedRoomIdsToDelete)
-    let roomIndex = 0; // Khởi tạo biến đếm
+    let roomAvailable = 0; // Khởi tạo biến đếm
     return (
         <div className="listAdmin">
             <Sidebar />
@@ -273,7 +274,7 @@ const RoomDetails = () => {
                         <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Bạn có thể đóng 1 số lượng phòng vào trong 1 khoảng ngày nhất định)</div>
 
                         <div className="selectRoomClose">
-                                {/* thanh chọn khoảng ngày muốn đóng phòng */}
+                            {/* thanh chọn khoảng ngày muốn đóng phòng */}
                             <div style={{ width: '20%' }} className="closeRoomSearchBar">
                                 <FontAwesomeIcon icon={faCalendarDays} className="icon" />
                                 <span onClick={() => setOpenDate(!openDate)}>{`${format(
@@ -299,23 +300,49 @@ const RoomDetails = () => {
                                 <select style={{ height: '20px' }} onChange={(event) => handleSelectChange(event, roomTypeData.roomNumbers)}>
                                     <option value={0}>0 phòng</option>
                                     {(() => {
-                                        // let roomIndex = 0; // Khởi tạo biến đếm
-                                        return roomTypeData.roomNumbers?.map((roomNumber, index) => {
-                                            if (isAvailable(roomNumber)) {
-                                                roomIndex++; // Tăng giá trị biến đếm khi phòng thỏa mãn điều kiện
-                                                return (
-                                                    <option key={roomNumber._id} value={roomIndex}>
-                                                        {`${roomIndex} phòng`}
-                                                    </option>
-                                                );
+                                        // // let roomIndex = 0; // Khởi tạo biến đếm
+                                        // return roomTypeData.roomNumbers?.map((roomNumber, index) => {
+                                        //     if (isAvailable(roomNumber)) {
+                                        //         roomIndex++; // Tăng giá trị biến đếm khi phòng thỏa mãn điều kiện
+                                        //         return (
+                                        //             <option key={roomNumber._id} value={roomIndex}>
+                                        //                 {`${roomIndex} phòng`}
+                                        //             </option>
+                                        //         );
+                                        //     }
+                                        //     return null;
+                                        // });
+                                         roomAvailable = 999;
+                                        for (let date of alldates) {
+                                            let dateAvailableCount = 0;
+                                            //Với mỗi date, duyệt qua các phần tử trong mảng roomNumbers
+                                            if (roomTypeData && Array.isArray(roomTypeData.roomNumbers)) {
+                                                for (let roomNumber of roomTypeData.roomNumbers) {
+                                                    // Kiểm tra xem phòng đó có date hiện tại trống ko
+                                                    if (isAvailable(roomNumber, date)) {
+                                                        // có phòng thỏa mãn date hiện tại
+                                                        dateAvailableCount++
+                                                    }
+                                                };
+                                                // với mỗi date sau khi lặp hết các room nhỏ, cập nhật roomAvailable (roomAvailable sẽ là 
+                                                // dateAvailableCount nhỏ nhất trong tất cả các date )
+                                                if (dateAvailableCount < roomAvailable) {
+                                                    roomAvailable = dateAvailableCount
+                                                }
                                             }
-                                            return null;
-                                        });
+                                        }
+                                        // const maxOptions = 10; // Số lượng phòng tối đa sẽ hiện của thẻ option
+                                        const options = [];
+                                        //  ko còn phòng trống nào
+                                        for (let i = 1; i <= roomAvailable; i++) {
+                                            options.push(<option value={i}>{i} phòng</option>);
+                                        }
+                                        return options;
                                     })()}
                                 </select>
                             </div>
 
-                            <div>Số lượng phòng hiện đang rao bán (có thể đóng): {roomIndex}</div>
+                            <div>Số lượng phòng hiện đang rao bán (có thể đóng): {roomAvailable}</div>
 
                             <button onClick={handelCloseRoom}>Xác nhận</button>
 
@@ -334,22 +361,22 @@ const RoomDetails = () => {
                             </div>
 
                             {roomCloseData
-                            // lấy những cái >= ngày hiện tại
-                             ?.filter(roomClose => {
-                                const currentDate = new Date();
-                                currentDate.setHours(0, 0, 0, 0);
-                                return new Date(roomClose.startClose) > currentDate;
-                            })
-                            .map((roomClose, index) => (
-                                <div key={index} className="roomCloseContainer">
-                                    <div className="roomClose">{index + 1}</div>
-                                    <div className="roomClose">{new Date(new Date(roomClose.startClose)).toLocaleDateString('vi-VN')}</div>
-                                    <div className="roomClose">{new Date(new Date(roomClose.endClose)).toLocaleDateString('vi-VN')}</div>
-                                    <div className="roomClose">{roomClose.quantityRoomClosed}</div>
-                                    <button style={{ width: '20%' }} className="roomNumber" onClick={() => openHandleCancelCloseRoom(roomClose.allDatesClosed,roomClose.startClose, roomClose.endClose, 
-                                        roomClose.quantityRoomClosed,roomClose._id)}>MỞ LẠI</button>
-                                </div>
-                            ))}
+                                // lấy những cái >= ngày hiện tại
+                                ?.filter(roomClose => {
+                                    const currentDate = new Date();
+                                    currentDate.setHours(0, 0, 0, 0);
+                                    return new Date(roomClose.startClose) > currentDate;
+                                })
+                                .map((roomClose, index) => (
+                                    <div key={index} className="roomCloseContainer">
+                                        <div className="roomClose">{index + 1}</div>
+                                        <div className="roomClose">{new Date(new Date(roomClose.startClose)).toLocaleDateString('vi-VN')}</div>
+                                        <div className="roomClose">{new Date(new Date(roomClose.endClose)).toLocaleDateString('vi-VN')}</div>
+                                        <div className="roomClose">{roomClose.quantityRoomClosed}</div>
+                                        <button style={{ width: '20%' }} className="roomNumber" onClick={() => openHandleCancelCloseRoom(roomClose.allDatesClosed, roomClose.startClose, roomClose.endClose,
+                                            roomClose.quantityRoomClosed, roomClose._id)}>MỞ LẠI</button>
+                                    </div>
+                                ))}
                         </div>
 
                     </div>
