@@ -47,7 +47,7 @@ const ListReservation = () => {
     const [reasonCancel, setReasonCancel] = useState('');
     const [selectedCancelReservation, setSelectedCancelReservation] = useState("");
     console.log(selectedCancelReservation)
-    // đổi giá trị hiển thị trên lịch
+    // đổi giá trị hiển thị trên lịch - ko cần phải chuẩn giờ vì bên backend sẽ quét từ 0h ngày đó theo UTC
     const handleDayChange = (item) => {
         const newSelection = { ...item.selection };
         const { startDate, endDate } = newSelection;
@@ -64,7 +64,7 @@ const ListReservation = () => {
     }
 
     const cancelFilterByDates = () => {
-        //date này để lọc trong API query
+        //date này để lọc trong API query - hủy lọc theo ngày lấy tất cả đơn
         setDatesToFilter(INITIAL_STATE);
     }
 
@@ -182,19 +182,15 @@ const ListReservation = () => {
                 <NavbarAdmin />
 
                 {/* Modal */}
-
-
-
-
                 <div className="ListReservationAdminContainer">
-                    {modalIsOpen && (
+                    { modalIsOpen && (
                         <div className="modalCancelRequest">
                             <div className="modal-content">
-                                <span className="close" onClick={closeModalCancelRequest}>&times;</span>
-                                <div className="modal_title">YÊU CẦU HỦY PHÒNG</div>
+                                <span className="modalCancelRequest_close" onClick={closeModalCancelRequest}>&times;</span>
+                                <div className="modalCancelRequest_title">YÊU CẦU HỦY PHÒNG</div>
                                 <textarea placeholder="Nhập lý do muốn hủy" type="text" value={reasonCancel} rows="4" onChange={(e) => setReasonCancel(e.target.value)} />
-                                <div className="modal_container-btn">
-                                    <button className="modal_btn" onClick={requestCancel}>Xác nhận</button>
+                                <div >
+                                    <button className="modalCancelRequest_btn"  onClick={requestCancel}>Yêu cầu hủy</button>
                                 </div>
 
                             </div>
@@ -222,8 +218,8 @@ const ListReservation = () => {
                             )}
                         </div>
 
-                        <button onClick={filterByDates}>Lọc theo ngày</button>
-                        <button onClick={cancelFilterByDates}>Hủy lọc</button>
+                        <button className="ListReservationAdminContainer_filterBtn" onClick={filterByDates}>Lọc theo ngày</button>
+                        <button className="ListReservationAdminContainer_filterBtn" onClick={cancelFilterByDates}>Hủy lọc</button>
                         <div style={{ fontStyle: 'italic' }}>(Lọc theo ngày được tính theo ngày check in của đơn, ví dụ nếu <br />để khoảng ngày 19 đến 20 sẽ lấy đơn có check in ngày 19 và 20)</div>
                     </div>
 
@@ -238,8 +234,6 @@ const ListReservation = () => {
                         rowsPerPageOptions={[5]}
                         // checkboxSelection
                         getRowId={(row) => row._id}
-                        getRowHeight={(params) => params.length > 100 ? 100 : 70} // Xác định chiều cao hàng dựa trên chiều dài của mô tả
-
                     />
                 </div>
 

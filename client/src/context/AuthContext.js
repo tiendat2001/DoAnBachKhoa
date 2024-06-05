@@ -50,9 +50,10 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
       // luu giu user khi refresh, luu state thanh 1 chuoi vao local storage, khi biến user thay đổi thì hàm này gọi, thônng
       // tin user sẽ lưu trong localstorage
-    const userWithoutAdmin = { ...state.user };
-    delete userWithoutAdmin.isAdmin;
-    localStorage.setItem("user", JSON.stringify(userWithoutAdmin));
+    // const userWithoutAdmin = { ...state.user };
+    // delete userWithoutAdmin.isAdmin;
+    const userInfoLocalStorage = { username: state.user?.username };
+    localStorage.setItem("user", JSON.stringify(userInfoLocalStorage));
   }, [state.user]);
 
   return (

@@ -146,10 +146,11 @@ const ModifyRoom = () => {
                                 </div>
                             ))}
                             {/* test */}
-                            <label>Mô tả phòng</label>
+                            <label>Mô tả phòng (tối đa 500 ký tự)</label>
                             <textarea
                                 id="desc"
                                 rows="4" /* Số dòng mặc định hiển thị ban đầu */
+                                maxLength = "500"
                                 onChange={handleChange}
                                 placeholder={data.desc }
                                 value={info.desc}

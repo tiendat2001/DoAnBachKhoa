@@ -57,7 +57,7 @@
   background-color: white; /* Hoặc màu nền mong muốn */
   padding: 20px; /* Khoảng đệm bên trong modal */
   z-index: 1000; /* Đảm bảo modal luôn ở trên các phần tử khác */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px; /* Bo góc cho modal */
   
 }
@@ -68,12 +68,38 @@
   align-items: center;
   gap:10px;
 }
-
-.modal_title{
+.modalCancelRequest_close{
+  position: absolute;
+  top:0px;
+  right:10px;
+  font-size: 30px;
+}
+.modalCancelRequest_title{
   font-weight: bold;
   font-size: 24px;
 
 }
+.modalCancelRequest_btn{
+  font-size: 14px;
+    background-color: rgb(255, 0, 0);
+    border: none;
+    height: 40px;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+}
 .modalCancelRequest textarea{
   width: 50%;
+}
+
+.ListReservationAdminContainer_filterBtn{
+  background-color: #0071c2;
+    color: white;
+    font-weight: bold;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    /* border-radius: 5px; */
+    /* height: 100%; */
+    /* min-height: 50px; */
 }

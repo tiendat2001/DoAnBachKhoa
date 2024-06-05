@@ -199,10 +199,11 @@ const NewRoom = () => {
                                 </div>
                             ))}
                             {/* test */}
-                            <label>Mô tả phòng</label>
+                            <label>Mô tả phòng (tối đa 500 ký tự) </label>
                             <textarea
                                 id="desc"
                                 rows="4" /* Số dòng mặc định hiển thị ban đầu */
+                                maxLength = "500"
                                 onChange={handleChange}
                                 style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
                             ></textarea>

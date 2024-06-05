@@ -189,10 +189,11 @@ const NewHotel = () => {
                 </div>
               ))}
               {/* test */}
-              <label>Mô tả chỗ nghỉ của bạn </label>
+              <label>Mô tả chỗ nghỉ của bạn (Tối đa 1000 ký tự) </label>
               <textarea
                 id="desc"
                 rows="10" /* Số dòng mặc định hiển thị ban đầu */
+                maxLength = "1000"
                 onChange={handleChange}
                 style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
               ></textarea>

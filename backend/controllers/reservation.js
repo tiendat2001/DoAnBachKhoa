@@ -41,7 +41,6 @@ export const getReservationsByAdmin = async (req, res, next) => {
         query.idOwnerHotel = req.user.id;
         // Kiểm tra nếu startDay và endDay tồn tại trong req.query
         if (startDay && endDay) {
-            // ở client gửi 14h GMT+7 nhưng ở đây console ra 14h giờ UTC, phải trừ đi 7h vì trong csdl lưu ngày là 7h UTC
             // startDayRange = subHours(new Date(startDay), 7);
             // endDayRange = subHours(new Date(endDay), 7);
 
