@@ -14,7 +14,7 @@ export const roomColumns = [
       field: "desc",
       headerName: "Mô tả phòng",
       width: 330,
-      cellClassName: 'wrap-content', 
+      cellClassName: 'wrap-content', // listReservation.css
       align:'center',
       headerAlign:'center'
     },

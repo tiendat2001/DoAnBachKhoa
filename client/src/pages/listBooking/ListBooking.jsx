@@ -87,6 +87,8 @@ const ListBooking = () => {
         await axios.put(`/reservation/${selectedReservation._id}`, {
           status: 0,
           cancelDetails:{
+            // giữ nguyên isAdminCancel
+            isAdminCancel:selectedReservation.cancelDetails.isAdminCancel,
             cancelFee:cancelFee
         }
         })

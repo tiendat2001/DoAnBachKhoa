@@ -101,17 +101,17 @@ const ListReservation = () => {
             }
 
             // gửi email xác nhận cho khách về yêu cầu hủy của admin
-            try {
-                const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {
-                    userId: selectedCancelReservation.userId, // gửi cho email của account khách - userId khách
-                    emailSubject: "THÔNG BÁO YÊU CẦU HỦY ĐƠN ĐẶT PHÒNG TỪ CHỦ CHỖ NGHỈ ",
-                    emailContent: `Đơn đặt phòng mã ${selectedCancelReservation._id} của quý khách được chủ chỗ nghỉ yêu cầu hủy \n Lý do hủy: ${reasonCancel} `
-                });
-            } catch (err) {
-                console.log(err)
-                hasError = true;
-                return;
-            }
+            // try {
+            //     const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {
+            //         userId: selectedCancelReservation.userId, // gửi cho email của account khách - userId khách
+            //         emailSubject: "THÔNG BÁO YÊU CẦU HỦY ĐƠN ĐẶT PHÒNG TỪ CHỦ CHỖ NGHỈ ",
+            //         emailContent: `Đơn đặt phòng mã ${selectedCancelReservation._id} của quý khách được chủ chỗ nghỉ yêu cầu hủy \n Lý do hủy: ${reasonCancel} `
+            //     });
+            // } catch (err) {
+            //     console.log(err)
+            //     hasError = true;
+            //     return;
+            // }
 
         } catch (err) {
             console.log(err)
@@ -124,7 +124,7 @@ const ListReservation = () => {
                 setModalIsOpen(false)
             }
             // setIsSending(false)
-            // reFetch();
+            reservationReFetch();
         }
 
     }
@@ -139,22 +139,38 @@ const ListReservation = () => {
             renderCell: (params) => {
                 const { cancelDetails, status } = params.row;
                 const isAdminCancel = cancelDetails?.isAdminCancel;
-            
-                if (isAdminCancel && status) {
+                // khi đơn có y/c hủy từ admin
+                if (isAdminCancel) {
+                 // khi đơn có yêu cầu hủy từ admin nhưng chưa được khách chấp nhận - status đơn =1 là thành công
+                    if(status ==1){
+                        return (
+                            <div className="cellRequestCancel">
+                                <div style={{color:"blueviolet"}}>Đã yêu cầu hủy</div>
+                            </div>
+                        );
+                    } else{
+                    // khi đơn có yêu cầu hủy từ admin và được khách chấp nhận
+                        return (
+                            <div className="cellRequestCancel">
+                                <div style={{color:"blueviolet", whiteSpace:'normal',textAlign:'center'}}>Yêu cầu hủy thành công</div>
+                            </div>
+                        );
+                    }
+                   
+                }
+                // trường hợp đơn thành công hoặc quá ngày thì ko hiện yêu cầu hủy
+                if (new Date() > new Date(params.row.start) || params.row.status !== 1) {
+
+                }else{
                     return (
                         <div className="cellRequestCancel">
-                            <div style={{color:"blueviolet"}}>Đã yêu cầu hủy</div>
+                            <div className="requestCancelButton" onClick={() => openRequestCancelModal(params.row)}>
+                                Yêu cầu hủy
+                            </div>
                         </div>
                     );
                 }
-            
-                return (
-                    <div className="cellRequestCancel">
-                        <div className="requestCancelButton" onClick={() => openRequestCancelModal(params.row)}>
-                            Yêu cầu hủy
-                        </div>
-                    </div>
-                );
+              
             },
         },
     ];
@@ -188,8 +204,8 @@ const ListReservation = () => {
 
                     <div style={{ display: 'flex', justifyContent: 'flex-start', gap: "10px", marginBottom: '10px', textAlign: 'center' }}>
                         {/* css từ listRoomCLient */}
-                        <div style={{ width: '20%' }} className="headerSearchHotel">
-                            <FontAwesomeIcon icon={faCalendarDays} className="headerIconHotel" />
+                        <div style={{ width: '20%' }} className="ListReservationAdminContainer_searchDates">
+                            <FontAwesomeIcon icon={faCalendarDays} className="ListReservationAdminContainer_icon" />
                             <span onClick={() => setOpenDate(!openDate)}>{`${format(
                                 dates[0].startDate,
                                 "dd/MM/yyyy"

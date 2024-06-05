@@ -7,6 +7,24 @@
     white-space: normal !important;
   }
 
+  .ListReservationAdminContainer_searchDates {
+    height: 40px;
+    background-color: white;
+    border: 3px solid #febb02;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:5px;
+    border-radius: 5px;
+    z-index: 1;
+    /* padding:10px 0px; */
+    position: relative;
+  }
+  
+  /* .RoomClientContainer_icon {
+    color: black;
+  } */
+
   .requestCancelButton{
     padding: 2px 5px;
     border-radius: 5px;
