@@ -112,7 +112,7 @@ const ModifyRoomCount = () => {
                                 min={1}
                             />
                         </label>
-                        <button onClick={submitAddRoom}>Thêm</button>
+                        <button  style={{ backgroundColor: 'rgb(91, 248, 0)' }} className="modifyRoomCount_btn" onClick={submitAddRoom}>Thêm</button>
                         <label style={{ display: 'flex', justifyContent: 'flex-start', gap: '10px', alignItems: 'center' }}>
                             Nhập lượng phòng cần xóa:
                             <input
@@ -122,7 +122,7 @@ const ModifyRoomCount = () => {
                                 min={1}
                             />
                         </label>
-                        <button onClick={submitDeleteRoom}>Xoá</button>
+                        <button  style={{ backgroundColor: 'red' }} className="modifyRoomCount_btn" onClick={submitDeleteRoom}>Xoá</button>
                     </div>
 
                     <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Với những phòng đã có người đặt hoặc bạn đã đóng trong thời gian tới sẽ hiện màu đỏ,

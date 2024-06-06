@@ -46,7 +46,7 @@ const ListReservation = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [reasonCancel, setReasonCancel] = useState('');
     const [selectedCancelReservation, setSelectedCancelReservation] = useState("");
-    console.log(selectedCancelReservation)
+    // console.log(selectedCancelReservation)
     // đổi giá trị hiển thị trên lịch - ko cần phải chuẩn giờ vì bên backend sẽ quét từ 0h ngày đó theo UTC
     const handleDayChange = (item) => {
         const newSelection = { ...item.selection };

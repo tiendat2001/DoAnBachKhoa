@@ -35,11 +35,11 @@ const HotelSchema = new mongoose.Schema({
   facilities: {
     type: [String],
   },
-  rating: {
-    type: Number,
-    min: 0,
-    max: 5,
-  },
+  // rating: {
+  //   type: Number,
+  //   min: 0,
+  //   max: 5,
+  // },
   // rooms: {
   //   type: [String],
   // },

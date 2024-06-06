@@ -244,7 +244,7 @@ const RoomDetails = () => {
                 <div key={key} className="detailsRoomTypeContainer">
                     <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                         <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>
-                        <button onClick={() => navigate(`/admin/rooms/smallRoomDetails/modifyRoomCount/${idRoom}`, { state: { previousPath: '/admin/rooms/smallRoomDetails' } })}>Chỉnh số lượng phòng</button>
+                        <button  className="detailsRoomTypeContainer_modifyNumberRooms"  onClick={() => navigate(`/admin/rooms/smallRoomDetails/modifyRoomCount/${idRoom}`, { state: { previousPath: '/admin/rooms/smallRoomDetails' } })}>Chỉnh số lượng phòng</button>
 
                     </div>
 
