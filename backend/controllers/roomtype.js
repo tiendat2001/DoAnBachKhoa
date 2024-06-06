@@ -1,4 +1,4 @@
-import Room from "../models/Room.js";
+import Room from "../models/RoomType.js";
 import Hotel from "../models/Hotel.js";
 import { startOfMonth, endOfMonth, subMonths, addHours, subHours, addDays } from 'date-fns';
 

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const RoomSchema = new mongoose.Schema({
+const RoomTypeSchema = new mongoose.Schema({
     title:{
         type: String,
         required:true
@@ -44,4 +44,4 @@ const RoomSchema = new mongoose.Schema({
 { timestamps : true }
 );
 
-export default mongoose.model("Room", RoomSchema)
+export default mongoose.model("RoomType", RoomTypeSchema)

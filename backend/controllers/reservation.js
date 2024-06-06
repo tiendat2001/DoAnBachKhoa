@@ -1,7 +1,7 @@
 import Reservation from "../models/Reservation.js";
 import Hotel from "../models/Hotel.js"
 import User from "../models/User.js"
-import Room from "../models/Room.js"
+import Room from "../models/RoomType.js";
 import { startOfMonth, endOfMonth, subMonths, addHours, subHours } from 'date-fns';
 import { startOfToday } from "date-fns";
 import nodemailer from "nodemailer"
