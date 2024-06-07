@@ -23,7 +23,7 @@ const ListBooking = () => {
     // hủy trong khoảng time 3 ngày trc ngày nhận phòng và ko trong khoảng 24h sau thời gian đặt 
     // và ko phải là yêu cầu hủy từ admin thì bị coi là muộn - tính phí đêm đầu
     const isLateCancel = (new Date() > subHours(new Date(selectedReservation.start), 24 * 3)) &&  !selectedReservation.cancelDetails.isAdminCancel
-      //&& (new Date() > addHours(new Date(selectedReservation.createdAt), 24))
+      && (new Date() > addHours(new Date(selectedReservation.createdAt), 24))
 
     if (isLateCancel) {
       cancelFee = selectedReservation.totalPrice / selectedReservation.allDatesReserve.length

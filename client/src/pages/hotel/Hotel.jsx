@@ -49,7 +49,7 @@ const Hotel = () => {
     let idHotelSeen = idHotelSeenString ? JSON.parse(idHotelSeenString) : [];
 
     // Kiểm tra nếu danh sách đã đạt đến 5 phần tử, xóa phần tử đầu tiên
-    if (idHotelSeen.length >= 5) {
+    if (idHotelSeen.length >= 3) {
       idHotelSeen = idHotelSeen.slice(1);
     }
     // Kiểm tra xem ID của khách sạn hiện tại đã có trong danh sách hay chưa

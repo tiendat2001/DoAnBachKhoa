@@ -8,7 +8,7 @@ const router = express.Router();
 //CREATE
 router.post("/:hotelid", verifyToken, createRoom);
 //UPDATE avai khi đặt phòng, hủy/đóng phòng
-router.put("/availability/", updateRoomAvailability);
+router.put("/availability/",verifyToken, updateRoomAvailability);
 
 router.put("/cancelAvailability/:id", cancelRoomReservation); // id ở đây là id của typeRoom phòng lớn
 

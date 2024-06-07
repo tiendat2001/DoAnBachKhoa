@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 import authRoute from "./routes/auth.js" // authRoute la ten tu dat dat ntn cx dc
 import usersRoute from "./routes/users.js" 
 import hotelsRoute from "./routes/hotels.js" 
-import roomsRoute from "./routes/rooms.js" 
+import roomsRoute from "./routes/roomTypes.js" 
 import reservationRoute from "./routes/reservation.js"
 import closedRoomRoute from "./routes/closedRoom.js"
 import mongoose from "mongoose"

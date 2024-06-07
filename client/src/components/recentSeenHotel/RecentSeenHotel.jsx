@@ -16,44 +16,51 @@ const RecentSeenHotel = () => {
 
 
   useEffect(() => {
-    // console.log(allHotelData)
+    // tính toán từ localStorage xem city nào đc xem nhiều nhất gần đây
+
     //Lấy danh sách ID khách sạn đã xem từ localStorage
     const idHotelSeenString = localStorage.getItem('idHotelSeen');
     const idHotelSeen = idHotelSeenString ? JSON.parse(idHotelSeenString) : [];
     // nếu người dùng chưa xem ks nào (lần đầu vào localStorage rỗng => để mặc định HN)
-    if(idHotelSeen.length == 0){
+    if (idHotelSeen.length == 0) {
       setMostViewedCity("Hà Nội")
-    } 
-    setRecentHotelIds(idHotelSeen) 
-    // console.log(idHotelSeen)
-    //Tạo một đối tượng để đếm số lần xuất hiện của mỗi thành phố
-    const cityCount = {};
-    idHotelSeen.forEach(id => {
-      const hotel = allHotelData?.find(hotel => hotel._id == id);
-      if (hotel) {
-        cityCount[hotel.city] = (cityCount[hotel.city] || 0) + 1;
-      }
-    });
+    } else {
+      setRecentHotelIds(idHotelSeen)
+      // console.log(idHotelSeen)
+      //Tạo một đối tượng để đếm số lần xuất hiện của mỗi thành phố
+      const cityCount = {};
+      idHotelSeen.forEach(id => {
+        const hotel = allHotelData?.find(hotel => hotel._id == id);
+        if (hotel) {
+          cityCount[hotel.city] = (cityCount[hotel.city] || 0) + 1;
+        }
+      });
 
-    // Tìm thành phố có số lần xuất hiện nhiều nhất
-    let maxCount = 0;
-    let mostViewedCity = '';
-    for (const city in cityCount) {
-      if (cityCount[city] > maxCount) {
-        maxCount = cityCount[city];
-        mostViewedCity = city;
+      // Tìm thành phố có số lần xuất hiện nhiều nhất
+      let maxCount = 0;
+      let mostViewedCity = '';
+      for (const city in cityCount) {
+        if (cityCount[city] > maxCount) {
+          maxCount = cityCount[city];
+          mostViewedCity = city;
+        }
       }
+      setMostViewedCity(mostViewedCity)
     }
-    // console.log("mostviewcity"+mostViewedCity)
-    // Cập nhật thành phố được xem nhiều nhất vào state
-    // setMostViewedCity(mostViewedCity || "Hà Nội"); // Sử dụng "Hà Nội" làm giá trị mặc định nếu mostViewedCity rỗng
-    setMostViewedCity(mostViewedCity)
-  }, [allHotelData]);
-  // console.log(mostViewedCity)
+
+  }, [allHotelData,suggestedHotel]);
+  // console.log("mostviewcity"+mostViewedCity)
+  console.log(mostViewedCity)
   // console.log(suggestedHotel)
+
   // chỉ lấy những khách sạn mà người dùng chưa xem gần đây- id khách sạn ko có trg local storage + lấy tối đa 3 ks để hiển thị
-  const filteredHotels = suggestedHotel.filter(item => !recentHotelIds.includes(item._id));
+  console.log(suggestedHotel)
+  const filteredHotels = suggestedHotel.filter(item =>
+    !recentHotelIds.includes(item._id) 
+  );
+  console.log(filteredHotels)
   const limitedSuggestedHotels = filteredHotels.length > 3 ? filteredHotels.slice(0, 3) : filteredHotels;
+
   return (
     <div className="fp">
       {loading || !mostViewedCity ? (
@@ -69,7 +76,7 @@ const RecentSeenHotel = () => {
                 <span className="fpName">{item.name}</span>
                 <span className="fpCity">{item.city}</span>
                 <span className="fpPrice">Giá chỉ từ  {Intl.NumberFormat('vi-VN').format(item.cheapestPrice.price * 1000)} VND cho 1 phòng mỗi đêm</span>
-                  
+
                 {item.rating && <div className="fpRating">
                   {/* <button>{item.rating}</button> */}
                 </div>}
