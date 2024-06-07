@@ -82,22 +82,24 @@ const SearchItem = ({ item }) => {
       if (dateAvailableCount < roomAvailable) {
         roomAvailable = dateAvailableCount
       }
-      return roomAvailable
+     
     }
+    return roomAvailable
   }
    // tính tổng phòng avalaible của hotel đó
   const caculateTotalRoomsAvailable = () => {
     let totalRooms = 0;
     totalRooms = allTypeRoom.reduce((total, typeRoom) => {
       // Với mỗi loại phòng tính toán số phòng available của loại phòng đó, truyền vào roomNumbers
-      const availabeRooms = calculateAvailableRoomsEveryTypeRoom(typeRoom.roomNumbers)
+      const availableRooms = calculateAvailableRoomsEveryTypeRoom(typeRoom.roomNumbers)
       // Thêm số lượng phòng từ typeRoom vào tổng số lượng phòng
-      return total + availabeRooms;
+      return total + availableRooms;
     }, 0);
     return totalRooms
   }
   // tính tổng phòng avalaible của hotel đó
   const totalRooms = caculateTotalRoomsAvailable()
+  console.log(totalRooms)
   return (
     <div className="searchItem">
       <img src={item.photos[0]} alt="" className="siImg" />
@@ -105,7 +107,7 @@ const SearchItem = ({ item }) => {
       <div className="siDesc">
         <h1 className="siTitle">{item.name}</h1>
         <span className="siDistance">Khoảng cách: {item.distance}m từ trung tâm</span>
-        {totalRooms && totalRooms === 0 ? (
+        { totalRooms == 0 ? (
           <span className="siRoomLeft">Hết phòng!</span>
         ) : (
           totalRooms && (totalRooms < 6 || totalRooms < options.room) && (
