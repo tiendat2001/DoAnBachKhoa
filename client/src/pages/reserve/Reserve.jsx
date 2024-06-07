@@ -228,9 +228,10 @@ const Reserve = () => {
         </div>
 
         <div style={{
-          width: '100%', backgroundColor: '#d5eefd', height: '30px', alignContent: 'center',
+          width: '100%', backgroundColor: '#d5eefd', boxSizing:'border-box', alignContent: 'center',
           fontWeight: 'bold', fontSize: '25px', padding: '10px'
         }}>  Chi tiết đặt phòng của bạn</div>
+        
         <div className="ReserveDetailContainer">
           <div>Thời gian nhận phòng:  {startDate.toLocaleString('vi-VN')}</div>
           <div>Thời gian trả phòng:  {subHours(endDate,2).toLocaleString('vi-VN')}</div>
@@ -251,13 +252,14 @@ const Reserve = () => {
         </div>
 
         <div style={{
-          width: '100%', backgroundColor: '#d5eefd', height: '30px', alignContent: 'center',
+          width: '100%', backgroundColor: '#d5eefd', boxSizing:'border-box', alignContent: 'center',
           fontWeight: 'bold', fontSize: '25px', padding: '10px'
         }}>  Thông tin thanh toán</div>
-        <div className="ReserveDetailContainer">
+
+        <div className="ReservePaymentContainer">
           <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '10px' }}>
             {/* input nhập số điện thoại */}
-            <label htmlFor="phone">Nhập số điện thoại để đặt phòng:</label>
+            <label htmlFor="phone">Nhập số điện thoại của bạn:</label>
             <input
               type="text"
               id="phone"
@@ -268,7 +270,7 @@ const Reserve = () => {
 
           {/* nhập hình thức thanh toán */}
           <div>Chọn hình thức thanh toán</div>
-          <label>
+          <div className="label_paymentMethod">
             <input
               type="radio"
               name="paymentType"
@@ -277,9 +279,8 @@ const Reserve = () => {
               onChange={handlePaymentTypeChange}
             />
             Thanh toán thẻ ATM nội địa
-          </label>
-          <br />
-          <label>
+          </div>
+          <div className="label_paymentMethod">
             <input
               type="radio"
               name="paymentType"
@@ -288,7 +289,7 @@ const Reserve = () => {
               onChange={handlePaymentTypeChange}
             />
             Thanh toán thẻ VISA
-          </label>
+          </div>
 
 
 

@@ -56,9 +56,10 @@ const RecentSeenHotel = () => {
   // chỉ lấy những khách sạn mà người dùng chưa xem gần đây- id khách sạn ko có trg local storage + lấy tối đa 3 ks để hiển thị
   console.log(suggestedHotel)
   const filteredHotels = suggestedHotel.filter(item =>
-    !recentHotelIds.includes(item._id) 
+    !recentHotelIds.includes(item._id) && item.cheapestPrice?.price !== 0 && item.cheapestPrice?.price !== undefined
+
   );
-  console.log(filteredHotels)
+  // console.log(filteredHotels)
   const limitedSuggestedHotels = filteredHotels.length > 3 ? filteredHotels.slice(0, 3) : filteredHotels;
 
   return (
