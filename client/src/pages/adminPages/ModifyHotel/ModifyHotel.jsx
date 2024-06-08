@@ -18,11 +18,10 @@ const ModifyHotel = () => {
     const idHotel = location.pathname.split("/")[3];
     const { data, loading, error } = useFetch(`/hotels/find/${idHotel}`);
     // console.log(data)
-    const [files, setFiles] = useState("");
     const [info, setInfo] = useState(data);
+    const [files, setFiles] = useState("");
     const [selectedFacilities, setSelectedFacilities] = useState([]);
     const [customFacilities, setCustomFacilities] = useState("");
-   
     const [isSending, setIsSending] = useState(false);
 
     // const token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/, "$1");
@@ -30,7 +29,6 @@ const ModifyHotel = () => {
     const { user } = useContext(AuthContext) // {user._id}
     // dùng để select default type chỗ nghỉ
     const defaultType = data.type;
-
     const navigate = useNavigate()
     const previousPath = location.state?.previousPath;
     if (previousPath !== '/admin/hotels') {
@@ -38,84 +36,108 @@ const ModifyHotel = () => {
     }
 
     useEffect(() => {
-       
         if (data) {
             setInfo(data);
-           // lấy facilities của hotel hiện tại cho vào các biến phù hợp
-           const initialSelectedFacilities = data.facilities?.filter(facility => hotelFacilities?.includes(facility));
-           const initialCustomFacilities = data.facilities?.filter(facility => !hotelFacilities?.includes(facility)).join(", ");
-           setSelectedFacilities(initialSelectedFacilities);
-           setCustomFacilities(initialCustomFacilities);
+            // lấy facilities của hotel hiện tại cho vào các biến phù hợp
+            const initialSelectedFacilities = data.facilities?.filter(facility => hotelFacilities?.includes(facility));
+            const initialCustomFacilities = data.facilities?.filter(facility => !hotelFacilities?.includes(facility)).join(", ");
+            setSelectedFacilities(initialSelectedFacilities);
+            setCustomFacilities(initialCustomFacilities);
         }
     }, [data]);
 
     const handleChange = (e) => {
         setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
     };
-
+    // validate input ko rỗng hoặc 1 số trường hợp ko hợp lệ
+    const validateInputs = () => {
+        // Check if all hotelInputs are filled
+        for (let input of hotelInputs) {
+            if (!document.getElementById(input.id).value || !document.getElementById("type").value) {
+                return false;
+            }
+        }
+        // Check if description is filled
+        if (!document.getElementById("desc").value.trim() || (!customFacilities && selectedFacilities.length == 0)
+            ) {//|| (files.length === 0) ko cần vì đây bên chỉnh sửa đã có ảnh trc rồi
+            return false;
+        }
+        return true;
+    };
     // chỉnh check box facilities
     const handleCheckboxChange = (facility) => {
         setSelectedFacilities((prevSelected) => {
-          // nếu người dùng tích cái đã có - tức bỏ nó đi thì bỏ nó khỏi mảng
-          if (prevSelected.includes(facility)) {
-            return prevSelected.filter((item) => item !== facility);
-          } else {
-            return [...prevSelected, facility];
-          }
+            // nếu người dùng tích cái đã có - tức bỏ nó đi thì bỏ nó khỏi mảng
+            if (prevSelected.includes(facility)) {
+                return prevSelected.filter((item) => item !== facility);
+            } else {
+                return [...prevSelected, facility];
+            }
         });
-      };
-      // facilities tự nhập
-      const handleCustomFacilitiesChange = (event) => {
+    };
+    // facilities tự nhập
+    const handleCustomFacilitiesChange = (event) => {
         setCustomFacilities(event.target.value);
-      };
-    
+    };
+
     // console.log(info)
 
     const handleClick = async (e) => {
         setIsSending(true)
         e.preventDefault();
+        // lấy facilities từ checkbox và người dùng nhập
+        const customFacilitiesArray = customFacilities.split(',').map(item => item.trim()).filter(item => item);
+        const allSelectedFacilities = [...selectedFacilities, ...customFacilitiesArray];
         try {
-            const list = await Promise.all(
-                Object.values(files).map(async (file) => {
-                    const data = new FormData();
-                    data.append("file", file);
-                    data.append("upload_preset", "upload");
-                    const uploadRes = await axios.post(
-                        "https://api.cloudinary.com/v1_1/tiendat2001/image/upload",
-                        data
-                    );
-                    // console.log(uploadRes.data)
-                    const { url } = uploadRes.data;
-                    return url;
-                })
-            );
-            
-            // lấy facilities từ checkbox và người dùng nhập
-            const customFacilitiesArray = customFacilities.split(',').map(item => item.trim()).filter(item => item);
-            const allSelectedFacilities = [...selectedFacilities, ...customFacilitiesArray];
-            const newModifyHotel = {
-                ...info,
-                ...(list.length > 0 && { photos: list }),// nếu người dùng có thêm ảnh vào thì set lại ảnh mới, ko thì giữ nguyên
-                facilities: allSelectedFacilities
-            };
+            if (allSelectedFacilities.length > 12) {
+                toast.error("Chỉ được chọn tối đa 12 cơ sở vật chất");
+                return;
+            }
 
+            if (!validateInputs()) {
+                toast.error("Bạn chưa điền đủ các thông tin!.");
+                return;
+            }
+            try {
+                const list = await Promise.all(
+                    Object.values(files).map(async (file) => {
+                        const data = new FormData();
+                        data.append("file", file);
+                        data.append("upload_preset", "upload");
+                        const uploadRes = await axios.post(
+                            "https://api.cloudinary.com/v1_1/tiendat2001/image/upload",
+                            data
+                        );
+                        // console.log(uploadRes.data)
+                        const { url } = uploadRes.data;
+                        return url;
+                    })
+                );
 
-            // console.log(list.length)
+                const newModifyHotel = {
+                    ...info,
+                    ...(list.length > 0 && { photos: list }),// nếu người dùng có thêm ảnh vào thì set lại ảnh mới, ko thì giữ nguyên
+                    facilities: allSelectedFacilities
+                };
 
-            const Success = await axios.put(`/hotels/${idHotel}`, newModifyHotel);
-            if (Success) {
-                setIsSending(false)
-                toast.success('Thành công chỉnh sửa!');
-                navigate("/admin/hotels");
-
-            } else {
-                toast.error("Error.Please try again");
-                setIsSending(false)
-
+                // gọi api thay đổi
+                const Success = await axios.put(`/hotels/${idHotel}`, newModifyHotel);
+                if (Success) {
+                    setIsSending(false)
+                    toast.success('Thành công chỉnh sửa!');
+                    navigate("/admin/hotels");
+                } else {
+                    toast.error("Error.Please try again");
+                    setIsSending(false)
+                }
+            } catch (err) {
+                console.log(error);
             }
 
         } catch (err) {
             console.log(error);
+        } finally {
+            setIsSending(false); // Kết thúc xử lý, trả lại trạng thái ban đầu cho nút
         }
     };
     return (
@@ -200,7 +222,7 @@ const ModifyHotel = () => {
                                     <textarea
                                         id="desc"
                                         rows="10" /* Số dòng mặc định hiển thị ban đầu */
-                                        maxLength = "1000"
+                                        maxLength="1000"
                                         onChange={handleChange}
                                         style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
                                         placeholder={data.desc}

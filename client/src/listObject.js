@@ -20,7 +20,7 @@ export const listProvinces = [
       imageUrl: "https://example.com/cantho.jpg"
   },
   {
-      name: "Thành phố Hồ Chí Minh",
+      name: "Hồ Chí Minh",
       imageUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a6/Ho_Chi_Minh_City.jpg"
   },
   {

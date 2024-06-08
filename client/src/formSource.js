@@ -15,7 +15,7 @@ export const hotelInputs = [
       id: "city",
       label: "Tỉnh thành",
       type: "text",
-      placeholder: `(Hãy viết đúng chính tả để người dùng có thể tìm được chỗ nghỉ của bạn. VD: "Hà Nội"`,
+      placeholder: `(Hãy viết đúng chính tả để người dùng có thể tìm được chỗ nghỉ của bạn. VD: "Hà Nội", "Hồ Chí Minh"`,
     },
     {
       id: "address",

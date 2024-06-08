@@ -119,6 +119,7 @@ const ModifyRoomCount = () => {
                                 type="number"
                                 value={roomCountToDelete}
                                 onChange={handleRoomCountToDeleteChange}
+                                max = {roomTypeData.roomNumbers?.length-1} // ko đc xóa hết tất cả phòng trong loại phòng đấy
                                 min={1}
                             />
                         </label>

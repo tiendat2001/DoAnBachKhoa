@@ -63,7 +63,6 @@ const NewRoom = () => {
     const handleClick = async (e) => {
         e.preventDefault();
         setIsSending(true);
-
         try {
             if (files.length >= 15) {
                 toast.error("Bạn chỉ có thể up tối đa 15 ảnh")

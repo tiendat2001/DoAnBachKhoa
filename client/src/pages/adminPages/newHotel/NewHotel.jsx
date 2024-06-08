@@ -70,28 +70,33 @@ const NewHotel = () => {
   // khi ng dùng submit
   const handleClick = async (e) => {
     e.preventDefault();
+    const customFacilitiesArray = customFacilities.split(',').map(item => item.trim()).filter(item => item);
+    const allSelectedFacilities = [...selectedFacilities, ...customFacilitiesArray];
     setIsSending(true);
     try {
-      const list = await Promise.all(
-        Object.values(files).map(async (file) => {
-          const data = new FormData();
-          data.append("file", file);
-          data.append("upload_preset", "upload");
-          const uploadRes = await axios.post(
-            "https://api.cloudinary.com/v1_1/tiendat2001/image/upload",
-            data
-          );
-          // console.log(uploadRes.data)
-          const { url } = uploadRes.data;
-          return url;
-        })
-      );
-
+      if (allSelectedFacilities.length > 12) {
+        toast.error("Chỉ được chọn tối đa 12 cơ sở vật chất");
+        return;
+      }
       if (!validateInputs()) {
-        toast.error("Please fill in all fields before submitting.");
+        toast.error("Bạn chưa điền đủ các thông tin!.");
       } else {
-        const customFacilitiesArray = customFacilities.split(',').map(item => item.trim()).filter(item => item);
-        const allSelectedFacilities = [...selectedFacilities, ...customFacilitiesArray];
+        // CHUYỂN ẢNH THÀNH LINK ĐỂ LƯU CSDL
+        const list = await Promise.all(
+          Object.values(files).map(async (file) => {
+            const data = new FormData();
+            data.append("file", file);
+            data.append("upload_preset", "upload");
+            const uploadRes = await axios.post(
+              "https://api.cloudinary.com/v1_1/tiendat2001/image/upload",
+              data
+            );
+            // console.log(uploadRes.data)
+            const { url } = uploadRes.data;
+            return url;
+          })
+        );
+        
         const newhotel = {
           ...info,
           photos: list,
