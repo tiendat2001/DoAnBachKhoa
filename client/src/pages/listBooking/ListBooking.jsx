@@ -87,7 +87,7 @@ const ListBooking = () => {
         await axios.put(`/reservation/${selectedReservation._id}`, {
           status: 0,
           cancelDetails:{
-            // giữ nguyên isAdminCancel
+            // giữ nguyên isAdminCancel, update phí hủy theo trường hợp
             isAdminCancel:selectedReservation.cancelDetails.isAdminCancel,
             cancelFee:cancelFee
         }
@@ -158,7 +158,7 @@ const ListBooking = () => {
                 {item.status ===1 && item.cancelDetails.isAdminCancel ? 
                 (
                   <div style={{ fontWeight: 'bold',color:'red',fontStyle:'italic' }}>(Đơn này đang được yêu cầu hủy từ chủ chỗ nghỉ. <br/>
-                   Bạn sẽ không mất phí hủy nếu hủy đơn này)</div>
+                   Đặt phòng này vẫn sẽ có hiệu lực cho đến khi bạn hủy. <br/>Bạn sẽ không mất phí hủy nếu hủy đơn này)</div>
                 ):''}
                 <div>Thông tin liên lạc chỗ nghỉ: {item.hotelContact}</div>
 

@@ -188,7 +188,9 @@ const ListReservation = () => {
                             <div className="modal-content">
                                 <span className="modalCancelRequest_close" onClick={closeModalCancelRequest}>&times;</span>
                                 <div className="modalCancelRequest_title">YÊU CẦU HỦY PHÒNG</div>
-                                <textarea placeholder="Nhập lý do muốn hủy" type="text" value={reasonCancel} rows="4" onChange={(e) => setReasonCancel(e.target.value)} />
+                                <textarea  type="text" value={reasonCancel} rows="4"
+                                 placeholder="Nhập lý do muốn hủy. Yêu cầu hủy và lý do sẽ được gửi đến email của khách. Lưu ý rằng đơn đặt phòng vẫn sẽ có hiệu lực cho đến khi khách đồng ý hủy."
+                                 onChange={(e) => setReasonCancel(e.target.value)} />
                                 <div >
                                     <button className="modalCancelRequest_btn"  onClick={requestCancel}>Yêu cầu hủy</button>
                                 </div>

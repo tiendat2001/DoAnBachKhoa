@@ -59,13 +59,11 @@ const ModifyRoom = () => {
         Object.values(files).map(async (file) => {
           const data = new FormData();
           data.append("file", file);
-      
-          // Gửi dữ liệu tới API của server
           const uploadRes = await axios.post(
-            `/closedRoom/upload/uploadImage`, // Địa chỉ API của server
+            `/closedRoom/upload/uploadImage`,
             data
           );
-      
+
           const { url } = uploadRes.data;
           return url;
         })
@@ -85,7 +83,7 @@ const ModifyRoom = () => {
       if (Success) {
         setIsSending(false)
         toast.success('Thành công chỉnh sửa!');
-        navigate(`/admin/rooms`);
+        navigate(`/admin/rooms`, { state: { hotelIdFromAddModifyRoom: data.hotelId } });
 
       } else {
         toast.error("Có lỗi xảy ra vui lòng tải lại trang và thử lại");
@@ -94,6 +92,7 @@ const ModifyRoom = () => {
 
     } catch (err) {
       console.log(err);
+      toast.error("Có lỗi xảy ra vui lòng tải lại trang và thử lại");
       setIsSending(false)
     } finally {
       setIsSending(false); // Kết thúc xử lý, trả lại trạng thái ban đầu cho nút
@@ -138,7 +137,7 @@ const ModifyRoom = () => {
 
               <div className="formInput">
                 <label htmlFor="file">
-                  Ảnh: <DriveFolderUploadOutlinedIcon className="icon" />
+                  Ảnh: (Click vào đây để up lại ảnh) <DriveFolderUploadOutlinedIcon className="icon" />
                 </label>
                 <input
                   type="file"
@@ -160,6 +159,10 @@ const ModifyRoom = () => {
                     // placeholder={data[input.id]}
                     value={info[input.id]}
                   />
+                  {/* hiển thị giá cho input price */}
+                  {input.id == "price" ?
+                    <div style={{ marginTop: '10px', fontStyle: 'italic' }}>Bạn đang để giá: {info.price && Intl.NumberFormat('vi-VN').format(info.price * 1000)} VND</div>
+                    : null}
                 </div>
               ))}
               {/* test */}

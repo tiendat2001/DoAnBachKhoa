@@ -102,9 +102,9 @@ export const deleteAllClosedRoom = async (req, res, next) => {
 
         try {
             const file = req.file;
-            if (!file) {
-              return res.status(400).send('No file uploaded.');
-            }       
+            // if (!file) {
+            //   return res.status(400).send('No file uploaded.');
+            // }       
             const data = new FormData();
             data.append('file', file.buffer, file.originalname);
             data.append('upload_preset', 'upload');

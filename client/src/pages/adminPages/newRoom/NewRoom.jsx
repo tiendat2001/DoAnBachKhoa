@@ -99,9 +99,8 @@ const NewRoom = () => {
                 const Success = await axios.post(`/rooms/${hotelId}`, newRoom);
                 if (Success) {
                     toast.success('Thành công!');
-                    navigate("/admin/rooms");
-
-                } else toast.error("Error.Please try again");
+                    navigate(`/admin/rooms`, { state: { hotelIdFromAddModifyRoom:hotelId } });
+                } else toast.error("Có lỗi xảy ra vui lòng tải lại trang và thử lại");
 
 
             }
@@ -173,7 +172,7 @@ const NewRoom = () => {
 
                             <div className="formInput">
                                 <label htmlFor="file">
-                                    Up ảnh (click vào để thêm ảnh): <DriveFolderUploadOutlinedIcon className="icon" />
+                                    Up ảnh (click vào biểu tượng bên cạnh để thêm ảnh): <DriveFolderUploadOutlinedIcon className="icon" />
                                 </label>
                                 <input
                                     type="file"
@@ -194,6 +193,10 @@ const NewRoom = () => {
                                         type={input.type}
                                         placeholder={input.placeholder}
                                     />
+                                    {/* hiển thị giá cho input price */}
+                                    {input.id == "price" ?
+                                     <div style={{marginTop:'10px',fontStyle:'italic'}}>Bạn đang để giá: { info.price && Intl.NumberFormat('vi-VN').format(info.price * 1000)} VND</div>
+                                     : null}
                                 </div>
                             ))}
                             {/* test */}

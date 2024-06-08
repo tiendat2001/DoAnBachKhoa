@@ -80,6 +80,6 @@
     margin:auto;
 }
 
-.hotelSelectBox .select{
-    height:30px;
+.hotelSelectBox select {
+    height:30px ;
 }

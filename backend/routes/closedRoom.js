@@ -23,5 +23,5 @@ router.delete("/:id",deleteClosedRoomById)
 
 // TEST API CLOUDINARY
 const upload = multer({ storage: multer.memoryStorage() });
-router.post("/upload/uploadImage", upload.single('file'),uploadImageCloudinary)
+router.post("/upload/uploadImage",verifyToken, upload.single('file'),uploadImageCloudinary)
 export default router

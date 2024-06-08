@@ -27,11 +27,15 @@ const ListRoom = () => {
     const { data: reservationDataFuture, loading: reservationLoading, error: reservationError,
         reFetch: reservationReFetch } = useFetch(`/reservation/admin/?startDay=${currentDate}&endDay=${endLessDate}&status=1`);
     const navigate = useNavigate()
+    const location = useLocation();
+    // lấy hotel id nếu người dùng vừa tạo phòng hoặc chỉnh phòng xong
+    const hotelIdFromAddModifyRoom = location.state?.hotelIdFromAddModifyRoom;
     const handleHotelChange = (e) => {
         setHotelId(e.target.value);
     };
     useEffect(() => {
-        setHotelId(hotelData[0]?._id)
+        // setHotelId(hotelData[0]?._id)
+         setHotelId(hotelIdFromAddModifyRoom)
     }, [hotelData]);
     // console.log(roomData)
 
