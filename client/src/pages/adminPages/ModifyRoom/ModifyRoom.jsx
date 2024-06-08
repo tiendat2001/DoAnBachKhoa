@@ -59,12 +59,13 @@ const ModifyRoom = () => {
         Object.values(files).map(async (file) => {
           const data = new FormData();
           data.append("file", file);
-          data.append("upload_preset", "upload");
+      
+          // Gửi dữ liệu tới API của server
           const uploadRes = await axios.post(
-            "https://api.cloudinary.com/v1_1/tiendat2001/image/upload",
+            `/closedRoom/upload/uploadImage`, // Địa chỉ API của server
             data
           );
-          // console.log(uploadRes.data)
+      
           const { url } = uploadRes.data;
           return url;
         })

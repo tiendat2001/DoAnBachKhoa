@@ -1,4 +1,7 @@
 import ClosedRoom from "../models/ClosedRoom.js";
+import multer from 'multer';
+import FormData from 'form-data';
+import axios from "axios";
 export const createClosedRoom = async (req, res, next) => {
     req.body.ownerId = req.user.id; // Thêm ownerId từ req.user.id
     const newClosedRoom = new ClosedRoom(req.body)
@@ -74,31 +77,55 @@ export const deleteAllClosedRoom = async (req, res, next) => {
       return new Promise(resolve => setTimeout(resolve, ms));
   }
   
-  export const testAPI = async (req, res, next) => {
+  export const uploadImageCloudinary = async (req, res, next) => {
       try {
-          const id = req.params.id;
+        //   const id = req.params.id;
   
-          // Kiểm tra xem có yêu cầu khác đang được xử lý với cùng giá trị id không
-          while (testAPILocks[id]) {
-              // Chờ 1 giây trước khi kiểm tra lại
-              await delay(1000); // Chờ 1 giây
+        //   // Kiểm tra xem có yêu cầu khác đang được xử lý với cùng giá trị id không
+        //   while (testAPILocks[id]) {
+        //       // Chờ 1 giây trước khi kiểm tra lại
+        //       await delay(1000); // Chờ 1 giây
+        //   }
+  
+        //   // Đặt biến khóa để đánh dấu rằng yêu cầu với giá trị id này đang được thực thi
+        //   testAPILocks[id] = true;
+  
+        //   // Sử dụng hàm setTimeout để tạm dừng việc thực hiện trong 5 giây
+        //   setTimeout(() => {
+        //       // Sau 5 giây, trả về kết quả "kết thúc"
+        //       console.log("dat")
+        //       res.status(200).json("kết thúc");
+  
+        //       // Giải phóng biến khóa sau khi hoàn thành
+        //       delete testAPILocks[id];
+        //   }, 10000); // 5 giây = 5000 milliseconds
+
+        try {
+            const file = req.file;
+            if (!file) {
+              return res.status(400).send('No file uploaded.');
+            }       
+            const data = new FormData();
+            data.append('file', file.buffer, file.originalname);
+            data.append('upload_preset', 'upload');
+            const uploadRes = await axios.post(
+              'https://api.cloudinary.com/v1_1/tiendat2001/image/upload',
+              data,
+              {
+                headers: {
+                  ...data.getHeaders()
+                }
+              }
+            );
+        
+            const { url } = uploadRes.data;
+            res.json({ url });
+          } catch (error) {
+            console.error(error);
+            next(error);
           }
-  
-          // Đặt biến khóa để đánh dấu rằng yêu cầu với giá trị id này đang được thực thi
-          testAPILocks[id] = true;
-  
-          // Sử dụng hàm setTimeout để tạm dừng việc thực hiện trong 5 giây
-          setTimeout(() => {
-              // Sau 5 giây, trả về kết quả "kết thúc"
-              console.log("dat")
-              res.status(200).json("kết thúc");
-  
-              // Giải phóng biến khóa sau khi hoàn thành
-              delete testAPILocks[id];
-          }, 10000); // 5 giây = 5000 milliseconds
       } catch (error) {
           // Nếu có lỗi xảy ra, giải phóng biến khóa và chuyển giao cho middleware xử lý lỗi
-          delete testAPILocks[id];
           next(error);
       }
   };
