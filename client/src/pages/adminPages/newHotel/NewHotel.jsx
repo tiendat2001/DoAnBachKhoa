@@ -42,8 +42,8 @@ const NewHotel = () => {
       }
     }
     // Check if description is filled
-    if (!document.getElementById("desc").value.trim() ||(!customFacilities && selectedFacilities.length ==0)
-    || (files.length === 0)) {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
+    if (!document.getElementById("desc").value.trim() || (!customFacilities && selectedFacilities.length == 0)
+      || (files.length === 0)) {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
       return false;
     }
     return true;
@@ -104,9 +104,7 @@ const NewHotel = () => {
           toast.success('Thành công!');
           navigate("/admin/hotels");
 
-        } else toast.error("Error.Please try again");
-
-
+        } else toast.error("Có lỗi xảy ra.Vui lòng tải lại trang và thử lại");
       }
 
 
@@ -172,6 +170,8 @@ const NewHotel = () => {
                   <option value="" >Chọn loại chỗ nghỉ</option> {/* Các option của dropdown */}
                   <option value="Khách sạn" >Khách sạn</option> {/* Các option của dropdown */}
                   <option value="Căn hộ" >Căn hộ</option>
+                  <option value="Biệt thự" >Biệt thự</option> {/* Các option của dropdown */}
+                  <option value="Resort" >Resort</option>
 
                 </select>
               </div>
@@ -179,7 +179,10 @@ const NewHotel = () => {
               {/* render các trường */}
               {hotelInputs.map((input) => (
                 <div className="formInput" key={input.id}>
-                  <label>{input.label}</label>
+                  {/* <label>{input.label}</label> */}
+                  <label>
+                    {input.label} {info?.type ? info.type.toLowerCase() : "chỗ nghỉ"}
+                  </label>
                   <input
                     id={input.id}
                     onChange={handleChange}
@@ -193,7 +196,7 @@ const NewHotel = () => {
               <textarea
                 id="desc"
                 rows="10" /* Số dòng mặc định hiển thị ban đầu */
-                maxLength = "1000"
+                maxLength="1000"
                 onChange={handleChange}
                 style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
               ></textarea>
@@ -218,7 +221,7 @@ const NewHotel = () => {
                 {/* tự nhập */}
                 <div className="customFacilities">
                   <label>Nhập cơ sở vật chất khác (ngăn cách bằng dấu phẩy): </label>
-                  <input style={{width:"100%"}}
+                  <input style={{ width: "100%" }}
                     type="text"
                     value={customFacilities}
                     placeholder="Ví dụ:Thuê xe đạp, Dịch vụ phòng"

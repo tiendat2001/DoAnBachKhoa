@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-const ListRoomClient = ({ hotelId }) => {
+const ListRoomClient = ({ hotelId, hotelType }) => {
   const { data, loading, error, reFetch } = useFetch(`/rooms/${hotelId}`);
   const [selectedRooms, setSelectedRooms] = useState([]);
   const searchContext = useContext(SearchContext);
@@ -52,7 +52,6 @@ const ListRoomClient = ({ hotelId }) => {
 
   // console.log(dates)
   const handleOpen = (i, indexItem) => {
-
     setSlideNumber(i);       // set vị trí ảnh trong mảng data[index].photos
     setIndexItem(indexItem)  // set vị trí phần tử data (tức từng roomType mà người dùng click vào)
     setOpenExpandPhoto(true); // để mở slider ảnh phóng to
@@ -298,7 +297,7 @@ const ListRoomClient = ({ hotelId }) => {
 
           {/*  hiện giá */}
           <div>
-            Giá phòng: {new Intl.NumberFormat('vi-VN').format(item.price * 1000)} VND
+            Giá: {new Intl.NumberFormat('vi-VN').format(item.price * 1000)} VND
             <br />
             (Mỗi đêm)
           </div>
@@ -331,12 +330,12 @@ const ListRoomClient = ({ hotelId }) => {
                 const options = [];
                 //  ko còn phòng trống nào
                 if (roomAvailable === 0){
-                  options.push(<option value={0}>Hết phòng</option>);
+                  options.push(<option value={0}>Đã hết</option>);
                 }else{
-                  options.push(<option value={0}>0 phòng</option>);
+                  options.push(<option value={0}> 0 {hotelType === "Khách sạn" ? "phòng" : hotelType.toLowerCase()}</option>);
                   for (let i = 1; i <= roomAvailable; i++) {
                     if(i>maxOptions) break;
-                    options.push(<option value={i}>{i} phòng</option>);
+                    options.push(<option value={i}>{i} {hotelType === "Khách sạn" ? "phòng" : hotelType.toLowerCase()}</option>);
                   }
                 }
                
@@ -381,7 +380,7 @@ const ListRoomClient = ({ hotelId }) => {
                 ()}
             </select>
 
-            <div style={{ width: '30%', height: '100%', fontSize: '14px' }}>(Chọn số lượng phòng muốn đặt)</div>
+            <div style={{ width: '30%', height: '100%', fontSize: '14px' }}>(Chọn số lượng muốn đặt)</div>
 
           </div>
           {/*  hiện các ô room */}

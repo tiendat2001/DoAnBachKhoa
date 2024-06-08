@@ -244,7 +244,7 @@ const RoomDetails = () => {
                 <div key={key} className="detailsRoomTypeContainer">
                     <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                         <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>
-                        <button  className="detailsRoomTypeContainer_modifyNumberRooms"  onClick={() => navigate(`/admin/rooms/smallRoomDetails/modifyRoomCount/${idRoom}`, { state: { previousPath: '/admin/rooms/smallRoomDetails' } })}>Chỉnh số lượng phòng</button>
+                        <button  className="detailsRoomTypeContainer_modifyNumberRooms"  onClick={() => navigate(`/admin/rooms/smallRoomDetails/modifyRoomCount/${idRoom}`, { state: { previousPath: '/admin/rooms/smallRoomDetails' } })}>Chỉnh số lượng</button>
 
                     </div>
 
@@ -257,7 +257,7 @@ const RoomDetails = () => {
                             {roomCountStatus.map((status, index) => (
                                 <div className="grid-item" key={index}>
                                     <div>{`${status.day}/${status.month}/${status.year}`}</div>
-                                    <div>Phòng rao bán: {status.countAvailable}</div>
+                                    <div>Đang rao bán: {status.countAvailable}</div>
                                     <div style={{ color: roomTypeData.roomNumbers && roomTypeData.roomNumbers?.length - status.countAvailable !== 0 ? 'red' : 'inherit', fontWeight: roomTypeData.roomNumbers && roomTypeData.roomNumbers?.length - status.countAvailable !== 0 ? 'bold' : 'normal' }}>
                                         Đã bán hoặc đóng: {roomTypeData.roomNumbers?.length - status.countAvailable}
 

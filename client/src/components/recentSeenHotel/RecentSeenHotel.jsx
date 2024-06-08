@@ -17,7 +17,6 @@ const RecentSeenHotel = () => {
 
   useEffect(() => {
     // tính toán từ localStorage xem city nào đc xem nhiều nhất gần đây
-
     //Lấy danh sách ID khách sạn đã xem từ localStorage
     const idHotelSeenString = localStorage.getItem('idHotelSeen');
     const idHotelSeen = idHotelSeenString ? JSON.parse(idHotelSeenString) : [];
@@ -63,11 +62,12 @@ const RecentSeenHotel = () => {
   const limitedSuggestedHotels = filteredHotels.length > 3 ? filteredHotels.slice(0, 3) : filteredHotels;
 
   return (
-    <div className="fp">
+    <div>
+      <h1 style={{fontSize:'20px', }}>Các chỗ nghỉ ở {mostViewedCity}</h1>
       {loading || !mostViewedCity ? (
         "Loading"
       ) : (
-        <>
+        <div className="fp">
           {limitedSuggestedHotels
             .map((item, index) => (
               <div className="fpItem" key={item._id}>
@@ -83,7 +83,7 @@ const RecentSeenHotel = () => {
                 </div>}
               </div>
             ))}
-        </>
+        </div>
       )}
     </div>
   )

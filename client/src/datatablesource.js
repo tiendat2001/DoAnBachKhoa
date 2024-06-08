@@ -25,8 +25,8 @@ export const roomColumns = [
     // },
     {
       field: "price",
-      headerName: "Giá phòng (VND)",
-      width: 130,
+      headerName: "Giá mỗi đêm(VND)",
+      width: 140,
       valueFormatter: (params) => {
             const formattedValue = new Intl.NumberFormat('vi-VN').format(params.value*1000)
             return `${formattedValue}`;

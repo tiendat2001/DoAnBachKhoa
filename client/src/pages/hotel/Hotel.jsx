@@ -211,7 +211,7 @@ const Hotel = () => {
               </div>
             </div>
           </div>
-          <ListRoomClient hotelId={id} />
+          <ListRoomClient hotelId={id} hotelType={data.type} />
 
           <MailList />
           <Footer />

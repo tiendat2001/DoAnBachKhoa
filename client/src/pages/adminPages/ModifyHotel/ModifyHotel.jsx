@@ -176,6 +176,9 @@ const ModifyHotel = () => {
                                             <option value={defaultType} >{defaultType}</option> {/* Option mặc định */}
                                             <option value="Khách sạn" hidden={defaultType === "Khách sạn"}>Khách sạn</option> {/* Các option của dropdown */}
                                             <option value="Căn hộ" hidden={defaultType === "Căn hộ"}>Căn hộ</option>
+                                            <option value="Biệt thự" hidden={defaultType === "Biệt thự"}>Biệt thự</option> {/* Các option của dropdown */}
+                                            <option value="Resort" hidden={defaultType === "Resort"}>Resort</option>
+
 
                                         </select>
                                     </div>
@@ -183,7 +186,7 @@ const ModifyHotel = () => {
                                     {/* render các trường */}
                                     {hotelInputs.map((input) => (
                                         <div className="formInput" key={input.id}>
-                                            <label>{input.label}</label>
+                                            <label> {input.label} {info?.type ? info.type.toLowerCase() : "chỗ nghỉ"}</label>
                                             <input
                                                 id={input.id}
                                                 onChange={handleChange}

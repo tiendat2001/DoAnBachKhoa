@@ -210,6 +210,8 @@ const List = () => {
                 <option value="">Tất cả</option> {/* Option mặc định */}
                 <option value="Khách sạn">Khách sạn</option> {/* Các option của dropdown */}
                 <option value="Căn hộ">Căn hộ</option>
+                <option value="Biệt thự">Biệt thự</option> {/* Các option của dropdown */}
+                <option value="Resort">Resort</option>
               </select>
             </div>
 

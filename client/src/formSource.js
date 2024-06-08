@@ -1,7 +1,7 @@
 export const hotelInputs = [
     {
       id: "name",
-      label: "Tên",
+      label: "Tên của",
       type: "text",
       placeholder: "",
     },
@@ -13,25 +13,25 @@ export const hotelInputs = [
     // },
     {
       id: "city",
-      label: "Thành phố",
+      label: "Tỉnh thành",
       type: "text",
-      placeholder: "",
+      placeholder: `(Hãy viết đúng chính tả để người dùng có thể tìm được chỗ nghỉ của bạn. VD: "Hà Nội"`,
     },
     {
       id: "address",
-      label: "Địa chỉ",
+      label: "Địa chỉ của",
       type: "text",
       placeholder: "",
     },
     {
       id: "distance",
-      label: "Khoảng cách đến trung tâm (m)",
+      label: "Khoảng cách từ trung tâm đến(m)",
       type: "number",
       placeholder: "",
     },
     {
       id: "hotelContact",
-      label: "Số điện thoại liên lạc của chỗ nghỉ",
+      label: "Số điện thoại liên lạc của",
       type: "number",
       placeholder: "",
     },

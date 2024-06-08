@@ -38,7 +38,7 @@ const NewRoom = () => {
             }
         }
         // Check if description is filled
-        if (!document.getElementById("desc").value.trim() || (files.length === 0) || hotelId == null) {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
+        if (!document.getElementById("desc").value.trim() ||  hotelId == null) {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
             return false;
         }
         return true;
@@ -122,7 +122,7 @@ const NewRoom = () => {
                 <NavbarAdmin />
                 {/* css từ newHotel.css */}
                 <div className="top">
-                    <h1>Thêm loại phòng</h1>
+                    <h1>Thêm loại phòng / chỗ ở</h1>
                 </div>
 
                 <div className="bottom">
@@ -208,7 +208,7 @@ const NewRoom = () => {
                             ></textarea>
 
                             <button onClick={handleClick} disabled={isSending}>
-                                {isSending ? 'Đang lưu...' : 'Thêm loại phòng'}
+                                {isSending ? 'Đang lưu...' : 'Xác nhận'}
                             </button>
                         </form>
                     </div>
