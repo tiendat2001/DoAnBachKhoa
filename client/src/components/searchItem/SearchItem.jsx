@@ -99,7 +99,10 @@ const SearchItem = ({ item }) => {
   }
   // tính tổng phòng avalaible của hotel đó
   const totalRooms = caculateTotalRoomsAvailable()
-  console.log(totalRooms)
+  // nếu hết phòng thì ko hiện hotel đó
+  if (totalRooms === 0) {
+    return null;
+  }
   return (
     <div className="searchItem">
       <img src={item.photos[0]} alt="" className="siImg" />

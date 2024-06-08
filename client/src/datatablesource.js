@@ -12,7 +12,7 @@ export const roomColumns = [
     },
     {
       field: "desc",
-      headerName: "Mô tả phòng",
+      headerName: "Mô tả ",
       width: 330,
       cellClassName: 'wrap-content', // listReservation.css
       align:'center',
@@ -44,7 +44,7 @@ export const roomColumns = [
     },
     {
       field: "roomCount",
-      headerName: "Số lượng phòng",
+      headerName: "Số lượng",
       width: 150,
       align:'center',
       headerAlign:'center',

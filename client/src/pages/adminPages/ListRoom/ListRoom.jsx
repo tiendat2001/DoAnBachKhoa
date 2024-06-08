@@ -37,7 +37,7 @@ const ListRoom = () => {
 
     // chuyển hướng
     const handleNavigation = (path) => {
-        navigate(path, { state: { previousPath: '/admin/rooms' } });
+        navigate(path, { state: { previousPath: '/admin/rooms', hotelIdFromListRoom:hotelId } });
     };
     const handleDelete = (typeRoomId) => {
         // // Kiểm tra xem phòng đấy có đơn sắp tới ko
@@ -152,11 +152,9 @@ const ListRoom = () => {
 
                         </div>
 
-                        <Link to={`/admin/rooms/new`}>
-                            <button style={{ fontSize: '14px', backgroundColor: '#5bf800', border: 'none', 
+                       
+                            <button onClick={() => handleNavigation(`/admin/rooms/new`)} style={{ fontSize: '14px', backgroundColor: '#5bf800', border: 'none', 
                             height: '40px',color:'white',fontWeight:'bold',borderRadius:'5px' }}>Thêm loại phòng</button>
-
-                        </Link>
                     </div>
 
 

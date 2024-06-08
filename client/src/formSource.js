@@ -60,7 +60,7 @@ export const hotelInputs = [
     {
       id: "price",
       label: "Giá (Đơn vị: nghìn đồng. Ví dụ giá 250.000 VND thì hãy ghi 250)",
-      type: "text",
+      type: "number",
       placeholder: "",
     },
     {

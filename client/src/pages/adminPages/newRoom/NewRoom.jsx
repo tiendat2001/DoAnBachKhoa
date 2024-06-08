@@ -11,9 +11,9 @@ import { AuthContext } from '../../../context/AuthContext';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-
+import { useLocation } from 'react-router';
 const NewRoom = () => {
-
+    const location = useLocation();
     const [files, setFiles] = useState("");
     const [info, setInfo] = useState({});
     // const [rooms, setRooms] = useState([]);
@@ -24,13 +24,12 @@ const NewRoom = () => {
     // const { data, loading, error } = useFetch(`/hotels?ownerId=${decodedToken.id}`);
     const { data, loading, error, reFetch } = useFetch(
         `/hotels/getByAdmin`);
-    const [hotelId, setHotelId] = useState();
+    const [hotelId, setHotelId] = useState(location.state?.hotelIdFromListRoom);
     const navigate = useNavigate()
 
     const handleHotelChange = (e) => {
         setHotelId(e.target.value);
     };
-
     const validateInputs = () => {
         // Check if all hotelInputs are filled
         for (let input of roomInputs) {
