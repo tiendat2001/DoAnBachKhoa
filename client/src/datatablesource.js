@@ -5,7 +5,7 @@ export const roomColumns = [
     { field: "_id", headerName: "ID", width: 100, hide:true },
     {
       field: "title",
-      headerName: "Tên loại phòng",
+      headerName: "Tên loại phòng ",
       width: 280,
       align:'center',
       headerAlign:'center'

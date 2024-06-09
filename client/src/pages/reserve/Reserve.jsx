@@ -92,40 +92,38 @@ const Reserve = () => {
       return;
     }
 
-    selectedRoomIdsReserved.length = 0; // reset lại mảng
-    await Promise.all(roomsDetailFromListClient.map(async (roomDetail) => {
+    // selectedRoomIdsReserved.length = 0; // reset lại mảng
+    // await Promise.all(roomsDetailFromListClient.map(async (roomDetail) => {
 
-      //
-      const { roomTypeId, quantity } = roomDetail; // Lấy ra roomNumbers và quantity từ mỗi phần tử
-      let selectedQuantity = 0; // Số lượng phòng đã chọn
-      const response = await fetch(`/rooms/${hotelId}`);
-      const reFreshRoomData = await response.json();
-      const foundRoom = reFreshRoomData.find(room => room._id == roomTypeId);
+    //   //
+    //   const { roomTypeId, quantity } = roomDetail; // Lấy ra roomNumbers và quantity từ mỗi phần tử
+    //   let selectedQuantity = 0; // Số lượng phòng đã chọn
+    //   const response = await fetch(`/rooms/${hotelId}`);
+    //   const reFreshRoomData = await response.json();
+    //   const foundRoom = reFreshRoomData.find(room => room._id == roomTypeId);
 
-      //Duyệt qua mỗi phần tử trong mảng roomNumbers
-      foundRoom.roomNumbers.forEach(roomNumber => {
-        // Kiểm tra xem phòng có sẵn không 
-        if (isAvailable(roomNumber)) {
-          // Nếu phòng có sẵn và số lượng phòng đã chọn chưa đạt tối đa
-          if (selectedQuantity < quantity) {
-            selectedRoomIdsReserved.push(roomNumber._id); // Thêm roomNumber vào mảng selectedRoomIdsReserved
-            selectedQuantity++; // Tăng số lượng phòng đã chọn lên 1
-          } else {
-            return; // Nếu đã đủ số lượng, thoát khỏi vòng lặp
-          }
-        }
-      });
-    }));
+    //   //Duyệt qua mỗi phần tử trong mảng roomNumbers
+    //   foundRoom.roomNumbers.forEach(roomNumber => {
+    //     // Kiểm tra xem phòng có sẵn không 
+    //     if (isAvailable(roomNumber)) {
+    //       // Nếu phòng có sẵn và số lượng phòng đã chọn chưa đạt tối đa
+    //       if (selectedQuantity < quantity) {
+    //         selectedRoomIdsReserved.push(roomNumber._id); // Thêm roomNumber vào mảng selectedRoomIdsReserved
+    //         selectedQuantity++; // Tăng số lượng phòng đã chọn lên 1
+    //       } else {
+    //         return; // Nếu đã đủ số lượng, thoát khỏi vòng lặp
+    //       }
+    //     }
+    //   });
+    // }));
 
-    const totalQuantity = roomsDetailFromListClient.reduce((acc, roomDetail) => acc + roomDetail.quantity, 0);
+    // const totalQuantity = roomsDetailFromListClient.reduce((acc, roomDetail) => acc + roomDetail.quantity, 0);
     // console.log(totalQuantity)
-    if (selectedRoomIdsReserved.length !== totalQuantity) {
-      alert("Phòng đã hết! Vui lòng quay lại trang đặt phòng")
-      return; // Thoát khỏi hàm nếu số lượng phòng đã chọn không đủ
-    }
-
-    // return;
-    console.log(selectedRoomIdsReserved)
+    // if (selectedRoomIdsReserved.length !== totalQuantity) {
+    //   alert("Phòng đã hết! Vui lòng quay lại trang đặt phòng")
+    //   return; // Thoát khỏi hàm nếu số lượng phòng đã chọn không đủ
+    // }
+    // console.log(selectedRoomIdsReserved)
 
     // Đẩy available
     try {
@@ -145,7 +143,7 @@ const Reserve = () => {
       //     }
       //   })
       // );
-      const copiedRoomIds = [...selectedRoomIdsReserved];
+      // const copiedRoomIds = [...selectedRoomIdsReserved];
       const res = await axios.put(`/rooms/availability/`, {
         roomTypeIdsReserved:roomTypeIdsReserved,
         dates: alldates,
@@ -167,7 +165,7 @@ const Reserve = () => {
         phoneNumber: phoneNumber,
         start: startDate,
         end: endDate,
-        roomNumbersId: selectedRoomIdsReserved,
+        // roomNumbersId: selectedRoomIdsReserved,
         roomTypeIdsReserved: roomTypeIdsReserved,
         roomsDetail: detailRooms,
         guest: { adult: options.adult, children: options.children },

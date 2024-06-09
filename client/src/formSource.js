@@ -31,9 +31,9 @@ export const hotelInputs = [
     },
     {
       id: "hotelContact",
-      label: "Số điện thoại liên lạc của",
+      label: "Số điện thoại liên lạc của ",
       type: "number",
-      placeholder: "",
+      placeholder: "Số điện thoại để khách có thể gọi cho bạn sau khi đặt phòng thành công",
     },
     // {
     //   id: "desc",
@@ -47,7 +47,7 @@ export const hotelInputs = [
   export const roomInputs = [
     {
       id: "title",
-      label: "Tên loại phòng",
+      label: "Tên loại phòng (hay loại căn hộ, biệt thự,...) của bạn",
       type: "text",
       placeholder: "",
     },
@@ -59,15 +59,15 @@ export const hotelInputs = [
     },
     {
       id: "price",
-      label: "Giá (Đơn vị: nghìn đồng. Ví dụ giá 250.000 VND thì hãy ghi 250)",
+      label: "Giá mỗi đêm (Đơn vị: nghìn đồng. Ví dụ giá 250.000 VND thì hãy ghi 250)",
       type: "number",
       placeholder: "",
     },
     {
       id: "roomNumbers",
-      label: "Số lượng phòng",
+      label: "Số lượng",
       type: "number",
-      placeholder: "",
+      placeholder: "Số lượng phòng (hay căn hộ, biệt thự,...) bạn muốn bán cho loại phòng (hay loại căn hộ, biệt thự,...) này",
     },
     
     // {

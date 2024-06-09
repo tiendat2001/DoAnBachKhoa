@@ -166,7 +166,7 @@ const ModifyRoom = () => {
                 </div>
               ))}
               {/* test */}
-              <label>Mô tả phòng (tối đa 500 ký tự)</label>
+              <label>Mô tả (tối đa 500 ký tự)</label>
               <textarea
                 id="desc"
                 rows="4" /* Số dòng mặc định hiển thị ban đầu */

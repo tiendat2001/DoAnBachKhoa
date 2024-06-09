@@ -13,7 +13,11 @@ const Policy = () => {
                 <p>Để tránh các vấn đề đặt phòng do nhầm lẫn, chúng tôi tự động miễn phí hủy cho các khách
                     hủy trong vòng 24 giờ kể từ thời điểm đặt. <br />
                     Trong khoảng thời gian 3 ngày trước ngày nhận phòng, quý khách sẽ bị tính phí cho giá đêm đầu nếu hủy đơn đặt phòng.
-                    Quý khách vui lòng cân nhắc kỹ trước khi quyết định hủy đơn đặt phòng.
+                    Quý khách vui lòng cân nhắc kỹ trước khi quyết định hủy đơn đặt phòng.<br />
+                    Đối với chủ chỗ nghỉ, nếu vì một lý do đặc biệt (như phòng bất chợt bị hỏng hóc không thể phục vụ khách), quý vị có thể
+                    yêu cầu khách hủy đơn đặt phòng trong mục "Đơn đặt phòng" và bấm vào nút "Yêu cầu hủy". Khách sẽ nhận được email thông báo
+                    về yêu cầu hủy của quý khách. Tuy nhiên lưu ý rằng đơn đặt phòng vẫn sẽ có hiệu lực cho đến khi khách xác nhận hủy đơn đặt phòng.
+                    Trong trường hợp khách này nếu khách đồng ý hủy đơn đặt phòng, khách sẽ không mất phí hủy và quý vị không nhận được phí hủy.
                 </p>
 
                 <h2>Chính sách thanh toán</h2>

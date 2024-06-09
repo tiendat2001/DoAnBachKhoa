@@ -158,7 +158,7 @@ const ListRoom = () => {
 
                        
                             <button onClick={() => handleNavigation(`/admin/rooms/new`)} style={{ fontSize: '14px', backgroundColor: '#5bf800', border: 'none', 
-                            height: '40px',color:'white',fontWeight:'bold',borderRadius:'5px' }}>Thêm loại phòng</button>
+                            height: '40px',color:'white',fontWeight:'bold',borderRadius:'5px' }}>Thêm loại phòng (loại chỗ ở)</button>
                     </div>
 
 

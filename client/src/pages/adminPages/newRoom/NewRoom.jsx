@@ -156,7 +156,7 @@ const NewRoom = () => {
                                     value={hotelId}
                                     onChange={handleHotelChange}
                                 >
-                                    <option disabled selected>Chọn khách sạn</option>
+                                    <option disabled selected>Chọn chỗ nghỉ</option>
                                     {loading
                                         ? "loading"
                                         : data &&
@@ -200,7 +200,7 @@ const NewRoom = () => {
                                 </div>
                             ))}
                             {/* test */}
-                            <label>Mô tả phòng (tối đa 500 ký tự) </label>
+                            <label>Mô tả (về cơ sở vật chất,...) (tối đa 500 ký tự) </label>
                             <textarea
                                 id="desc"
                                 rows="4" /* Số dòng mặc định hiển thị ban đầu */
