@@ -148,7 +148,7 @@ const RoomDetails = () => {
 
         // tạo lịch sử đóng phòng
         try {
-            const upload = await axios.post(`/closedRoom/${idRoom}`, {
+            const upload = await axios.post(`/closedRoom/createCloseRoom/${idRoom}`, {
                 // ownerId: decodedToken.id,
                 roomTypeId: idRoom,
                 startClose: dates[0].startDate,
@@ -158,6 +158,7 @@ const RoomDetails = () => {
             });
         } catch (err) {
             console.log(err)
+            toast.error("Có lỗi xảy ra")
             return;
         }
         toast.success('Đóng phòng thành công');

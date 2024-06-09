@@ -6,7 +6,7 @@ import multer from 'multer';
 const router = express.Router()
 
 //  CREATE CLOSE ROOM FOR 1 TIME
-router.post("/:roomTypeId",verifyToken,createClosedRoom)
+router.post("/createCloseRoom/:roomTypeId",verifyToken,createClosedRoom)
 
 //GET  CLOSE ROOM by req.user.id, BY ROOMtypeId
 router.get("/:roomTypeId",verifyToken,getAllClosedRoomByRoomTypeId)

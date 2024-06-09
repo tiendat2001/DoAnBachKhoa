@@ -535,7 +535,7 @@ export const statusRoomCount = async (req, res, next) => {
     const currentDate = new Date() // theo UTC
     // console.log(currentDate) 2024-04-30T12:16:05.871Z - time hien tai theo UTC (-7)
     currentDate.setHours(14, 0, 0, 0);  // 7hUTC
-    console.log(currentDate)
+    // console.log(currentDate)
     const roomAvailability = [];
 
     // Lặp qua 30 ngày tiếp theo (tinnhs cả ngày hiện tại)
