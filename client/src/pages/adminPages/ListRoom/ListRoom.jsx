@@ -23,7 +23,7 @@ const ListRoom = () => {
     const { data: hotelData, loading: hotelLoading, error: hotelError, reFetch: hotelReFetch } = useFetch(`/hotels/getByAdmin`);
     const [hotelId, setHotelId] = useState(hotelData.length > 0 ? hotelData[0]._id : null);
     const { data: roomData, loading: roomLoading, error: roomError, reFetch: roomReFetch } = useFetch(`/rooms/${hotelId}`);
-    // lấy ra những đơn đặt phòng trong tương lai
+    // lấy ra những đơn đặt phòng thành công trong tương lai 
     const { data: reservationDataFuture, loading: reservationLoading, error: reservationError,
         reFetch: reservationReFetch } = useFetch(`/reservation/admin/?startDay=${currentDate}&endDay=${endLessDate}&status=1`);
     const navigate = useNavigate()
