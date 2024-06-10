@@ -62,7 +62,7 @@ const RecentSeenHotel = () => {
   const limitedSuggestedHotels = filteredHotels.length > 3 ? filteredHotels.slice(0, 3) : filteredHotels;
 
   return (
-    <div>
+    <div className="recentHotelContainer">
       <h1 style={{fontSize:'20px', }}>Các chỗ nghỉ ở {mostViewedCity}</h1>
       {loading || !mostViewedCity ? (
         "Loading"

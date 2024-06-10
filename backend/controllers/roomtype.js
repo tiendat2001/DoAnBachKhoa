@@ -177,7 +177,7 @@ function delay(ms) {
 }
 // khi đặt phòng
 export const updateRoomAvailability = async (req, res, next) => {
-  console.log("bắt đầu đặt phòng, check khóa")
+  // console.log("bắt đầu đặt phòng, check khóa")
   let lockedRoomTypeIds = []
   try {
     // kiểm tra xem các khóa của các loại phòng cbi đẩy, và khóa lại những id room Type của phòng cbi chỉnh
@@ -190,45 +190,56 @@ export const updateRoomAvailability = async (req, res, next) => {
       // lưu những id type room đã khóa
       lockedRoomTypeIds.push(roomDetail.roomTypeId);
     }
-
-    console.log("khóa đã đc mở, bắt đầu tìm id")
+    // console.log("khóa đã đc mở, bắt đầu tìm id")
     // tìm id phòng nhỏ
     // const selectedRoomIdsReserved = []
+
     // kiểm tra trước khi đẩy ngày xem có đủ phòng ko
-    const totalQuantity = req.body.roomTypeIdsReserved.reduce((acc, roomTypeIdsReserved) => acc + roomTypeIdsReserved.quantity, 0);
-    let idRoomCanSelect =[]; // những id phòng nhỏ thỏa mãn có thể đẩy ngày vào
+    // const totalQuantity = req.body.roomTypeIdsReserved.reduce((acc, roomTypeIdsReserved) => acc + roomTypeIdsReserved.quantity, 0);
+    let totalRoomAvailableAllRoomType =[];
     await Promise.all(req.body.roomTypeIdsReserved.map(async (roomDetail) => {
       const { roomTypeId, quantity } = roomDetail;
-      let selectedQuantityCheck = 0;
-      while (selectedQuantityCheck < quantity) {
-        // duyệt từng date trong mảng req.body.dates (những ngày người dùng đặt)
-        const foundRoom = await Room.findById(roomTypeId)
-        for (let date of req.body.dates) {
-          //Với mỗi date, duyệt qua các phần tử trong mảng roomNumbers
-          // vs những room đã thỏa mãn có thể đẩy ngày thì ko check nữa
-          let availableRoomNumbers = foundRoom.roomNumbers.filter(roomNumber => !idRoomCanSelect.includes(roomNumber._id.toString()));
-          for (let roomNumber of availableRoomNumbers) {
-            // Kiểm tra xem phòng đó có date hiện tại trống ko
-            if (isAvailable(roomNumber, date,false)) {
-              // có phòng thỏa mãn date hiện tại
-              idRoomCanSelect.push(roomNumber._id.toString());
-              break;
-            }
-          };         
+      const foundRoom = await Room.findById(roomTypeId)
+      // let selectedQuantityCheck = 0;
+      let roomAvailable = 999;
+      for (let date of req.body.dates) {
+        let dateAvailableCount = 0;
+        //Với mỗi date, duyệt qua các phần tử trong mảng roomNumbers
+        for (let roomNumber of foundRoom.roomNumbers) {
+          // Kiểm tra xem phòng đó có date hiện tại trống ko
+          if (isAvailable(roomNumber, date,false)) {
+            // có phòng thỏa mãn date hiện tại
+            dateAvailableCount++
+          }
+        };
+        // với mỗi date sau khi lặp hết các room nhỏ, cập nhật roomAvailable (roomAvailable sẽ là 
+        // dateAvailableCount nhỏ nhất trong tất cả các date )
+        if (dateAvailableCount < roomAvailable) {
+          roomAvailable = dateAvailableCount
         }
-        // đã lặp hết các dates, tiếp tục tăng số lượng phòng đã đẩy (trường hợp người dùng chọn số lượng phòng >1)
-        selectedQuantityCheck++
       }
+
+      // roomAvailable là room avai của loại phòng này với những ngày đã chọn
+      let totalRoomAvailableEachRoomType={}
+      totalRoomAvailableEachRoomType.roomTypeId = roomTypeId
+      totalRoomAvailableEachRoomType.roomAvailable=roomAvailable
+      totalRoomAvailableAllRoomType.push(totalRoomAvailableEachRoomType)
     }))
-    // console.log(totalQuantity)
-    // console.log(idRoomCanSelect.length)
-    if(idRoomCanSelect.length< totalQuantity){
-      clearLockedRoomTypeIds(lockedRoomTypeIds);
-      return next(createError(404, "Đã hết phòng. Vui lòng quay lại trang trước và thử lại"));    
-    }
+    // console.log("SỐ lượng khách đặt")
+    // console.log(req.body.roomTypeIdsReserved)
+    // console.log("Số lượng còn trống")
+    // console.log(totalRoomAvailableAllRoomType)
 
-
-    // bắt đầu đẩy ngày
+    // kiểm tra còn phòng trống
+    for (let reserved of req.body.roomTypeIdsReserved) {
+      const availableRoom = totalRoomAvailableAllRoomType.find(room => room.roomTypeId === reserved.roomTypeId);
+      // nếu số lượng phòng cần đặt lớn hơn số phòng avai ở loại phòng đó
+      if (!availableRoom || reserved.quantity > availableRoom.roomAvailable) {
+        clearLockedRoomTypeIds(lockedRoomTypeIds);
+        return next(createError(404, "Đã hết phòng. Vui lòng quay lại trang trước và thử lại"));
+      }
+  }
+    //bắt đầu đẩy ngày
     await Promise.all(req.body.roomTypeIdsReserved.map(async (roomDetail) => {
       const { roomTypeId, quantity } = roomDetail;
       let selectedQuantity = 0; // Số lượng phòng đã chọn
