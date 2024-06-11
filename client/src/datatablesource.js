@@ -6,14 +6,22 @@ export const roomColumns = [
     {
       field: "title",
       headerName: "Tên loại phòng (loại căn hộ, biệt thự,...) ",
-      width: 280,
+      // width: 200,
       align:'center',
-      headerAlign:'center'
+      headerAlign:'center',
+      flex:1,
+      renderHeader: (params) => (
+        <div style={{ whiteSpace: 'normal', textAlign:'center',lineHeight: '1.2' }}>
+          {params.colDef.headerName}
+        </div>
+      )
+      
     },
     {
       field: "desc",
       headerName: "Mô tả ",
-      width: 330,
+      flex:2,
+      // width: 330,
       cellClassName: 'wrap-content', // listReservation.css
       align:'center',
       headerAlign:'center'
@@ -26,7 +34,8 @@ export const roomColumns = [
     {
       field: "price",
       headerName: "Giá mỗi đêm(VND)",
-      width: 140,
+      // width: 140,
+      flex:1,
       valueFormatter: (params) => {
             const formattedValue = new Intl.NumberFormat('vi-VN').format(params.value*1000)
             return `${formattedValue}`;
@@ -38,20 +47,31 @@ export const roomColumns = [
     {
       field: "maxPeople",
       headerName: "Số người",
-      width: 130,
+      // width: 130,
+      flex:1,
       align:'center',
       headerAlign:'center'
     },
     {
       field: "roomCount",
       headerName: "Số lượng",
-      width: 150,
+      flex:1,
+      // width: 150,
       align:'center',
       headerAlign:'center',
       renderCell: (params) => {
           const roomNumbers = params.row.roomNumbers || [];
           return roomNumbers.length;
       }
+    },
+    {
+      field: "status",
+      headerName: "Trạng thái",
+      flex:1,
+      // width: 150,
+      align:'center',
+      headerAlign:'center',
+
     }
     
   ];

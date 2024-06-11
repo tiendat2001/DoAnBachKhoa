@@ -165,7 +165,7 @@ const ListRoom = () => {
                 </div>
 
 
-                <DataGrid autoHeight
+                <DataGrid  getRowHeight={() => 'auto'}
                     className="datagrid"
                     rows={roomData}
                     columns={roomColumns.concat(actionColumn)}

@@ -228,7 +228,7 @@ const ListReservation = () => {
 
 
 
-                    <DataGrid autoHeight
+                    <DataGrid getRowHeight={() => 'auto'}
                         // className="datagrid"
                         rows={reservationData}
                         columns={ReservationColumns.concat(actionColumn)}
