@@ -86,17 +86,16 @@ const NewHotel = () => {
           Object.values(files).map(async (file) => {
             const data = new FormData();
             data.append("file", file);
-            data.append("upload_preset", "upload");
             const uploadRes = await axios.post(
-              "https://api.cloudinary.com/v1_1/tiendat2001/image/upload",
+              `/closedRoom/upload/uploadImage`,
               data
             );
-            // console.log(uploadRes.data)
+  
             const { url } = uploadRes.data;
             return url;
           })
         );
-        
+
         const newhotel = {
           ...info,
           photos: list,
@@ -107,6 +106,10 @@ const NewHotel = () => {
         const Success = await axios.post("/hotels", newhotel);
         if (Success) {
           toast.success('Thành công!');
+          toast.warning(`Vẫn chưa xong! Hãy tiếp tục thêm chi tiết về loại phòng ở chỗ nghỉ của bạn ở mục "Phòng". Chỗ nghỉ
+          của bạn sẽ được đăng sau khi có ít nhất 1 loại phòng`, {
+            autoClose: 20000,
+            });
           navigate("/admin/hotels");
 
         } else toast.error("Có lỗi xảy ra.Vui lòng tải lại trang và thử lại");
@@ -179,8 +182,13 @@ const NewHotel = () => {
                   <option value="Resort" >Resort</option>
 
                 </select>
+                {info.type == "Căn hộ" || info.type == "Biệt thự" || info.type == "Resort" ?
+                  (
+                    <div style={{fontStyle:'italic'}}>(Trong trường hợp bạn muốn bán nhiều {info.type} tại cùng 1 địa chỉ, bạn chỉ cần tạo 1 chỗ nghỉ sau đó thêm
+                    nhiều loại {info.type} ở mục "Phòng". Trong trường hợp bạn chỉ bán 1 {info.type} thì chỉ thêm 1 loại). </div>
+                  )
+                  : ""}
               </div>
-
               {/* render các trường */}
               {hotelInputs.map((input) => (
                 <div className="formInput" key={input.id}>

@@ -78,11 +78,11 @@ const ListHotel = () => {
                 reFetch();
                 toast.success('Xóa thành công');
             } else {
-                toast.error('Failed to delete hotel. Please try again.');
+                toast.error('Có lỗi xảy ra vui lòng thử lại');
             }
         } catch (error) {
             console.error('Error deleting hotel:', error);
-            toast.error('An error occurred while deleting hotel.');
+            toast.error('Có lỗi xảy ra vui lòng thử lại');
         }
     };
 
@@ -106,7 +106,7 @@ const ListHotel = () => {
 
                         <>
                             {data.length === 0 ? (
-                                <div>Bạn chưa có chỗ nghỉ nào</div>
+                                <div>Bạn chưa có chỗ nghỉ nào. Hãy thêm chỗ nghỉ bằng cách ấn nút "Thêm chỗ nghỉ"</div>
                             ) : (
                                 data.map((item) => (
                                     <div className="listHotelAdmin" key={item._id}>

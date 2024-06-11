@@ -70,18 +70,17 @@ const NewRoom = () => {
             }
             const list = await Promise.all(
                 Object.values(files).map(async (file) => {
-                    const data = new FormData();
-                    data.append("file", file);
-                    data.append("upload_preset", "upload");
-                    const uploadRes = await axios.post(
-                        "https://api.cloudinary.com/v1_1/tiendat2001/image/upload",
-                        data
-                    );
-                    // console.log(uploadRes.data)
-                    const { url } = uploadRes.data;
-                    return url;
+                  const data = new FormData();
+                  data.append("file", file);
+                  const uploadRes = await axios.post(
+                    `/closedRoom/upload/uploadImage`,
+                    data
+                  );
+        
+                  const { url } = uploadRes.data;
+                  return url;
                 })
-            );
+              );
 
 
 
