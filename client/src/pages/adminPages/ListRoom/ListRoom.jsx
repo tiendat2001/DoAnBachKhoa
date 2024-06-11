@@ -30,18 +30,19 @@ const ListRoom = () => {
     const location = useLocation();
     // lấy hotel id nếu người dùng vừa tạo phòng hoặc chỉnh phòng xong
     const hotelIdFromAddModifyRoom = location.state?.hotelIdFromAddModifyRoom;
+
     const handleHotelChange = (e) => {
         setHotelId(e.target.value);
     };
     useEffect(() => {
         // setHotelId(hotelData[0]?._id)
-         setHotelId(hotelIdFromAddModifyRoom)
+        setHotelId(hotelIdFromAddModifyRoom)
     }, [hotelData]);
     // console.log(roomData)
 
     // chuyển hướng
     const handleNavigation = (path) => {
-        navigate(path, { state: { previousPath: '/admin/rooms', hotelIdFromListRoom:hotelId } });
+        navigate(path, { state: { previousPath: '/admin/rooms', hotelIdFromListRoom: hotelId } });
     };
     const handleDelete = (typeRoomId) => {
         // // Kiểm tra xem phòng đấy có đơn sắp tới ko
@@ -95,16 +96,51 @@ const ListRoom = () => {
                 toast.error('Có lỗi xảy ra. Vui lòng thử lại');
             }
         } catch (error) {
-            console.error('Error deleting hotel:', error);
-            toast.error('An error occurred while deleting hotel.');
+            console.error('Error ', error);
+            toast.error('Có lỗi xảy ra. Vui lòng thử lại');
         }
     }
-    // thêm cột xóa sửa
+
+    // hàm chỉnh trạng thái loại phòng
+    const changeStatusRoomType = async (roomTypeId, currentStatus) => {
+        try {
+            const Success = await axios.put(`/rooms/${roomTypeId}`, {
+                status: !currentStatus
+            });
+            // Nếu thành công, tải lại dữ liệu
+            roomReFetch();
+            toast.success('Chỉnh trạng thái thành công');
+        } catch (error) {
+            console.error('Error ', error);
+            toast.error('Có lỗi xảy ra. Vui lòng thử lại');
+        }
+    }
+
+    // thêm cột status và xóa sửa
     const actionColumn = [
+        {
+            field: "status",
+            headerName: "Trạng thái",
+            flex: 1,
+            // width: 150,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: (params) => {
+                return (
+                    <div style={{
+                        color: params.value ? 'green' : 'red',
+                        fontWeight: 'bold', cursor:'pointer'
+                    }} onClick={() => changeStatusRoomType(params.row._id, params.row.status)}>
+                        {params.value ? 'HOẠT ĐỘNG' : 'DỪNG'}
+                    </div>
+                )
+            }
+        },
         {
             field: "action",
             headerName: "Hành động",
-            width: 270,
+            // width: 270,
+            flex: 1.75,
             headerAlign: 'center',
             renderCell: (params) => {
                 return (
@@ -156,16 +192,18 @@ const ListRoom = () => {
 
                         </div>
 
-                       
-                            <button onClick={() => handleNavigation(`/admin/rooms/new`)} style={{ fontSize: '14px', backgroundColor: '#5bf800', border: 'none', 
-                            height: '40px',color:'white',fontWeight:'bold',borderRadius:'5px' }}>Thêm loại phòng (loại chỗ ở)</button>
+
+                        <button onClick={() => handleNavigation(`/admin/rooms/new`)} style={{
+                            fontSize: '14px', backgroundColor: '#5bf800', border: 'none',
+                            height: '40px', color: 'white', fontWeight: 'bold', borderRadius: '5px'
+                        }}>Thêm loại phòng (loại chỗ ở)</button>
                     </div>
 
 
                 </div>
 
 
-                <DataGrid  getRowHeight={() => 'auto'}
+                <DataGrid autoHeight getRowHeight={() => 'auto'}
                     className="datagrid"
                     rows={roomData}
                     columns={roomColumns.concat(actionColumn)}
@@ -177,6 +215,12 @@ const ListRoom = () => {
                         noRowsLabel: <span style={{ color: 'red' }}>Bạn chưa chọn chỗ nghỉ hoặc chỗ nghỉ này chưa có phòng</span>,
                     }}
                 />
+
+                <div style={{ fontStyle: 'italic',width:'95%',margin:'auto' }}>
+                    (Nếu bạn muốn tạm dừng bán một loại phòng (loại căn hộ, biệt thự,.. ) nào đó,
+                    bạn có thể bấm vào ô hiển thị trạng thái để chỉnh trạng thái  
+                    . Những loại phòng ở trạng thái "DỪNG" sẽ không hiển thị đối với khách).
+                </div>
 
 
 

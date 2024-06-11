@@ -10,7 +10,7 @@ const SearchItem = ({ item }) => {
   const { dates, options } = useContext(SearchContext);
   const [roomInSearchItem, setroomInSearchItem] = useState(1);
   // lấy ra các loại phòng của hotel này
-  const { data: allTypeRoom, loading, error, reFetch } = useFetch(`/rooms/${item._id}`);
+  const { data: allTypeRoom, loading, error, reFetch } = useFetch(`/rooms/${item._id}/?status=true`);
   // console.log(allTypeRoom)
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   function dayDifference(date1, date2) {

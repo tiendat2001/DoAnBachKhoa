@@ -1,4 +1,4 @@
-.datatable {
+/* .datatable {
     height: 600px;
     padding: 20px;
 }
@@ -47,7 +47,7 @@
 .datatable .cellWithStatus.passive {
     background-color: rgba(255, 0, 0, 0.05);
     color: crimson;
-}
+} */
  .cellAction {
      margin:auto;
     display: flex;

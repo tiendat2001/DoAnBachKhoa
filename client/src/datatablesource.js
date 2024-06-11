@@ -9,7 +9,7 @@ export const roomColumns = [
       // width: 200,
       align:'center',
       headerAlign:'center',
-      flex:1,
+      flex:1.25,
       renderHeader: (params) => (
         <div style={{ whiteSpace: 'normal', textAlign:'center',lineHeight: '1.2' }}>
           {params.colDef.headerName}
@@ -48,14 +48,14 @@ export const roomColumns = [
       field: "maxPeople",
       headerName: "Số người",
       // width: 130,
-      flex:1,
+      flex:0.5,
       align:'center',
       headerAlign:'center'
     },
     {
       field: "roomCount",
       headerName: "Số lượng",
-      flex:1,
+      flex:0.5,
       // width: 150,
       align:'center',
       headerAlign:'center',
@@ -64,20 +64,11 @@ export const roomColumns = [
           return roomNumbers.length;
       }
     },
-    {
-      field: "status",
-      headerName: "Trạng thái",
-      flex:1,
-      // width: 150,
-      align:'center',
-      headerAlign:'center',
-
-    }
-    
+ 
   ];
 
 
-// ------------------order
+
   const formatDate = (date) => {
     let dateFormat = new Date(date)
     // const [month, day, year] = dateFormat.toLocaleDateString().split('/');
@@ -87,10 +78,11 @@ export const roomColumns = [
 
   // cột danh sách reservations
   export const ReservationColumns = [
-    { field: "_id", headerName: "Mã đặt phòng", width: 140 },
+    { field: "_id", headerName: "Mã đặt phòng",flex:1, width: 140 },
     {
       field: "start",
       headerName: "Check-in",
+      flex:1,
       width: 90,
       valueFormatter: (params) => formatDate(params.value),
       headerAlign: 'center',
@@ -101,6 +93,7 @@ export const roomColumns = [
     {
       field: "end",
       headerName: "Check-out",
+      flex:1,
       width: 90,
       valueFormatter: (params) => formatDate(params.value),
       headerAlign: 'center',
@@ -111,6 +104,7 @@ export const roomColumns = [
     {
       field: "roomsDetail",
       headerName: "Phòng",
+      flex:2,
       width: 250,
       cellClassName: 'wrap-content', // xuống dòng khi nội dung dài
       headerAlign: 'center',
@@ -129,6 +123,7 @@ export const roomColumns = [
       field: "guest",
       headerName: "Số người",
       width: 100,
+      flex:1,
       cellClassName: 'wrap-content', // xuống dòng khi nội dung dài
       headerAlign: 'center',
       align:'center',
@@ -141,6 +136,7 @@ export const roomColumns = [
     {
       field: "totalPrice",
       headerName: "Tổng giá",
+      flex:1,
       width: 100,
       valueFormatter: (params) => {
         if (params.value !== null) {

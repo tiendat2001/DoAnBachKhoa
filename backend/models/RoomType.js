@@ -26,6 +26,11 @@ const RoomTypeSchema = new mongoose.Schema({
         type: String,
         required:true
     },
+    status:{
+        type: Boolean,
+        default:true
+    },
+
     roomNumbers:[
         {   
             // number:Number, 

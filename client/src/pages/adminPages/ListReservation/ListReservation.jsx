@@ -133,6 +133,7 @@ const ListReservation = () => {
         {
             field: "action",
             headerName: "Yêu cầu hủy",
+            flex:1,
             minWidth: 120,
             headerAlign: 'center',
 
@@ -228,11 +229,11 @@ const ListReservation = () => {
 
 
 
-                    <DataGrid getRowHeight={() => 'auto'}
+                    <DataGrid autoHeight rowHeight={60}
                         // className="datagrid"
                         rows={reservationData}
                         columns={ReservationColumns.concat(actionColumn)}
-                        pageSize={5}
+                        pageSize={8}
                         rowsPerPageOptions={[5]}
                         // checkboxSelection
                         getRowId={(row) => row._id}

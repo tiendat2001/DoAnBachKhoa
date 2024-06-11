@@ -23,7 +23,7 @@ import { toast } from 'react-toastify';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ListRoomClient = ({ hotelId, hotelType }) => {
-  const { data, loading, error, reFetch } = useFetch(`/rooms/${hotelId}`);
+  const { data, loading, error, reFetch } = useFetch(`/rooms/${hotelId}/?status=true`);
   const [selectedRooms, setSelectedRooms] = useState([]);
   const searchContext = useContext(SearchContext);
   const [dates, setDates] = useState(searchContext.dates);

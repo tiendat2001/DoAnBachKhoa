@@ -92,7 +92,15 @@ export const deleteRoom = async (req, res, next) => {
 //GET ROOM BY HOTEL ID
 export const getRoomsByHotelId = async (req, res, next) => {
   try {
-    const rooms = await Room.find({ hotelId: req.params.hotelid });
+    // const result = await Room.updateMany({}, { $set: { status: true } });
+    let rooms;
+    // chỉ lấy phòng có status là true cho client
+    if(req.query.status){
+       rooms = await Room.find({ hotelId: req.params.hotelId,status:true});
+    }else{
+      rooms = await Room.find({ hotelId: req.params.hotelId});
+    }
+   
     res.status(200).json(rooms);
   } catch (err) {
     next(err);

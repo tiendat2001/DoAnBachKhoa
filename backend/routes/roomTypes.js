@@ -27,7 +27,7 @@ router.put("/changeStatusRoomInRoomType/:roomId",verifyToken, changeStatusRoomIn
 //DELETE ROOM
 router.delete("/:id", verifyToken, deleteRoom);
 //GET ROOM TYPE BY HOTEL ID
-router.get("/:hotelid", getRoomsByHotelId);
+router.get("/:hotelId", getRoomsByHotelId);
 
 //GET ROOM BY ROOM ID
 router.get("/find/:roomid", getRoomById);
