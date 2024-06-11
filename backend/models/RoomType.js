@@ -39,7 +39,7 @@ const RoomTypeSchema = new mongoose.Schema({
                 }
             ]
         }
-                ], // them status, neu unavai ko rong thi ko dc de status hủy, them id tu gen
+                ], 
 },
 { timestamps : true }
 );

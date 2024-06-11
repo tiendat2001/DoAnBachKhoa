@@ -34,6 +34,16 @@ app.use(cors())
 app.use(cookieParser()) // dung cookie
 // de gui json dc
 app.use(express.json())
+// const checkOrigin = (req, res, next) => {
+//     const forwardedHost = req.headers['x-forwarded-host'];
+//     if (forwardedHost === 'localhost:3000') {
+//         next();
+//     } else {
+//         res.status(403).send('Forbidden');
+//     }
+// };
+
+// app.use(checkOrigin); // Apply the checkOrigin middleware to all routes
 // su dung nhung duong dan nay se tiep tuc xu ly trong file routes
 app.use("/api/auth", authRoute)
 app.use("/api/users", usersRoute)

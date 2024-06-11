@@ -30,7 +30,7 @@ export const getAllReservations = async (req, res, next) => {
 // lấy đơn đặt theo điều kiện (theo idOwnerHotel- so sánh với req.user.id trong token, và theo khoảng ngày)
 export const getReservationsByAdmin = async (req, res, next) => {
     try {
-        const { startDay, endDay, ...query } = req.query;
+        const { startDay, endDay,status, ...query } = req.query;
         // console.log(startDay) 14h GMT+7
         // console.log(new Date(startDay)) 14h UTC
         let startDayRange;
@@ -39,6 +39,10 @@ export const getReservationsByAdmin = async (req, res, next) => {
 
         // tìm kiếm theo idOwnerHotel - những đơn của chủ tài khoản (req.user.id lấy từ req.cookie do chạy middlewware verifyToken)
         query.idOwnerHotel = req.user.id;
+        // lấy những đơn ko ở trạng thái hủy - tức khác 0
+        if(status === "success"){
+            query.status = { $ne: 0 };
+        }
         // Kiểm tra nếu startDay và endDay tồn tại trong req.query
         if (startDay && endDay) {
             // startDayRange = subHours(new Date(startDay), 7);

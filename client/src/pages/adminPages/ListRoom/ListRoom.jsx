@@ -25,7 +25,7 @@ const ListRoom = () => {
     const { data: roomData, loading: roomLoading, error: roomError, reFetch: roomReFetch } = useFetch(`/rooms/${hotelId}`);
     // lấy ra những đơn đặt phòng trong tương lai
     const { data: reservationDataFuture, loading: reservationLoading, error: reservationError,
-        reFetch: reservationReFetch } = useFetch(`/reservation/admin/?startDay=${currentDate}&endDay=${endLessDate}&status=1`);
+        reFetch: reservationReFetch } = useFetch(`/reservation/admin/?startDay=${currentDate}&endDay=${endLessDate}&status="success"`);
     const navigate = useNavigate()
     const location = useLocation();
     // lấy hotel id nếu người dùng vừa tạo phòng hoặc chỉnh phòng xong
@@ -56,7 +56,7 @@ const ListRoom = () => {
 
         // Nếu có phần tử thỏa mãn điều kiện, hiển thị thông báo lỗi
         if (hasMatchingTypeRoomId) {
-            toast.error("Loại phòng này sắp có đơn đặt sắp tới")
+            toast.error("Loại phòng này có đơn đặt sắp tới! Không thể xóa")
             return; // Dừng hàm
         }
         // xacs nhan xoa
