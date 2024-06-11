@@ -349,7 +349,7 @@ const RoomDetails = () => {
 
                         </div>
 
-                        <div style={{ fontWeight: 'bold', fontSize: '20px', marginTop: '20px' }}>Lịch sử đóng phòng</div>
+                        <div style={{ fontWeight: 'bold', fontSize: '20px', marginTop: '20px' }}>Lịch sử đơn đóng phòng</div>
 
                         <div className="listRoomClosed">
                             {/* hàng tiêu đề */}

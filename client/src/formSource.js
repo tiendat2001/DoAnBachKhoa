@@ -49,7 +49,7 @@ export const hotelInputs = [
       id: "title",
       label: "Tên loại phòng (hay loại căn hộ, biệt thự,...) của bạn",
       type: "text",
-      placeholder: "",
+      placeholder: "VD: Phòng Deluxe giường đôi, Căn hộ 2 ngủ,...",
     },
     {
       id: "maxPeople",

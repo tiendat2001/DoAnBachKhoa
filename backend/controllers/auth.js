@@ -63,6 +63,7 @@ export const logout = (req, res) => {
 }
 
 export const changePassword = async (req, res,next) => {
+  // tim user theo id tu token trong cookie
   const user = await User.findById(req.user.id)
   if (!user) return next(createError(404, "User not found!"));
   const isOldPasswordCorrect = await bcrypt.compare(

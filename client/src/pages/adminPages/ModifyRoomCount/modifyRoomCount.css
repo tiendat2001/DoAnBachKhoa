@@ -35,3 +35,6 @@
 .modifyRoomCount input{
     width: 40px;
 }
+.roomNumber_btn{
+    width: 100%!important;
+}

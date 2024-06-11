@@ -21,10 +21,22 @@ const ModifyRoomCount = () => {
     if (previousPath !== '/admin/rooms/smallRoomDetails') {
         navigate('/admin/rooms');
     }
-    const handleCloseRoom = async (roomId) => {
+    const handleCloseRoom = async (roomId, currentStatus) => {
         // console.log("Room ID to delete:", roomId);
         // Thêm logic xử lý xóa phần tử ở đây
         try {
+            // neu trang thai hien tai la true, tức đang mở và người dùng muốn đóng
+            if (currentStatus) {
+                for (const room of roomTypeData.roomNumbers) {
+                    // nếu vẫn còn loại phòng xóa được
+                    if (canDelete(room)) {
+                        toast.error("Nếu bạn muốn giảm số lượng phòng bán,hãy xóa hết phòng trước thay vì đóng phòng")
+                        return;
+                    }
+                }
+
+            }
+            
             const res = await axios.put(`/rooms/changeStatusRoomInRoomType/${roomId}`)
 
             if (res.status === 200) {
@@ -90,6 +102,8 @@ const ModifyRoomCount = () => {
                 reFetch(); // Thực hiện lại fetch dữ liệu nếu cần
             }
         } catch (error) {
+            toast.error(error.response.data.message)
+            reFetch();
             console.log(error);
         }
     };
@@ -112,22 +126,23 @@ const ModifyRoomCount = () => {
                                 min={1}
                             />
                         </label>
-                        <button  style={{ backgroundColor: 'rgb(91, 248, 0)' }} className="modifyRoomCount_btn" onClick={submitAddRoom}>Thêm</button>
+                        <button style={{ backgroundColor: 'rgb(91, 248, 0)' }} className="modifyRoomCount_btn" onClick={submitAddRoom}>Thêm</button>
                         <label style={{ display: 'flex', justifyContent: 'flex-start', gap: '10px', alignItems: 'center' }}>
                             Nhập lượng phòng cần xóa:
                             <input
                                 type="number"
                                 value={roomCountToDelete}
                                 onChange={handleRoomCountToDeleteChange}
-                                max = {roomTypeData.roomNumbers?.length-1} // ko đc xóa hết tất cả phòng trong loại phòng đấy
+                                max={roomTypeData.roomNumbers?.length} 
                                 min={1}
                             />
                         </label>
-                        <button  style={{ backgroundColor: 'red' }} className="modifyRoomCount_btn" onClick={submitDeleteRoom}>Xoá</button>
+                        <button style={{ backgroundColor: 'red' }} className="modifyRoomCount_btn" onClick={submitDeleteRoom}>Xoá</button>
                     </div>
 
-                    <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Với những phòng đã có người đặt hoặc bạn đã đóng trong thời gian tới sẽ hiện màu đỏ,
-                        không thể xóa được. Tuy nhiên,nếu bạn không muốn phòng đó nhận thêm khách đặt nữa, bạn có thể đóng phòng đó.)</div>
+                    <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Với những phòng đã có đơn đặt phòng hoặc đơn đóng phòng trong thời gian tới sẽ hiện màu đỏ,
+                        không thể xóa được. Trong trường hợp đó,nếu bạn muốn giảm số lượng phòng muốn bán, bạn có thể đóng phòng.
+                        Lưu ý rằng chỉ đóng phòng trong trường hợp bạn không thể xóa phòng)</div>
                     {/*  danh sách phòng */}
                     <div style={{ backgroundColor: '#ccc' }} className="roomNumberContainer">
                         <div className="roomNumber">STT</div>
@@ -139,11 +154,21 @@ const ModifyRoomCount = () => {
                         <div key={index} className="roomNumberContainer" style={{ backgroundColor: canDelete(roomNumber) ? '' : 'red' }}>
 
                             <div className="roomNumber">{index + 1}</div>
-                            <div className="roomNumber" style={{fontWeight:'unset'}}>{roomNumber._id}</div>
+                            <div className="roomNumber" style={{ fontWeight: 'unset' }}>{roomNumber._id}</div>
                             <div className="roomNumber" style={{ color: roomNumber.status ? 'green' : 'yellow' }}>
                                 {roomNumber.status ? 'Mở' : 'Đóng'}
-                            </div>                            
-                            <button style={{ width: '20%' }}  onClick={() => handleCloseRoom(roomNumber._id)}>Đóng/Mở</button>
+                            </div>
+                            {/* nếu ko xóa được thì mới hiện nút đóng/mở */}
+                            {!canDelete(roomNumber) ? (
+                                <div className="roomNumber">
+                                    <button className="roomNumber_btn" onClick={() => handleCloseRoom(roomNumber._id, roomNumber.status)}>Đóng/Mở</button>
+                                </div>
+
+                            ) : (
+                                <div className="roomNumber">
+                                </div>
+                            )}
+
                         </div>
                     ))}
 

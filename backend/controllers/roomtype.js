@@ -640,6 +640,7 @@ export const deleteRoomInRoomType = async (req, res, next) => {
         i--; // Giảm chỉ số để không bỏ qua phần tử sau khi xóa
         roomCountToDelete--; // Giảm số lượng phần tử cần xóa
       }
+      // else chỉnh status ở đây , nhưng ko có i--
       // Nếu số lượng phần tử cần xóa đã đạt được, thoát khỏi vòng lặp
       if (roomCountToDelete == 0) {
         break;
@@ -647,6 +648,9 @@ export const deleteRoomInRoomType = async (req, res, next) => {
     }
     // Lưu lại thông tin phòng sau khi xóa
     const updatedRoom = await room.save();
+    if(roomCountToDelete !=0){
+      return next(createError(404, `Có ${roomCountToDelete} phòng không thể xóa! Hãy đóng thay vì xóa`));
+    }
     res.status(200).json({ message: 'Đã xóa phòng thành công', room: updatedRoom });
   } catch (error) {
     console.error('Lỗi khi xóa phòng:', error);
