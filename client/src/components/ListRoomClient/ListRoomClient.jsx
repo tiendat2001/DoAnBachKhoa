@@ -216,8 +216,8 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
           <FontAwesomeIcon icon={faCalendarDays} className="RoomClientContainer_icon" />
           <span onClick={() => setOpenDate(!openDate)}>{`${format(
             dates[0].startDate,
-            "MM/dd/yyyy"
-          )} to ${format(dates[0].endDate, "MM/dd/yyyy")}`}</span>
+            "dd/MM/yyyy"
+          )} to ${format(dates[0].endDate, "dd/MM/yyyy")}`}</span>
           {openDate && (
             <DateRange
               onChange={(item) => handleDayChange(item)}

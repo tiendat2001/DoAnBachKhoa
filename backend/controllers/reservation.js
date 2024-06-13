@@ -39,8 +39,8 @@ export const getReservationsByAdmin = async (req, res, next) => {
 
         // tìm kiếm theo idOwnerHotel - những đơn của chủ tài khoản (req.user.id lấy từ req.cookie do chạy middlewware verifyToken)
         query.idOwnerHotel = req.user.id;
-        // lấy những đơn ko ở trạng thái hủy - tức khác 0
-        if(status === "success"){
+        // lấy những đơn ko ở trạng thái hủy - tức khác 0 
+        if(status){
             query.status = { $ne: 0 };
         }
         // Kiểm tra nếu startDay và endDay tồn tại trong req.query

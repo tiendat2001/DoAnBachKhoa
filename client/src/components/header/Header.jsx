@@ -162,6 +162,8 @@ const Header = ({ type }) => {
                          endDate = addDays(new Date(startDate), 1);
                       }
                       // 14+ getTimezoneOffset Múi giờ lệch ở khách sạn mà nó đặt thay cho số 7
+                      // khi lấy từ lịch giờ đang để 0, với việt nam thì utc là -7, startDate sẽ là 14h, vì csdl lưu 7hUTC lên client thành 14h GMT+7
+                      // nếu máy client để múi giờ GMT -1, tức startDate sẽ để 6h, csdl lưu 7h UTC nên lên client thành 6h => giống nhau để so ngày
                       startDate = addHours(startDate, 7 - utc);
                       endDate = addHours(endDate, 7 - utc);
                       setDates([{ ...newSelection, startDate, endDate }]);

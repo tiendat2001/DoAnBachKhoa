@@ -244,13 +244,13 @@ const RoomDetails = () => {
 
                 <div key={key} className="detailsRoomTypeContainer">
                     <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                        <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>
+                        <div style={{ fontSize: '20px', fontWeight: 'bold' }}>Loại phòng/căn: {roomTypeData.title} (tổng số lượng phòng/căn: {roomTypeData.roomNumbers?.length})</div>
                         <button  className="detailsRoomTypeContainer_modifyNumberRooms"  onClick={() => navigate(`/admin/rooms/smallRoomDetails/modifyRoomCount/${idRoom}`, { state: { previousPath: '/admin/rooms/smallRoomDetails' } })}>Chỉnh số lượng</button>
 
                     </div>
 
                     <div style={{ fontWeight: 'bold' }}>
-                        Số lượng phòng đang rao bán trong 30 ngày tới
+                        Số lượng phòng/căn đang rao bán trong 30 ngày tới
 
                     </div>
                     <div className="tableRoomStatus">
@@ -271,8 +271,8 @@ const RoomDetails = () => {
 
 
                     <div className="closeRoomContainer">
-                        <div style={{ fontWeight: 'bold', fontSize: '20px' }}>Đóng phòng</div>
-                        <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Bạn có thể đóng 1 số lượng phòng vào trong 1 khoảng ngày nhất định)</div>
+                        <div style={{ fontWeight: 'bold', fontSize: '20px' }}>Đóng phòng/căn</div>
+                        <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Bạn có thể đóng 1 số lượng phòng/căn vào trong 1 khoảng ngày nhất định)</div>
 
                         <div className="selectRoomClose">
                             {/* thanh chọn khoảng ngày muốn đóng phòng */}

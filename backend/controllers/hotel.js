@@ -77,7 +77,7 @@ export const getHotels = async (req, res, next) => {
     if (city && city !== '') {
       query.city = { $regex: city, $options: 'i' };
     }
-    if (type && type !== '') { // Kiểm tra và thêm type vào query nếu không rỗng
+    if (type && type !== '') { // Kiểm tra và thêm type vào query nếu không rỗng, nếu rỗng thì coi như ko có và lấy tất cả
       query.type = type;
     }
     const hotels = await Hotel.aggregate([
@@ -154,15 +154,15 @@ export const countByType = async (req, res, next) => {
   try {
     const hotelCount = await Hotel.countDocuments({ type: "Khách sạn" });
     const apartmentCount = await Hotel.countDocuments({ type: "Căn hộ" });
-    const resortCount = await Hotel.countDocuments({ type: "resort" });
-    const villaCount = await Hotel.countDocuments({ type: "villa" });
+    const resortCount = await Hotel.countDocuments({ type: "Resort" });
+    const villaCount = await Hotel.countDocuments({ type: "Biệt thự" });
     const cabinCount = await Hotel.countDocuments({ type: "cabin" });
 
     res.status(200).json([
       { type: "Khách sạn", count: hotelCount },
       { type: "Căn hộ", count: apartmentCount },
-      { type: "resorts", count: resortCount },
-      { type: "villas", count: villaCount },
+      { type: "Resort", count: resortCount },
+      { type: "Biệt thự", count: villaCount },
       { type: "cabins", count: cabinCount },
     ]);
   } catch (err) {

@@ -26,6 +26,7 @@ const ListRoom = () => {
     // lấy ra những đơn đặt phòng trong tương lai
     const { data: reservationDataFuture, loading: reservationLoading, error: reservationError,
         reFetch: reservationReFetch } = useFetch(`/reservation/admin/?startDay=${currentDate}&endDay=${endLessDate}&status="success"`);
+    console.log(reservationDataFuture)
     const navigate = useNavigate()
     const location = useLocation();
     // lấy hotel id nếu người dùng vừa tạo phòng hoặc chỉnh phòng xong
@@ -35,8 +36,11 @@ const ListRoom = () => {
         setHotelId(e.target.value);
     };
     useEffect(() => {
-        // setHotelId(hotelData[0]?._id)
-        setHotelId(hotelIdFromAddModifyRoom)
+        if (hotelIdFromAddModifyRoom) {
+            setHotelId(hotelIdFromAddModifyRoom)
+        } else {
+            setHotelId(hotelData[0]?._id)
+        }
     }, [hotelData]);
     // console.log(roomData)
 
@@ -62,18 +66,18 @@ const ListRoom = () => {
         }
         // xacs nhan xoa
         confirmAlert({
-            title: 'Confirm',
+            title: 'Xác nhận',
             message: 'Bạn có chắc chắn muốn xóa loại phòng này?',
             buttons: [
                 {
-                    label: 'Yes',
+                    label: 'Có',
                     onClick: () => {
-                        // Xác nhận xóa khách sạn
+                        // Xác nhận xóa phòng
                         deleteRoom(typeRoomId);
                     }
                 },
                 {
-                    label: 'No',
+                    label: 'Không',
                     onClick: () => {
                         // Không làm gì cả
                     }
@@ -103,17 +107,36 @@ const ListRoom = () => {
 
     // hàm chỉnh trạng thái loại phòng
     const changeStatusRoomType = async (roomTypeId, currentStatus) => {
-        try {
-            const Success = await axios.put(`/rooms/${roomTypeId}`, {
-                status: !currentStatus
-            });
-            // Nếu thành công, tải lại dữ liệu
-            roomReFetch();
-            toast.success('Chỉnh trạng thái thành công');
-        } catch (error) {
-            console.error('Error ', error);
-            toast.error('Có lỗi xảy ra. Vui lòng thử lại');
-        }
+        confirmAlert({
+            title: 'Xác nhận',
+            message: 'Bạn có chắc chắn muốn chỉnh trạng thái loại phòng/căn này?',
+            buttons: [
+                {
+                    label: 'Có',
+                    onClick: async () => {
+                        // Xác nhận xóa phòng
+                        try {
+                            const Success = await axios.put(`/rooms/${roomTypeId}`, {
+                                status: !currentStatus
+                            });
+                            // Nếu thành công, tải lại dữ liệu
+                            roomReFetch();
+                            toast.success('Chỉnh trạng thái thành công');
+                        } catch (error) {
+                            console.error('Error ', error);
+                            toast.error('Có lỗi xảy ra. Vui lòng thử lại');
+                        }
+                    }
+                },
+                {
+                    label: 'Không',
+                    onClick: () => {
+                        // Không làm gì cả
+                    }
+                }
+            ]
+        });
+
     }
 
     // thêm cột status và xóa sửa
@@ -129,7 +152,7 @@ const ListRoom = () => {
                 return (
                     <div style={{
                         color: params.value ? 'green' : 'red',
-                        fontWeight: 'bold', cursor:'pointer'
+                        fontWeight: 'bold', cursor: 'pointer'
                     }} onClick={() => changeStatusRoomType(params.row._id, params.row.status)}>
                         {params.value ? 'HOẠT ĐỘNG' : 'DỪNG'}
                     </div>
@@ -216,9 +239,9 @@ const ListRoom = () => {
                     }}
                 />
 
-                <div style={{ fontStyle: 'italic',width:'95%',margin:'auto' }}>
+                <div style={{ fontStyle: 'italic', width: '95%', margin: 'auto' }}>
                     (Nếu bạn muốn tạm dừng bán một loại phòng (loại căn hộ, biệt thự,.. ) nào đó,
-                    bạn có thể bấm vào ô hiển thị trạng thái để chỉnh trạng thái  
+                    bạn có thể bấm vào ô hiển thị trạng thái để chỉnh trạng thái
                     . Những loại phòng ở trạng thái "DỪNG" sẽ không hiển thị đối với khách).
                 </div>
 

@@ -22,7 +22,7 @@ const List = () => {
   const [suggestedDestination, setSuggestedDestination] = useState([]);
   const [min, setMin] = useState(100);
   const [max, setMax] = useState(10000);
-  const [type, setType] = useState("");
+  const [type, setType] = useState(location.state?.typeFromPropertyList ?? "");
   const [selectedFacilities, setSelectedFacilities] = useState([]);
   const [sortOrder, setSortOrder] = useState('asc');
   // console.log(dates)

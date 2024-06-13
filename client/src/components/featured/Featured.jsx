@@ -8,6 +8,7 @@ import React from "react";
 import { SearchContext } from "../../context/SearchContext";
 import { listProvinces } from "../../listObject";
 const Featured = () => {
+  // phân loại theo địa điểm
   const { data, loading, error } = useFetch(
     "/hotels/countByCity"
   );
