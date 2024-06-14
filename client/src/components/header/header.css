@@ -60,7 +60,8 @@
   padding: 10px 0px;
   border-radius: 5px;
   position: absolute;
-  bottom: -25px;
+  /* theo vi tri của header */
+  bottom: -25px; 
   width: 100%;
   max-width: 1024px;
 }

@@ -12,6 +12,7 @@ import { SearchContext } from "../../context/SearchContext";
 import { addDays, addHours } from 'date-fns';
 import { listProvinces } from "../../listObject";
 import { hotelFacilities } from "../../formSource";
+import Footer from "../../components/footer/Footer";
 const List = () => {
   const location = useLocation();
   const searchContext = useContext(SearchContext);
@@ -335,6 +336,7 @@ const List = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

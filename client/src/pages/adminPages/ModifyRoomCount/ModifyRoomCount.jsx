@@ -141,27 +141,28 @@ const ModifyRoomCount = () => {
                     </div>
 
                     <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Với những phòng đã có đơn đặt phòng hoặc đơn đóng phòng trong thời gian tới sẽ hiện màu đỏ,
-                        không thể xóa được. Trong trường hợp đó,nếu bạn muốn giảm số lượng phòng muốn bán, bạn có thể đóng phòng.
-                        Lưu ý rằng chỉ đóng phòng trong trường hợp bạn không thể xóa phòng)</div>
+                        không thể xóa được. Trong trường hợp đó,nếu bạn muốn giảm số lượng phòng muốn bán, bạn sử dụng chức năng đóng phòng.
+                      )</div>
                     {/*  danh sách phòng */}
                     <div style={{ backgroundColor: '#ccc' }} className="roomNumberContainer">
                         <div className="roomNumber">STT</div>
                         <div className="roomNumber">ID phòng</div>
                         <div className="roomNumber">Trạng thái</div>
-                        <div style={{ width: '20%' }} className="roomNumber" >Hành động</div>
+                        {/* <div style={{ width: '20%' }} className="roomNumber" >Hành động</div> */}
                     </div>
                     {roomTypeData.roomNumbers?.map((roomNumber, index) => (
                         <div key={index} className="roomNumberContainer" style={{ backgroundColor: canDelete(roomNumber) ? '' : 'red' }}>
 
                             <div className="roomNumber">{index + 1}</div>
                             <div className="roomNumber" style={{ fontWeight: 'unset' }}>{roomNumber._id}</div>
-                            <div className="roomNumber" style={{ color: roomNumber.status ? 'green' : 'yellow' }}>
+                            {/* <div className="roomNumber" style={{ color: roomNumber.status ? 'green' : 'yellow' }}>
                                 {roomNumber.status ? 'Mở' : 'Đóng'}
-                            </div>
-                            {/* nếu ko xóa được thì mới hiện nút đóng/mở */}
+                            </div> */}
+                            {/* nếu ko xóa được  */}
                             {!canDelete(roomNumber) ? (
                                 <div className="roomNumber">
-                                    <button className="roomNumber_btn" onClick={() => handleCloseRoom(roomNumber._id, roomNumber.status)}>Đóng/Mở</button>
+                                    {/* <button className="roomNumber_btn" onClick={() => handleCloseRoom(roomNumber._id, roomNumber.status)}>Đóng/Mở</button> */}
+                                    Đã đặt hoặc đóng
                                 </div>
 
                             ) : (

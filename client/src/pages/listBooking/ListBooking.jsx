@@ -10,6 +10,7 @@ import { format, addDays, subDays, subHours, addHours } from "date-fns";
 import { confirmAlert } from 'react-confirm-alert';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import Footer from '../../components/footer/Footer';
 const ListBooking = () => {
   // const { user } = useContext(AuthContext)
   const { data, loading, error, reFetch } = useFetch(
@@ -184,7 +185,7 @@ const ListBooking = () => {
 
       </div>
 
-
+      <Footer />
     </div>
   )
 }

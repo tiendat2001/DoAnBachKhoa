@@ -334,7 +334,6 @@ const RoomDetails = () => {
                                         }
                                         // const maxOptions = 10; // Số lượng phòng tối đa sẽ hiện của thẻ option
                                         const options = [];
-                                        //  ko còn phòng trống nào
                                         for (let i = 1; i <= roomAvailable; i++) {
                                             options.push(<option value={i}>{i} phòng</option>);
                                         }
