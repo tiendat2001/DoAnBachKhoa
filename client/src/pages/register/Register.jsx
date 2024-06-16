@@ -41,17 +41,17 @@ const Register = () => {
   return (
     <div className="login">
       <div className="lContainer">
-      <h1 className="Login">Register</h1>
+      <h1 className="Login">Đăng ký</h1>
         <input
           type="text"
-          placeholder="username"
+          placeholder="Tên đăng nhập"
           id="username"
           onChange={handleChange}
           className="lInput"
         />
         <input
           type="password"
-          placeholder="password"
+          placeholder="Mật khẩu"
           id="password"
           onChange={handleChange}
           className="lInput"

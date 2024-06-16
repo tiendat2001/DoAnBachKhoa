@@ -103,7 +103,7 @@ router.get("/vnpay_return", function (req, res, next) {
 });
 
 router.get("/vnpay_ipn", async function (req, res, next) {
-  console.log("gọi ipn")
+  // console.log("gọi ipn")
   let vnp_Params = req.query;
   let secureHash = vnp_Params["vnp_SecureHash"];
 

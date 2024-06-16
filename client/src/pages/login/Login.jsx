@@ -44,14 +44,14 @@ const Login = () => {
         <h1 className="Login">Đăng nhập</h1>
         <input
           type="text"
-          placeholder="username"
+          placeholder="Tên đăng nhập"
           id="username"
           onChange={handleChange}
           className="lInput"
         />
         <input
           type="password"
-          placeholder="password"
+          placeholder="Mật khẩu"
           id="password"
           onChange={handleChange}
           className="lInput"

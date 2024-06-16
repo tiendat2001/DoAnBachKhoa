@@ -169,7 +169,7 @@ const ListBooking = () => {
 
               <div style={{ width: '25%', display: 'flex', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
                 <button className="cancel_booking" onClick={() => handleCancelReserve(item)}
-                  disabled={(new Date() > subHours(new Date(item.start), 0)) || !item.status}>
+                  disabled={ !item.status}>
                     {isSending ? 'Đang xử lý' : 'Hủy đặt phòng' }</button> <br />
 
                 {/* <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id, item.start, item.end, item.roomTypeIdsReserved)}

@@ -148,16 +148,16 @@ const ModifyRoomCount = () => {
                         <div className="roomNumber">STT</div>
                         <div className="roomNumber">ID phòng</div>
                         <div className="roomNumber">Trạng thái</div>
-                        {/* <div style={{ width: '20%' }} className="roomNumber" >Hành động</div> */}
+                        <div style={{ width: '20%' }} className="roomNumber" >Hành động</div>
                     </div>
                     {roomTypeData.roomNumbers?.map((roomNumber, index) => (
                         <div key={index} className="roomNumberContainer" style={{ backgroundColor: canDelete(roomNumber) ? '' : 'red' }}>
 
                             <div className="roomNumber">{index + 1}</div>
                             <div className="roomNumber" style={{ fontWeight: 'unset' }}>{roomNumber._id}</div>
-                            {/* <div className="roomNumber" style={{ color: roomNumber.status ? 'green' : 'yellow' }}>
+                            <div className="roomNumber" style={{ color: roomNumber.status ? 'green' : 'yellow' }}>
                                 {roomNumber.status ? 'Mở' : 'Đóng'}
-                            </div> */}
+                            </div>
                             {/* nếu ko xóa được  */}
                             {!canDelete(roomNumber) ? (
                                 <div className="roomNumber">
