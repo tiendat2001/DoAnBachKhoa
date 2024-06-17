@@ -53,7 +53,7 @@
   .hotelImages {
     display: flex;
     flex-wrap: wrap;
-    /* gap:10px; */
+    gap:10px;
     justify-content: flex-start;
   
   }

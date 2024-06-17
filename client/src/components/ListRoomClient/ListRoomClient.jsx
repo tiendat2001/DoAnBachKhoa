@@ -217,7 +217,7 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
           <span onClick={() => setOpenDate(!openDate)}>{`${format(
             dates[0].startDate,
             "dd/MM/yyyy"
-          )} to ${format(dates[0].endDate, "dd/MM/yyyy")}`}</span>
+          )} đến ${format(dates[0].endDate, "dd/MM/yyyy")}`}</span>
           {openDate && (
             <DateRange
               onChange={(item) => handleDayChange(item)}
