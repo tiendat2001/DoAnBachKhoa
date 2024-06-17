@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
+const { Schema } = mongoose;
 const ClosedRoomSchema = new mongoose.Schema({
     // Phải thêm vào ID ownder
-
     ownerId: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true
     },
     roomTypeId: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true
     },
     quantityRoomClosed: {

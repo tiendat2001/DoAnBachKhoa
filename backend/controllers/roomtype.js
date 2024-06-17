@@ -12,7 +12,7 @@ export const createRoom = async (req, res, next) => {
 
   try {
     const hotel = await Hotel.findById(hotelId);
-    if (hotel.ownerId !== req.user.id) {
+    if (hotel.ownerId != req.user.id) {
       return res.status(403).json({ message: "You are not authorized to add room to this hotel" });
     }
     // GÁN TRƯỜNG HOTELID cho room mới tạo qua params truyền vào
@@ -48,7 +48,7 @@ export const deleteRoom = async (req, res, next) => {
     // tìm id của hotel có room sẽ chỉnh sửa
     const hotelToUpdate = await Hotel.findById(roomToDelete.hotelId);
 
-    if (hotelToUpdate.ownerId !== req.user.id) {
+    if (hotelToUpdate.ownerId != req.user.id) {
       return res.status(403).json({ message: "You are not authorized to delete room from this hotel" });
     }
     // xóa room và cập nhật lại trong Hotel
@@ -134,7 +134,7 @@ export const updateRoom = async (req, res, next) => {
     // tìm id của hotel có room sẽ chỉnh sửa
     const hotelToUpdate = await Hotel.findById(roomToUpdate.hotelId);
 
-    if (hotelToUpdate.ownerId !== req.user.id) {
+    if (hotelToUpdate.ownerId != req.user.id) {
       return res.status(403).json({ message: "You are not authorized to update room to this hotel" });
     }
     const updatedRoom = await Room.findByIdAndUpdate(
@@ -597,7 +597,7 @@ export const addRoomToRoomType = async (req, res, next) => {
     // check quyền
     // tìm id của hotel có room sẽ chỉnh sửa
     const hotelToUpdate = await Hotel.findById(room.hotelId);
-    if (hotelToUpdate.ownerId !== req.user.id) {
+    if (hotelToUpdate.ownerId != req.user.id) {
       return res.status(403).json({ message: "You are not authorized to change this type room" });
     }
 
@@ -651,7 +651,7 @@ export const deleteRoomInRoomType = async (req, res, next) => {
     // check quyền
     // tìm id của hotel có room sẽ chỉnh sửa
     const hotelToUpdate = await Hotel.findById(room.hotelId);
-    if (hotelToUpdate.ownerId !== req.user.id) {
+    if (hotelToUpdate.ownerId != req.user.id) {
       return res.status(403).json({ message: "You are not authorized to change this type room" });
     }
 
@@ -725,7 +725,7 @@ export const changeStatusRoomInRoomType = async (req, res, next) => {
     // check quyền
     // tìm id của hotel có room sẽ chỉnh sửa
     const hotelToUpdate = await Hotel.findById(roomType.hotelId);
-    if (hotelToUpdate.ownerId !== req.user.id) {
+    if (hotelToUpdate.ownerId != req.user.id) {
       return res.status(403).json({ message: "You are not authorized to change this type room" });
     }
 

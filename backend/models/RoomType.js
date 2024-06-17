@@ -7,7 +7,7 @@ const RoomTypeSchema = new mongoose.Schema({
         required:true
     },
     hotelId:{
-        type: String,
+        type: Schema.Types.ObjectId,
         required:true
     },
  

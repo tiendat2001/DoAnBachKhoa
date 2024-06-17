@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const ReservationSchema = new mongoose.Schema({
     userId:{
-        type:String,
+        type:Schema.Types.ObjectId,
         required:true,
     },
     phoneNumber:{
@@ -21,7 +21,7 @@ const ReservationSchema = new mongoose.Schema({
     //     type:String,
     // },
     idOwnerHotel:{
-        type:String,
+        type:Schema.Types.ObjectId,
         require:true,
     },
     roomNumbersId:{
@@ -30,7 +30,7 @@ const ReservationSchema = new mongoose.Schema({
     },
     roomTypeIdsReserved:[
         {
-            roomTypeId: {type:String},
+            roomTypeId: {type:Schema.Types.ObjectId},
             quantity:{type:Number},
         }
     ],

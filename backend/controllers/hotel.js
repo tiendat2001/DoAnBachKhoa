@@ -24,7 +24,7 @@ export const updateHotel = async (req, res, next) => {
     }
     // console.log(req.body.ownerId)
     // Kiểm tra xem ownerId của Hotel cần cập nhật có trùng khớp với id trong req.user lấy từ token không
-    if (hotelToUpdate.ownerId !== req.user.id) {
+    if (hotelToUpdate.ownerId != req.user.id) {
       return res.status(403).json({ message: "You are not authorized to update this hotel" });
     }
 
@@ -50,7 +50,7 @@ export const deleteHotel = async (req, res, next) => {
     }
     // console.log(req.body.ownerId)
     // Kiểm tra xem ownerId của Hotel cần xóa có trùng khớp với ownerId trong req.body.ownerId không (lúc đẩy lên phải đẩy id tk)
-    if (hotelToDelete.ownerId !== req.user.id) {
+    if (hotelToDelete.ownerId != req.user.id) {
       return res.status(403).json({ message: "You are not authorized to delete this hotel" });
     }
 
@@ -84,6 +84,7 @@ export const getHotels = async (req, res, next) => {
       { $match: query }, // Lọc dựa trên điều kiện query nếu cần
       // { $sample: { size: 10 } } // Lấy mẫu ngẫu nhiên với số lượng giới hạn
     ]);
+    // const hotels = await Hotel.find
     res.status(200).json(hotels);
   } catch (err) {
     next(err);

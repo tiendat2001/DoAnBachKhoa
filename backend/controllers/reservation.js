@@ -133,7 +133,7 @@ export const updateReservation = async (req, res, next) => {
 
         // check xem có đc update reservation đó không (chỉ chủ đơn hoặc chủ khách sạn có đơn đó mới có quyền)
         const reservationToUpdated = await Reservation.findByIdAndUpdate(req.params.id)
-        if (req.user.id !== reservationToUpdated.userId && req.user.id !== reservationToUpdated.idOwnerHotel) {
+        if (req.user.id != reservationToUpdated.userId && req.user.id != reservationToUpdated.idOwnerHotel) {
             return res.status(403).json({ message: "Bạn ko có quyền update reservation này" });
         }
 
@@ -324,7 +324,7 @@ export const getRevenueByHotelId = async (req, res, next) => {
     try {
         // Kiểm tra có quyền xem ko
         const hotelToCheck = await Hotel.findById(req.params.hotelId);
-        if (req.user.id !== hotelToCheck.ownerId && !req.user.isAdmin) {
+        if (req.user.id != hotelToCheck.ownerId && !req.user.isAdmin) {
             return res.status(403).json({ message: "Bạn ko có quyền xem số liệu hotel này" });
         }
 
@@ -435,7 +435,7 @@ export const getRevenueMonthsByHotelId = async (req, res, next) => {
     try {
         // Kiểm tra có quyền xem ko
         const hotelToCheck = await Hotel.findById(req.params.hotelId);
-        if (req.user.id !== hotelToCheck.ownerId && !req.user.isAdmin) {
+        if (req.user.id != hotelToCheck.ownerId && !req.user.isAdmin) {
             return res.status(403).json({ message: "Bạn ko có quyền xem số liệu hotel này" });
         }
         const currentDate = addHours(new Date(), 7); // giờ hiện tại việt nam nhưng là UTC

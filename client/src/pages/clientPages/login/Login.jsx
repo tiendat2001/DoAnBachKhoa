@@ -32,7 +32,7 @@ const Login = () => {
       if (res.data.isAdmin) {
         console.log("den trang adminstrator")
         navigate("/administrator")
-      } else navigate(-1)
+      } else navigate("/")
     } catch (err) {
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }

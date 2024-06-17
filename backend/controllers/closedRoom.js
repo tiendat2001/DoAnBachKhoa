@@ -9,7 +9,7 @@ export const createClosedRoom = async (req, res, next) => {
     const roomTypeUpdated = await Room.findById(req.params.roomTypeId)  // req.params.roomTypeId là _id của type room sẽ chỉnh sửa
     // tìm id của hotel có room sẽ chỉnh sửa
     const hotelToUpdate = await Hotel.findById(roomTypeUpdated.hotelId);
-    if (hotelToUpdate.ownerId !== req.user.id) {
+    if (hotelToUpdate.ownerId != req.user.id) {
       return res.status(403).json({ message: "You are not authorized to change this room type" });
     }
 

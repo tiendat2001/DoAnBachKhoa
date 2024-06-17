@@ -185,7 +185,7 @@ const ListBooking = () => {
 
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }
