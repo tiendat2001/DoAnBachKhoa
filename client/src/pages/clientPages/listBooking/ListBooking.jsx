@@ -1,16 +1,16 @@
 import React from 'react'
 import "./listBooking.css"
-import Navbar from '../../components/navbar/Navbar'
-import Header from '../../components/header/Header'
+import Navbar from '../../../components/navbar/Navbar'
+import Header from '../../../components/header/Header'
 import { useState, useContext } from "react";
 import axios from 'axios';
-import useFetch from '../../hooks/useFetch';
-import { AuthContext } from '../../context/AuthContext';
+import useFetch from '../../../hooks/useFetch';
+import { AuthContext } from '../../../context/AuthContext';
 import { format, addDays, subDays, subHours, addHours } from "date-fns";
 import { confirmAlert } from 'react-confirm-alert';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import Footer from '../../components/footer/Footer';
+import Footer from '../../../components/footer/Footer';
 const ListBooking = () => {
   // const { user } = useContext(AuthContext)
   const { data, loading, error, reFetch } = useFetch(

@@ -1,18 +1,18 @@
 import "./list.css";
 import React from "react";
-import Navbar from "../../components/navbar/Navbar";
-import Header from "../../components/header/Header";
+import Navbar from "../../../components/navbar/Navbar";
+import Header from "../../../components/header/Header";
 import { useLocation } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { format } from "date-fns";
 import { DateRange } from "react-date-range";
-import SearchItem from "../../components/searchItem/SearchItem";
-import useFetch from "../../hooks/useFetch";
-import { SearchContext } from "../../context/SearchContext";
+import SearchItem from "../../../components/searchItem/SearchItem";
+import useFetch from "../../../hooks/useFetch";
+import { SearchContext } from "../../../context/SearchContext";
 import { addDays, addHours } from 'date-fns';
-import { listProvinces } from "../../listObject";
-import { hotelFacilities } from "../../formSource";
-import Footer from "../../components/footer/Footer";
+import { listProvinces } from "../../../listObject";
+import { hotelFacilities } from "../../../formSource";
+import Footer from "../../../components/footer/Footer";
 const List = () => {
   const location = useLocation();
   const searchContext = useContext(SearchContext);

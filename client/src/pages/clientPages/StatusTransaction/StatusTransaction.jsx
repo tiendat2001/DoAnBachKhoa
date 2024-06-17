@@ -1,7 +1,7 @@
 import React from 'react'
 import "./statusTransaction.css"
-import Navbar from "../../components/navbar/Navbar";
-import Header from "../../components/header/Header";
+import Navbar from "../../../components/navbar/Navbar";
+import Header from "../../../components/header/Header";
 
 const StatusTransaction = ({ status }) => {
     return (

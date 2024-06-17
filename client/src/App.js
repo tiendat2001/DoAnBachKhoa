@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./App.css";
-import Home from "./pages/home/Home";
-import List from "./pages/list/List";
-import Hotel from "./pages/hotel/Hotel";
-import Login from "./pages/login/Login";
-import Register from "./pages/register/Register";
+import Home from "./pages/clientPages/home/Home";
+import List from "./pages/clientPages/list/List";
+import Hotel from "./pages/clientPages/hotel/Hotel";
+import Login from "./pages/clientPages/login/Login";
+import Register from "./pages/clientPages/register/Register";
 import AdminHome from "./pages/adminPages/adminHome/AdminHome";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
@@ -14,8 +14,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ModifyHotel from "./pages/adminPages/ModifyHotel/ModifyHotel";
 import ListRoom from "./pages/adminPages/ListRoom/ListRoom";
-import ListBooking from "./pages/listBooking/ListBooking";
-import Reserve from "./pages/reserve/Reserve";
+import ListBooking from "./pages/clientPages/listBooking/ListBooking";
+import Reserve from "./pages/clientPages/reserve/Reserve";
 import NewRoom from "./pages/adminPages/newRoom/NewRoom";
 import ModifyRoom from "./pages/adminPages/ModifyRoom/ModifyRoom";
 import ListReservation from "./pages/adminPages/ListReservation/ListReservation";
@@ -25,10 +25,10 @@ import AllHotelPayment from "./pages/administratorPages/AllHotelPayment/AllHotel
 import { getCookie } from 'react-use-cookie';
 import RoomDetails from "./pages/adminPages/RoomDetails/RoomDetails";
 import ModifyRoomCount from "./pages/adminPages/ModifyRoomCount/ModifyRoomCount";
-import StatusTransaction from "./pages/StatusTransaction/StatusTransaction";
+import StatusTransaction from "./pages/clientPages/StatusTransaction/StatusTransaction";
 import ModifyUser from "./pages/adminPages/modifyUser/ModifyUser";
 import UpdatePaymentInfo from "./pages/adminPages/UpdatePaymentInfo/UpdatePaymentInfo";
-import Policy from "./pages/Policy/Policy";
+import Policy from "./pages/clientPages/Policy/Policy";
 import axios from 'axios';
 function App() {
 

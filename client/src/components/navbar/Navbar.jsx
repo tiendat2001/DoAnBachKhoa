@@ -19,7 +19,7 @@ const Navbar = () => {
     // đợi cho localstorage cập nhật
     setTimeout(checkUserData, 1);
     window.addEventListener('storage', checkUserData)
-  
+
     return () => {
       window.removeEventListener('storage', checkUserData)
     }
@@ -80,7 +80,10 @@ const Navbar = () => {
         ) : (
           <div className="navItems">
             {/* <button className="navButton" >List your Hotel</button> */}
-            <button className="navButton" >Đăng ký</button>
+            <Link to="/register">
+
+              <button className="navButton" >Đăng ký</button>
+            </Link>
             <Link to="/login">
 
               <button className="navButton" >Đăng nhập</button>
