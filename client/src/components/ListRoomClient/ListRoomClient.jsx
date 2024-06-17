@@ -179,7 +179,7 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
       return;
     }
 
-    // Lặp qua từng item trong data, lấy ra những loại phòng mà người dùng chọn
+    // Lặp qua từng item trong data-là list những loại phòng, lấy ra những loại phòng mà người dùng chọn
     data.forEach((item) => {
       const selectedValue = parseInt(document.getElementById(`select_${item._id}`).value);
       // Kiểm tra nếu số lượng phòng đã chọn khác 0
@@ -189,7 +189,7 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
       }
 
     });
-
+    // seletedRoomIdsReserved gồm roomtype id, roomtype name, quantity, còn selectedRoomIds gồm id những phòng nhỏ
     if (selectedRoomIds.length > 0 && alldates.length >= 1) {
       navigate("/reserve", {
         state: {

@@ -18,6 +18,7 @@ import { toast } from 'react-toastify';
 import { useLocation } from "react-router-dom";
 const Reserve = () => {
   const location = useLocation();
+  // 
   const [selectedRooms, setSelectedRooms] = useState(location.state.selectedRoomIds);
   const [alldates, setAlldates] = useState(location.state.alldates);
   const [hotelId, setHotelId] = useState(location.state.hotelId);
@@ -25,6 +26,7 @@ const Reserve = () => {
   const [endDate, setEndDate] = useState(location.state.endDate);
   const searchContext = useContext(SearchContext);
   const [options, setOptions] = useState(searchContext.options);
+  // gồm room type id, tên room type, và số lượng phòng đặt cho từng roomtype
   const [roomsDetailFromListClient, setRoomsDetailFromListClient] = useState(location.state.seletedRoomIdsReserved)
   const { user } = useContext(AuthContext)
   const { data: roomData, loading, error, reFetch } = useFetch(`/rooms/${hotelId}`);
@@ -39,7 +41,7 @@ const Reserve = () => {
   const handlePhoneNumberChange = (event) => {
     setPhoneNumber(event.target.value);
   };
-  console.log(paymentType)
+  // console.log(paymentType)
   var totalPrice = 0;
   var maxPeople = 0;
   // console.log(startDate)
@@ -50,20 +52,20 @@ const Reserve = () => {
   }));
   // console.log(roomTypeIdsReserved)
 
-  const isAvailable = (roomNumber) => {
-    if (!roomNumber.status) {
-      return false; // Nếu status là false, room không khả dụng
-    }
-    const isFound = roomNumber.unavailableDates.some((date) => {
-      const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
-      // console.log(new Date(dateMinusOneDay));
-      return alldates.includes(dateMinusOneDay);
-    });
+  // const isAvailable = (roomNumber) => {
+  //   if (!roomNumber.status) {
+  //     return false; // Nếu status là false, room không khả dụng
+  //   }
+  //   const isFound = roomNumber.unavailableDates.some((date) => {
+  //     const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
+  //     // console.log(new Date(dateMinusOneDay));
+  //     return alldates.includes(dateMinusOneDay);
+  //   });
 
-    return !isFound;
-  };
+  //   return !isFound;
+  // };
   const roomCounts = {};
-
+  // để tạo ra text cho vào chỗ đơn đặt phòng VD: testx2, test3x1 và tổng giá cho mỗi đêm totalPrice cho vào đơn đặt phòng
   // Tính số lượng của từng loại phòng
   selectedRooms.forEach(roomId => {
     // với mỗi _id phòng nhỏ thì tìm typeRoom tương ứng
@@ -79,7 +81,7 @@ const Reserve = () => {
     }
   });
 
-  // Tạo chuỗi detailRooms từ roomCounts
+  // để tạo ra text cho vào chỗ đơn đặt phòng VD: testx2, test3x1
   const detailRooms = Object.entries(roomCounts).map(([title, count]) => `${title} (x${count})`).join(', ');
   const selectedRoomIdsReserved = []
   // đặt phòng

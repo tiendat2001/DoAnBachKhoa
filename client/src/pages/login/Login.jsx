@@ -29,9 +29,9 @@ const Login = () => {
       const res = await axios.post("/auth/login", credentials);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data }); // user trong AuthContext sẽ là JSON thông tin user (kq API return)
       console.log(res.data.isAdmin)
-      if (res.data.isAdmin) { 
+      if (res.data.isAdmin) {
         console.log("den trang adminstrator")
-        navigate("/administrator") 
+        navigate("/administrator")
       } else navigate(-1)
     } catch (err) {
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
@@ -68,11 +68,10 @@ const Login = () => {
         <button disabled={loading} onClick={handleClick} className="lButton">
           Đăng nhập
         </button>
-        <Link className="lButton register" to="/register">
+        <p>
+          Bạn chưa có tài khoản. <Link className="" to="/register">Đăng ký ngay</Link>
+        </p>
 
-          Đăng ký
-
-        </Link>
         {error && <span>{error.message}</span>}
       </div>
     </div>

@@ -14,7 +14,7 @@
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  min-width: 500px;
+  min-width: 350px;
  
 }
 
@@ -28,7 +28,6 @@
 
 .lButton {
   border: none;
-  margin: 16px 0;
   padding: 10px 20px;
   background-color: #3d97fd;
   color: white;
