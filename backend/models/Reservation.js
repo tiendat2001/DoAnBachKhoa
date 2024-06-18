@@ -24,10 +24,10 @@ const ReservationSchema = new mongoose.Schema({
         type:Schema.Types.ObjectId,
         require:true,
     },
-    roomNumbersId:{
-        type: [String],
-        // required:true,
-    },
+    // roomNumbersId:{
+    //     type: [String],
+    //     // required:true,
+    // },
     roomTypeIdsReserved:[
         {
             roomTypeId: {type:Schema.Types.ObjectId},

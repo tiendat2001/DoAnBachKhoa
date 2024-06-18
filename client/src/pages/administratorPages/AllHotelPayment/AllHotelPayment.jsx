@@ -50,7 +50,7 @@ const AllHotelPayment = () => {
 
         <div className="listAllHotelPayment">
           <div style={{fontWeight:'bold'}}>KHOẢN CẦN THANH TOÁN CHO CÁC CHỦ CHỖ NGHỈ TRONG THÁNG TRƯỚC</div>
-          <button onClick={exportToExcel} style={{ marginBottom: '10px' }}>Xuất Excel</button>
+          <button className="export_btn" onClick={exportToExcel} style={{ marginBottom: '10px' }}>Xuất Excel</button>
         <DataGrid  autoHeight slots={{ toolbar: GridToolbar }}
                     className="datagridListAllHotelPayment"  
                     rows={hotelRevenue}

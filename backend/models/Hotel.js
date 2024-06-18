@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+const { Schema } = mongoose;
 const HotelSchema = new mongoose.Schema({
   // Phải thêm vào ID ownder
   name: {
@@ -6,7 +7,7 @@ const HotelSchema = new mongoose.Schema({
     required: true,
   },
   ownerId:{
-    type: String,
+    type: Schema.Types.ObjectId,
     required:true
   },
   type: {

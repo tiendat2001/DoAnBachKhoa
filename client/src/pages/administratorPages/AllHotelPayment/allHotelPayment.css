@@ -6,3 +6,12 @@
 .datagridListAllHotelPayment{
     margin-top:20px;
 }
+.export_btn{
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    background-color: rgb(1, 148, 243);
+    cursor: pointer;
+}

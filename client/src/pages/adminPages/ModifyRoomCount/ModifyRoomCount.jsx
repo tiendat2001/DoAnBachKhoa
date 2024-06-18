@@ -118,7 +118,7 @@ const ModifyRoomCount = () => {
                     <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '20px' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>
                     <div className="modifyRoomCount">
                         <label style={{ display: 'flex', justifyContent: 'flex-start', gap: '10px', alignItems: 'center' }}>
-                            Nhập lượng phòng cần thêm:
+                            Nhập lượng phòng cần thêm/mở:
                             <input
                                 type="number"
                                 value={roomCountToAdd}
@@ -140,15 +140,20 @@ const ModifyRoomCount = () => {
                         <button style={{ backgroundColor: 'red' }} className="modifyRoomCount_btn" onClick={submitDeleteRoom}>Xoá</button>
                     </div>
 
-                    <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Với những phòng đã có đơn đặt phòng hoặc đơn đóng phòng trong thời gian tới sẽ hiện màu đỏ,
+                    {/* <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Với những phòng đã có đơn đặt phòng hoặc đơn đóng phòng trong thời gian tới sẽ hiện màu đỏ,
                         không thể xóa được. Trong trường hợp đó,nếu bạn muốn giảm số lượng phòng muốn bán, bạn sử dụng chức năng đóng phòng.
+                      )</div> */}
+                       <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Với những phòng đã có đơn đặt phòng hoặc đơn đóng phòng trong thời gian tới sẽ hiện màu đỏ,
+                        không thể xóa được. Trong trường hợp đó,những phòng đó sẽ bị đóng thay vì bị xóa. Tất nhiên bạn vẫn phải phục vụ tất cả các đơn đặt phòng của khách đặt sắp tới.
+                       <br/> Việc phòng ở trạng thái đóng đồng nghĩa với việc phòng đó bị đóng trong tất cả các ngày. 
+                       
                       )</div>
                     {/*  danh sách phòng */}
                     <div style={{ backgroundColor: '#ccc' }} className="roomNumberContainer">
                         <div className="roomNumber">STT</div>
                         <div className="roomNumber">ID phòng</div>
                         <div className="roomNumber">Trạng thái</div>
-                        <div style={{ width: '20%' }} className="roomNumber" >Hành động</div>
+                        <div style={{ width: '20%' }} className="roomNumber" >Tình trạng</div>
                     </div>
                     {roomTypeData.roomNumbers?.map((roomNumber, index) => (
                         <div key={index} className="roomNumberContainer" style={{ backgroundColor: canDelete(roomNumber) ? '' : 'red' }}>
