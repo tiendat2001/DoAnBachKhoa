@@ -5,6 +5,7 @@ import Room from "../models/RoomType.js";
 import { startOfMonth, endOfMonth, subMonths, addHours, subHours } from 'date-fns';
 import { startOfToday } from "date-fns";
 import nodemailer from "nodemailer"
+import mongoose from 'mongoose';
 
 export const createReservation = async (req, res, next) => {
     req.body.userId = req.user.id;
@@ -359,6 +360,7 @@ export const getRevenueByHotelId = async (req, res, next) => {
             endDate = addHours(endOfMonth(subMonths(currentDate, 1)), 7);
         } else if (month === '1') {
             // Nếu month là 1, so sánh với tháng hiện tại
+            // tháng 3 ngày bắt đầu 2024-03-01T00:00:00.000Z, kết thúc 2024-03-31T23:59:59.999Z
             startDate = addHours(startOfMonth(currentDate), 7);
             endDate = addHours(endOfMonth(currentDate), 7);
         }
@@ -442,13 +444,14 @@ export const getRevenueMonthsByHotelId = async (req, res, next) => {
         const revenueByMonth = [];
         for (let i = 0; i < 6; i++) {
             // nếu sau ko add khi đẩy xuống thì bỏ mấy cái addHours
-            const startDate = addHours(startOfMonth(subMonths(currentDate, i)), 7);
+            const startDate = addHours(startOfMonth(subMonths(currentDate, i)), 7); // +7 vì ngày đầu của tháng nó để là ngày 31 17hUTC
             const endDate = addHours(endOfMonth(subMonths(currentDate, i)), 7);
             // tháng 3 ngày bắt đầu 2024-03-01T00:00:00.000Z, kết thúc 2024-03-31T23:59:59.999Z
+            const hotelId = new mongoose.Types.ObjectId(req.params.hotelId);
             const revenue = await Reservation.aggregate([
                 {
                     $match: {
-                        hotelId: req.params.hotelId,
+                        hotelId: hotelId,
                         status: { $in: [0, 1] },
                         start: {
                             $gte: startDate, // Ngày bắt đầu của tháng

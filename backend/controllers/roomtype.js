@@ -92,7 +92,6 @@ export const deleteRoom = async (req, res, next) => {
 //GET ROOM BY HOTEL ID
 export const getRoomsByHotelId = async (req, res, next) => {
   try {
-    // const result = await Room.updateMany({}, { $set: { status: true } });
     let rooms;
     // chỉ lấy phòng có status là true cho client
     if(req.query.status){
@@ -553,7 +552,7 @@ export const statusRoomCount = async (req, res, next) => {
     const allCloseRooms = await ClosedRoom.find({roomTypeId:req.params.roomId});
     const currentDate = new Date() // theo UTC
     // console.log(currentDate) 2024-04-30T12:16:05.871Z - time hien tai theo UTC (-7)
-    currentDate.setHours(14, 0, 0, 0);  // 7hUTC
+    currentDate.setHours(14, 0, 0, 0);  //currentDatelà  7hUTC của ngày hiện tại
     // console.log(currentDate)
     const roomAvailability = [];
 

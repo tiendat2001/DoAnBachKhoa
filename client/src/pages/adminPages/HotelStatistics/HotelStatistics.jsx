@@ -132,7 +132,7 @@ const HotelStatistics = () => {
           </select>
 
           <div style={{marginBottom:'20px', fontSize: '14px', fontStyle: 'italic'}}>(Đối với lựa chọn tất cả và trong tháng này sẽ bao gồm cả những đơn sắp tới, 
-          được tính theo ngày check-in của đơn)</div>
+          được tính theo ngày check-in của đơn. Tổng doanh thu bao gồm cả phí hủy của những đơn hủy có phí)</div>
 
           <div className="overviewStatistic">
             <div className="overviewStatistic_card">
