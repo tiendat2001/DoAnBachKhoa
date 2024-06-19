@@ -26,16 +26,17 @@ const ListRoom = () => {
     // lấy ra những đơn đặt phòng trong tương lai
     const { data: reservationDataFuture, loading: reservationLoading, error: reservationError,
         reFetch: reservationReFetch } = useFetch(`/reservation/admin/?startDay=${currentDate}&endDay=${endLessDate}&status="success"`);
-    console.log(reservationDataFuture)
+    // console.log(reservationDataFuture)
     const navigate = useNavigate()
     const location = useLocation();
     // lấy hotel id nếu người dùng vừa tạo phòng hoặc chỉnh phòng xong
     const hotelIdFromAddModifyRoom = location.state?.hotelIdFromAddModifyRoom;
-
+    // console.log(hotelIdFromAddModifyRoom)
     const handleHotelChange = (e) => {
         setHotelId(e.target.value);
     };
     useEffect(() => {
+        // nếu vừa thêm hoặc sửa loại phòng thì ở trang list room sẽ set id hotel mà có loại phòng vừa thêm hoặc sửa, ko thì set id hotel phần từ đầu tiên
         if (hotelIdFromAddModifyRoom) {
             setHotelId(hotelIdFromAddModifyRoom)
         } else {

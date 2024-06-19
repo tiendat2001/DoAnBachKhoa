@@ -15,7 +15,7 @@ const HotelStatistics = () => {
     `/reservation/getRevenue/${hotelId}?month=${month}`);
   const { data: hotelDataByMonth, loading: loadinghotelDataByMonth, error: errorhotelDataByMonth, reFetch: reFetchhotelDataByMonth }
     = useFetch(`/reservation/getRevenueByMonths/${hotelId}`);
-  
+    console.log(hotelDataByMonth)
    
     const navigate = useNavigate()
     const previousPath = location.state?.previousPath;

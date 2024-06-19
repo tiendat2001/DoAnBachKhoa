@@ -259,9 +259,13 @@ const RoomDetails = () => {
                                 <div className="grid-item" key={index}>
                                     <div>{`${status.day}/${status.month}/${status.year}`}</div>
                                     <div>Đang rao bán: {status.countAvailable}</div>
-                                    <div style={{ color: roomTypeData.roomNumbers && roomTypeData.roomNumbers?.length - status.countAvailable !== 0 ? 'red' : 'inherit', fontWeight: roomTypeData.roomNumbers && roomTypeData.roomNumbers?.length - status.countAvailable !== 0 ? 'bold' : 'normal' }}>
-                                        Đã bán hoặc đóng: {roomTypeData.roomNumbers?.length - status.countAvailable}
+                                    {/*  số lượng bán = số lượng tổng - đang rao bán - số lượng đóng */}
+                                    <div style={{ color: roomTypeData.roomNumbers?.length - status.countAvailable-status.closeRoomCount !== 0 ? 'red' : 'inherit', fontWeight: roomTypeData.roomNumbers?.length - status.countAvailable-status.closeRoomCount !== 0 ? 'bold' : 'normal' }}>
+                                        Đã bán: {roomTypeData.roomNumbers?.length - status.countAvailable-status.closeRoomCount}
+                                    </div>
 
+                                    <div style={{ color:status.closeRoomCount  !== 0 ? 'red' : 'inherit', fontWeight: status.closeRoomCount !== 0 ? 'bold' : 'normal' }}>
+                                        Đã đóng: {status.closeRoomCount}
                                     </div>
 
                                 </div>

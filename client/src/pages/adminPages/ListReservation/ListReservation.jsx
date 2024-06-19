@@ -159,7 +159,7 @@ const ListReservation = () => {
                     }
                    
                 }
-                // trường hợp đơn thành công hoặc quá ngày thì ko hiện yêu cầu hủy
+                // trường hợp đơn ở trạng thái hủy hoặc quá ngày thì ko hiện yêu cầu hủy
                 if (new Date() > new Date(params.row.start) || params.row.status !== 1) {
 
                 }else{

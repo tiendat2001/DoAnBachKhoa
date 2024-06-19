@@ -1,7 +1,7 @@
 import Room from "../models/RoomType.js";
 import Hotel from "../models/Hotel.js";
 import { startOfMonth, endOfMonth, subMonths, addHours, subHours, addDays } from 'date-fns';
-
+import ClosedRoom from "../models/ClosedRoom.js";
 // import Order from "../models/Order.js";
 import { createError } from "../utils/error.js";
 
@@ -550,7 +550,7 @@ export const cancelRoomReservation = async (req, res, next) => {
 export const statusRoomCount = async (req, res, next) => {
   try {
     const room = await Room.findById(req.params.roomId);
-
+    const allCloseRooms = await ClosedRoom.find({roomTypeId:req.params.roomId});
     const currentDate = new Date() // theo UTC
     // console.log(currentDate) 2024-04-30T12:16:05.871Z - time hien tai theo UTC (-7)
     currentDate.setHours(14, 0, 0, 0);  // 7hUTC
@@ -572,12 +572,27 @@ export const statusRoomCount = async (req, res, next) => {
         });
         return isRoomAvailable ? count + 1 : count;
       }, 0);
-      // số 0 là giá trị biến count khởi tạo
 
-      // Thêm thông tin số lượng phòng trống vào mảng kết quả
-      roomAvailability.push({ day, month, year, countAvailable: availableRoomsCount });
+      // tìm số lượng phòng đóng cho ngày hiện tại từ các đơn đóng phòng
+      const closeRoomsCount = allCloseRooms.reduce((count, closeRoom) => {
+        const isRoomClose = closeRoom.allDatesClosed.some(date => {
+          return new Date(date).toISOString().slice(0, 10) === currentDay.toISOString().slice(0, 10); // so sanhs 7hUTC
+        });
+        return isRoomClose ? count + closeRoom.quantityRoomClosed : count;
+      }, 0);
+
+       // tìm số lượng phòng đóng cho ngày hiện tại từ các phòng nhỏ có status false
+       const statusFalseRoomCount = room.roomNumbers.reduce((count, roomNumber) => {
+        return roomNumber.status ? count : count + 1;
+      }, 0);
+
+      // Thêm thông tin số lượng phòng trống và phòng đóng vào mảng kết quả
+      roomAvailability.push({ day, month, year, countAvailable: availableRoomsCount,closeRoomCount:closeRoomsCount+statusFalseRoomCount });
+
+
     }
-
+     // số lượng phòng đã đóng
+    //  console.log(allCloseRooms)
     res.json(roomAvailability);
   } catch (error) {
     console.error("Error occurred while fetching room availability:", error);
