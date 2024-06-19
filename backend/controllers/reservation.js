@@ -301,7 +301,7 @@ export const paymentAccountLastMonth = async (req, res, next) => {
             }
         }
     ]);
-
+    //groupedReservations gồm 1 mảng, mỗi phần tử có trường totalPrice và idOwnẻrHotel
     // thêm trường email cho kết quả tìm đc
     let enrichedReservations = [];
     for (let i = 0; i < groupedReservations.length; i++) {
@@ -448,6 +448,8 @@ export const getRevenueMonthsByHotelId = async (req, res, next) => {
             const endDate = addHours(endOfMonth(subMonths(currentDate, i)), 7);
             // tháng 3 ngày bắt đầu 2024-03-01T00:00:00.000Z, kết thúc 2024-03-31T23:59:59.999Z
             const hotelId = new mongoose.Types.ObjectId(req.params.hotelId);
+
+            // lấy các reservation theo từng tháng và + tổng lại
             const revenue = await Reservation.aggregate([
                 {
                     $match: {
@@ -474,12 +476,13 @@ export const getRevenueMonthsByHotelId = async (req, res, next) => {
                     }
                 }
             ]);
+            // revenue là 1 mảng có phần tử đầu tiên có 1 trường totalRevenue là doanh thu của tháng đó
             const monthRevenue = {
                 month: startDate.getMonth() + 1,
                 year: startDate.getFullYear(), //Trong JavaScript, tháng được đánh số từ 0 đến 11, với tháng 0 là tháng 1 và tháng 11 là tháng 12
                 revenue: revenue.length > 0 ? revenue[0].totalRevenue : 0 // Doanh thu của tháng
             };
-
+            //revenueByMonth chứa mảng kết quả trả về gồm tháng, năm, và doanh thu
             revenueByMonth.push(monthRevenue);
         }
 

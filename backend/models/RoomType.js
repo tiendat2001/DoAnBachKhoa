@@ -36,13 +36,13 @@ const RoomTypeSchema = new mongoose.Schema({
             // number:Number, 
             unavailableDates:{type:[Date]},
             status:{type: Boolean, default:true},
-            unavailableRangeDates:
-            [
-                {
-                    startDateRange: {type:Date},
-                    endDateRange: {type:Date}
-                }
-            ]
+            // unavailableRangeDates:
+            // [
+            //     {
+            //         startDateRange: {type:Date},
+            //         endDateRange: {type:Date}
+            //     }
+            // ]
         }
                 ], 
 },
