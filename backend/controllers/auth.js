@@ -24,14 +24,14 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.body.username });
-    if (!user) return next(createError(404, "User not found!"));
+    if (!user) return next(createError(404, "Sai tên đăng nhập hoặc mật khẩu"));
 
     const isPasswordCorrect = await bcrypt.compare(
       req.body.password,
       user.password
     );
     if (!isPasswordCorrect)
-      return next(createError(400, "Wrong password or username!"));
+      return next(createError(400, "Sai tên đăng nhập hoặc mật khẩu"));
 
     // tao 1 JSON Web Token gui den cookie, chua truong id va isAdmin KHI LOGIN
     const token = jwt.sign(

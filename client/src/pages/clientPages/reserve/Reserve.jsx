@@ -239,7 +239,7 @@ const Reserve = () => {
           <div>Tổng thời gian lưu trú:  {alldates.length} đêm</div>
           <div style={{ fontWeight: 'bold' }}>Phòng của bạn:  {detailRooms} </div>
           <div style={{ fontWeight: 'bold' }}>Số người: {options.adult} người lớn và {options.children} trẻ em</div>
-          {(options.adult + options.children * 0.5) - maxPeople >= 2 && (
+          {(parseInt(options.adult) + parseInt(options.children) * 0.5) - maxPeople >= 2 && (
             <div style={{ fontWeight: 'bold', color: 'red' }}>
               (Phòng của bạn có thể không chứa đủ người)
             </div>

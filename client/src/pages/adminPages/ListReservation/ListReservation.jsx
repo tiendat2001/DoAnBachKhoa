@@ -199,7 +199,7 @@ const ListReservation = () => {
                             </div>
                         </div>
                     )}
-                    <h2>Đặt phòng</h2>
+                    <h2>Những đơn đặt phòng tại chỗ nghỉ của bạn</h2>
 
                     <div style={{ display: 'flex', justifyContent: 'flex-start', gap: "10px", marginBottom: '10px', textAlign: 'center' }}>
                         {/* css từ listRoomCLient */}

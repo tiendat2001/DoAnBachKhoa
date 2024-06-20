@@ -72,7 +72,7 @@ const Login = () => {
           Bạn chưa có tài khoản. <Link className="" to="/register">Đăng ký ngay</Link>
         </p>
 
-        {error && <span>{error.message}</span>}
+        {error && <span style={{color:'red'}}>{error.message}</span>}
       </div>
     </div>
   );
