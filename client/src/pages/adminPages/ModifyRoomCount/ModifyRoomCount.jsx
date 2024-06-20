@@ -144,15 +144,14 @@ const ModifyRoomCount = () => {
                         không thể xóa được. Trong trường hợp đó,nếu bạn muốn giảm số lượng phòng muốn bán, bạn sử dụng chức năng đóng phòng.
                       )</div> */}
                        <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Với những phòng đã có đơn đặt phòng hoặc đơn đóng phòng trong thời gian tới sẽ hiện màu đỏ,
-                        không thể xóa được. Trong trường hợp đó,những phòng đó sẽ bị đóng thay vì bị xóa. Tất nhiên bạn vẫn phải phục vụ tất cả các đơn đặt phòng của khách đặt sắp tới.
-                       <br/> Việc phòng ở trạng thái đóng đồng nghĩa với việc phòng đó bị đóng trong tất cả các ngày. 
+                        không thể xóa được. Trong trường hợp đó, nếu bạn muốn giảm số lượng phòng, bạn có thể yêu cầu hủy đơn của khách hoặc sử dụng chức năng đóng phòng. 
                        
                       )</div>
                     {/*  danh sách phòng */}
                     <div style={{ backgroundColor: '#ccc' }} className="roomNumberContainer">
                         <div className="roomNumber">STT</div>
                         <div className="roomNumber">ID phòng</div>
-                        <div className="roomNumber">Trạng thái</div>
+                        {/* <div className="roomNumber">Trạng thái</div> */}
                         <div style={{ width: '20%' }} className="roomNumber" >Tình trạng</div>
                     </div>
                     {roomTypeData.roomNumbers?.map((roomNumber, index) => (
@@ -160,9 +159,9 @@ const ModifyRoomCount = () => {
 
                             <div className="roomNumber">{index + 1}</div>
                             <div className="roomNumber" style={{ fontWeight: 'unset' }}>{roomNumber._id}</div>
-                            <div className="roomNumber" style={{ color: roomNumber.status ? 'green' : 'yellow' }}>
+                            {/* <div className="roomNumber" style={{ color: roomNumber.status ? 'green' : 'yellow' }}>
                                 {roomNumber.status ? 'Mở' : 'Đóng'}
-                            </div>
+                            </div> */}
                             {/* nếu ko xóa được  */}
                             {!canDelete(roomNumber) ? (
                                 <div className="roomNumber">

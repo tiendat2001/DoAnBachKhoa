@@ -388,7 +388,7 @@ export const cancelRoomReservation = async (req, res, next) => {
     // const indexesToRemove = [];
     // req.body.dates.forEach(date => {
     //   const index = roomNumberCurrent.unavailableDates.findIndex(roomDate => roomDate.toISOString() === date);
-    //   if (index !== -1) {
+    //   if (index != -1) {
     //     indexesToRemove.push(index);
     //   }
     // });
@@ -497,7 +497,7 @@ export const cancelRoomReservation = async (req, res, next) => {
     //   convertedDates.forEach(dateTest => {
     //     const indexTest = roomNumberToReplace.unavailableDates.findIndex(roomDateTest => roomDateTest.toISOString() === dateTest.toISOString());
     //     // console.log(indexTest);
-    //     if (indexTest !== -1) {
+    //     if (indexTest != -1) {
     //       indexesToRemoveToReplace.push(indexTest);
     //     }
     //   });
@@ -580,13 +580,13 @@ export const statusRoomCount = async (req, res, next) => {
         return isRoomClose ? count + closeRoom.quantityRoomClosed : count;
       }, 0);
 
-       // tìm số lượng phòng đóng cho ngày hiện tại từ các phòng nhỏ có status false
-       const statusFalseRoomCount = room.roomNumbers.reduce((count, roomNumber) => {
-        return roomNumber.status ? count : count + 1;
-      }, 0);
+      //  // tìm số lượng phòng đóng cho ngày hiện tại từ các phòng nhỏ có status false
+      //  const statusFalseRoomCount = room.roomNumbers.reduce((count, roomNumber) => {
+      //   return roomNumber.status ? count : count + 1;
+      // }, 0);
 
       // Thêm thông tin số lượng phòng trống và phòng đóng vào mảng kết quả
-      roomAvailability.push({ day, month, year, countAvailable: availableRoomsCount,closeRoomCount:closeRoomsCount+statusFalseRoomCount });
+      roomAvailability.push({ day, month, year, countAvailable: availableRoomsCount,closeRoomCount:closeRoomsCount });
 
 
     }
@@ -617,28 +617,7 @@ export const addRoomToRoomType = async (req, res, next) => {
 
 
     // Số lượng phần tử cần thêm từ req.body
-    let roomCountToAdd = req.body.roomCountToAdd;
-    // mở những phòng đã đóng trc
-    for (let i =0; i < room.roomNumbers.length; i++) {
-      const roomNumber = room.roomNumbers[i];
-      // nếu phòng đang ở trạng thái đóng
-      if(!roomNumber.status){
-        await Room.updateOne(
-          { "roomNumbers._id": roomNumber._id },
-          {
-            $set: {
-              "roomNumbers.$.status": true    // Chỉnh sửa trạng thái
-            }
-          }
-        );
-        roomCountToAdd--
-      }
-    
-      if(roomCountToAdd<=0){
-        break;
-      }
-    }
-
+    const roomCountToAdd = req.body.roomCountToAdd;
     // Tạo số lượng phần tử rỗng tương ứng
     const emptyRooms = Array.from({ length: roomCountToAdd }, () => ({}));
     // Đẩy các phần tử rỗng vào mảng roomNumbers của room
@@ -672,7 +651,7 @@ export const deleteRoomInRoomType = async (req, res, next) => {
     // Số lượng phần tử cần xóa từ req.body
     let roomCountToDelete = req.body.roomCountToDelete;
     // Duyệt qua mảng roomNumbers của room
-    for (let i = room.roomNumbers.length - 1; i >= 0; i--) {
+    for (let i = 0; i < room.roomNumbers.length; i++) {
       const roomNumber = room.roomNumbers[i];
       // Kiểm tra ngày hiện tại có lớn hơn tất cả các phần tử trong mảng unavailableDates không
       const canDelete = roomNumber.unavailableDates.every(date => new Date() > new Date(date));
@@ -680,45 +659,19 @@ export const deleteRoomInRoomType = async (req, res, next) => {
       if (canDelete) {
         // Xóa phần tử tại vị trí i khỏi mảng roomNumbers
         room.roomNumbers.splice(i, 1);
+        i--; // Giảm chỉ số để không bỏ qua phần tử sau khi xóa
         roomCountToDelete--; // Giảm số lượng phần tử cần xóa
-      } else {
-        // Chỉnh status ở đây nếu cần
       }
+      // else chỉnh status ở đây , nhưng ko có i--
       // Nếu số lượng phần tử cần xóa đã đạt được, thoát khỏi vòng lặp
       if (roomCountToDelete == 0) {
         break;
       }
     }
-    let roomNeedToClose = 0;
-    if(roomCountToDelete !== 0){
-      roomNeedToClose =roomCountToDelete
-    }
-    const updatedRoomAfterDelete = await room.save();
-    const roomTest = await Room.findById(req.params.roomId);
-    // đóng những phòng ko thể xóa
-    for (let i = roomTest.roomNumbers.length - 1; i >= 0; i--) {
-      const roomNumber = roomTest.roomNumbers[i];
-      if(roomNumber.status){
-        // console.log("Đã đóng"+roomNumber._id)
-       await Room.updateOne(
-          { "roomNumbers._id": roomNumber._id },
-          {
-            $set: {
-              "roomNumbers.$.status": false    // Chỉnh sửa trạng thái
-            }
-          }
-        );
-        roomNeedToClose--
-      }
-      if(roomNeedToClose<=0){
-        break;
-      }
-    }
-
     // Lưu lại thông tin phòng sau khi xóa
     const updatedRoom = await room.save();
     if(roomCountToDelete !=0){
-      return next(createError(404, `Có ${roomCountToDelete} phòng đã được đóng thay vì xóa`));
+      return next(createError(404, `Có ${roomCountToDelete} phòng không thể xóa! Hãy đóng thay vì xóa`));
     }
     res.status(200).json({ message: 'Đã xóa phòng thành công', room: updatedRoom });
   } catch (error) {
