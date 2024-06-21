@@ -194,7 +194,8 @@ const List = () => {
               {openDate && (
                 <DateRange
                   onChange={(item) => handleDayChange(item)}
-                  // minDate={new Date()}
+                  minDate={new Date()} // ngày tối thiểu đc chọn
+                  maxDate={addDays(new Date(),365)}
                   ranges={dates}
                 />
               )}

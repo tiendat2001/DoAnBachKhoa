@@ -244,8 +244,9 @@ export const getAllHotelRevenue = async (req, res, next) => {
             }
         }));
 
-        // Chuyển object thành mảng và trả về
+        // Chuyển object thành mảng và trả về thoe thứ tự doanh thu từ cao xuống thấp
         const hotelRevenue = Object.values(hotelRevenueMap);
+        hotelRevenue.sort((a, b) => b.totalRevenue - a.totalRevenue);
         res.status(200).json(hotelRevenue);
     } catch (error) {
         next(error);

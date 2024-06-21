@@ -23,7 +23,7 @@ export const roomColumns = [
       flex:2,
       // width: 330,
       cellClassName: 'wrap-content', // listReservation.css
-      align:'center',
+      // align:'center',
       headerAlign:'center'
     },
     // {
@@ -227,8 +227,10 @@ export const roomColumns = [
       //   </div>
       // ),
       width: 115,
-      valueFormatter: (params) => formatDate(params.value),
-      comparator: (a, b) => new Date(a).getTime() - new Date(b).getTime(),
+      valueFormatter: (params) => {
+        const value = params.value ? params.value : '2024-05-20';
+        return formatDate(value);
+      },      comparator: (a, b) => new Date(a).getTime() - new Date(b).getTime(),
       headerAlign: 'center',
       align:'center'
 
