@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 import { useLocation } from "react-router-dom";
 const Reserve = () => {
   const location = useLocation();
-  // 
+  // gồm id các phòng nhỏ
   const [selectedRooms, setSelectedRooms] = useState(location.state.selectedRoomIds);
   const [alldates, setAlldates] = useState(location.state.alldates);
   const [hotelId, setHotelId] = useState(location.state.hotelId);

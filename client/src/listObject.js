@@ -9,7 +9,7 @@ export const listProvinces = [
     },
     {
       name: "Đà Nẵng",
-      imageUrl: "https://cf.bstatic.com/xdata/images/city/max500/689422.webp?k=2595c93e7e067b9ba95f90713f80ba6e5fa88a66e6e55600bd27a5128808fdf2&o="
+      imageUrl: "https://vietnam.travel/sites/default/files/2018-10/danang%20travel%20guide.jpg"
     },
     {
       name: "Hải Phòng",
