@@ -35,7 +35,7 @@ const RoomTypeSchema = new mongoose.Schema({
         {   
             // number:Number, 
             unavailableDates:{type:[Date]},
-            status:{type: Boolean, default:true},
+            // status:{type: Boolean, default:true},
             // unavailableRangeDates:
             // [
             //     {

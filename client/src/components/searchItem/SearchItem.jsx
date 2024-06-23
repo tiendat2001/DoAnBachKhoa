@@ -52,9 +52,9 @@ const SearchItem = ({ item }) => {
 
   const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
   const isAvailable = (roomNumber, dateToCheck) => {
-    if (!roomNumber.status) {
-      return false; // Nếu status là false, room không khả dụng
-    }
+    // if (!roomNumber.status) {
+    //   return false; // Nếu status là false, room không khả dụng
+    // }
     const isFound = roomNumber.unavailableDates.some((date) => {
       const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
       // console.log(new Date(dateMinusOneDay));

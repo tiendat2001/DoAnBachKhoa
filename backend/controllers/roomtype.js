@@ -159,12 +159,12 @@ export const updateRoom = async (req, res, next) => {
 };
 const isAvailable = (roomNumber, dateToCheck, isCancelFunction) => {
   // nếu ko phải là hàm dùng trong hủy phòng thì phải check status
-  if(!isCancelFunction){
-    // console.log("check status")
-  if (!roomNumber.status) {
-    return false; // Nếu status là false, room không khả dụng
-  }
-}
+//   if(!isCancelFunction){
+//     // console.log("check status")
+//   if (!roomNumber.status) {
+//     return false; // Nếu status là false, room không khả dụng
+//   }
+// }
   const isFound = roomNumber.unavailableDates.some((date) => {
     const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
     // console.log(new Date(dateMinusOneDay));
@@ -566,7 +566,7 @@ export const statusRoomCount = async (req, res, next) => {
       // Tìm số lượng phòng trống cho ngày hiện tại
       // lặp từng phần tử trong roomNumbers, với mỗi ptu check isRoomAvailable (hàm some phải false và status phải true) nếu true thì tăng biến count lên 1
       const availableRoomsCount = room.roomNumbers.reduce((count, roomNumber) => {
-        const isRoomAvailable = roomNumber.status && !roomNumber.unavailableDates.some(date => {
+        const isRoomAvailable = !roomNumber.unavailableDates.some(date => {
           return new Date(date).toISOString().slice(0, 10) === currentDay.toISOString().slice(0, 10); // so sanhs 7hUTC
         });
         return isRoomAvailable ? count + 1 : count;
@@ -584,7 +584,6 @@ export const statusRoomCount = async (req, res, next) => {
       //  const statusFalseRoomCount = room.roomNumbers.reduce((count, roomNumber) => {
       //   return roomNumber.status ? count : count + 1;
       // }, 0);
-
       // Thêm thông tin số lượng phòng trống và phòng đóng vào mảng kết quả
       roomAvailability.push({ day, month, year, countAvailable: availableRoomsCount,closeRoomCount:closeRoomsCount });
 
