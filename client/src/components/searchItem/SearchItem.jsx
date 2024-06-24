@@ -122,7 +122,7 @@ const SearchItem = ({ item }) => {
         <span className="siCancelOpSubtitle">
           You can cancel later, so lock in this great price today!
         </span> */}
-        <span className="siFeatures">Address: {item.address}</span>
+        <span className="siFeatures">Địa chỉ: {item.address}</span>
         <span className="siFacilities">
           {item.facilities?.map((facility, index) => (
             <div className="siFacilities_item" style={{ width: '30%' }} key={index}>

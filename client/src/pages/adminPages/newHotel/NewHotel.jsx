@@ -51,8 +51,11 @@ const NewHotel = () => {
 
   // khi ng dùng nhập thông tin
   const handleChange = (e) => {
-    setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value, }));
-
+    const { id, value } = e.target;
+    setInfo((prev) => ({
+      ...prev,
+      [id]: id === "city" ? value.trim() : value,
+    }));
   };
   // facilities người dùng tích
   const handleCheckboxChange = (facility) => {

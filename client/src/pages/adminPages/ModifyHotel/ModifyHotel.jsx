@@ -47,8 +47,12 @@ const ModifyHotel = () => {
     }, [data]);
 
     const handleChange = (e) => {
-        setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
-    };
+        const { id, value } = e.target;
+        setInfo((prev) => ({
+          ...prev,
+          [id]: id === "city" ? value.trim() : value,
+        }));
+      };
     // validate input ko rỗng hoặc 1 số trường hợp ko hợp lệ
     const validateInputs = () => {
         // Check if all hotelInputs are filled
@@ -99,6 +103,7 @@ const ModifyHotel = () => {
                 return;
             }
             try {
+                // list chứa link các photo để đẩy vào api
                 const list = await Promise.all(
                     Object.values(files).map(async (file) => {
                       const data = new FormData();

@@ -75,7 +75,7 @@ export const getHotels = async (req, res, next) => {
     }
 
     if (city && city !== '') {
-      query.city = city
+      query.city = city.trim()
     }
     if (type && type !== '') { // Kiểm tra và thêm type vào query nếu không rỗng, nếu rỗng thì coi như ko có và lấy tất cả
       query.type = type;
