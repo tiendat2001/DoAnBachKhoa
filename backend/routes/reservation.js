@@ -1,7 +1,7 @@
 import express from "express"
 import { createReservation ,getReservationsByAdmin,updateReservation,deleteAllReservations,
     getAllHotelRevenue,getRevenueByHotelId,getRevenueMonthsByHotelId,getAllReservations,
-    getReservationsByClient,paymentAccountLastMonth,sendEmailStatusReservation
+    getReservationsByClient,paymentAccountLastMonth,sendEmailStatusReservation,deleteReservationById
 } from "../controllers/reservation.js"
 import { verifyAdmin,verifyUserModifyHotel,verifyToken } from "../utils/verifyToken.js";
 const router = express.Router();
@@ -23,6 +23,7 @@ router.put("/:id",verifyToken,updateReservation)
 //DELETE ALL 
 router.delete("/",deleteAllReservations)
 
+router.delete("/:reservationId",deleteReservationById)
 
 // doanh thu
 

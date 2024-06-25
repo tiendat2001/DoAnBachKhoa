@@ -99,7 +99,7 @@ const ListBooking = () => {
         return;
       }
 
-      // gửi email xác nhận đã hủy phòng thành công
+      // // gửi email xác nhận đã hủy phòng thành công
       // let emailSubject = "THÔNG BÁO HỦY PHÒNG THÀNH CÔNG"
       // try {
       //   const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {

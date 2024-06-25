@@ -105,7 +105,7 @@ const ListReservation = () => {
             //     const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {
             //         userId: selectedCancelReservation.userId, // gửi cho email của account khách - userId khách
             //         emailSubject: "THÔNG BÁO YÊU CẦU HỦY ĐƠN ĐẶT PHÒNG TỪ CHỦ CHỖ NGHỈ ",
-            //         emailContent: `Đơn đặt phòng mã ${selectedCancelReservation._id} của quý khách được chủ chỗ nghỉ yêu cầu hủy \n Lý do hủy: ${reasonCancel} `
+            //         emailContent: `Đơn đặt phòng mã ${selectedCancelReservation._id} của quý khách được chủ chỗ nghỉ yêu cầu hủy \n Lý do hủy: ${reasonCancel} \n Chi tiết xem tại trang web phần Đơn đặt phòng `
             //     });
             // } catch (err) {
             //     console.log(err)

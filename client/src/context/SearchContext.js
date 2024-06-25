@@ -13,7 +13,7 @@ const INITIAL_STATE = {
     },
   ],
   options: {
-    adult: 1,
+    adult: 2,
     children: 0,
     room: 1,
   },

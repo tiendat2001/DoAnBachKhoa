@@ -594,7 +594,7 @@ export const statusRoomCount = async (req, res, next) => {
     res.json(roomAvailability);
   } catch (error) {
     console.error("Error occurred while fetching room availability:", error);
-    res.status(500).json({ error: "Internal server error" });
+    next(err);
   }
 }
 
@@ -670,7 +670,7 @@ export const deleteRoomInRoomType = async (req, res, next) => {
     // Lưu lại thông tin phòng sau khi xóa
     const updatedRoom = await room.save();
     if(roomCountToDelete !=0){
-      return next(createError(404, `Có ${roomCountToDelete} phòng không thể xóa! Hãy đóng thay vì xóa`));
+      return next(createError(404, `Có ${roomCountToDelete} phòng không thể xóa!`));
     }
     res.status(200).json({ message: 'Đã xóa phòng thành công', room: updatedRoom });
   } catch (error) {

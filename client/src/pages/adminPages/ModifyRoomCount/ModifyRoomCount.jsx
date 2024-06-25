@@ -118,7 +118,7 @@ const ModifyRoomCount = () => {
                     <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '20px' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>
                     <div className="modifyRoomCount">
                         <label style={{ display: 'flex', justifyContent: 'flex-start', gap: '10px', alignItems: 'center' }}>
-                            Nhập lượng phòng cần thêm/mở:
+                            Nhập lượng phòng cần thêm:
                             <input
                                 type="number"
                                 value={roomCountToAdd}
