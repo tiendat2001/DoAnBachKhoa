@@ -194,6 +194,7 @@ const List = () => {
               {openDate && (
                 <DateRange
                   onChange={(item) => handleDayChange(item)}
+                  moveRangeOnFirstSelection={true}
                   minDate={new Date()} // ngày tối thiểu đc chọn
                   maxDate={addDays(new Date(),365)}
                   ranges={dates}
@@ -220,11 +221,11 @@ const List = () => {
 
             <div className="lsItem">
               {/*  chinh gia tien */}
-              <label>Khoảng giá </label>
+              <label>Khoảng giá (theo giá loại phòng rẻ nhất của chỗ nghỉ) </label>
               <div className="lsOptions">
                 <div className="lsOptionItem">
                   <span className="lsOptionText">
-                    Thấp nhất <small></small>
+                    Từ <small></small>
                   </span>
 
                   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
@@ -240,7 +241,7 @@ const List = () => {
 
                 <div className="lsOptionItem">
                   <span className="lsOptionText">
-                    Cao nhất <small></small>
+                    Đến <small></small>
                   </span>
                   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
                     <div>({Intl.NumberFormat('vi-VN').format(max * 1000)} VND)</div>

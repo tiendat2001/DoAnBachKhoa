@@ -89,6 +89,7 @@ const ModifyRoomCount = () => {
         } catch (error) {
             console.log(error);
         }
+        setRoomCountToAdd(0)
     };
 
     const submitDeleteRoom = async (event) => {
@@ -106,6 +107,7 @@ const ModifyRoomCount = () => {
             reFetch();
             console.log(error);
         }
+        setRoomCountToDelete(0)
     };
     return (
         <div className="listAdmin">

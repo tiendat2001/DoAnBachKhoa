@@ -284,7 +284,7 @@ export const updateRoomAvailability = async (req, res, next) => {
     }));
 
     // await delay(20000); // Chờ 5 giây
-    console.log("Đặt phòng kết thúc, giải phóng khóa")
+    // console.log("Đặt phòng kết thúc, giải phóng khóa")
     clearLockedRoomTypeIds(lockedRoomTypeIds);
     res.status(200).json("Room status has been updated.");
   } catch (err) {
