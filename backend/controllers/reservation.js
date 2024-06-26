@@ -162,7 +162,7 @@ export const deleteAllReservations = async (req, res, next) => {
 export const deleteReservationById = async (req, res, next) => {
    
     try {
-        const result = await Reservation.findByIdAndDelete(req.params.id);
+        const result = await Reservation.findByIdAndDelete(req.params.reservationId);
         if (!result) {
             return res.status(404).json('Reservation not found.');
         }

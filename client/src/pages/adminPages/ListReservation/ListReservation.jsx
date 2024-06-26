@@ -44,6 +44,7 @@ const ListReservation = () => {
         reFetch: reservationReFetch } = useFetch(`/reservation/admin?startDay=${datesToFilter[0].startDate}&endDay=${datesToFilter[0].endDate}`);
     const [openDate, setOpenDate] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [isRequesting, setIsRequesting] = useState(false);
     const [reasonCancel, setReasonCancel] = useState('');
     const [selectedCancelReservation, setSelectedCancelReservation] = useState("");
     // console.log(selectedCancelReservation)
@@ -85,6 +86,7 @@ const ListReservation = () => {
 
     // khi admin bấm yêu cầu hủy đơn đặt
     const requestCancel = async () => {
+        setIsRequesting(true)
         let hasError = false
         try {
             // chỉnh lại reservation này là do admin yêu cầu hủy
@@ -124,6 +126,7 @@ const ListReservation = () => {
                 setModalIsOpen(false)
             }
             // setIsSending(false)
+            setIsRequesting(false)
             reservationReFetch();
         }
 
@@ -193,7 +196,7 @@ const ListReservation = () => {
                                  placeholder="Nhập lý do muốn hủy. Yêu cầu hủy và lý do sẽ được gửi đến email của khách. Lưu ý rằng đơn đặt phòng vẫn sẽ có hiệu lực cho đến khi khách đồng ý hủy."
                                  onChange={(e) => setReasonCancel(e.target.value)} />
                                 <div >
-                                    <button className="modalCancelRequest_btn"  onClick={requestCancel}>Yêu cầu hủy</button>
+                                    <button className="modalCancelRequest_btn" disabled={isRequesting}  onClick={requestCancel}> {isRequesting ? 'Đang xử lý...' : 'Yêu cầu hủy'}</button>
                                 </div>
 
                             </div>
@@ -229,7 +232,7 @@ const ListReservation = () => {
 
 
 
-                    <DataGrid autoHeight rowHeight={60}
+                    <DataGrid autoHeight getRowHeight={() => 'auto'}
                         // className="datagrid"
                         rows={reservationData}
                         columns={ReservationColumns.concat(actionColumn)}

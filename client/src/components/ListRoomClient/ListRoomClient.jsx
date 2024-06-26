@@ -240,11 +240,11 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
 
       {/* Phần đặt phòng gom nhieu flex_div */}
       {data.map((item, index) => (
-        <div className="flex_div" style={{ border: '1px solid #7fc7af', }}>
+        <div className="flex_div" style={{ border: '1px solid #7fc7af' }}>
 
           <div style={{ width: '50%' }} >
             <div className="rTitle">{item.title}</div>
-            <div className="rDesc">Số lượng người: {item.maxPeople}</div>
+            <div className="rDesc" >Số lượng người: {item.maxPeople}</div>
             <div className="rMax">{item.desc}</div>
             <div className="rImages">
               {item.photos?.slice(0, 3).map((photo, i) => (

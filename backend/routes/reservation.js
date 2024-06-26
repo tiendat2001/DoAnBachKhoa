@@ -35,10 +35,10 @@ router.get("/getRevenueByMonths/:hotelId",verifyToken,getRevenueMonthsByHotelId)
 
 //ADMINISTRATOR
 // GET ALL DOANH THU HOTEL CHO ADMINISTRATOR
-router.get("/getAllRevenueHotel",getAllHotelRevenue)   // cho theem verifyAdmin de chi admin goi api dc
+router.get("/getAllRevenueHotel",verifyAdmin,getAllHotelRevenue)   // cho theem verifyAdmin de chi admin goi api dc
 
 // TIỀN CẦN THANH TOÁN CHO TÀI KHOẢN THÁNG TRC
-router.get("/getAllPaymentAccount",paymentAccountLastMonth)   // cho theem verifyAdmin de chi admin goi api dc
+router.get("/getAllPaymentAccount",verifyAdmin,paymentAccountLastMonth)   // cho theem verifyAdmin de chi admin goi api dc
 
 // SEND EMAIL
 router.put("/email/sendEmailStatusReservation",sendEmailStatusReservation)   // cho theem verifyAdmin de chi admin goi api dc

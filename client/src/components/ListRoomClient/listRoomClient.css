@@ -28,30 +28,6 @@
     border: none;
     outline: none;
   }
-/*   
-  .headerSearchInputHotel::placeholder{
-    color: lightgray;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  .headerSearchTextHotel {
-    color: lightgray;
-    cursor: pointer;
-    font-weight: bold;
-  } */
-
- 
-
-
-
-
-
-
-
-
-
-
-
 
 .RoomClientContainer{
     width: 100%;
@@ -67,6 +43,7 @@
     width: 100%;
     box-sizing: border-box;
     padding: 10px;
+    margin-bottom: 10px;
 }
 
 .RoomClientContainer .rMax{

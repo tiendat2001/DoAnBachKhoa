@@ -83,6 +83,9 @@ export const deleteRoom = async (req, res, next) => {
       });
     }
 
+    // xóa cả closeroom có loại phòng này
+    const result = await ClosedRoom.deleteMany({ roomTypeId: req.params.id });
+
     res.status(200).json("Room has been deleted.");
   } catch (err) {
     next(err);
