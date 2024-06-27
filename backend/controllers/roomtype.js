@@ -234,6 +234,7 @@ export const updateRoomAvailability = async (req, res, next) => {
       totalRoomAvailableEachRoomType.roomTypeId = roomTypeId
       totalRoomAvailableEachRoomType.roomAvailable=roomAvailable
       totalRoomAvailableAllRoomType.push(totalRoomAvailableEachRoomType)
+     
     }))
     // console.log("SỐ lượng khách đặt")
     // console.log(req.body.roomTypeIdsReserved)
@@ -655,7 +656,7 @@ export const deleteRoomInRoomType = async (req, res, next) => {
     // Duyệt qua mảng roomNumbers của room
     for (let i = 0; i < room.roomNumbers.length; i++) {
       const roomNumber = room.roomNumbers[i];
-      // Kiểm tra ngày hiện tại có lớn hơn tất cả các phần tử trong mảng unavailableDates không
+      // Kiểm tra ngày hiện tại có lớn hơn tất cả các phần tử trong mảng unavailableDates không, ddang so sanh cung UTC voi nhau
       const canDelete = roomNumber.unavailableDates.every(date => new Date() > new Date(date));
       // Nếu ngày hiện tại lớn hơn tất cả các ngày trong mảng, cho phép xóa
       if (canDelete) {

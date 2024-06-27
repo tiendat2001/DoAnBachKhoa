@@ -369,7 +369,7 @@ const RoomDetails = () => {
                                 ?.filter(roomClose => {
                                     const currentDate = new Date();
                                     currentDate.setHours(0, 0, 0, 0);
-                                    return new Date(roomClose.startClose) > currentDate;
+                                    return new Date(roomClose.endClose) > currentDate;
                                 })
                                 .map((roomClose, index) => (
                                     <div key={index} className="roomCloseContainer">

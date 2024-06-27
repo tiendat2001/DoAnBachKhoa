@@ -171,7 +171,7 @@ const Header = ({ type }) => {
                     moveRangeOnFirstSelection={true}
                     ranges={dates}
                     className="date"
-                    minDate={new Date()} // ngày tối thiểu đc chọn
+                    minDate={addHours(new Date(),10)} // ngày tối thiểu đc chọn
                     maxDate={addDays(new Date(),365)}
                   />
                 )}
