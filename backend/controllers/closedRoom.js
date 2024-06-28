@@ -118,7 +118,7 @@ export const uploadImageCloudinary = async (req, res, next) => {
       data.append('file', file.buffer, file.originalname);
       data.append('upload_preset', 'upload');
       const uploadRes = await axios.post(
-        'https://api.cloudinary.com/v1_1/tiendat2001/image/upload',
+        '',
         data,
         {
           headers: {
