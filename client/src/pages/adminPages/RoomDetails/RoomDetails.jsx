@@ -348,7 +348,7 @@ const RoomDetails = () => {
 
                             <div>Số lượng phòng hiện đang rao bán (có thể đóng): {roomAvailable}</div>
 
-                            <button onClick={handelCloseRoom}>Xác nhận</button>
+                            <button className="closeRoomContainer_btn" onClick={handelCloseRoom}>Xác nhận đóng</button>
 
                         </div>
 

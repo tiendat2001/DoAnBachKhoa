@@ -75,4 +75,12 @@
   width:20%;
 }
 
+.closeRoomContainer_btn{
+  background-color: #0071c2;
+    color: white;
+    font-weight: bold;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+}
   
