@@ -1,0 +1,13 @@
+1. Environment Setup
+ - Install nodejs 16.17.1
+ - In the backend/.env file, write the connection string to your MongoDB database
+ - Register for a VNPAY test account (if you don't have one) at https://sandbox.vnpayment.vn/devreg/, after registering, 
+   check your email to get the vnp_TmnCode and vnp_HashSecret, and write them in the backend/config/default.json file
+ - To store images: create a Cloudinary account (if you don't have one) and fill in your image upload link at 
+   backend/controllers/closedRoom.js, line 121 (to get the link setup, go to settings/Upload in your Cloudinary account)
+ - To use the email sending feature: go to https://myaccount.google.com/apppasswords to set up an application password, 
+   then fill in the password in the backend/controllers/reservation.js file, line 525
+ - Test card information (for online payment) in the client/README.md file
+2. Start the project
+ - In the backend directory, run the command npm install, then npm start to start the server at port 8800.
+ - In the backend directory, run the command npm install, then npm start to start the website at port 3000.
