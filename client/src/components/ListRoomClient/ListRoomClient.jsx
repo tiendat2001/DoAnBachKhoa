@@ -23,6 +23,7 @@ import { toast } from 'react-toastify';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ListRoomClient = ({ hotelId, hotelType }) => {
+  const timeZone = new Date().getTimezoneOffset() / 60  // độ lệch múi giờ so với UTC của máy hiện tại
   const { data, loading, error, reFetch } = useFetch(`/rooms/${hotelId}/?status=true`);
   const [selectedRooms, setSelectedRooms] = useState([]);
   const searchContext = useContext(SearchContext);
@@ -221,7 +222,8 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
           {openDate && (
             <DateRange
               onChange={(item) => handleDayChange(item)}
-              // minDate={new Date()}
+              // minDate={addHours(new Date(),10+(-7-timeZone))} // ngày tối thiểu đc chọn, 
+              // maxDate={addDays(new Date(),365)}
               ranges={dates}
               moveRangeOnFirstSelection={true}
               editableDateInputs={true}

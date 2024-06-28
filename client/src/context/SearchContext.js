@@ -10,7 +10,7 @@ const INITIAL_STATE = {
   dates: [
     {
       startDate: startDate,
-      endDate: addDays(currentDate, 1),
+      endDate: addDays(startDate, 1),
       key: "selection",
     },
   ],

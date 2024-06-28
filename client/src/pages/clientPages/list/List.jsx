@@ -14,6 +14,7 @@ import { listProvinces } from "../../../listObject";
 import { hotelFacilities } from "../../../formSource";
 import Footer from "../../../components/footer/Footer";
 const List = () => {
+  const timeZone = new Date().getTimezoneOffset() / 60  // độ lệch múi giờ so với UTC của máy hiện tại
   const location = useLocation();
   const searchContext = useContext(SearchContext);
   const [destination, setDestination] = useState(searchContext.destination);
@@ -195,7 +196,7 @@ const List = () => {
                 <DateRange
                   onChange={(item) => handleDayChange(item)}
                   moveRangeOnFirstSelection={true}
-                  minDate={new Date()} // ngày tối thiểu đc chọn
+                  minDate={addHours(new Date(),10+(-7-timeZone))} // ngày tối thiểu đc chọn, 
                   maxDate={addDays(new Date(),365)}
                   ranges={dates}
                 />

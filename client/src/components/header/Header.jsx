@@ -24,7 +24,7 @@ const Header = ({ type }) => {
   const [dates, setDates] = useState(searchContext.dates);
   const [openDate, setOpenDate] = useState(false);
   const [options, setOptions] = useState(searchContext.options);
-
+  const timeZone = new Date().getTimezoneOffset() / 60  // độ lệch múi giờ so với UTC của máy hiện tại
   const [openOptions, setOpenOptions] = useState(false);
   const [suggestedDestination, setSuggestedDestination] = useState([]);
   const navigate = useNavigate();
@@ -171,7 +171,7 @@ const Header = ({ type }) => {
                     moveRangeOnFirstSelection={true}
                     ranges={dates}
                     className="date"
-                    minDate={addHours(new Date(),10)} // ngày tối thiểu đc chọn
+                    minDate={addHours(new Date(),10+(-7-timeZone))} // ngày tối thiểu đc chọn, 
                     maxDate={addDays(new Date(),365)}
                   />
                 )}
