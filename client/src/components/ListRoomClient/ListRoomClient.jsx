@@ -48,7 +48,6 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
 
   useEffect(() => {
     dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
-    // console.log("thay doi")
   }, [destination, dates, options]);
 
   // console.log(dates)
@@ -98,16 +97,7 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
   }
 
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
-  // lấy roomNumber_id theo tích
-  // const handleSelectCheckBox = (e) => {
-  //   const checked = e.target.checked;
-  //   const value = e.target.value;
-  //   setSelectedRooms(
-  //     checked
-  //       ? [...selectedRooms, value]
-  //       : selectedRooms.filter((item) => item !== value) // nếu bỏ tích thì bỏ phòng có value đấy ra mảng, giữ lại phòng kp value
-  //   );
-  // };
+ 
   const getDatesInRange = (startDate, endDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -169,6 +159,9 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
     });
 
     setSelectedRoomIds(updatedSelectedRoomsCopy);
+
+    // ghi tổng hóa đơn hiện tại
+    
   };
   // console.log("selectedRoomIds:", selectedRoomIds);
 
@@ -385,25 +378,7 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
             <div style={{ width: '30%', height: '100%', fontSize: '14px' }}>(Chọn số lượng muốn đặt)</div>
 
           </div>
-          {/*  hiện các ô room */}
-          {/* <div className="rSelectRooms" style={{ width: '20%', height: '100%' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', width: '50%', alignItems: 'center' }}>
-              {item.roomNumbers.map((roomNumber) => (
-                isAvailable(roomNumber) ? (
-                  <div className="room" key={roomNumber._id}>
-                    <input
-                      type="checkbox"
-                      value={roomNumber._id}
-                      onChange={handleSelectCheckBox}
-                    />
-                  </div>
-                ) : null
-              ))}
-            </div>
-
-            <div style={{ width: '30%', height: '100%', fontSize: '14px' }}>(TÍch số lượng ô bằng với số lượng phòng muốn đặt)</div>
-
-          </div> */}
+          
 
 
         </div>

@@ -99,7 +99,7 @@ export const roomColumns = [
       headerAlign: 'center',
       align:'center'
     },
-    { field: "hotelName", headerName: "Chỗ nghỉ", width: 180, headerAlign: 'center',  align:'center' },
+    { field: "hotelName", headerName: "Chỗ nghỉ",flex:2, width: 180, headerAlign: 'center',  align:'center' },
 
     {
       field: "roomsDetail",
@@ -168,6 +168,7 @@ export const roomColumns = [
       field: "status",
       headerName: "Trạng thái",
       width: 100,
+      flex:0.75,
       renderCell: (params) => {
         let statusText;
         let statusColor;

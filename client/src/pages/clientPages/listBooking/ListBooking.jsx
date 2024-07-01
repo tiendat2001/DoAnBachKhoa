@@ -177,7 +177,7 @@ const ListBooking = () => {
                 {/* <button className="cancel_booking" onClick={() => handleCancelReserve(item.allDatesReserve, item.roomNumbersId, item._id, item.start, item.end, item.roomTypeIdsReserved)}
                 >Hủy đặt phòng</button>  */}
                 <br />
-                <div style={{ textAlign: 'right' }}>(Bạn sẽ được miễn phí nếu hủy trước thời gian nhận phòng 3 ngày (trước {subHours(new Date(item.start), 24 * 3).toLocaleString('vi-VN')}))</div>
+                <div style={{ textAlign: 'right' }}>(Bạn sẽ được miễn phí hủy nếu hủy trong 24h kể từ lúc đặt hoặc trước thời gian nhận phòng 3 ngày (trước {subHours(new Date(item.start), 24 * 3).toLocaleString('vi-VN')}))</div>
               </div>
 
             </div>

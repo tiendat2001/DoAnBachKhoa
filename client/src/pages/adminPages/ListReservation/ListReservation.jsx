@@ -122,7 +122,7 @@ const ListReservation = () => {
                 toast.error("Đã xảy ra lỗi. Vui lòng thử lại.");
                 setModalIsOpen(false)
             } else {
-                toast.success("Gửi yêu cầu hủy thành công thành công");
+                toast.success("Gửi yêu cầu hủy thành công");
                 setModalIsOpen(false)
             }
             // setIsSending(false)

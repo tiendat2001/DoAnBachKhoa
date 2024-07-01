@@ -1,7 +1,6 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-
 import "./reserve.css";
 import useFetch from "../../../hooks/useFetch";
 import { useEffect } from "react";
@@ -41,6 +40,7 @@ const Reserve = () => {
   const handlePhoneNumberChange = (event) => {
     setPhoneNumber(event.target.value);
   };
+  
   // console.log(paymentType)
   var totalPrice = 0;
   var maxPeople = 0;
