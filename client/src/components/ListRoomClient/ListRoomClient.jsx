@@ -24,6 +24,7 @@ import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ListRoomClient = ({ hotelId, hotelType }) => {
   const timeZone = new Date().getTimezoneOffset() / 60  // độ lệch múi giờ so với UTC của máy hiện tại
+  // các room type đang hoạt động của chỗ nghỉ hiện tại
   const { data, loading, error, reFetch } = useFetch(`/rooms/${hotelId}/?status=true`);
   const [selectedRooms, setSelectedRooms] = useState([]);
   const searchContext = useContext(SearchContext);
@@ -42,6 +43,8 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
   const [key, setKey] = useState(Math.random());
   const selectedRoomDetais = [];
   const { user } = useContext(AuthContext)
+  // gía tổng hóa đơn tạm thời
+  const [totalPriceReservation, setTotalPriceReservation] = useState(0);
   // console.log(dates)
   // var totalRoomQuantitySelected = 0;
   const navigate = useNavigate()
@@ -71,7 +74,7 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
   // const toggleExpandedPhoto = (index) => {
   //   setExpandedPhotoIndex(index === expandedPhotoIndex ? null : index);
   // };
-
+  // ng dùng thay đổi khoảng ngày
   const handleDayChange = (item) => {
     const utc = new Date().getTimezoneOffset() / 60 //-7
     const newSelection = { ...item.selection };
@@ -86,6 +89,7 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
     setDates([{ ...newSelection, startDate, endDate }]);
     setSelectedRoomIds([])
     setKey(Math.random()); // Bắt reload lại phần chọn phòng
+    setTotalPriceReservation(0)
     reFetch()
   };
 
@@ -97,7 +101,7 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
   }
 
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
- 
+
   const getDatesInRange = (startDate, endDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -161,9 +165,19 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
     setSelectedRoomIds(updatedSelectedRoomsCopy);
 
     // ghi tổng hóa đơn hiện tại
-    
+    let totalPrice = 0;
+    updatedSelectedRoomsCopy.forEach(roomId => {
+      // với mỗi _id phòng nhỏ thì tìm typeRoom tương ứng
+      const room = data.find(room => room.roomNumbers.some(rn => rn._id == roomId));
+      if (room) {
+        totalPrice = totalPrice + room.price
+      }
+    });
+    // giá hóa đơn theo lựa chọn hiện tại ng dùng
+    totalPrice = totalPrice* alldates.length
+    setTotalPriceReservation(totalPrice)
   };
-  // console.log("selectedRoomIds:", selectedRoomIds);
+  // console.log("Giá hiện tại:", totalPriceReservation * alldates.length);
 
   // hàm nút đặt phòng
   const reserveRoom = async () => {
@@ -324,16 +338,16 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
                 const maxOptions = 10; // Số lượng phòng tối đa sẽ hiện của thẻ option
                 const options = [];
                 //  ko còn phòng trống nào
-                if (roomAvailable === 0){
+                if (roomAvailable === 0) {
                   options.push(<option value={0}>Đã hết</option>);
-                }else{
+                } else {
                   options.push(<option value={0}> 0 {hotelType === "Khách sạn" ? "phòng" : hotelType.toLowerCase()}</option>);
                   for (let i = 1; i <= roomAvailable; i++) {
-                    if(i>maxOptions) break;
+                    if (i > maxOptions) break;
                     options.push(<option value={i}>{i} {hotelType === "Khách sạn" ? "phòng" : hotelType.toLowerCase()}</option>);
                   }
                 }
-               
+
 
                 return options;
 
@@ -378,13 +392,17 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
             <div style={{ width: '30%', height: '100%', fontSize: '14px' }}>(Chọn số lượng muốn đặt)</div>
 
           </div>
-          
+
 
 
         </div>
       ))}
 
       <h2>Bạn đã chọn {selectedRoomIds.length} phòng</h2>
+      {totalPriceReservation > 0 && (
+        <h2>Tổng giá: {new Intl.NumberFormat('vi-VN').format(totalPriceReservation * 1000)} VND</h2>
+      )}
+
       <button onClick={reserveRoom} className="rButton">
         Đi đến trang đặt phòng
       </button>

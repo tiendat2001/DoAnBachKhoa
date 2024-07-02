@@ -1,14 +1,16 @@
 import { createContext, useReducer } from "react";
 import React from "react";
 import { format,addDays,addHours  } from "date-fns";
-const currentDate = new Date();
 const utc = new Date().getTimezoneOffset() / 60 //-7
+// nếu qua 14h thì mặc định để  khoảng ngày là ngày tới + ngày tiếp theo
+const currentDate = addHours(new Date(),10+(-7-utc));
 currentDate.setHours(0, 0, 0, 0);
 const startDate = addHours(currentDate, 7 - utc);
 const INITIAL_STATE = {
   destination: "Hà Nội",
   dates: [
     {
+      // nếu máy ở múi giờ VN thì đang là 14h
       startDate: startDate,
       endDate: addDays(startDate, 1),
       key: "selection",

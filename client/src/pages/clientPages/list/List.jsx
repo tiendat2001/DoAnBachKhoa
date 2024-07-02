@@ -176,7 +176,7 @@ const List = () => {
                     {suggestedDestination.map((suggestion, index) => (
                       <div
                         key={index}
-                        style={{ top: '64px' }}
+                        style={{  }}
                         onClick={() => handleSuggestionClick(suggestion)}
                       >
                         {suggestion}
@@ -233,8 +233,12 @@ const List = () => {
                     <div>({Intl.NumberFormat('vi-VN').format(min * 1000)} VND)</div>
                     <input
                       type="number"
+                      min="0"
                       placeholder={min}
-                      onChange={(e) => setMin(e.target.value)}
+                      onChange={(e) => {
+                        const value = Math.max(0, e.target.value);
+                        setMin(value);
+                      }}
                       className="lsOptionInput"
                     />
                   </div>
@@ -249,6 +253,7 @@ const List = () => {
                     <input
                       type="number"
                       placeholder={max}
+                      min="0"
                       onChange={(e) => setMax(e.target.value)}
                       className="lsOptionInput"
                     />
