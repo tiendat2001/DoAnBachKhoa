@@ -31,7 +31,10 @@ const NewHotel = () => {
 
   // xử lý khi submit form
   const [isSending, setIsSending] = useState(false);
-
+  const removeImage = (index) => {
+    const newFiles = files.filter((_, i) => i !== index);
+    setFiles(newFiles);
+  };
 
   // validate
   const validateInputs = () => {
@@ -93,7 +96,7 @@ const NewHotel = () => {
               `/closedRoom/upload/uploadImage`,
               data
             );
-  
+
             const { url } = uploadRes.data;
             return url;
           })
@@ -112,7 +115,7 @@ const NewHotel = () => {
           toast.warning(`Vẫn chưa xong! Hãy tiếp tục thêm chi tiết về loại phòng ở chỗ nghỉ của bạn ở mục "Phòng". Chỗ nghỉ
           của bạn sẽ được đăng sau khi có ít nhất 1 loại phòng`, {
             autoClose: 20000,
-            });
+          });
           navigate("/admin/hotels");
 
         } else toast.error("Có lỗi xảy ra.Vui lòng tải lại trang và thử lại");
@@ -140,11 +143,31 @@ const NewHotel = () => {
           <div className="left">
             {files.length > 0 ? (
               files.map((file, index) => (
-                <img
-                  key={index}
-                  src={URL.createObjectURL(file)}
-                  alt={`Uploaded image ${index + 1}`}
-                />
+                <div key={index} style={{ position: 'relative', display: 'inline-block' }}>
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`Uploaded image ${index + 1}`}
+                    style={{ display: 'block' }}
+                  />
+                  <button
+                    onClick={() => removeImage(index)}
+                    style={{
+                      position: 'absolute',
+                      top: '5px',
+                      right: '5px',
+                      backgroundColor: 'red',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '50%',
+                      width: '20px',
+                      height: '20px',
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                    }}
+                  >
+                    X
+                  </button>
+                </div>
               ))
             ) : (
               <img
@@ -187,8 +210,8 @@ const NewHotel = () => {
                 </select>
                 {info.type == "Căn hộ" || info.type == "Biệt thự" || info.type == "Resort" ?
                   (
-                    <div style={{fontStyle:'italic'}}>(Trong trường hợp bạn muốn bán nhiều {info.type} tại cùng 1 địa chỉ, bạn chỉ cần tạo 1 chỗ nghỉ sau đó thêm
-                    nhiều loại {info.type} ở mục "Phòng". Trong trường hợp bạn chỉ bán 1 {info.type} thì chỉ thêm 1 loại). </div>
+                    <div style={{ fontStyle: 'italic' }}>(Trong trường hợp bạn muốn bán nhiều {info.type} tại cùng 1 địa chỉ, bạn chỉ cần tạo 1 chỗ nghỉ sau đó thêm
+                      nhiều loại {info.type} ở mục "Phòng". Trong trường hợp bạn chỉ bán 1 {info.type} thì chỉ thêm 1 loại). </div>
                   )
                   : ""}
               </div>

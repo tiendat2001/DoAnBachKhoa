@@ -176,7 +176,7 @@ const isAvailable = (roomNumber, dateToCheck, isCancelFunction) => {
 
   return !isFound;
 };
-let roomTypeAPILocks = {}; // Lưu trữ biến khóa cho mỗi giá trị id
+let roomTypeAPILocks = {}; // 1 object có các trường là các _id của roomType, giá trị của trường đấy sẽ là true nếu đang bị khóa
 function clearLockedRoomTypeIds(lockedRoomTypeIds) {
   for (const id of lockedRoomTypeIds) {
     delete roomTypeAPILocks[id];

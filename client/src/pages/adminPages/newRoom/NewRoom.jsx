@@ -26,7 +26,11 @@ const NewRoom = () => {
         `/hotels/getByAdmin`);
     const [hotelId, setHotelId] = useState(location.state?.hotelIdFromListRoom);
     const navigate = useNavigate()
-
+    
+    const removeImage = (index) => {
+        const newFiles = files.filter((_, i) => i !== index);
+        setFiles(newFiles);
+      };
     const handleHotelChange = (e) => {
         setHotelId(e.target.value);
     };
@@ -126,20 +130,40 @@ const NewRoom = () => {
 
                     {/*left- chỗ hiện ảnh đã chọn */}
                     <div className="left">
-                        {files.length > 0 ? (
-                            files.map((file, index) => (
-                                <img
-                                    key={index}
-                                    src={URL.createObjectURL(file)}
-                                    alt={`Uploaded image ${index + 1}`}
-                                />
-                            ))
-                        ) : (
-                            <img
-                                src="https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
-                                alt="No image"
-                            />
-                        )}
+                    {files.length > 0 ? (
+              files.map((file, index) => (
+                <div key={index} style={{ position: 'relative', display: 'inline-block' }}>
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`Uploaded image ${index + 1}`}
+                    style={{ display: 'block' }}
+                  />
+                  <button
+                    onClick={() => removeImage(index)}
+                    style={{
+                      position: 'absolute',
+                      top: '5px',
+                      right: '5px',
+                      backgroundColor: 'red',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '50%',
+                      width: '20px',
+                      height: '20px',
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                    }}
+                  >
+                    X
+                  </button>
+                </div>
+              ))
+            ) : (
+              <img
+                src="https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+                alt="No image"
+              />
+            )}
                     </div>
 
 

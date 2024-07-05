@@ -2,7 +2,7 @@
     display: flex;
     width: 100%;
 }
-/* listContainerAdmin chiếm 6 lần so với sideBar */
+/* listContainerAdmin chiếm 6 lần so với sideBar, listAdmin gồm listContainerAdmin và sidebar  */
 .listAdmin .listContainerAdmin {  
     flex: 8;
 }

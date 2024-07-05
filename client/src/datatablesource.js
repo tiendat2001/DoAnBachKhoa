@@ -98,6 +98,7 @@ export const roomColumns = [
       valueFormatter: (params) => formatDate(params.value),
       headerAlign: 'center',
       align:'center'
+      
     },
     { field: "hotelName", headerName: "Chỗ nghỉ",flex:2, width: 180, headerAlign: 'center',  align:'center' },
 
