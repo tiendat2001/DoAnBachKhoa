@@ -46,6 +46,7 @@ const SearchItem = ({ item }) => {
     if (options.room > Math.floor(totalPeople / cheapestPrice.people)) return options.room
     // tính số phòng theo Math.floor(totalPeople / cheapestPrice.people)
     else {
+      // VD:11/5=2
       return Math.floor(totalPeople / cheapestPrice.people)
     }
   };
@@ -113,7 +114,7 @@ const SearchItem = ({ item }) => {
         { totalRooms == 0 ? (
           <span className="siRoomLeft">Hết phòng!</span>
         ) : (
-          totalRooms && (totalRooms < 6 || totalRooms < options.room) && (
+          totalRooms && (totalRooms < 6 || totalRooms < calculateRoom(item.cheapestPrice)) && (
             <span className="siRoomLeft">Chỉ còn {totalRooms} phòng!</span>
           )
         )}

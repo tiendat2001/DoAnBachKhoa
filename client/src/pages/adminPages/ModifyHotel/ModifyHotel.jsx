@@ -34,7 +34,10 @@ const ModifyHotel = () => {
     if (previousPath !== '/admin/hotels') {
         navigate('/admin/hotels');
     }
-
+    const removeImage = (index) => {
+        const newFiles = files.filter((_, i) => i !== index);
+        setFiles(newFiles);
+    };
     useEffect(() => {
         if (data) {
             setInfo(data);
@@ -49,10 +52,10 @@ const ModifyHotel = () => {
     const handleChange = (e) => {
         const { id, value } = e.target;
         setInfo((prev) => ({
-          ...prev,
-          [id]: id === "city" ? value.trim() : value,
+            ...prev,
+            [id]: id === "city" ? value.trim() : value,
         }));
-      };
+    };
     // validate input ko rỗng hoặc 1 số trường hợp ko hợp lệ
     const validateInputs = () => {
         // Check if all hotelInputs are filled
@@ -63,7 +66,7 @@ const ModifyHotel = () => {
         }
         // Check if description is filled
         if (!document.getElementById("desc").value.trim() || (!customFacilities && selectedFacilities.length == 0)
-            ) {//|| (files.length === 0) ko cần vì đây bên chỉnh sửa đã có ảnh trc rồi
+        ) {//|| (files.length === 0) ko cần vì đây bên chỉnh sửa đã có ảnh trc rồi
             return false;
         }
         return true;
@@ -106,17 +109,17 @@ const ModifyHotel = () => {
                 // list chứa link các photo để đẩy vào api
                 const list = await Promise.all(
                     Object.values(files).map(async (file) => {
-                      const data = new FormData();
-                      data.append("file", file);
-                      const uploadRes = await axios.post(
-                        `/closedRoom/upload/uploadImage`,
-                        data
-                      );
-            
-                      const { url } = uploadRes.data;
-                      return url;
+                        const data = new FormData();
+                        data.append("file", file);
+                        const uploadRes = await axios.post(
+                            `/closedRoom/upload/uploadImage`,
+                            data
+                        );
+
+                        const { url } = uploadRes.data;
+                        return url;
                     })
-                  );
+                );
 
                 const newModifyHotel = {
                     ...info,
@@ -160,11 +163,31 @@ const ModifyHotel = () => {
                         <div className="left">
                             {files.length > 0 ? (
                                 files.map((file, index) => (
-                                    <img
-                                        key={index}
-                                        src={URL.createObjectURL(file)}
-                                        alt={`Uploaded image ${index + 1}`}
-                                    />
+                                    <div key={index} style={{ position: 'relative', display: 'inline-block' }}>
+                                        <img
+                                            src={URL.createObjectURL(file)}
+                                            alt={`Uploaded image ${index + 1}`}
+                                            style={{ display: 'block' }}
+                                        />
+                                        <button
+                                            onClick={() => removeImage(index)}
+                                            style={{
+                                                position: 'absolute',
+                                                top: '5px',
+                                                right: '5px',
+                                                backgroundColor: 'red',
+                                                color: 'white',
+                                                border: 'none',
+                                                borderRadius: '50%',
+                                                width: '20px',
+                                                height: '20px',
+                                                cursor: 'pointer',
+                                                textAlign: 'center',
+                                            }}
+                                        >
+                                            X
+                                        </button>
+                                    </div>
                                 ))
                             ) : (
                                 <div className="no-image-container">
@@ -181,7 +204,7 @@ const ModifyHotel = () => {
                                 <form>
                                     <div className="formInput">
                                         <label htmlFor="file">
-                                            Up ảnh (Click vào đây để thêm ảnh): <DriveFolderUploadOutlinedIcon className="icon" />
+                                            Up ảnh (Click vào đây để upload lại ảnh): <DriveFolderUploadOutlinedIcon className="icon" />
                                         </label>
                                         <input
                                             type="file"
