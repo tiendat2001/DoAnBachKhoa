@@ -229,8 +229,8 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
           {openDate && (
             <DateRange
               onChange={(item) => handleDayChange(item)}
-              // minDate={addHours(new Date(),10+(-7-timeZone))} // ngày tối thiểu đc chọn, 
-              // maxDate={addDays(new Date(),365)}
+              minDate={addHours(new Date(),10+(-7-timeZone))} // ngày tối thiểu đc chọn, 
+              maxDate={addDays(new Date(),365)}
               ranges={dates}
               moveRangeOnFirstSelection={true}
               editableDateInputs={true}

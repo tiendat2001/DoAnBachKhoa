@@ -26,7 +26,7 @@ const List = () => {
   const [max, setMax] = useState(10000);
   const [type, setType] = useState(location.state?.typeFromPropertyList ?? "");
   const [selectedFacilities, setSelectedFacilities] = useState([]);
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortOrder, setSortOrder] = useState('random');
   // console.log(dates)
   const { data, loading, error, reFetch } = useFetch(
     `/hotels?city=${destination}&type=${type}`
@@ -137,7 +137,13 @@ const List = () => {
       .sort((a, b) => {
         const priceA = calculatePrice(a.cheapestPrice);
         const priceB = calculatePrice(b.cheapestPrice);
-        return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
+        if (sortOrder === 'asc') {
+          return priceA - priceB;
+        } else if (sortOrder === 'desc') {
+          return priceB - priceA;
+        } else if (sortOrder === 'random') {
+          return Math.random() - 0.5;
+        }
       })
       // lấy ra các phần tử trong khoảng giá - calculatePrice là tính giá theo option người dùng như ngày, số phòng...
       // lấy theo giá phòng rẻ nhất của chỗ nghỉ đó
@@ -327,6 +333,7 @@ const List = () => {
               <label>
                 Sắp xếp theo giá:&nbsp;
                 <select value={sortOrder} onChange={handleSortChange}>
+                <option value="random">Ngẫu nhiên</option>
                   <option value="asc">Thấp đến cao</option>
                   <option value="desc">Cao đến thấp</option>
                 </select>
