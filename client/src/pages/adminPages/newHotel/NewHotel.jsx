@@ -11,6 +11,7 @@ import { AuthContext } from '../../../context/AuthContext';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { listProvinces } from "../../../listObject";
 
 
 const NewHotel = () => {
@@ -49,6 +50,10 @@ const NewHotel = () => {
       || (files.length === 0)) {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
       return false;
     }
+
+    if (document.getElementById("distance").value < 0) {
+      return false;
+  }
     return true;
   };
 
@@ -85,7 +90,7 @@ const NewHotel = () => {
         return;
       }
       if (!validateInputs()) {
-        toast.error("Bạn chưa điền đủ các thông tin!.");
+        toast.error("Bạn chưa điền đủ các thông tin hoặc thông tin không hợp lệ!.");
       } else {
         // CHUYỂN ẢNH THÀNH LINK ĐỂ LƯU CSDL
         const list = await Promise.all(
@@ -215,8 +220,25 @@ const NewHotel = () => {
                   )
                   : ""}
               </div>
+
+              <div className="formInput" key='type'>
+                <label>Tỉnh thành chỗ nghỉ</label>
+                <select
+                  id='city'
+                  onChange={handleChange}
+                  value={info.city}
+                >
+                  <option value="" >Chọn tỉnh thành</option> {/* Các option của dropdown */}
+                  {listProvinces.map((province, index) => (
+                    <option key={index} value={province.name}>
+                      {province.name}
+                    </option>
+                  ))}
+
+                </select>
+              </div>
               {/* render các trường */}
-              {hotelInputs.map((input) => (
+              {hotelInputs.slice(0, 1).concat(hotelInputs.slice(2)).map((input) => (
                 <div className="formInput" key={input.id}>
                   {/* <label>{input.label}</label> */}
                   <label>

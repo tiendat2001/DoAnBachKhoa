@@ -26,11 +26,11 @@ const NewRoom = () => {
         `/hotels/getByAdmin`);
     const [hotelId, setHotelId] = useState(location.state?.hotelIdFromListRoom);
     const navigate = useNavigate()
-    
+
     const removeImage = (index) => {
         const newFiles = files.filter((_, i) => i !== index);
         setFiles(newFiles);
-      };
+    };
     const handleHotelChange = (e) => {
         setHotelId(e.target.value);
     };
@@ -42,7 +42,11 @@ const NewRoom = () => {
             }
         }
         // Check if description is filled
-        if (!document.getElementById("desc").value.trim() ||  hotelId == null) {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
+        if (!document.getElementById("desc").value.trim() || hotelId == null) {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
+            return false;
+        }
+
+        if (document.getElementById("price").value < 0 || document.getElementById("maxPeople").value < 0) {
             return false;
         }
         return true;
@@ -74,22 +78,22 @@ const NewRoom = () => {
             }
             const list = await Promise.all(
                 Object.values(files).map(async (file) => {
-                  const data = new FormData();
-                  data.append("file", file);
-                  const uploadRes = await axios.post(
-                    `/closedRoom/upload/uploadImage`,
-                    data
-                  );
-        
-                  const { url } = uploadRes.data;
-                  return url;
+                    const data = new FormData();
+                    data.append("file", file);
+                    const uploadRes = await axios.post(
+                        `/closedRoom/upload/uploadImage`,
+                        data
+                    );
+
+                    const { url } = uploadRes.data;
+                    return url;
                 })
-              );
+            );
 
 
 
             if (!validateInputs()) {
-                toast.error("Bạn chưa điền đủ thông tin!");
+                toast.error("Bạn chưa điền đủ thông tin hoặc thông tin không hợp lệ!");
             } else {
                 const newRoom = {
                     ...info,
@@ -102,7 +106,7 @@ const NewRoom = () => {
                 const Success = await axios.post(`/rooms/${hotelId}`, newRoom);
                 if (Success) {
                     toast.success('Thành công!');
-                    navigate(`/admin/rooms`, { state: { hotelIdFromAddModifyRoom:hotelId } });
+                    navigate(`/admin/rooms`, { state: { hotelIdFromAddModifyRoom: hotelId } });
                 } else toast.error("Có lỗi xảy ra vui lòng tải lại trang và thử lại");
 
 
@@ -130,40 +134,40 @@ const NewRoom = () => {
 
                     {/*left- chỗ hiện ảnh đã chọn */}
                     <div className="left">
-                    {files.length > 0 ? (
-              files.map((file, index) => (
-                <div key={index} style={{ position: 'relative', display: 'inline-block' }}>
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt={`Uploaded image ${index + 1}`}
-                    style={{ display: 'block' }}
-                  />
-                  <button
-                    onClick={() => removeImage(index)}
-                    style={{
-                      position: 'absolute',
-                      top: '5px',
-                      right: '5px',
-                      backgroundColor: 'red',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '50%',
-                      width: '20px',
-                      height: '20px',
-                      cursor: 'pointer',
-                      textAlign: 'center',
-                    }}
-                  >
-                    X
-                  </button>
-                </div>
-              ))
-            ) : (
-              <img
-                src="https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
-                alt="No image"
-              />
-            )}
+                        {files.length > 0 ? (
+                            files.map((file, index) => (
+                                <div key={index} style={{ position: 'relative', display: 'inline-block' }}>
+                                    <img
+                                        src={URL.createObjectURL(file)}
+                                        alt={`Uploaded image ${index + 1}`}
+                                        style={{ display: 'block' }}
+                                    />
+                                    <button
+                                        onClick={() => removeImage(index)}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '5px',
+                                            right: '5px',
+                                            backgroundColor: 'red',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '50%',
+                                            width: '20px',
+                                            height: '20px',
+                                            cursor: 'pointer',
+                                            textAlign: 'center',
+                                        }}
+                                    >
+                                        X
+                                    </button>
+                                </div>
+                            ))
+                        ) : (
+                            <img
+                                src="https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+                                alt="No image"
+                            />
+                        )}
                     </div>
 
 
@@ -218,8 +222,8 @@ const NewRoom = () => {
                                     />
                                     {/* hiển thị giá cho input price */}
                                     {input.id == "price" ?
-                                     <div style={{marginTop:'10px',fontStyle:'italic'}}>Bạn đang để giá: { info.price && Intl.NumberFormat('vi-VN').format(info.price * 1000)} VND</div>
-                                     : null}
+                                        <div style={{ marginTop: '10px', fontStyle: 'italic' }}>Bạn đang để giá: {info.price && Intl.NumberFormat('vi-VN').format(info.price * 1000)} VND</div>
+                                        : null}
                                 </div>
                             ))}
                             {/* test */}
@@ -227,7 +231,7 @@ const NewRoom = () => {
                             <textarea
                                 id="desc"
                                 rows="4" /* Số dòng mặc định hiển thị ban đầu */
-                                maxLength = "500"
+                                maxLength="500"
                                 onChange={handleChange}
                                 style={{ width: "100%", padding: "10px", fontSize: "16px", border: "1px solid #ccc", borderRadius: "5px", boxSizing: "border-box" }}
                             ></textarea>

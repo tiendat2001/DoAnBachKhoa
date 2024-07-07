@@ -51,6 +51,10 @@ const ModifyRoom = () => {
     if (!document.getElementById("desc").value.trim()) {//|| (files.length === 0) sau thêm cái này vào lúc triển khai
       return false;
     }
+    if (document.getElementById("price").value < 0 || document.getElementById("maxPeople").value < 0) {
+      return false;
+    }
+
     return true;
   };
 
@@ -74,7 +78,7 @@ const ModifyRoom = () => {
       );
 
       if (!validateInputs()) {
-        toast.error("Bạn chưa điền đủ thông tin!");
+        toast.error("Bạn chưa điền đủ thông tin hoặc thông tin không hợp lệ!");
         return;
       }
       const newModifyRoom = {

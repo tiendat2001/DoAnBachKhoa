@@ -42,7 +42,7 @@
 .listAdmin .listContainerAdmin .top .right form, .listAdmin .listContainerAdmin .bottom .right form {
     display: flex;
     flex-wrap: wrap;
-    gap: 25px;
+    gap: 20px;
     /* justify-content: space-between; */
     flex-direction: column;
 }

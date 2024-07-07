@@ -11,6 +11,7 @@ import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUpload
 import { hotelInputs, hotelFacilities } from '../../../formSource';
 import { toast } from 'react-toastify';
 import { jwtDecode } from "jwt-decode";
+import { listProvinces } from "../../../listObject";
 
 // css từ new Hotel
 const ModifyHotel = () => {
@@ -231,9 +232,25 @@ const ModifyHotel = () => {
 
                                         </select>
                                     </div>
+                                    {/* tinh thanh cho nghi */}
 
+                                    <div className="formInput" key='type'>
+                                        <label>Tỉnh thành chỗ nghỉ</label>
+                                        <select
+                                            id='city'
+                                            onChange={handleChange}
+                                            value={info.city}
+                                        >
+                                            {listProvinces.map((province, index) => (
+                                                <option key={index} value={province.name}>
+                                                    {province.name}
+                                                </option>
+                                            ))}
+
+                                        </select>
+                                    </div>
                                     {/* render các trường */}
-                                    {hotelInputs.map((input) => (
+                                    {hotelInputs.slice(0, 1).concat(hotelInputs.slice(2)).map((input) => (
                                         <div className="formInput" key={input.id}>
                                             <label> {input.label} {info?.type ? info.type.toLowerCase() : "chỗ nghỉ"}</label>
                                             <input

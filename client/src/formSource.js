@@ -54,7 +54,7 @@ export const hotelInputs = [
     {
       id: "maxPeople",
       label: "Số người",
-      type: "text",
+      type: "number",
       placeholder: "Số người cho loại phòng (hay loại căn hộ, biệt thự,...) này",
     },
     {
