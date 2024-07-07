@@ -114,7 +114,8 @@ export const getReservationsByClient = async (req, res, next) => {
                 return {
                     ...reservation.toObject(),
                     hotelName: hotel.name,
-                    hotelContact: hotel.hotelContact
+                    hotelContact: hotel.hotelContact,
+                    hotelAddress: hotel.address
                 };
             } else {
                 // If hotel does not exist, return reservation without hotel details

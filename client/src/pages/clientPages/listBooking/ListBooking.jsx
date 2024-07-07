@@ -146,7 +146,7 @@ const ListBooking = () => {
             <div key={index} className="flex_div_booking">
               <div className="booking_details">
                 <div>Mã đặt phòng: {item._id}</div>
-                <div>Chỗ nghỉ: {item.hotelName}</div>
+                <div>Chỗ nghỉ: {item.hotelName} (<i>{item.hotelAddress}</i>)</div>
                 <div>Phòng đặt: {item.roomsDetail}</div>
                 <div>Tổng giá: {new Intl.NumberFormat('vi-VN').format(item.totalPrice * 1000)} VND</div>
                 <div style={{ fontWeight: 'bold' }}>Ngày nhận phòng:  {new Date(item.start).toLocaleString('vi-VN')}</div>

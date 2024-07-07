@@ -52,18 +52,7 @@ const Reserve = () => {
   }));
   // console.log(roomTypeIdsReserved)
 
-  // const isAvailable = (roomNumber) => {
-  //   if (!roomNumber.status) {
-  //     return false; // Nếu status là false, room không khả dụng
-  //   }
-  //   const isFound = roomNumber.unavailableDates.some((date) => {
-  //     const dateMinusOneDay = new Date(date).getTime(); // theem getTIme() hay ko cung v
-  //     // console.log(new Date(dateMinusOneDay));
-  //     return alldates.includes(dateMinusOneDay);
-  //   });
 
-  //   return !isFound;
-  // };
   const roomCounts = {};
   // để tạo ra text cho vào chỗ đơn đặt phòng VD: testx2, test3x1 và tổng giá cho mỗi đêm totalPrice cho vào đơn đặt phòng
   // Tính số lượng của từng loại phòng
@@ -94,58 +83,11 @@ const Reserve = () => {
       return;
     }
 
-    // selectedRoomIdsReserved.length = 0; // reset lại mảng
-    // await Promise.all(roomsDetailFromListClient.map(async (roomDetail) => {
-
-    //   //
-    //   const { roomTypeId, quantity } = roomDetail; // Lấy ra roomNumbers và quantity từ mỗi phần tử
-    //   let selectedQuantity = 0; // Số lượng phòng đã chọn
-    //   const response = await fetch(`/rooms/${hotelId}`);
-    //   const reFreshRoomData = await response.json();
-    //   const foundRoom = reFreshRoomData.find(room => room._id == roomTypeId);
-
-    //   //Duyệt qua mỗi phần tử trong mảng roomNumbers
-    //   foundRoom.roomNumbers.forEach(roomNumber => {
-    //     // Kiểm tra xem phòng có sẵn không 
-    //     if (isAvailable(roomNumber)) {
-    //       // Nếu phòng có sẵn và số lượng phòng đã chọn chưa đạt tối đa
-    //       if (selectedQuantity < quantity) {
-    //         selectedRoomIdsReserved.push(roomNumber._id); // Thêm roomNumber vào mảng selectedRoomIdsReserved
-    //         selectedQuantity++; // Tăng số lượng phòng đã chọn lên 1
-    //       } else {
-    //         return; // Nếu đã đủ số lượng, thoát khỏi vòng lặp
-    //       }
-    //     }
-    //   });
-    // }));
-
-    // const totalQuantity = roomsDetailFromListClient.reduce((acc, roomDetail) => acc + roomDetail.quantity, 0);
-    // console.log(totalQuantity)
-    // if (selectedRoomIdsReserved.length !== totalQuantity) {
-    //   alert("Phòng đã hết! Vui lòng quay lại trang đặt phòng")
-    //   return; // Thoát khỏi hàm nếu số lượng phòng đã chọn không đủ
-    // }
-    // console.log(selectedRoomIdsReserved)
+  
 
     // Đẩy available
     try {
-      // await Promise.all(
-      //   selectedRoomIdsReserved.map(async (roomId) => {
-      //     try {
-      //       const res = await axios.put(`/rooms/availability/${roomId}`, {
-      //         dates: alldates,
-      //         startDateRange: startDate,
-      //         endDateRange: endDate,
-      //       });
-
-      //       return res.data;
-      //     } catch (error) {
-      //       console.log(error);
-           
-      //     }
-      //   })
-      // );
-      // const copiedRoomIds = [...selectedRoomIdsReserved];
+     
       const res = await axios.put(`/rooms/availability/`, {
         roomTypeIdsReserved:roomTypeIdsReserved,
         dates: alldates,
