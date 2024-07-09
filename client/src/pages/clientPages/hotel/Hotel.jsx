@@ -193,12 +193,12 @@ const Hotel = () => {
                 <p className="hotelDesc" style={{ whiteSpace: 'pre-line' }}>{data.desc}</p>
 
                 <div style={{fontWeight:'bold'}}>Cơ sở vật chất chỗ nghỉ</div>
-                <span className="hotelDetailsTexts_facilities">
+                <div className="hotelDetailsTexts_facilities">
                   {data.facilities?.map(facility =>
                   (
-                    <div className="hotelDetailsTexts_facilities_item" style={{ width: '33%' }}>{facility}</div>
+                    <div className="hotelDetailsTexts_facilities_item" >{facility}</div>
                   ))}
-                </span>
+                </div>
               </div>
               <div className="hotelDetailsPrice">
                 <span>

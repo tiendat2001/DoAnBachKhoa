@@ -146,7 +146,8 @@ const ModifyRoomCount = () => {
                         không thể xóa được. Trong trường hợp đó,nếu bạn muốn giảm số lượng phòng muốn bán, bạn sử dụng chức năng đóng phòng.
                       )</div> */}
                        <div style={{ fontStyle: 'italic', marginBottom: '10px' }}>(Với những phòng đã có đơn đặt phòng hoặc đơn đóng phòng trong thời gian tới sẽ hiện màu đỏ,
-                        không thể xóa được. Trong trường hợp đó, nếu bạn muốn giảm số lượng phòng, bạn có thể yêu cầu hủy đơn của khách hoặc sử dụng chức năng đóng phòng. 
+                        không thể xóa được (Số lượng phòng đỏ là số lượng phòng tối thiểu cần giữ). 
+                        Trong trường hợp đó, nếu bạn muốn giảm số lượng phòng, bạn có thể yêu cầu hủy đơn của khách hoặc sử dụng chức năng đóng phòng. 
                        
                       )</div>
                     {/*  danh sách phòng */}

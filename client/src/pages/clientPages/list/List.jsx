@@ -23,7 +23,7 @@ const List = () => {
   const [options, setOptions] = useState(searchContext.options);
   const [suggestedDestination, setSuggestedDestination] = useState([]);
   const [min, setMin] = useState(100);
-  const [max, setMax] = useState(10000);
+  const [max, setMax] = useState(100000);
   const [type, setType] = useState(location.state?.typeFromPropertyList ?? "");
   const [selectedFacilities, setSelectedFacilities] = useState([]);
   const [sortOrder, setSortOrder] = useState('random');
@@ -142,6 +142,10 @@ const List = () => {
         } else if (sortOrder === 'desc') {
           return priceB - priceA;
         } else if (sortOrder === 'random') {
+          // nếu người dùng ko sort theo giá thì sẽ sort theo tổng số lượng phòng (nếu options.room>4 còn ko thì random)
+          if (options.room > 4) {
+            return b.totalRooms - a.totalRooms;
+          }
           return Math.random() - 0.5;
         }
       })
@@ -222,6 +226,7 @@ const List = () => {
                 <option value="Căn hộ">Căn hộ</option>
                 <option value="Biệt thự">Biệt thự</option> {/* Các option của dropdown */}
                 <option value="Resort">Resort</option>
+                <option value="Nhà nghỉ">Nhà nghỉ</option>
               </select>
             </div>
 
@@ -240,7 +245,7 @@ const List = () => {
                     <input
                       type="number"
                       min="0"
-                      placeholder={min}
+                      value={min}
                       onChange={(e) => {
                         const value = Math.max(0, e.target.value);
                         setMin(value);
@@ -258,7 +263,7 @@ const List = () => {
                     <div>({Intl.NumberFormat('vi-VN').format(max * 1000)} VND)</div>
                     <input
                       type="number"
-                      placeholder={max}
+                      value={max}
                       min="0"
                       onChange={(e) => setMax(e.target.value)}
                       className="lsOptionInput"

@@ -24,7 +24,7 @@ const ListBooking = () => {
     // hủy trong khoảng time 3 ngày trc ngày nhận phòng và ko trong khoảng 24h sau thời gian đặt 
     // và ko phải là yêu cầu hủy từ admin thì bị coi là muộn - tính phí đêm đầu
     const isLateCancel = (new Date() > subHours(new Date(selectedReservation.start), 24 * 3)) &&  !selectedReservation.cancelDetails.isAdminCancel
-      // && (new Date() > addHours(new Date(selectedReservation.createdAt), 24))
+      && (new Date() > addHours(new Date(selectedReservation.createdAt), 24))
 
     if (isLateCancel) {
       cancelFee = selectedReservation.totalPrice / selectedReservation.allDatesReserve.length
@@ -100,18 +100,18 @@ const ListBooking = () => {
       }
 
       // // gửi email xác nhận đã hủy phòng thành công
-      let emailSubject = "THÔNG BÁO HỦY PHÒNG THÀNH CÔNG"
-      try {
-        const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {
-          userId:selectedReservation.userId,
-          emailSubject:"THÔNG BÁO HỦY PHÒNG THÀNH CÔNG",
-          emailContent:`Đơn đặt phòng mã ${selectedReservation._id} của quý khách đã được hủy thành công.\n Chi tiết đơn đặt xem tại trên website`
-        });
-      } catch (err) {
-        hasError = true;
-        console.log(err)
-        return;
-      }
+      // let emailSubject = "THÔNG BÁO HỦY PHÒNG THÀNH CÔNG"
+      // try {
+      //   const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {
+      //     userId:selectedReservation.userId,
+      //     emailSubject:"THÔNG BÁO HỦY PHÒNG THÀNH CÔNG",
+      //     emailContent:`Đơn đặt phòng mã ${selectedReservation._id} của quý khách đã được hủy thành công.\n Chi tiết đơn đặt xem tại trên website`
+      //   });
+      // } catch (err) {
+      //   hasError = true;
+      //   console.log(err)
+      //   return;
+      // }
 
     } catch (err) {
       console.error('Error:', err);
@@ -146,12 +146,13 @@ const ListBooking = () => {
             <div key={index} className="flex_div_booking">
               <div className="booking_details">
                 <div>Mã đặt phòng: {item._id}</div>
-                <div>Chỗ nghỉ: {item.hotelName} (<i>{item.hotelAddress}</i>)</div>
+                <div>Chỗ nghỉ: {item.hotelName} </div>
+                <div>Địa chỉ: {item.hotelAddress}</div>
                 <div>Phòng đặt: {item.roomsDetail}</div>
                 <div>Tổng giá: {new Intl.NumberFormat('vi-VN').format(item.totalPrice * 1000)} VND</div>
                 <div style={{ fontWeight: 'bold' }}>Ngày nhận phòng:  {new Date(item.start).toLocaleString('vi-VN')}</div>
                 <div style={{ fontWeight: 'bold' }}>Ngày trả phòng: {subHours(new Date(item.end), 2).toLocaleString('vi-VN')}</div>
-                <div>(Thời gian được tính theo múi giờ hiện tại máy của bạn)</div>
+                {/* <div>(Thời gian được tính theo múi giờ hiện tại máy của bạn)</div> */}
                 <div style={{ color: item.status === 1 ? 'green' : item.status === 0 ? 'red' : 'blue', fontWeight: 'bold' }}>
                   Tình trạng: {item.status === 1 ? "Thành công" : item.status === 0 ? "Hủy" : "Đang chờ"}
                 </div>

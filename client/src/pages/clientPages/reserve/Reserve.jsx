@@ -177,7 +177,7 @@ const Reserve = () => {
         <div className="ReserveDetailContainer">
           <div>Thời gian nhận phòng:  {startDate.toLocaleString('vi-VN')}</div>
           <div>Thời gian trả phòng:  {subHours(endDate,2).toLocaleString('vi-VN')}</div>
-          <div>(Thời gian được tính theo múi giờ hiện tại máy của bạn)</div>
+          {/* <div>(Thời gian được tính theo múi giờ hiện tại máy của bạn)</div> */}
           <div>Tổng thời gian lưu trú:  {alldates.length} đêm</div>
           <div style={{ fontWeight: 'bold' }}>Phòng của bạn:  {detailRooms} </div>
           <div style={{ fontWeight: 'bold' }}>Số người: {options.adult} người lớn và {options.children} trẻ em</div>

@@ -228,7 +228,7 @@ const ModifyHotel = () => {
                                             <option value="Căn hộ" hidden={defaultType === "Căn hộ"}>Căn hộ</option>
                                             <option value="Biệt thự" hidden={defaultType === "Biệt thự"}>Biệt thự</option> {/* Các option của dropdown */}
                                             <option value="Resort" hidden={defaultType === "Resort"}>Resort</option>
-
+                                            <option value="Nhà nghỉ" hidden={defaultType === "Nhà nghỉ"}>Nhà nghỉ</option>
 
                                         </select>
                                     </div>

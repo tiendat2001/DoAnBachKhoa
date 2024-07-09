@@ -1,6 +1,6 @@
 import Hotel from "../models/Hotel.js"
 import Room from "../models/RoomType.js";
-
+import axios from 'axios';
 // viet xu ly khi goi api
 export const createHotel = async (req, res, next) => {
   req.body.ownerId = req.user.id;
@@ -85,7 +85,23 @@ export const getHotels = async (req, res, next) => {
       { $sample: { size: 10 } } // Lấy mẫu ngẫu nhiên với số lượng giới hạn
     ]);
     // const hotels = await Hotel.find
-    res.status(200).json(hotels);
+
+    // thêm tổng số phòng có của hotel này
+    const hotelsWithRoomsPromises = hotels.map(async (hotel) => {
+      try {
+        const response = await axios.get(`http://localhost:8800/api/rooms/${hotel._id}/?status=true`);
+        hotel.totalRooms = response.data.reduce((total, room) => total + room.roomNumbers.length, 0);
+      } catch (error) {
+        console.error(`Failed to fetch rooms for hotel ${hotel._id}:`, error);
+        hotel.totalRooms = 0; // Default to 0 if the API call fails
+      }
+      return hotel;
+    });
+
+    // Wait for all promises to resolve
+    const hotelsWithRooms = await Promise.all(hotelsWithRoomsPromises);
+
+    res.status(200).json(hotelsWithRooms);
   } catch (err) {
     next(err);
   }

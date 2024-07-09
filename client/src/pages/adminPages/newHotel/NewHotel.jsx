@@ -211,6 +211,7 @@ const NewHotel = () => {
                   <option value="Căn hộ" >Căn hộ</option>
                   <option value="Biệt thự" >Biệt thự</option> {/* Các option của dropdown */}
                   <option value="Resort" >Resort</option>
+                  <option value="Nhà nghỉ" >Nhà nghỉ</option>
 
                 </select>
                 {info.type == "Căn hộ" || info.type == "Biệt thự" || info.type == "Resort" ?

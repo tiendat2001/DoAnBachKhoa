@@ -341,10 +341,10 @@ const ListRoomClient = ({ hotelId, hotelType }) => {
                 if (roomAvailable === 0) {
                   options.push(<option value={0}>Đã hết</option>);
                 } else {
-                  options.push(<option value={0}> 0 {hotelType === "Khách sạn" ? "phòng" : hotelType.toLowerCase()}</option>);
+                  options.push(<option value={0}> 0 {hotelType === "Khách sạn"||hotelType === "Nhà nghỉ" ? "phòng" : hotelType.toLowerCase()}</option>);
                   for (let i = 1; i <= roomAvailable; i++) {
                     if (i > maxOptions) break;
-                    options.push(<option value={i}>{i} {hotelType === "Khách sạn" ? "phòng" : hotelType.toLowerCase()}</option>);
+                    options.push(<option value={i}>{i} {hotelType === "Khách sạn" ||hotelType === "Nhà nghỉ" ? "phòng" : hotelType.toLowerCase()}</option>);
                   }
                 }
 
