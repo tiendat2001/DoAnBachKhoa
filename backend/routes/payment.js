@@ -7,6 +7,7 @@ import querystring from "qs"
 import crypto from "crypto"
 import Reservation from "../models/Reservation.js";
 import Room from "../models/RoomType.js";
+import Hotel from "../models/Hotel.js";
 import axios from 'axios';
 import request from "request"
 router.post("/create_payment_url", function (req, res, next) {
@@ -147,19 +148,22 @@ router.get("/vnpay_ipn", async function (req, res, next) {
 
             // send email
             const reservationSuccess = await Reservation.findById(orderId);
-            // try {
-            //   const res = await axios.put(`http://localhost:8800/api/reservation/email/sendEmailStatusReservation`, {
-            //     userId:reservationSuccess.userId,
-            //     reservationId:reservationSuccess._id,
-            //     emailSubject:"THÔNG BÁO ĐẶT PHÒNG THÀNH CÔNG",
-            //     amount: `${new Intl.NumberFormat('vi-VN').format(reservationSuccess.totalPrice*1000)} VND`,
-            //     startDate: new Date(reservationSuccess.start).toLocaleDateString('vi-VN'),
-            //     endDate: new Date(reservationSuccess.end).toLocaleDateString('vi-VN'),
-            //   });
-            //   // console.log(`Room ${roomId} updated successfully.`);
-            // } catch (err) {
-            //   console.log(err);
-            // }
+            const hotel =await Hotel.findById(reservationSuccess.hotelId);
+            try {
+              const res = await axios.put(`http://localhost:8800/api/reservation/email/sendEmailStatusReservation`, {
+                userId:reservationSuccess.userId,
+                reservationId:reservationSuccess._id,
+                emailSubject:"THÔNG BÁO ĐẶT PHÒNG THÀNH CÔNG",
+                amount: `${new Intl.NumberFormat('vi-VN').format(reservationSuccess.totalPrice*1000)} VND`,
+                hotelName:hotel.name,
+                roomsDetails:reservationSuccess.roomsDetail,
+                startDate: new Date(reservationSuccess.start).toLocaleDateString('vi-VN'),
+                endDate: new Date(reservationSuccess.end).toLocaleDateString('vi-VN'),
+              });
+              // console.log(`Room ${roomId} updated successfully.`);
+            } catch (err) {
+              console.log(err);
+            }
 
             res.redirect("http://localhost:3000/statusTransaction/success");
             // res.status(200).json({ RspCode: "00", Message: "Success" });

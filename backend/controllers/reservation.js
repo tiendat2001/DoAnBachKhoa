@@ -321,6 +321,7 @@ export const paymentAccountLastMonth = async (req, res, next) => {
     let enrichedReservations = [];
     for (let i = 0; i < groupedReservations.length; i++) {
         const reservation = groupedReservations[i];
+        if (reservation.totalPrice > 0) {
         const user = await User.findById(reservation.idOwnerHotel);
         if (user) {
             const { email, paymentInfo } = user;
@@ -332,6 +333,7 @@ export const paymentAccountLastMonth = async (req, res, next) => {
             });
         }
     }
+}
     res.status(200).json(enrichedReservations);
 }
 
@@ -514,7 +516,7 @@ export const sendEmailStatusReservation = async (req, res, next) => {
         console.log(userReserved.email)
         let emailContent = ''
         if (!req.body.emailContent) {
-            emailContent = `Thông tin đặt phòng của bạn\nMã đặt phòng: ${req.body.reservationId}\nTổng giá: ${req.body.amount}\nNgày nhận phòng:${req.body.startDate}\nNgày trả phòng:${req.body.endDate}`
+            emailContent = `Thông tin đặt phòng của bạn\nMã đặt phòng: ${req.body.reservationId}\nChỗ nghỉ: ${req.body.hotelName}\nPhòng đặt: ${req.body.roomsDetails}\nTổng giá: ${req.body.amount}\nNgày nhận phòng:${req.body.startDate}\nNgày trả phòng:${req.body.endDate}`
         } else emailContent = req.body.emailContent
 
 

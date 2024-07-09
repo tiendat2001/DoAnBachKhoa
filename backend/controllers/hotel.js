@@ -1,5 +1,6 @@
 import Hotel from "../models/Hotel.js"
 import Room from "../models/RoomType.js";
+import Reservation from "../models/Reservation.js";
 import axios from 'axios';
 // viet xu ly khi goi api
 export const createHotel = async (req, res, next) => {
@@ -57,6 +58,7 @@ export const deleteHotel = async (req, res, next) => {
     // Nếu ownerId khớp hoặc người dùng là admin, tiến hành xóa Hotel
     await Hotel.findByIdAndDelete(req.params.id);
     await Room.deleteMany({ hotelId: req.params.id });
+    await Reservation.deleteMany({ hotelId: req.params.id });
     res.status(200).json("Hotel has been deleted.");
   } catch (err) {
     next(err)
