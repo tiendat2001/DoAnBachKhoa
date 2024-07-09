@@ -552,6 +552,10 @@ export const cancelRoomReservation = async (req, res, next) => {
 // so luong phong trong 30 ngay toi
 export const statusRoomCount = async (req, res, next) => {
   try {
+    const { startDate, endDate } = req.query;
+    // console.log(startDate)
+    // console.log(endDate)
+
     const room = await Room.findById(req.params.roomId);
     const allCloseRooms = await ClosedRoom.find({roomTypeId:req.params.roomId});
     const currentDate = new Date() // theo UTC
@@ -562,7 +566,8 @@ export const statusRoomCount = async (req, res, next) => {
 
     // Lặp qua 30 ngày tiếp theo (tinnhs cả ngày hiện tại)
     for (let i = 0; i < 30; i++) {
-      const currentDay = addDays(currentDate, i);
+      const currentDay = addDays(startDate, i);
+      // console.log(currentDay)
       const day = currentDay.getDate();
       const month = currentDay.getMonth() + 1;// Tháng bắt đầu từ 0
       const year = currentDay.getFullYear()
@@ -598,7 +603,7 @@ export const statusRoomCount = async (req, res, next) => {
     res.json(roomAvailability);
   } catch (error) {
     console.error("Error occurred while fetching room availability:", error);
-    next(err);
+    next(error);
   }
 }
 
@@ -631,7 +636,7 @@ export const addRoomToRoomType = async (req, res, next) => {
     res.status(200).json({ message: 'Đã thêm phòng thành công', room: updatedRoom });
   } catch (error) {
     console.error('Lỗi khi thêm phòng:', error);
-    next(err);
+    next(error);
   }
 
 }
