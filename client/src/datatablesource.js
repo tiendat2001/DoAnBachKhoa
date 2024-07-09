@@ -136,7 +136,7 @@ export const roomColumns = [
 
     {
       field: "totalPrice",
-      headerName: "Tổng giá",
+      headerName: "Tổng giá(VND)",
       flex:1,
       width: 100,
       valueFormatter: (params) => {

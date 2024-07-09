@@ -20,16 +20,16 @@ const Policy = () => {
                     Trong trường hợp khách này nếu khách đồng ý hủy đơn đặt phòng, khách sẽ không mất phí hủy và quý vị không nhận được phí hủy.
                 </p>
 
-                <h2>Chính sách thanh toán</h2>
+                {/* <h2>Chính sách thanh toán</h2>
                 <p>Để đặt phòng, quý khách có thể chọn 2 phương thức thanh toán: thanh toán qua thẻ ATM nội địa hoặc thanh toán qua thẻ
                     VISA. Đối với những đơn đặt phòng đã hủy, tiền sẽ được hoàn lại vào tài khoản của quý khách trong khoảng thời gian 30 ngày
                     kể từ ngày đặt.
-                </p>
+                </p> */}
 
                 <h2>Chính sách hoa hồng</h2>
                 <p>Đối với đối tác của chúng tôi(chủ những khách sạn và chỗ nghỉ), chúng tôi sẽ tính phí 10% hoa hồng cho mỗi đơn đặt phòng thành
                     công của quý khách. Phí hoa hồng này cũng được áp dụng cho phí hủy của những đơn hủy không trong diện hủy miễn phí. Tiền của quý vị
-                    sẽ được thanh toán trong 10 ngày đầu tiên của mỗi tháng, quý khách có thể cập nhật tài khoản nhận tiền của quý khách
+                    sẽ được thanh toán trong 10 ngày đầu tiên của mỗi tháng, quý khách có thể cập nhật tài khoản nhận thanh toán của quý khách
                     tại đây     <a href="/admin/updatePaymentInfo">Cập nhật thông tin thanh toán</a>
                 </p>
             </div>

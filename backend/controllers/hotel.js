@@ -84,7 +84,7 @@ export const getHotels = async (req, res, next) => {
     }
     const hotels = await Hotel.aggregate([
       { $match: query }, // Lọc dựa trên điều kiện query nếu cần
-      { $sample: { size: 10 } } // Lấy mẫu ngẫu nhiên với số lượng giới hạn
+      { $sample: { size: 30 } } // Lấy mẫu ngẫu nhiên với số lượng giới hạn
     ]);
     // const hotels = await Hotel.find
 

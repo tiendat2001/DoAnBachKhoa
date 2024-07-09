@@ -16,6 +16,8 @@ const RecentSeenHotel = () => {
 
 
   useEffect(() => {
+    if(!loading){ // Ensure data is loaded
+      console.log(allHotelData)
     // tính toán từ localStorage xem city nào đc xem nhiều nhất gần đây
     //Lấy danh sách ID khách sạn đã xem từ localStorage
     const idHotelSeenString = localStorage.getItem('idHotelSeen');
@@ -28,13 +30,15 @@ const RecentSeenHotel = () => {
       // console.log(idHotelSeen)
       //Tạo một đối tượng để đếm số lần xuất hiện của mỗi thành phố
       const cityCount = {};
-      idHotelSeen.forEach(id => {
-        const hotel = allHotelData?.find(hotel => hotel._id == id);
+      for (let i = 0; i < idHotelSeen.length; i++) {
+        const id = idHotelSeen[i];
+        const hotel = allHotelData.find(hotel => hotel._id == id);
         if (hotel) {
           cityCount[hotel.city] = (cityCount[hotel.city] || 0) + 1;
         }
-      });
-
+      }
+      
+      console.log(cityCount)
       // Tìm thành phố có số lần xuất hiện nhiều nhất
       let maxCount = 0;
       let mostViewedCity = '';
@@ -46,8 +50,9 @@ const RecentSeenHotel = () => {
       }
       setMostViewedCity(mostViewedCity)
     }
+  }
 
-  }, [allHotelData,suggestedHotel]);
+  }, [loading]);
   // console.log("mostviewcity"+mostViewedCity)
   console.log(mostViewedCity)
   // console.log(suggestedHotel)
@@ -55,7 +60,7 @@ const RecentSeenHotel = () => {
   // chỉ lấy những khách sạn mà người dùng chưa xem gần đây- id khách sạn ko có trg local storage + lấy tối đa 3 ks để hiển thị
   // console.log(suggestedHotel)
   const filteredHotels = suggestedHotel.filter(item =>
-    !recentHotelIds.includes(item._id) && item.cheapestPrice?.price !== 0 && item.cheapestPrice?.price !== undefined
+    !recentHotelIds.includes(item._id) && item.cheapestPrice?.price !== 0 && item.cheapestPrice?.price !== undefined && item.city ==mostViewedCity
 
   );
   // console.log(filteredHotels)

@@ -120,7 +120,7 @@ const ModifyRoomCount = () => {
                     <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '20px' }}>Loại phòng: {roomTypeData.title} (tổng số lượng phòng: {roomTypeData.roomNumbers?.length})</div>
                     <div className="modifyRoomCount">
                         <label style={{ display: 'flex', justifyContent: 'flex-start', gap: '10px', alignItems: 'center' }}>
-                            Nhập lượng phòng cần thêm:
+                            Nhập lượng phòng cần thêm (tăng):
                             <input
                                 type="number"
                                 value={roomCountToAdd}
@@ -130,7 +130,7 @@ const ModifyRoomCount = () => {
                         </label>
                         <button style={{ backgroundColor: 'rgb(91, 248, 0)' }} className="modifyRoomCount_btn" onClick={submitAddRoom}>Thêm</button>
                         <label style={{ display: 'flex', justifyContent: 'flex-start', gap: '10px', alignItems: 'center' }}>
-                            Nhập lượng phòng cần xóa:
+                            Nhập lượng phòng cần xóa (giảm):
                             <input
                                 type="number"
                                 value={roomCountToDelete}
