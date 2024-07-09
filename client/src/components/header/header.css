@@ -67,7 +67,7 @@
 }
 
 .headerIcon {
-  color: lightgray;
+  color: rgb(0, 0, 0);
 }
 
 .headerSearchItem {
@@ -104,9 +104,9 @@
 }
 
 .headerSearchText {
-  color: lightgray;
+  color: black;
   cursor: pointer;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 .date {

@@ -598,7 +598,7 @@ export const statusRoomCount = async (req, res, next) => {
     res.json(roomAvailability);
   } catch (error) {
     console.error("Error occurred while fetching room availability:", error);
-    next(err);
+    next(error);
   }
 }
 
@@ -631,7 +631,7 @@ export const addRoomToRoomType = async (req, res, next) => {
     res.status(200).json({ message: 'Đã thêm phòng thành công', room: updatedRoom });
   } catch (error) {
     console.error('Lỗi khi thêm phòng:', error);
-    next(err);
+    next(error);
   }
 
 }
