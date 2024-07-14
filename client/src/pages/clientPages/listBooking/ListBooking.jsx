@@ -101,17 +101,17 @@ const ListBooking = () => {
 
       // // gửi email xác nhận đã hủy phòng thành công
       let emailSubject = "THÔNG BÁO HỦY PHÒNG THÀNH CÔNG"
-      try {
-        const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {
-          userId:selectedReservation.userId,
-          emailSubject:"THÔNG BÁO HỦY PHÒNG THÀNH CÔNG",
-          emailContent:`Đơn đặt phòng mã ${selectedReservation._id} của quý khách đã được hủy thành công.\n Chi tiết đơn đặt xem tại trên website`
-        });
-      } catch (err) {
-        hasError = true;
-        console.log(err)
-        return;
-      }
+      // try {
+      //   const res = await axios.put(`/reservation/email/sendEmailStatusReservation`, {
+      //     userId:selectedReservation.userId,
+      //     emailSubject:"THÔNG BÁO HỦY PHÒNG THÀNH CÔNG",
+      //     emailContent:`Đơn đặt phòng mã ${selectedReservation._id} của quý khách đã được hủy thành công.\n Chi tiết đơn đặt xem tại trên website`
+      //   });
+      // } catch (err) {
+      //   hasError = true;
+      //   console.log(err)
+      //   return;
+      // }
 
     } catch (err) {
       console.error('Error:', err);
