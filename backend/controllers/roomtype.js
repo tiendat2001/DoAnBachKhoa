@@ -552,6 +552,10 @@ export const cancelRoomReservation = async (req, res, next) => {
 // so luong phong trong 30 ngay toi
 export const statusRoomCount = async (req, res, next) => {
   try {
+    const { startDate, endDate } = req.query;
+    // console.log(startDate)
+    // console.log(endDate)
+
     const room = await Room.findById(req.params.roomId);
     const allCloseRooms = await ClosedRoom.find({roomTypeId:req.params.roomId});
     const currentDate = new Date() // theo UTC
@@ -562,7 +566,8 @@ export const statusRoomCount = async (req, res, next) => {
 
     // Lặp qua 30 ngày tiếp theo (tinnhs cả ngày hiện tại)
     for (let i = 0; i < 30; i++) {
-      const currentDay = addDays(currentDate, i);
+      const currentDay = addDays(startDate, i);
+      // console.log(currentDay)
       const day = currentDay.getDate();
       const month = currentDay.getMonth() + 1;// Tháng bắt đầu từ 0
       const year = currentDay.getFullYear()
@@ -601,7 +606,6 @@ export const statusRoomCount = async (req, res, next) => {
     next(error);
   }
 }
-
 // thêm phòng nhỏ vào loại phòng
 export const addRoomToRoomType = async (req, res, next) => {
   try {

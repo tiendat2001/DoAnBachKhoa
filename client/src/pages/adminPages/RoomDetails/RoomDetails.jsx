@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { DateRange } from "react-date-range";
 import { SearchContext } from '../../../context/SearchContext'
-import { format, addDays, subDays, addHours } from "date-fns";
+import { format, addDays, addYears, addHours } from "date-fns";
 import { confirmAlert } from 'react-confirm-alert';
 import {
     faBed,
@@ -20,20 +20,30 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { jwtDecode } from "jwt-decode";
-
-
+const currentDate = new Date();
+const INITIAL_STATE =
+    [
+        {
+            startDate: currentDate, 
+            endDate: addDays(currentDate, 29),
+            key: "selection",
+        },
+    ];
 const RoomDetails = () => {
+    const [datesToFilter, setDatesToFilter] = useState(INITIAL_STATE);
     const location = useLocation();
     // id RoomType
     const idRoom = location.pathname.split("/")[4];
     const { data: roomTypeData, loading, error, reFetch: roomTypeDataReFetch } = useFetch(`/rooms/find/${idRoom}`);
     const { data: roomCountStatus, loading: loadingroomCountStatus,
-        error: errorroomCountStatus, reFetch: reFetchRoomCountStatus } = useFetch(`/rooms/statusRoomCount/${idRoom}`);
+        error: errorroomCountStatus, reFetch: reFetchRoomCountStatus } = useFetch(`/rooms/statusRoomCount/${idRoom}?startDate=${datesToFilter[0].startDate}&endDate=${datesToFilter[0].endDate}`);
     const { data: roomCloseData, loading: loadingroomCloseData,
         error: errorroomCloseData, reFetch: roomCloseDataReFetch } = useFetch(`/closedRoom/${idRoom}`);
     const [openDate, setOpenDate] = useState(false);
+    const [openDate30Days, setOpenDate30Days] = useState(false);
     const searchContext = useContext(SearchContext);
     const [dates, setDates] = useState(searchContext.dates);
+    // date để lọc status 30 day
     const [selectedRoomIdsToDelete, setSelectedRoomIdsToDelete] = useState([]);
     const [key, setKey] = useState(Math.random());
     const [roomQuantityToClose, setRoomQuantityToClose] = useState(0);
@@ -71,9 +81,19 @@ const RoomDetails = () => {
 
         setDates([{ ...newSelection, startDate, endDate }]);
         setKey(Math.random()); // Bắt reload lại phần chọn phòng
-        setSelectedRoomIdsToDelete([])
     };
-    // console.log(dates)
+
+    const handleDayChangeFilter30Days = (item) => {
+        const utc = new Date().getTimezoneOffset() / 60 //-7
+        const newSelection = { ...item.selection };
+        let { startDate, endDate } = newSelection;
+        startDate = addHours(startDate, 7 - utc);
+        // endDate = addHours(endDate, 7 - utc);
+        endDate = addDays(new Date(startDate), 29);
+        setDatesToFilter([{ ...newSelection, startDate, endDate }]);
+        setKey(Math.random()); // Bắt reload lại phần chọn phòng
+    };
+    // console.log(datesToFilter)
 
     // phần đóng phòng
     const isAvailable = (roomNumber, dateToCheck) => {
@@ -99,36 +119,9 @@ const RoomDetails = () => {
     };
     // khi ấn xác nhận đóng phòng
     const handelCloseRoom = async () => {
-        // const response = await fetch(`/rooms/find/${idRoom}`);
-        // const reFreshRoomTypeData = await response.json();
-        // reFreshRoomTypeData.roomNumbers.forEach((roomNumber) => {
-        //     if (isAvailable(roomNumber) && updatedSelectedRoomToClose.length < roomQuantityToClose) {
-        //         // đẩy vào mảng _id của phòng hợp lệ để đóng
-        //         updatedSelectedRoomToClose.push(roomNumber._id);
-        //     }
-        // });
-
-        // setSelectedRoomIdsToDelete(updatedSelectedRoomsCopy);
-        // console.log(updatedSelectedRoomToClose)
-
-        // NHƯ API LUC ĐẶT PHÒNG ĐẨY AVAI
+       
         try {
-            //  await Promise.all(
-            //   updatedSelectedRoomToClose.map(async (roomId) => {
-            //     try {
-            //       const res = await axios.put(`/rooms/availability/${roomId}`, {
-            //         dates: alldates,
-            //         startDateRange:dates[0].startDate,
-            //         endDateRange: addDays(dates[0].endDate,1) // cần cộng 1 ngày do riêng đóng phòng tính cả ngày cuối
-            //       });
-
-            //       return res.data;
-            //     } catch (error) {
-            //       console.log(`Error in room ${roomId}:`, error);
-            //       throw error; // Ném lỗi để kích hoạt catch bên ngoài và dừng quá trình xử lý
-            //     }
-            //   })
-            // );
+           
             if (parseInt(roomQuantityToClose, 10) == 0) {
                 toast.error("Số lượng phòng muốn đóng phải lớn hơn 0")
                 return;
@@ -249,10 +242,28 @@ const RoomDetails = () => {
 
                     </div>
 
-                    <div style={{ fontWeight: 'bold' }}>
+                    <div style={{ fontWeight: 'bold',fontSize:'18px' }}>
                         Số lượng phòng/căn đang rao bán trong 30 ngày tới
 
                     </div>
+                     {/* thanh chọn khoảng ngày muốn loc status 30day */}
+                     <div style={{ width: '20%',margin:'10px 0px' }} className="closeRoomSearchBar">
+                                <FontAwesomeIcon icon={faCalendarDays} className="icon" />
+                                <span onClick={() => setOpenDate30Days(!openDate30Days)}>{`${format(
+                                    datesToFilter[0].startDate,
+                                    "dd/MM/yyyy"
+                                )} đến ${format(datesToFilter[0].endDate, "dd/MM/yyyy")}`}</span>
+                                {openDate30Days && (
+                                    <DateRange
+                                        onChange={(item) => handleDayChangeFilter30Days(item)}
+                                        // minDate={new Date()}
+                                        ranges={datesToFilter}
+                                        moveRangeOnFirstSelection={false}
+                                        editableDateInputs={true}
+                                        className="dateRange"
+                                    />
+                                )}
+                            </div>
                     <div className="tableRoomStatus">
                         <div className="grid-container">
                             {roomCountStatus.map((status, index) => (
