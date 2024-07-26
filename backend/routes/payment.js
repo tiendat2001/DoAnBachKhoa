@@ -88,15 +88,6 @@ router.get("/vnpay_return", function (req, res, next) {
   let signed = hmac.update(new Buffer(signData, "utf-8")).digest("hex");
 
   if (secureHash === signed) {
-    //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-    // const orderId = req.query.vnp_TxnRef;
-    // con.connect(function (err) {
-    //   if (err) throw err;
-    //   const sql = "UPDATE `order` SET state = ? WHERE order_id = ?";
-    //   con.query(sql, ["banked", orderId.toString()]);
-    //   con.end();
-    // });
-
     res.render("success", { code: vnp_Params["vnp_ResponseCode"] });
   } else {
     res.render("success", { code: "97" });
@@ -184,7 +175,6 @@ router.get("/vnpay_ipn", async function (req, res, next) {
                         endDateRange:reservationToDelete.end
                       }
                     });
-                    // console.log(`Room ${roomId} updated successfully.`);
                   } catch (err) {
                     console.log(err);
                   
@@ -201,7 +191,6 @@ router.get("/vnpay_ipn", async function (req, res, next) {
               next(err);
             }
             res.redirect("http://localhost:3000/statusTransaction/fail");
-            // res.status(200).json({ RspCode: "00", Message: "Success" });
 
           }
         }
