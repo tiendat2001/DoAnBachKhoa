@@ -1,0 +1,1388 @@
+{
+	"info": {
+		"_postman_id": "1464076e-f0d4-499c-84d3-433841e47acf",
+		"name": "Api web booking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29474460"
+	},
+	"item": [
+		{
+			"name": "HOTEL api",
+			"item": [
+				{
+					"name": "CREATE HOTEL",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Hotel Đà Nẵng 1 của dat12 \",\r\n    \"ownerId\":\"65facb1d62c615178b73c58c\",\r\n    \"type\":\"hotel\",\r\n    \"city\":\"Đà Nẵng\",\r\n    \"address\":\"somewhere\",\r\n    \"distance\":\"500\",\r\n    \"desc\":\"hotel description\"\r\n    \r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/hotels",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"hotels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE HOTEL",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Hotel Ha Noi 1\",\r\n    \"ownerId\":\"65fab07fc917dcd6f65fedcf\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/hotels/6607fbd9b9bc18bdcb6cc0f9",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"hotels",
+								"6607fbd9b9bc18bdcb6cc0f9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL HOTEL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/hotels",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"hotels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET HOTEL THEO CONDITION",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/hotels/?ownerId=65fab07fc917dcd6f65fedcf&type=Khách sạn",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"hotels",
+								""
+							],
+							"query": [
+								{
+									"key": "min",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "city",
+									"value": "Hà Nội",
+									"disabled": true
+								},
+								{
+									"key": "ownerId",
+									"value": "65fab07fc917dcd6f65fedcf"
+								},
+								{
+									"key": "type",
+									"value": "Khách sạn"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET HOTEL BY ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/hotels/find/660e85beb58b560db0bc6311",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"hotels",
+								"find",
+								"660e85beb58b560db0bc6311"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get order",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/orders",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE HOTEL",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ownerId\":\"65fab07fc917dcd6f65fedcf\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/hotels/66123401ecec62d846b1cd2a",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"hotels",
+								"66123401ecec62d846b1cd2a"
+							],
+							"query": [
+								{
+									"key": "ownerId",
+									"value": "65fab07fc917dcd6f65fedcf",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "COUNT BY CITY",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/hotels/countByCity",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"hotels",
+								"countByCity"
+							],
+							"query": [
+								{
+									"key": "cities",
+									"value": "Hà Nội,Ninh Bình,Đà Nẵng",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "COUNT BY TYPE",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AUTH api",
+			"item": [
+				{
+					"name": "REGISTER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"dat123456\",\r\n    \"email\":\"test123456@gmail.com\",\r\n    \"password\":\"1\"\r\n   \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGIN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"dat1\",\r\n    \"password\":\"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOUTOUT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"dat1\",\r\n    \"password\":\"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/auth/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CHANGE PASSWORD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"dat1\",\r\n    \"password\":\"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/auth/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/auth/checkHasAccessTokenAdminmistrator",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"auth",
+								"checkHasAccessTokenAdminmistrator"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "USER api",
+			"item": [
+				{
+					"name": "UPDATE USER",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"dd1scưqsdsdsqddd@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/users/65facb1d62c615178b73c58c",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"users",
+								"65facb1d62c615178b73c58c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET AUTHENTICATION",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/users/checkauthentication",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"users",
+								"checkauthentication"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE USER",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/users/65facb1d62c615178b73c58c",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"users",
+								"65facb1d62c615178b73c58c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET USER",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/users/65fab07fc917dcd6f65fedcf",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"users",
+								"65fab07fc917dcd6f65fedcf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL USERS",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/users/",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/users/checkadmin/65fc085365bbd6a8847892b9",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"users",
+								"checkadmin",
+								"65fc085365bbd6a8847892b9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ROOM api",
+			"item": [
+				{
+					"name": "CREATE ROOM BY HOTELID",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Phòng Super 3 giường đơn còn 2 phòng \",\r\n    \"desc\": \"2 giường đơn\",\r\n    \"price\": 400,\r\n    \"maxPeople\": 2,\r\n    \"roomNumbers\": [{}, {},{}, {}], \r\n    \"ownerId\":\"65fab07fc917dcd6f65fedcf\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/rooms/660e85beb58b560db0bc6311",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"rooms",
+								"660e85beb58b560db0bc6311"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE ROOM",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ownerId\":\"65fab07fc917dcd6f65fedcf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/rooms/661ff72504243276af81e918",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"rooms",
+								"661ff72504243276af81e918"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ROOMTYPE BY HOTEL ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/rooms/661ff54e04243276af81e8f9",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"rooms",
+								"661ff54e04243276af81e8f9"
+							],
+							"query": [
+								{
+									"key": "hotel_id",
+									"value": "65fd7aa2f9398926b94c5b2f",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL ROOMS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/rooms/",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"rooms",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update room",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"maxPeople\":4,\r\n     \"ownerId\":\"65fab07fc917dcd6f65fedcf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/rooms/6612967e90b5f1f15215985c",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"rooms",
+								"6612967e90b5f1f15215985c"
+							],
+							"query": [
+								{
+									"key": "type_room_id",
+									"value": "65fd7aa2f9398926b94c5b2f",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE AVAIBILITY",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dates\":[\"2024-11-13T17:00:00.000Z\" ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/rooms/availability/662b2fbacb901f25da3eb939",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"rooms",
+								"availability",
+								"662b2fbacb901f25da3eb939"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "status 30 ngày",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/rooms/statusRoomCount/662d25d75088ee4cc8a6988c",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"rooms",
+								"statusRoomCount",
+								"662d25d75088ee4cc8a6988c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD SMALL ROOM",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roomCountToAdd\":2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/rooms/addRoomToRoomType/662d387bc4f5814522eaa59a",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"rooms",
+								"addRoomToRoomType",
+								"662d387bc4f5814522eaa59a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE SMALL ROOM",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/rooms/deleteRoomInRoomType/662d387bc4f5814522eaa59a",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"rooms",
+								"deleteRoomInRoomType",
+								"662d387bc4f5814522eaa59a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "STATUS SMALL ROOM CHANGE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/rooms/deleteRoomInRoomType/662d387bc4f5814522eaa59a",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"rooms",
+								"deleteRoomInRoomType",
+								"662d387bc4f5814522eaa59a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD CLOSE ROOM",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ownerId\":\"\" ,\r\n    roomTypeId: \"\",\r\n    startClose:\"\",\r\n    endClose: \"\",\r\n    allDatesClosed: [\"\"],\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/rooms/closedRoom/660e85beb58b560db0bc6311",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"rooms",
+								"closedRoom",
+								"660e85beb58b560db0bc6311"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE ALL CLOSE ROOM",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/closedRoom/",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"closedRoom",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE CLOSE ROOM BY ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/closedRoom/",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"closedRoom",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET CLOSE ROOM",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/closedRoom",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"closedRoom"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RESERVATION",
+			"item": [
+				{
+					"name": "CREATE ORDER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"test\",\r\n    \"phoneNumber\":\"0923719\",\r\n    \"hotelId\":\"dfdsf\",\r\n    \"roomNumbersId\":[\"sdfsdafsdf\"],\r\n    \"start\",\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/reservation",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL ORDERS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/reservation/getall",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"reservation",
+								"getall"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ORDER THEO CONDITION",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/reservation?idOwnerHotel=65fab07fc917dcd6f65fedcf",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"reservation"
+							],
+							"query": [
+								{
+									"key": "idOwnerHotel",
+									"value": "65fab07fc917dcd6f65fedcf"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE ALL ORDERS",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/reservation",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE ORDER BY ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/reservation",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL HOTEL REVENUE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/reservation/getAllRevenueHotel?month=-1",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"reservation",
+								"getAllRevenueHotel"
+							],
+							"query": [
+								{
+									"key": "month",
+									"value": "-1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL PAYMENT ACCOUNT",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/reservation/getAllPaymentAccount",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"reservation",
+								"getAllPaymentAccount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "send email SUCCESS ORDER",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/reservation/getAllPaymentAccount",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"reservation",
+								"getAllPaymentAccount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET STATISTIC HOTEL ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/reservation/getRevenue/660e8384b58b560db0bc6287?month=-1",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"reservation",
+								"getRevenue",
+								"660e8384b58b560db0bc6287"
+							],
+							"query": [
+								{
+									"key": "month",
+									"value": "-1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REVENUE MONTH HOTELID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/reservation/getRevenueByMonths/660e8384b58b560db0bc6287",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"reservation",
+								"getRevenueByMonths",
+								"660e8384b58b560db0bc6287"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "VNPAY",
+			"item": [
+				{
+					"name": "create payment VNPAY",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/payment/create_payment_url",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"payment",
+								"create_payment_url"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IPN",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/payment/vnpay_ipn?vnp_Amount=10000000&vnp_BankCode=NCB&vnp_BankTranNo=VNP14399008&vnp_CardType=ATM&vnp_OrderInfo=Thanh+toan+cho+ma+GD%3ADddd&vnp_PayDate=20240502202220&vnp_ResponseCode=00&vnp_TmnCode=U4HX19KB&vnp_TransactionNo=14399008&vnp_TransactionStatus=00&vnp_TxnRef=Dddd&vnp_SecureHash=13a1eec5b0e4cd9ae5adf25ee357a6924d140f2541b8ebffb44df4aa4c2fa9921d1fca2d295189d057356c9565d39ee062843148c95a144f1e5921a15a2ef5b7",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"payment",
+								"vnpay_ipn"
+							],
+							"query": [
+								{
+									"key": "vnp_Amount",
+									"value": "10000000"
+								},
+								{
+									"key": "vnp_BankCode",
+									"value": "NCB"
+								},
+								{
+									"key": "vnp_BankTranNo",
+									"value": "VNP14399008"
+								},
+								{
+									"key": "vnp_CardType",
+									"value": "ATM"
+								},
+								{
+									"key": "vnp_OrderInfo",
+									"value": "Thanh+toan+cho+ma+GD%3ADddd"
+								},
+								{
+									"key": "vnp_PayDate",
+									"value": "20240502202220"
+								},
+								{
+									"key": "vnp_ResponseCode",
+									"value": "00"
+								},
+								{
+									"key": "vnp_TmnCode",
+									"value": "U4HX19KB"
+								},
+								{
+									"key": "vnp_TransactionNo",
+									"value": "14399008"
+								},
+								{
+									"key": "vnp_TransactionStatus",
+									"value": "00"
+								},
+								{
+									"key": "vnp_TxnRef",
+									"value": "Dddd"
+								},
+								{
+									"key": "vnp_SecureHash",
+									"value": "13a1eec5b0e4cd9ae5adf25ee357a6924d140f2541b8ebffb44df4aa4c2fa9921d1fca2d295189d057356c9565d39ee062843148c95a144f1e5921a15a2ef5b7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create payment VNPAY Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8800/api/payment/create_payment_url",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"payment",
+								"create_payment_url"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refund",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderId\":\"6638c385baa05068aea0970d\",\r\n    \"amount\":100,\r\n    \r\n    \"user\":\"dat1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8800/api/payment/refund",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"api",
+								"payment",
+								"refund"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TEST API CHỜ",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
